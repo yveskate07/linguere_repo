@@ -1,11 +1,444 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Boutique Fablab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: 'Arial', sans-serif;
+        }
+        .category-btn {
+            margin: 5px;
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .category-btn:hover {
+            transform: scale(1.1);
+            background-color: #f39c12;
+            color: white;
+        }
+        .active-btn {
+            background-color: #007bff !important;
+            color: white !important;
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .cart-alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.5s forwards;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes slideIn {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        .header {
+            background: linear-gradient(135deg, #007bff, #00bfff);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            font-weight: bold;
+            margin: 0;
+        }
+        .header p {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .btn-primary:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 1em;
+            color: #555;
+        }
+        .list-group-item {
+            transition: all 0.3s ease;
+        }
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.02);
+        }
+    </style>
 </head>
 <body>
+    <!-- Section En-tête -->
+    <div class="container mt-4">
+        <div class="header">
+            <h1>Boutique Fablab</h1>
+            <p class="text-end">Votre panier : <span id="cart-count">0</span> article(s) 
+                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#cartModal">
+                    <i class="fas fa-shopping-cart"></i> Voir le panier
+                </button>
+            </p>
+        </div>
+        
+        <!-- Boutons de catégorie principale -->
+        <div class="d-flex mt-4">
+            <button id="arduino-btn" class="btn btn-light category-btn" onclick="showCategory('arduino')">Kits Arduino</button>
+            <button id="robotique-btn" class="btn btn-light category-btn" onclick="showCategory('robotique')">Kits Robotique</button>
+        </div>
+        
+        <!-- Section Arduino -->
+        <div id="arduino-section" class="mt-3">
+            <!-- Boutons de filtre Arduino -->
+            <div class="d-flex mt-3">
+                <button id="arduino-all" class="btn btn-warning category-btn" onclick="filterProducts('arduino', 'all', this)">Tous les kits Arduino</button>
+                <button id="arduino-grand" class="btn btn-light category-btn" onclick="filterProducts('arduino', 'grand', this)">Grand Kit</button>
+                <button id="arduino-intermediaire" class="btn btn-light category-btn" onclick="filterProducts('arduino', 'intermediaire', this)">Kit Intermédiaire</button>
+                <button id="arduino-debutant" class="btn btn-light category-btn" onclick="filterProducts('arduino', 'debutant', this)">Kit Débutant</button>
+                <button id="arduino-pieces" class="btn btn-light category-btn" onclick="filterProducts('arduino', 'pieces', this)">Pièces Détachées</button>
+            </div>
+            
+            <!-- Liste des produits Arduino -->
+            <div class="row mt-3" id="arduino-products">
+                <!-- Les produits Arduino seront injectés ici dynamiquement -->
+            </div>
+        </div>
+        
+        <!-- Section Robotique -->
+        <div id="robotique-section" class="mt-3 d-none">
+            <!-- Boutons de filtre Robotique -->
+            <div class="d-flex mt-3">
+                <button id="robotique-all" class="btn btn-warning category-btn" onclick="filterProducts('robotique', 'all', this)">Tous les kits Robotique</button>
+                <button id="robotique-grand" class="btn btn-light category-btn" onclick="filterProducts('robotique', 'grand', this)">Grand Kit</button>
+                <button id="robotique-intermediaire" class="btn btn-light category-btn" onclick="filterProducts('robotique', 'intermediaire', this)">Kit Intermédiaire</button>
+                <button id="robotique-debutant" class="btn btn-light category-btn" onclick="filterProducts('robotique', 'debutant', this)">Kit Débutant</button>
+            </div>
+            
+            <!-- Liste des produits Robotique -->
+            <div class="row mt-3" id="robotique-products">
+                <!-- Les produits Robotique seront injectés ici dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Cart -->
+    <div id="cart-alert" class="cart-alert">
+        <i class="fas fa-check-circle"></i> Produit ajouté au panier !
+    </div>
     
+    <!-- Modal Panier -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Votre Panier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cart-items" class="list-group">
+                        <!-- Les produits du panier seront injectés ici dynamiquement -->
+                    </ul>
+                    <p class="text-end mt-3"><strong>Total : $<span id="cart-total">0.00</span></strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary">Passer la commande</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script JavaScript -->
+    <script>
+        // Données des produits
+        const products = {
+            arduino: [
+                {
+                    id: 1,
+                    name: "Kit Arduino Pro",
+                    category: "grand",
+                    description: "Idéal pour les projets avancés.",
+                    image: "logos.jpeg",
+                    price: 99.99,
+                    stock: 10
+                },
+                {
+                    id: 2,
+                    name: "Kit Arduino Intermédiaire",
+                    category: "intermediaire",
+                    description: "Parfait pour les débutants.",
+                    image: "logos.jpeg",
+                    price: 69.99,
+                    stock: 15
+                },
+                {
+                    id: 3,
+                    name: "Kit Arduino Débutant",
+                    category: "debutant",
+                    description: "Pour les petits projets.",
+                    image: "logos.jpeg",
+                    price: 49.99,
+                    stock: 20
+                },
+                {
+                    id: 4,
+                    name: "Pièces Détachées Arduino",
+                    category: "pieces",
+                    description: "Composants individuels pour vos projets.",
+                    image: "logos.jpeg",
+                    price: 9.99,
+                    stock: 50
+                }
+            ],
+            robotique: [
+                {
+                    id: 5,
+                    name: "Kit Robotique Pro",
+                    category: "grand",
+                    description: "Robotique avancée.",
+                    image: "logos.jpeg",
+                    price: 149.99,
+                    stock: 5
+                },
+                {
+                    id: 6,
+                    name: "Kit Robotique Intermédiaire",
+                    category: "intermediaire",
+                    description: "Robotique intermédiaire.",
+                    image: "logos.jpeg",
+                    price: 99.99,
+                    stock: 8
+                },
+                {
+                    id: 7,
+                    name: "Kit Robotique Débutant",
+                    category: "debutant",
+                    description: "Robotique pour débutants.",
+                    image: "logos.jpeg",
+                    price: 79.99,
+                    stock: 12
+                }
+            ],
+        };
+
+        let cart = []; // Panier : tableau d'objets { productId, quantity }
+        let cartCount = 0; // Nombre total d'articles dans le panier
+        let cartTotal = 0; // Total du panier
+
+        // Fonction pour ajouter un produit au panier
+        function addToCart(productId) {
+            const product = [...products.arduino, ...products.robotique].find((p) => p.id === productId);
+            if (product.stock > 0) {
+                const existingProduct = cart.find((item) => item.productId === productId);
+                if (existingProduct) {
+                    existingProduct.quantity += 1; // Augmenter la quantité si le produit est déjà dans le panier
+                } else {
+                    cart.push({ productId, quantity: 1 }); // Ajouter le produit au panier
+                }
+                cartCount += 1;
+                cartTotal += product.price;
+                product.stock -= 1;
+                updateCartDisplay();
+                showCartAlert();
+            } else {
+                alert("Stock épuisé !");
+            }
+        }
+
+        // Fonction pour augmenter la quantité d'un produit dans le panier
+        function increaseQuantity(productId) {
+            const product = [...products.arduino, ...products.robotique].find((p) => p.id === productId);
+            const cartItem = cart.find((item) => item.productId === productId);
+            if (product.stock > 0) {
+                cartItem.quantity += 1;
+                cartCount += 1;
+                cartTotal += product.price;
+                product.stock -= 1;
+                updateCartDisplay();
+            }
+        }
+
+        // Fonction pour diminuer la quantité d'un produit dans le panier
+        function decreaseQuantity(productId) {
+            const product = [...products.arduino, ...products.robotique].find((p) => p.id === productId);
+            const cartItem = cart.find((item) => item.productId === productId);
+            if (cartItem.quantity > 1) {
+                cartItem.quantity -= 1;
+                cartCount -= 1;
+                cartTotal -= product.price;
+                product.stock += 1;
+                updateCartDisplay();
+            } else {
+                removeFromCart(productId); // Supprimer le produit si la quantité est 1
+            }
+        }
+
+        // Fonction pour supprimer un produit du panier
+        function removeFromCart(productId) {
+            const product = [...products.arduino, ...products.robotique].find((p) => p.id === productId);
+            const cartItem = cart.find((item) => item.productId === productId);
+            cartCount -= cartItem.quantity;
+            cartTotal -= product.price * cartItem.quantity;
+            product.stock += cartItem.quantity;
+            cart = cart.filter((item) => item.productId !== productId); // Retirer le produit du panier
+            updateCartDisplay();
+        }
+
+        // Fonction pour mettre à jour l'affichage du panier
+        function updateCartDisplay() {
+            document.getElementById('cart-count').innerText = cartCount;
+            document.getElementById('cart-total').innerText = cartTotal.toFixed(2);
+            displayCart();
+        }
+
+        // Fonction pour afficher les produits du panier
+        function displayCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = ""; // Vider la liste
+            cart.forEach((item) => {
+                const product = [...products.arduino, ...products.robotique].find((p) => p.id === item.productId);
+                const cartItem = document.createElement('li');
+                cartItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                cartItem.innerHTML = `
+                    ${product.name} - $${product.price.toFixed(2)} 
+                    <div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="decreaseQuantity(${product.id})">-</button>
+                        <span class="mx-2">${item.quantity}</span>
+                        <button class="btn btn-sm btn-outline-success" onclick="increaseQuantity(${product.id})">+</button>
+                        <button class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${product.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+
+        // Afficher alerte panier
+        function showCartAlert() {
+            const alertBox = document.getElementById('cart-alert');
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 2000);
+        }
+
+        // Écouter l'ouverture de la modal pour afficher le panier
+        document.getElementById('cartModal').addEventListener('show.bs.modal', function () {
+            displayCart();
+        });
+
+        // Fonctions pour afficher les produits et les catégories (inchangées)
+        let currentCategory = "arduino";
+        let currentFilter = "all";
+
+        function showCategory(category) {
+            document.getElementById('arduino-section').classList.add('d-none');
+            document.getElementById('robotique-section').classList.add('d-none');
+            document.getElementById('arduino-btn').classList.remove('active-btn');
+            document.getElementById('robotique-btn').classList.remove('active-btn');
+            
+            if (category === 'arduino') {
+                document.getElementById('arduino-section').classList.remove('d-none');
+                document.getElementById('arduino-btn').classList.add('active-btn');
+                displayProducts('arduino', 'all');
+            } else {
+                document.getElementById('robotique-section').classList.remove('d-none');
+                document.getElementById('robotique-btn').classList.add('active-btn');
+                displayProducts('robotique', 'all');
+            }
+        }
+
+        function filterProducts(section, category, clickedButton) {
+            currentCategory = section;
+            currentFilter = category;
+
+            const buttons = document.querySelectorAll(`#${section}-section .category-btn`);
+            buttons.forEach(button => {
+                button.classList.remove('btn-warning');
+                button.classList.add('btn-light');
+            });
+            clickedButton.classList.remove('btn-light');
+            clickedButton.classList.add('btn-warning');
+
+            displayProducts(section, category);
+        }
+
+        function displayProducts(section, category) {
+            const productSection = document.getElementById(`${section}-products`);
+            productSection.innerHTML = "";
+
+            const filteredProducts = products[section].filter((product) => {
+                return category === 'all' || product.category === category;
+            });
+
+            filteredProducts.forEach((product) => {
+                const productCard = `
+                    <div class="col-md-4 product" data-category="${product.category}">
+                        <div class="card product-card">
+                            <img src="${product.image}" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text">Prix : $${product.price.toFixed(2)}</p>
+                                <p class="card-text">Stock : ${product.stock}</p>
+                                <button class="btn btn-primary" onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled' : ''}>
+                                    ${product.stock === 0 ? 'Stock épuisé' : 'Ajouter au panier'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productSection.innerHTML += productCard;
+            });
+        }
+
+        // Initialisation
+        showCategory('arduino');
+    </script>
 </body>
 </html>
