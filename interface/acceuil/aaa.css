@@ -17,7 +17,6 @@ nav {
     align-items: center;
     background: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    
 }
 .logo {
     font-size: 20px;
@@ -53,8 +52,6 @@ nav {
     background: #4a84f9;
     color: white;
     position: relative;
-    position: fixed; 
-    
 }
 .nav-bar a {
     color: white;
@@ -212,8 +209,8 @@ main {
 
 .card {
     position: relative;
-    width: 300px;
-    height: 400px;
+    width: 250px;
+    height: 350px;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -393,4 +390,32 @@ footer .social-icons span:hover {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.logo-img {
+    animation: pulse 2s infinite;
+}
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.container h1 {
+    animation: blink 1s infinite;
+}
+
+.card-image-title {
+    text-align: center; /* Centrer le texte */
+    margin-top: 10px; /* Espacement entre l'image et le titre */
+    font-size: 1.2em; /* Taille de la police */
+    font-weight: bold; /* Texte en gras */
+    color: #2c3e50; /* Couleur du texte */
+    font-family: 'Montserrat', sans-serif; /* Police de caractères */
 }
