@@ -1,0 +1,48 @@
+{% load static %}
+
+{% block header %}
+<header>
+    <div class="top-bar">
+        <span><a href="{% url 'location' %}">📍 LOCALISATION</a></span>
+        <span>📧 Livraison Partout au Senegal</span>
+        <span>🕒 08:00 - 17:00</span>
+        <span>📞 (+221) 77 077 18 32</span>
+        <span><a href="https://wa.me/+221770771832" target="_blank">💬 WHATSAPP</a></span>
+    </div>
+    <nav>
+        <div class="logo animate__animated animate__fadeInLeft">
+            <img src="{% static 'AntaBackend/images/logos.jpeg' %}" alt="Logo" class="logo-img">
+        </div>
+        <p style="font-size: 2em;" class="animate__animated animate__fadeInRight">LINGUERE FABLAB</p>
+        <div class="search-bar animate__animated animate__zoomIn">
+            <input type="text" placeholder="Rechercher...">
+            <button>🔍</button>
+        </div>
+        <div class="icons">
+            <span>🤍</span>
+            <span>👤</span>
+            <span>🛒 0 CFA</span>
+        </div>
+    </nav>
+    <div class="nav-bar">
+        <a href="{% url 'home' %}">🏠 ACCUEIL</a>
+        <div class="dropdown">
+            <a href="#"> CATALOGUE</a>
+            <div class="dropdown-menu">
+                <a href="{% url 'shop-arduino' %}">Kits Arduino et IOT</a>
+                <a href="{% url 'shop-machine' %}">Machines Numériques</a>
+                <a href="{% url 'shop-installations' %}">Installations Fablab</a>
+                <a href="{% url 'services-broderie' %}">Personnalisation de broderie numérique</a>
+                <a href="{% url 'services-cnc' %}">Services avec CNC</a>
+                <a href="{% url 'services-laser' %}">Services avec découpe laser</a>
+                <a href="/interface/boutique">Logiciels de Conception</a>
+                <a href="/interface/boutique">Accessoires</a>
+            </div>
+        </div>
+        <a href="#">🆕 NOUVEAUX</a>
+        <a href="#">ℹ️ À PROPOS</a>
+        <a href="#contact-box">📞 CONTACT</a>
+    </div>
+</header>
+
+{% endblock %}

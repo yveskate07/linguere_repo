@@ -1,0 +1,220 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/css/style.css' %}">
+    <title>LINGUERE FABLAB</title>
+</head>
+<body>
+
+    {% include 'AntaBackEnd/header.html' %}
+
+    <main>
+        <div class="video1">
+            <div class="vi1">
+                <video src="vi1.mp4" autoplay muted loop></video>
+            </div>
+            <div class="vi2">
+                <video src="vi2.mp4" autoplay muted loop></video>
+            </div>
+        </div>
+    </main>
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'AntaBackend/images/aaaa.png' %}" class="d-block w-100" alt="Promotion 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'AntaBackend/images/aa.png' %}" class="d-block w-100" alt="Promotion 2">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'AntaBackend/images/aaa.png' %}" class="d-block w-100" alt="Promotion 3">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>BOUTIQUE</h1>
+        <div class="grid">
+            <div class="card">
+                <a href="{% url 'shop-arduino' %}"><img src="{% static 'Shop/images/kits Arduino mega.png' %}" alt="Arduino"></a>
+                <div class="overlay">
+                    <div class="card-title">Kits Arduino et IOT</div>
+                    <div class="card-description">Découvrez nos kits Arduino pour vos projets IoT. <br><br><br><br><br><br><a href="{% url 'shop-arduino' %}">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Kits Arduino et IOT</h2>
+            </div>
+            <div class="card">
+                <a href="{% url 'shop-machine' %}"><img src="{% static 'Shop/images/Brother.png' %}" alt="Machine"></a>
+                <div class="overlay">
+                    <div class="card-title">Machine Numerique</div>
+                    <div class="card-description">Explorez nos machines numériques pour la fabrication. <br><br><br><br><br><br><a href="{% url 'shop-machine' %}">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Machine Numerique</h2>
+            </div>
+            <div class="card">
+                <a href="{% url 'shop-installations' %}"><img src="{% static 'Shop/images/mini kits.png' %}" alt="Impressions"></a>
+                <div class="overlay">
+                    <div class="card-title">Installations Fablab</div>
+                    <div class="card-description">Nous installons et configurons votre Fablab. <br><br><br><br><br><br><a href="{% url 'shop-installations' %}">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Installations Fablab</h2>
+            </div>
+        </div>
+    </div>
+    <div class="video2">
+        <video src="vi1.mp4" autoplay muted loop></video>
+    </div>
+
+    <div class="container">
+        <h1>SERVICES</h1>
+        <div class="grid">
+            <div class="card">
+                <a href="/interface/service/broderie.html"><img src="/interface/service/image/kits Arduino mega.png" alt="Arduino"></a>
+                <div class="overlay">
+                    <div class="card-title">Personnalisation de broderie numérique</div>
+                    <div class="card-description">Broderie Numérique Créative <br> Art Textile Digital <br><br><br><br><br><br><a href="/interface/service/broderie.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+            <div class="card">
+                <a href="/interface/service/CNC.html"><img src="/interface/service/image/Brother.png" alt="Machine"></a>
+                <div class="overlay">
+                    <div class="card-title">Services avec CNC</div>
+                    <div class="card-description">Usinage CNC de Précision <br> Fabrication Assistée CNC <br><br><br><br><br><br><a href="/interface/service/CNC.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Services avec CNC</h2>
+            </div>
+            <div class="card">
+                <a href="/interface/service/laser.html"><img src="/interface/service/image/mini kits.png" alt="Impressions"></a>
+                <div class="overlay">
+                    <div class="card-title">Services avec découpe laser</div>
+                    <div class="card-description">Gravure & Découpe Laser <br> Découpe Laser Haute Précision <br><br><br><br><br><br><a href="/interface/service/laser.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Services avec découpe laser</h2>
+            </div>
+            <div class="card">
+                <a href="/interface/service/laser.html"><img src="/interface/service/image/mini kits.png" alt="Impressions"></a>
+                <div class="overlay">
+                    <div class="card-title">Services avec découpe laser</div>
+                    <div class="card-description">Gravure & Découpe Laser <br> Découpe Laser Haute Précision <br><br><br><br><br><br><a href="/interface/service/laser.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Services avec découpe laser</h2>
+            </div>
+            
+        </div>
+    </div>
+    <div class="video3">
+        <video src="vi1.mp4" autoplay muted loop></video>
+    </div>
+    <div class="container">
+        <h1>FORMATIONS</h1>
+        <div class="grid">
+            <div class="card">
+                <img src="kits Arduino mega.png" alt="Arduino">
+                <div class="overlay">
+                    <div class="card-title">Personnalisation de broderie numérique</div>
+                    <div class="card-description">Broderie Numérique Créative <br> Art Textile Digital <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+            <div class="card">
+                <img src="Brother.png" alt="Machine">
+                <div class="overlay">
+                    <div class="card-title">Services avec CNC</div>
+                    <div class="card-description">Usinage CNC de Précision <br> Fabrication Assistée CNC <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Services avec CNC</h2>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+            <div class="card">
+                <img src="mini kits.png" alt="Impressions">
+                <div class="overlay">
+                    <div class="card-title">Services avec découpe laser</div>
+                    <div class="card-description">Gravure & Découpe Laser <br> Découpe Laser Haute Précision <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Services avec découpe laser</h2>
+            </div>
+        </div>
+        <div class="video4">
+            <video src="vi1.mp4" autoplay muted loop></video>
+        </div>
+    </div>
+    <div class="container">
+        <h1>PROJET ET INITIATIVES</h1>
+        <div class="grid">
+            <div class="card">
+                <img src="kits Arduino mega.png" alt="Arduino">
+                <div class="overlay">
+                    <div class="card-title">Personnalisation de broderie numérique</div>
+                    <div class="card-description">Broderie Numérique Créative <br> Art Textile Digital <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+            <div class="card">
+                <img src="Brother.png" alt="Machine">
+                <div class="overlay">
+                    <div class="card-title">Services avec CNC</div>
+                    <div class="card-description">Usinage CNC de Précision <br> Fabrication Assistée CNC <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+            <div class="card">
+                <img src="mini kits.png" alt="Impressions">
+                <div class="overlay">
+                    <div class="card-title">Services avec découpe laser</div>
+                    <div class="card-description">Gravure & Découpe Laser <br> Découpe Laser Haute Précision <br><br><br><br><br><br><a href="/interface/boutique/arduino.html">en savoir plus</a></div>
+                </div>
+                <h2 class="card-image-title">Personnalisation de broderie numérique</h2>
+            </div>
+        </div>
+    </div>
+    <div class="video5">
+        <video src="vi1.mp4" autoplay muted loop></video>
+    </div>
+    {% include 'AntaBackEnd/footer.html' %}
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialisation du carrousel avec un léger délai
+        document.addEventListener("DOMContentLoaded", function() {
+            let myCarousel = new bootstrap.Carousel(document.getElementById('carouselExampleAutoplaying'), {
+                interval: 3000, // Défilement toutes les 3 secondes
+                ride: 'carousel'
+            });
+
+            // Détection du footer pour les animations
+            const footer = document.querySelector('footer');
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const callback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sections = footer.querySelectorAll('.animate__animated');
+                        sections.forEach(section => {
+                            section.classList.add('animate__fadeIn');
+                        });
+                        observer.unobserve(footer);
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(callback, options);
+            observer.observe(footer);
+        });
+    </script>
+</body>
+</html>

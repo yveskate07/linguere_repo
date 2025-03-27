@@ -1,0 +1,524 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'Shop/css/style.css' %}">
+    <title>LINGUERE FABLAB</title>
+</head>
+<body>
+
+    {% include 'AntaBackEnd/header.html' %}
+
+    <main>
+        <aside class="filter-section">
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle"> CATALOGUE <i class="fas fa-chevron-down"></i></a>                <div class="dropdown-menu">
+                    <a href="#"><i class="fas fa-microchip"></i> Kits Arduino</a>
+                    <a href="#"><i class="fas fa-cogs"></i> Machines Numériques</a>
+                    <a href="#"><i class="fas fa-print"></i> Imprimantes 3D</a>
+                    <a href="#"><i class="fas fa-bolt"></i> Composants Électroniques</a>
+                    <a href="#"><i class="fas fa-tools"></i> Outils de Fabrication</a>
+                    <a href="#"><i class="fas fa-cubes"></i> Matériaux de Construction</a>
+                    <a href="#"><i class="fas fa-laptop-code"></i> Logiciels de Conception</a>
+                    <a href="#"><i class="fas fa-toolbox"></i> Accessoires</a>
+                </div>
+            </div>
+        </aside>
+        <section class="product-container">
+            <div class="centered-content">
+                <h1>Kits Arduino et IOT</h1>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="image/Arduino mega.png" alt="Produit 1">
+                        <div class="product-info">
+                            <h3 class="product-name">Arduino Méga</h3>
+                            <p class="product-description">Carte puissante avec plus d’entrées/sorties que l’Uno.</p>
+                            <p class="product-price">Prix : 15 000 CFA</p>
+                            <p class="product-stock">Stock : 50 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Arduino uno.png" alt="Produit 3">
+                        <div class="product-info">
+                            <h3 class="product-name">Arduino Uno</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 10 000 CFA</p>
+                            <p class="product-stock">Stock : 100 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Arduino nano.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Arduino Nano</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/esp32.png" alt="Produit 2">
+                        <div class="product-info">
+                            <h3 class="product-name">ESP32</h3>
+                            <p class="product-description">Microcontrôleur.</p>
+                            <p class="product-price">Prix : 250 000 CFA</p>
+                            <p class="product-stock">Stock : 10 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="image/Capteur DHT11.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">DHT11</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Capteur ultrason.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Capteur ultrason</h3>
+                            <p class="product-description">Utilisé pour mesurer des distances avec précision ou détecter des obstacles.</p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Capteur Infrarouge.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Capteur Infrarouge</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/DHT22.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">DHT22</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/MQ-2, MQ-3, MQ-8.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">MQ-2, MQ-3, MQ-8</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Photoresistance.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Photoresistance</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/BMP180.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">BMP180</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/HC-SR501 PIR Mouvement.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">HC-SR501 PIR Mouvement</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/mini kits.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Mini Kits</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/kits de demarrage.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits de Demarrage</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/kits Arduino mega.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Arduino Mega</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/kits pompe.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">kits Pompe</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <!-- ----------------------------------------------------- -->
+                    <div class="product-card">
+                        <img src="image/Kits d'assortissement de diodes.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits d'assortissement de diodes</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <!-- ------------------------------------------------------- -->
+                    <div class="product-card">
+                        <img src="image/Pompe 5v.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Pompe 5V</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Systeme d'arrosage.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Systeme d'Arrosage</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <!-- -------------------------------------------------commencement--------------- -->
+                    <div class="product-card">
+                        <img src="image/Ecran LCD.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Ecran LCD</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="image/Feu rouge.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Feu rouge</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Led.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Led</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Leds avec fil.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Leds Avec Fil</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/moteur dcet roue.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Moteur DCET Roue</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/roue 2 .png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Roue</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <!-- -------------------------------------------------fin--------------- -->
+
+                    <div class="product-card">
+                        <img src="image/kit robotique 1.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Mini Kit Robotique</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Kits robotique.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Robotique</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/kits robotique 1.jpg" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Robotique</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Kitsrobot avancee.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Robotique</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Kits Smart city.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Smart city</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/smart city 2.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits smart city</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/kits stem mini.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Stem Mini</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Kits STEM.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits STEM</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="image/Kits stem4.png" alt="Produit 4">
+                        <div class="product-info">
+                            <h3 class="product-name">Kits Stem</h3>
+                            <p class="product-description"></p>
+                            <p class="product-price">Prix : 500 000 CFA</p>
+                            <p class="product-stock">Stock : 5 unités</p>
+                            <button class="add-to-cart-button">Ajouter au panier</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-content">
+          <h2>Votre Panier</h2>
+          <div id="cart-items"></div>
+          <div class="total">
+            <strong>Total : </strong><span id="total-price">0 CFA</span>
+          </div>
+          <button id="checkout-button">Passer la commande</button>
+          <button id="close-cart">Fermer</button>
+        </div>
+    </div>
+
+    {% include 'AntaBackEnd/footer.html' %}
+
+    <script>
+        // Initialisation du panier
+let cart = [];
+let total = 0;
+
+// Fonction pour mettre à jour l'affichage du panier
+function updateCartDisplay() {
+  const cartElement = document.getElementById('cart');
+  cartElement.textContent = `🛒 ${total} CFA`;
+}
+
+// Fonction pour ajouter un produit au panier
+function addToCart(productName, productPrice) {
+  const existingProduct = cart.find(item => item.name === productName);
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    cart.push({ name: productName, price: productPrice, quantity: 1 });
+  }
+  total += productPrice;
+  updateCartDisplay();
+
+  // Show confirmation message
+  const confirmationMessage = document.getElementById('confirmation-message');
+  confirmationMessage.style.display = 'block';
+  setTimeout(() => {
+    confirmationMessage.style.display = 'none';
+  }, 3000); // Hide message after 3 seconds
+}
+
+// Fonction pour afficher le panier
+function showCart() {
+  const cartModal = document.getElementById('cart-modal');
+  const cartItemsContainer = document.getElementById('cart-items');
+  cartItemsContainer.innerHTML = '';
+
+  cart.forEach(item => {
+    const cartItemDiv = document.createElement('div');
+    cartItemDiv.classList.add('cart-item');
+
+    cartItemDiv.innerHTML = `
+      <span>${item.name} (${item.quantity}) - ${(item.price * item.quantity).toFixed(2)} CFA</span>
+      <div class="quantity-controls">
+        <button onclick="updateQuantity('${item.name}', -1)">-</button>
+        <span>${item.quantity}</span>
+        <button onclick="updateQuantity('${item.name}', 1)">+</button>
+      </div>
+      <button onclick="removeProduct('${item.name}')">Supprimer</button>
+    `;
+
+    cartItemsContainer.appendChild(cartItemDiv);
+  });
+
+  // Mettre à jour le prix total
+  document.getElementById('total-price').textContent = `${total.toFixed(2)} CFA`;
+
+  // Afficher le modal
+  cartModal.style.display = 'flex';
+}
+
+// Fonction pour fermer le panier
+document.getElementById('close-cart').addEventListener('click', () => {
+  document.getElementById('cart-modal').style.display = 'none';
+});
+
+// Fonction pour augmenter/diminuer la quantité
+function updateQuantity(productName, change) {
+  const product = cart.find(item => item.name === productName);
+  if (product) {
+    if (product.quantity + change > 0) {
+      product.quantity += change;
+      total += product.price * change;
+    } else {
+      total -= product.price * product.quantity;
+      cart = cart.filter(item => item.name !== productName);
+    }
+    updateCartDisplay();
+    showCart();
+  }
+}
+
+// Fonction pour supprimer un produit
+function removeProduct(productName) {
+  const productIndex = cart.findIndex(item => item.name === productName);
+  if (productIndex !== -1) {
+    total -= cart[productIndex].price * cart[productIndex].quantity;
+    cart.splice(productIndex, 1);
+    updateCartDisplay();
+    showCart();
+  }
+}
+
+// Ajouter des écouteurs d'événements aux boutons "Ajouter au panier"
+document.querySelectorAll('.add-to-cart-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const productName = button.parentElement.querySelector('.product-name').textContent;
+    const productPrice = parseFloat(
+      button.parentElement.querySelector('.product-price').textContent.replace('Prix : ', '').replace(' CFA', '')
+    );
+    addToCart(productName, productPrice);
+  });
+});
+
+// Ajouter un écouteur d'événements pour afficher le panier
+document.getElementById('cart').addEventListener('click', showCart);
+document.getElementById('checkout-button').addEventListener('click', () => {
+  if (cart.length > 0) {
+    alert('Commande passée avec succès !');
+    // Vous pouvez ajouter ici la logique pour traiter la commande
+    cart = [];
+    total = 0;
+    updateCartDisplay();
+    document.getElementById('cart-modal').style.display = 'none';
+  } else {
+    alert('Votre panier est vide !');
+  }
+});
+    </script>
+</body>
+</html>
