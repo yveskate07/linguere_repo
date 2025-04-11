@@ -6,3 +6,6 @@ def home(request):
 
 def location(request):
     return render(request, 'AntaBackEnd/location/index.html')
+
+def about(request):
+    return render(request, "AntaBackEnd/about/index.html")

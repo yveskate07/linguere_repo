@@ -6,21 +6,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINGUERE FABLAB - Innovation et Fabrication Numérique au Sénégal</title>
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'AntaBackEnd/css/style.css' %}">
+
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) -->
+
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
 </head>
 <body>
-	{% include 'AntaBackEnd/header.html' %}
+    {% include 'AntaBackEnd/header_footer/header.html' %}
 
-    
     <!-- Hero Section -->
     <section class="hero-section">
         <video class="hero-video" autoplay muted loop>
-            <source src="Vi1.mp4" type="video/mp4">
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
         </video>
         <div class="hero-content">
             <h1 class="animate__animated animate__fadeInDown">INNOVATION & FABRICATION NUMÉRIQUE</h1>
@@ -28,26 +39,26 @@
             <button class="btn btn-hero animate__animated animate__fadeInUp animate__delay-2s">Explorer maintenant</button>
         </div>
     </section>
-    
+
     <!-- Promotions Carousel -->
     <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{% static 'AntaBackend/images/aaaa.png' %}" class="d-block w-100" alt="Promotion 1">
+                <img src="{% static 'AntaBackEnd/images/aaaa.png' %}" class="d-block w-100" alt="Promotion 1">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Promotions exceptionnelles</h5>
                     <p>Jusqu'à 30% de réduction sur les kits Arduino</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{% static 'AntaBackend/images/aa.png' %}" class="d-block w-100" alt="Promotion 2">
+                <img src="{% static 'AntaBackEnd/images/aa.png' %}" class="d-block w-100" alt="Promotion 2">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Nouveautés</h5>
                     <p>Découvrez nos dernières machines numériques</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{% static 'AntaBackend/images/aaa.png' %}" class="d-block w-100" alt="Promotion 3">
+                <img src="{% static 'AntaBackEnd/images/aaa.png' %}" class="d-block w-100" alt="Promotion 3">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Formations spécialisées</h5>
                     <p>Inscrivez-vous à nos ateliers de fabrication numérique</p>
@@ -63,7 +74,7 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    
+
     <!-- Features Section -->
     <section class="features">
         <div class="container">
@@ -99,47 +110,47 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Boutique Section -->
-    <div class="container py-5">
+    <div class="container py-5" id="shop-section">
         <div class="section-title" data-aos="fade-up">
             <h1>BOUTIQUE</h1>
         </div>
-        
+
         <div class="grid">
             <div class="card" data-aos="fade-up">
-                <a href="{% url 'shop-arduino' %}"><img src="{% static 'Shop/images/kits Arduino mega.png' %}" alt="Arduino"></a>
+                <a href="arduino.html"><img src="{% static 'Shop/images/kits Arduino mega.png' %}" alt="Arduino"></a>
                 <div class="overlay">
                     <div class="card-title">Kits Arduino et IOT</div>
-                    <div class="card-description">Découvrez nos kits Arduino complets pour vos projets IoT innovants. Capteurs, modules et composants de qualité.<br><br><a href="{% url 'shop-arduino' %">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                    <div class="card-description">Découvrez nos kits Arduino complets pour vos projets IoT innovants. Capteurs, modules et composants de qualité.<br><br><a href="arduino.html">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
                 </div>
                 <h2 class="card-image-title">Kits Arduino et IOT</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="100">
-                <a href="{% url 'shop-machine' %}"><img src="{% static 'Shop/images/Brother.png' %}" alt="Machine"></a>
+                <a href="machine.html"><img src="{% static 'Shop/images/Brother.png' %}" alt="Machine"></a>
                 <div class="overlay">
                     <div class="card-title">Machines Numériques</div>
-                    <div class="card-description">Explorez nos machines numériques haute performance pour la fabrication additive, soustractive et bien plus.<br><br><a href="{% url 'shop-machine' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                    <div class="card-description">Explorez nos machines numériques haute performance pour la fabrication additive, soustractive et bien plus.<br><br><a href="machine.html">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
                 </div>
                 <h2 class="card-image-title">Machines Numériques</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="200">
-                <a href="{% url 'shop-installations' %}"><img src="{% static 'Shop/images/mini kits.png' %}" alt="Impressions"></a>
+                <a href="installation.html"><img src="{% static 'Shop/images/mini kits.png' %}" alt="Impressions"></a>
                 <div class="overlay">
                     <div class="card-title">Installations Fablab</div>
-                    <div class="card-description">Nous concevons, installons et configurons votre Fablab clé en main avec formation du personnel.<br><br><a href="{% url 'shop-installations' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                    <div class="card-description">Nous concevons, installons et configurons votre Fablab clé en main avec formation du personnel.<br><br><a href="installation.html">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
                 </div>
                 <h2 class="card-image-title">Installations Fablab</h2>
             </div>
         </div>
     </div>
-    
+
     <!-- Video Section 1 -->
     <section class="video-section">
         <video autoplay muted loop>
-            <source src="Vi1.mp4" type="video/mp4">
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
         </video>
         <div class="video-overlay">
             <h2 data-aos="fade-up">CRÉATIVITÉ SANS LIMITES</h2>
@@ -147,13 +158,13 @@
             <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Voir nos réalisations</button>
         </div>
     </section>
-    
+
     <!-- Services Section -->
-    <div class="container py-5 services-section">
+    <div class="container py-5 services-section" id="services-section">
         <div class="section-title" data-aos="fade-up">
             <h1>NOS SERVICES</h1>
         </div>
-        
+
         <div class="grid">
             <div class="card" data-aos="fade-up">
                 <a href="broderie.html"><img src="kits Arduino mega.png" alt="Broderie"></a>
@@ -163,7 +174,7 @@
                 </div>
                 <h2 class="card-image-title">Broderie Numérique</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="100">
                 <a href="CNC.html"><img src="Brother.png" alt="CNC"></a>
                 <div class="overlay">
@@ -172,7 +183,7 @@
                 </div>
                 <h2 class="card-image-title">Services CNC</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="200">
                 <a href="laser.html"><img src="mini kits.png" alt="Laser"></a>
                 <div class="overlay">
@@ -181,7 +192,7 @@
                 </div>
                 <h2 class="card-image-title">Découpe Laser</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="300">
                 <a href="#"><img src="kits Arduino mega.png" alt="Impression 3D"></a>
                 <div class="overlay">
@@ -192,11 +203,11 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Video Section 2 -->
     <section class="video-section">
         <video autoplay muted loop>
-            <source src="vi2.mp4" type="video/mp4">
+            <source src="{% static 'AntaBackEnd/videos/vi2.mp4' %}" type="video/mp4">
         </video>
         <div class="video-overlay">
             <h2 data-aos="fade-up">EXPERTISE TECHNIQUE</h2>
@@ -204,13 +215,13 @@
             <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Demander un devis</button>
         </div>
     </section>
-    
+
     <!-- Formations Section -->
-    <div class="container py-5 formations-section">
+    <div class="container py-5 formations-section" id="formations-section">
         <div class="section-title" data-aos="fade-up">
             <h1>NOS FORMATIONS</h1>
         </div>
-        
+
         <div class="grid">
             <div class="card" data-aos="fade-up">
                 <img src="kits Arduino mega.png" alt="Formation Arduino">
@@ -220,7 +231,7 @@
                 </div>
                 <h2 class="card-image-title">Arduino & IoT</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="100">
                 <img src="Brother.png" alt="Formation CNC">
                 <div class="overlay">
@@ -229,7 +240,7 @@
                 </div>
                 <h2 class="card-image-title">Usinage CNC</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="200">
                 <img src="mini kits.png" alt="Formation Laser">
                 <div class="overlay">
@@ -240,14 +251,14 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Testimonials Section -->
-    <section class="testimonials">
+    <section class="testimonials" id="testimonials-Section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
                 <h1>TÉMOIGNAGES</h1>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-4 mb-4" data-aos="fade-up">
                     <div class="testimonial-card">
@@ -261,7 +272,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="testimonial-card">
                         <p class="testimonial-text">Grâce à leur formation Arduino, nous avons pu développer un système d'irrigation intelligent pour notre coopérative agricole. Résultats impressionnants!</p>
@@ -274,7 +285,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="testimonial-card">
                         <p class="testimonial-text">La découpe laser nous a permis de créer des produits uniques pour notre boutique d'artisanat. Qualité et précision au rendez-vous.</p>
@@ -290,13 +301,13 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Projects Section -->
-    <div class="container py-5">
+    <div class="container py-5" id="projects-section">
         <div class="section-title" data-aos="fade-up">
             <h1>PROJETS & INITIATIVES</h1>
         </div>
-        
+
         <div class="grid">
             <div class="card" data-aos="fade-up">
                 <img src="kits Arduino mega.png" alt="Projet Education">
@@ -306,7 +317,7 @@
                 </div>
                 <h2 class="card-image-title">Fablab Écoles</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="100">
                 <img src="Brother.png" alt="Projet Entrepreneuriat">
                 <div class="overlay">
@@ -315,7 +326,7 @@
                 </div>
                 <h2 class="card-image-title">Startup Lab</h2>
             </div>
-            
+
             <div class="card" data-aos="fade-up" data-aos-delay="200">
                 <img src="mini kits.png" alt="Projet Communautaire">
                 <div class="overlay">
@@ -326,13 +337,13 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Newsletter Section -->
     <section class="newsletter">
         <div class="container">
             <h2 data-aos="fade-up">ABONNEZ-VOUS À NOTRE NEWSLETTER</h2>
             <p data-aos="fade-up" data-aos-delay="100">Recevez les dernières actualités, promotions et conseils techniques directement dans votre boîte mail.</p>
-            
+
             <form class="newsletter-form" data-aos="fade-up" data-aos-delay="200">
                 <div class="input-group">
                     <input type="email" class="form-control" placeholder="Votre adresse email" required>
@@ -342,23 +353,23 @@
         </div>
     </section>
 
-    {% include 'AntaBackEnd/footer.html' %}
- 
-    
+    <!-- Footer -->
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+
     <!-- Back to Top Button -->
     <div class="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </div>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- AOS (Animate On Scroll) -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- Font Awesome -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    
+
+    <!-- Font Awesome
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>-->
+
     <script>
         // Initialize AOS
         AOS.init({
@@ -366,10 +377,10 @@
             easing: 'ease-in-out',
             once: true
         });
-        
+
         // Back to Top Button
         const backToTopButton = document.querySelector('.back-to-top');
-        
+
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 backToTopButton.classList.add('active');
@@ -377,24 +388,24 @@
                 backToTopButton.classList.remove('active');
             }
         });
-        
+
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-        
+
         // Cart Counter Animation
         const cartCount = document.querySelector('.cart-count');
         let count = 0;
-        
+
         // Simulate adding items to cart (for demo)
         setInterval(() => {
             if (count < 5) {
                 count++;
                 cartCount.setAttribute('data-count', count);
-                
+
                 // Add animation
                 cartCount.classList.add('animate__animated', 'animate__bounceIn');
                 setTimeout(() => {
@@ -402,72 +413,34 @@
                 }, 1000);
             }
         }, 5000);
-        
+
         // Dropdown menu animation
         const dropdowns = document.querySelectorAll('.dropdown');
-        
+
         dropdowns.forEach(dropdown => {
             dropdown.addEventListener('mouseenter', () => {
                 const menu = dropdown.querySelector('.dropdown-menu');
                 menu.style.display = 'block';
                 menu.classList.add('animate__animated', 'animate__fadeIn');
             });
-            
+
             dropdown.addEventListener('mouseleave', () => {
                 const menu = dropdown.querySelector('.dropdown-menu');
                 menu.style.display = 'none';
                 menu.classList.remove('animate__animated', 'animate__fadeIn');
             });
         });
-        
+
         // Search bar focus effect
         const searchInput = document.querySelector('.search-bar input');
-        
+
         searchInput.addEventListener('focus', () => {
             searchInput.parentElement.classList.add('animate__animated', 'animate__pulse');
         });
-        
+
         searchInput.addEventListener('blur', () => {
             searchInput.parentElement.classList.remove('animate__animated', 'animate__pulse');
         });
     </script>
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-</script>
 </body>
 </html>

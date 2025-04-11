@@ -1,0 +1,60 @@
+{% load static %}
+
+{% block header %}
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="container d-flex flex-wrap justify-content-center justify-content-md-between">
+        <span><a href="{% url 'location' %}"><i class="fas fa-map-marker-alt me-2"></i> LOCALISATION</a></span>
+        <span><i class="fas fa-truck me-2"></i> Livraison Partout au Sénégal</span>
+        <span><i class="far fa-clock me-2"></i> 08:00 - 17:00</span>
+        <span><i class="fas fa-phone me-2"></i> (+221) 77 077 18 32</span>
+        <span><a href="https://wa.me/+221770771832" target="_blank"><i class="fab fa-whatsapp me-2"></i> WHATSAPP</a></span>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav>
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+        <div class="logo animate__animated animate__fadeInLeft d-flex align-items-center">
+            <a href="{% url 'home' %}"><img src="{% static 'AntaBackend/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3"></a>
+            <span class="nav-brand">LINGUERE FABLAB</span>
+        </div>
+
+        <div class="search-bar animate__animated animate__zoomIn">
+            <input type="text" placeholder="Rechercher produits...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="icons d-flex align-items-center">
+            <span class="me-3"><i class="far fa-heart"></i></span>
+            <span class="me-3"><i class="far fa-user"></i></span>
+            <span class="cart-count" data-count="0"><i class="fas fa-shopping-cart"></i> <span
+                    class="d-none d-md-inline">0 CFA</span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Navigation -->
+<div class="nav-bar">
+    <div class="container d-flex flex-wrap justify-content-center">
+        <a href="{% url 'home' %}"><i class="fas fa-home me-2"></i> ACCUEIL</a>
+        <div class="dropdown">
+            <a href="#"><i class="fas fa-list me-2"></i> CATALOGUE <i class="fas fa-chevron-down ms-1"></i></a>
+            <div class="dropdown-menu">
+                <a href="{% url 'shop-arduino' %}"><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</a>
+                <a href="{% url 'shop-machine' %}"><i class="fas fa-robot me-2"></i> Machines Numériques</a>
+                <a href="{% url 'shop-installations' %}"><i class="fas fa-tools me-2"></i> Installations Fablab</a>
+                <a href="{% url 'services-broderie' %}"><i class="fas fa-tshirt me-2"></i> Broderie numérique</a>
+                <a href="{% url 'services-cnc' %}"><i class="fas fa-cogs me-2"></i> Services CNC</a>
+                <a href="{% url 'services-laser' %}"><i class="fas fa-cut me-2"></i> Découpe laser</a>
+                <a href="boutique"><i class="fas fa-laptop-code me-2"></i> Logiciels</a>
+                <a href="boutique"><i class="fas fa-plug me-2"></i> Accessoires</a>
+            </div>
+        </div>
+        <a href="#"><i class="fas fa-certificate me-2"></i> NOUVEAUTÉS</a>
+        <a href="{% url 'about' %}" style="color: rgb(255, 68, 0);"><i class="fas fa-info-circle me-2"></i> À PROPOS</a>
+        <a href="#con"><i class="fas fa-envelope me-2"></i> CONTACT</a>
+    </div>
+</div>
+
+{% endblock %}
