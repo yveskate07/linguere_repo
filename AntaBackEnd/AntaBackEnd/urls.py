@@ -14,9 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from AntaBackEnd import views
+from AntaBackEnd import views, settings
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -26,4 +27,8 @@ urlpatterns = [
     path('shop/', include("Shop.urls")),
     path('services/', include("Services.urls")),
     path('activities/', include("Activities.urls")),
+    path('formations/',include('Formations.urls')),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

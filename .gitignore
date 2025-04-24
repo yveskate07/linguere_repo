@@ -2,3 +2,15 @@
 /shelf/
 /workspace.xml
 /.idea/
+__pycache__
+AntaBackEnd/Activities/__pycache__
+AntaBackEnd/Activities/migrations/__pycache__
+AntaBackEnd/AntaBackEnd/__pycache__
+AntaBackEnd/Formations/__pycache__
+AntaBackEnd/Formations/migrations/__pycache__
+AntaBackEnd/Services/__pycache__
+AntaBackEnd/Services/migrations/__pycache__
+AntaBackEnd/Shop/__pycache__
+AntaBackEnd/Shop/migrations/__pycache__
+AntaBackEnd/Users/__pycache__
+AntaBackEnd/Users/migrations/__pycache__
