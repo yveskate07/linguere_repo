@@ -17,8 +17,6 @@ class Formations(models.Model):
     hours_per_week = models.IntegerField()
     availability = models.CharField(choices=AVAILABILITY, max_length=30)
 
-    # doit etre liée à des témoignages
-
 class Module(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
