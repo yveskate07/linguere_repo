@@ -1,13 +1,12 @@
 from django.urls import path
 
-from Formations.views import broderie_num, laser, fraiseuse_num , impression_3d, impression_num
+from Formations.views import returnBrochure, SigningUp, userGetInTouch, formationView
 
 app_name = "formations"
 
 urlpatterns = [
-    path('broderie_num/', broderie_num, name='broderie_num'),
-    path('laser/', laser, name='laser'),
-    path('fraiseuse_num/', fraiseuse_num, name='fraiseuse_num'),
-    path('impression_3d/', impression_3d, name='impression_3d'),
-    path('impression_num/', impression_num, name='impression_num'),
+    path('<str:formation_name>/',formationView, name="formationView"),
+    path('get-brochure/<str:formation_name>/', returnBrochure, name='get-brochure'),
+    path('sign-up/<str:formation_name>/',SigningUp, name="signup"),
+    path('get-in-touch/<str:formation_name>/', userGetInTouch, name="get-in-touch")
 ]

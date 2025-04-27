@@ -632,63 +632,48 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:signup' formation_name=slug %}" >
+            {% csrf_token %}
+
+            <input type="hidden" value="{{ id_formation }}" name="id_formation_inscription" id="id_formation_inscription">
             <!-- Nom complet -->
             <div>
                 <label for="inscription-name" class="block text-sm font-medium text-gray-700">Nom complet</label>
-                <input type="text" id="inscription-name" name="inscription-name"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre nom complet" required>
+                {{ formSignedUpUser.name }}
             </div>
 
             <!-- Adresse e-mail -->
             <div>
                 <label for="inscription-email" class="block text-sm font-medium text-gray-700">Adresse e-mail</label>
-                <input type="email" id="inscription-email" name="inscription-email"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre adresse e-mail" required>
+                {{ formSignedUpUser.email }}
             </div>
 
             <!-- Numéro de téléphone -->
             <div>
                 <label for="inscription-phone" class="block text-sm font-medium text-gray-700">Numéro de
                     téléphone</label>
-                <input type="tel" id="inscription-phone" name="inscription-phone"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre numéro de téléphone" required>
+                {{ formSignedUpUser.tel_number }}
             </div>
 
             <!-- Méthode de formation -->
             <div>
                 <label for="inscription-method" class="block text-sm font-medium text-gray-700">Méthode de
                     formation</label>
-                <select id="inscription-method" name="inscription-method"
-                        class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="en-ligne">En ligne</option>
-                    <option value="presentiel">Présentiel</option>
-                    <option value="hybride">Hybride</option>
-                </select>
+                {{ formSignedUpUser.formation_method }}
             </div>
 
             <!-- Session de formation -->
             <div>
                 <label for="inscription-session" class="block text-sm font-medium text-gray-700">Session
                     souhaitée</label>
-                <select id="inscription-session" name="inscription-session"
-                        class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="matin">Matin (9h-12h)</option>
-                    <option value="apres-midi">Après-midi (14h-17h)</option>
-                    <option value="soir">Soir (18h-21h)</option>
-                </select>
+                {{ formSignedUpUser.session }}
             </div>
 
             <!-- Message -->
             <div>
                 <label for="inscription-message" class="block text-sm font-medium text-gray-700">Message
                     (facultatif)</label>
-                <textarea id="inscription-message" name="inscription-message" rows="3"
-                          class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                          placeholder="Avez-vous des questions ou des besoins spécifiques ?"></textarea>
+                {{ formSignedUpUser.message }}
             </div>
 
             <!-- Bouton d'envoi -->
@@ -720,40 +705,32 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:get-brochure' formation_name=slug %}">
+
+            {% csrf_token %}
+            <input type="hidden" value="{{ id_formation }}" name="id_formation_brochure" id="id_formation_brochure">
             <!-- Nom complet -->
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Nom complet</label>
-                <input type="text" id="name" name="name"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre nom complet" required>
+                {{ formBrochure.name }}
             </div>
 
             <!-- Adresse e-mail -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Adresse e-mail</label>
-                <input type="email" id="email" name="email"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre adresse e-mail" required>
+                {{ formBrochure.email }}
             </div>
 
             <!-- Numéro de téléphone -->
             <div>
                 <label for="phone" class="block text-sm font-medium text-gray-700">Numéro de téléphone</label>
-                <input type="tel" id="phone" name="phone"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre numéro de téléphone" required>
+                {{ formBrochure.tel_number }}
             </div>
 
             <!-- Méthode de formation -->
             <div>
                 <label for="method" class="block text-sm font-medium text-gray-700">Méthode de formation</label>
-                <select id="method" name="method"
-                        class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="en-ligne">En ligne</option>
-                    <option value="presentiel">Présentiel</option>
-                    <option value="hybride">Hybride</option>
-                </select>
+                {{ formBrochure.method }}
             </div>
 
             <!-- Message -->
@@ -793,37 +770,34 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:get-in-touch' formation_name=slug %}" >
+
+            {% csrf_token %}
+
+            <input type="hidden" value="{{ id_formation }}" name="id_formation_contact" id="id_formation_contact">
+
             <!-- Nom complet -->
             <div>
                 <label for="contact-name" class="block text-sm font-medium text-gray-700">Nom complet</label>
-                <input type="text" id="contact-name" name="contact-name"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre nom complet" required>
+                {{ formRequest.name }}
             </div>
 
             <!-- Adresse e-mail -->
             <div>
                 <label for="contact-email" class="block text-sm font-medium text-gray-700">Adresse e-mail</label>
-                <input type="email" id="contact-email" name="contact-email"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre adresse e-mail" required>
+                {{ formRequest.email }}
             </div>
 
             <!-- Numéro de téléphone -->
             <div>
                 <label for="contact-phone" class="block text-sm font-medium text-gray-700">Numéro de téléphone</label>
-                <input type="tel" id="contact-phone" name="contact-phone"
-                       class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Entrez votre numéro de téléphone" required>
+                {{ formRequest.tel_number }}
             </div>
 
             <!-- Message -->
             <div>
                 <label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label>
-                <textarea id="contact-message" name="contact-message" rows="4"
-                          class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500"
-                          placeholder="Expliquez votre demande" required></textarea>
+                {{ formRequest.message }}
             </div>
 
             <!-- Bouton d'envoi -->
