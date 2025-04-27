@@ -40,7 +40,7 @@ class SignedUpUserForm(forms.ModelForm):
 class BrochureForm(forms.ModelForm):
     class Meta:
         model = UserBrochure
-        fields = ['name', 'email', 'tel_number', 'method']
+        fields = ['name', 'email', 'tel_number', 'method', 'message']
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -57,7 +57,13 @@ class BrochureForm(forms.ModelForm):
 
             'method': forms.Select(attrs={
                 'class': 'w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500',
-                'id': "method"})}
+                'id': "method"}),
+
+            'message': forms.Textarea(attrs={
+                'class': 'w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500',
+                'id': "message", 'rows': 3,
+                'placeholder': 'Avez-vous des questions ou des besoins spécifiques ?'})
+        }
 
 
 class RequestForm(forms.ModelForm):

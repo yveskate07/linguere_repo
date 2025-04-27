@@ -54,7 +54,9 @@ def SigningUp(request, formation_name):
 
 def returnBrochure(request, formation_name):
     if request.method == "POST":
-        form = BrochureForm({'name':request.POST.get('name'), 'email':request.POST.get('email'), 'tel_number':request.POST.get('tel_number'), 'method':request.POST.get('method')})
+        form = BrochureForm({'name':request.POST.get('name'), 'email':request.POST.get('email'),
+                             'tel_number':request.POST.get('tel_number'), 'method':request.POST.get('method'),
+                             'message':request.POST.get('message')})
         if form.is_valid():
             user = form.save(commit=False)
             user.formation = Formations.objects.get(id=request.POST.get('id_formation_brochure'))
@@ -70,8 +72,8 @@ def returnBrochure(request, formation_name):
 
 def userGetInTouch(request, formation_name):
     if request.method == "POST":
-        form = RequestForm({'name': request.POST.get('contact-name'), 'email': request.POST.get('contact-email'),
-                            'tel_number': request.POST.get('contact-tel_number'), 'method': request.POST.get('contact-method')})
+        form = RequestForm({'name': request.POST.get('name'), 'email': request.POST.get('email'),
+                            'tel_number': request.POST.get('tel_number'), 'message': request.POST.get('message')})
 
         if form.is_valid():
             user = form.save(commit=False)
