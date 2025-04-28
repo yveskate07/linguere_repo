@@ -36,6 +36,27 @@ class SignedUpUserForm(forms.ModelForm):
                 'placeholder': 'Avez-vous des questions ou des besoins spécifiques ?'}),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        email = cleaned_data.get('email')
+
+        if name:
+            cleaned_data['name'] = name.strip()
+        if email:
+            cleaned_data['email'] = email.strip()
+
+        if cleaned_data.get('name') and cleaned_data.get('email'):
+            if SignedUpUser.objects.filter(
+                name__iexact=cleaned_data['name'],
+                email__iexact=cleaned_data['email']
+            ).exists():
+                raise forms.ValidationError(
+                    "Un utilisateur avec ce nom et cet email est déjà inscrit."
+                )
+
+        return cleaned_data
+
 
 class BrochureForm(forms.ModelForm):
     class Meta:

@@ -11,12 +11,12 @@ class Formations(models.Model):
         ("both", "Hybride")
     ]
 
-    name = models.CharField(max_length=30)
-    duration = models.DurationField() # duree
+    name = models.CharField(max_length=30, verbose_name='Nom')
+    duration = models.DurationField(verbose_name='Durée') # duree
     motiv = models.TextField() # texte de motivation
-    price = models.IntegerField(default=0, null=True)
-    hours_per_week = models.IntegerField(default=0,blank=True, null=True)
-    availability = models.CharField(choices=AVAILABILITY, max_length=30, default='both',blank=True, null=True)
+    price = models.IntegerField(default=0, null=True, verbose_name='Prix')
+    hours_per_week = models.IntegerField(default=0,blank=True, null=True, verbose_name="Nombre d'heures par semaines")
+    availability = models.CharField(choices=AVAILABILITY, max_length=30, default='both',blank=True, null=True, verbose_name='Disponibilité')
     slug = models.SlugField(unique=True, blank=True, null=True)
 
     class Meta:
@@ -30,11 +30,19 @@ class Formations(models.Model):
             self.slug = slugify(self.name)
         super().save(*args,**kwargs)
 
+    def description(self):
+        return "Table des Formations"
 
+    description.short_description = "Description"
 
 class Module(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, verbose_name="Nom du module")
+
+    def description(self):
+        return f"Module de la Formation {self.formation}"
+
+    description.short_description = "Description"
 
 class Prerequisites(models.Model): # prerequis pour une formation
 
@@ -54,6 +62,11 @@ class Prerequisites(models.Model): # prerequis pour une formation
     def __str__(self):
         return self.formation + ' - ' + self.name
 
+    def description(self):
+        return "Préréquis des Formations"
+
+    description.short_description = "Description"
+
 class SkillGained(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
@@ -65,10 +78,16 @@ class SkillGained(models.Model):
     def __str__(self):
         return self.formation + ' - ' + self.name
 
+    def description(self):
+        return "Compétences gagnées des Formations"
+
+    description.short_description = "Description"
+
 class Testimony(models.Model):
-    username = models.CharField(max_length=30)
-    status = models.CharField(max_length=30)
-    comment = models.TextField()
+
+    username = models.CharField(max_length=30,verbose_name="Nom d'utiisateur")
+    status = models.CharField(max_length=30,verbose_name="Statut")
+    comment = models.TextField(verbose_name="Commentaire")
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
 
     class Meta:
@@ -76,6 +95,11 @@ class Testimony(models.Model):
 
     def __str__(self):
         return self.username + ' - ' + self.formation
+
+    def description(self):
+        return "Témoignages des Formations"
+
+    description.short_description = "Description"
 
 class SignedUpUser(models.Model):
 
@@ -91,10 +115,10 @@ class SignedUpUser(models.Model):
         ('soir', 'Soir (18h-21h)')
     ]
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name="Nom")
     email = models.EmailField()
-    tel_number = models.CharField(max_length=20)
-    formation_method = models.CharField(choices=FORMATION_METHOD, max_length=30, default='en-ligne')
+    tel_number = models.CharField(max_length=20, verbose_name="Téléphone")
+    formation_method = models.CharField(choices=FORMATION_METHOD, max_length=30, default='en-ligne', verbose_name="Méthode de formation")
     session = models.CharField(choices=SESSIONS, max_length=30, default='matin')
     message = models.TextField(blank=True)
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
@@ -104,6 +128,11 @@ class SignedUpUser(models.Model):
 
     def __str__(self):
         return self.name
+
+    def description(self):
+        return f"Utilisateur inscrit à la formation {self.formation}"
+
+    description.short_description = "Description"
     
 
 class UserBrochure(models.Model):
@@ -114,12 +143,12 @@ class UserBrochure(models.Model):
         ("hybride", "Hybride")
     ]
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Nom')
     email = models.EmailField()
-    tel_number = models.CharField(max_length=20)
+    tel_number = models.CharField(max_length=20, verbose_name='Téléphone')
     message = models.TextField(blank=True, null=True)
-    method = models.CharField(max_length=20, choices=METHOD, default='en-ligne')
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    method = models.CharField(max_length=20, choices=METHOD, default='en-ligne', verbose_name='Méthode de formation')
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
 
     class Meta:
         verbose_name = "Utilisateurs ayant demandé brochure"
@@ -127,16 +156,26 @@ class UserBrochure(models.Model):
     def __str__(self):
         return self.name
 
+    def description(self):
+        return f"Utilisateurs ayant telechargé brochures pour la formation {self.formation}"
+
+    description.short_description = "Description"
+
 class UserRequest(models.Model):
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Nom')
     email = models.EmailField()
-    tel_number = models.CharField(max_length=20)
+    tel_number = models.CharField(max_length=20, verbose_name='Téléphone')
     message = models.TextField(blank=True)
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
 
     class Meta:
         verbose_name = "Utilisateurs ayant prit renseignement"
 
     def __str__(self):
         return self.name
+
+    def description(self):
+        return f"Utilisateur ayant prit renseignement pour la formation {self.formation}"
+
+    description.short_description = "Description"
