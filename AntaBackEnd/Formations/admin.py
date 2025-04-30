@@ -12,6 +12,8 @@ class FormationAdmin(admin.ModelAdmin):
     fields = ('name','motiv','duration', 'description','image','determinant','availability','hours_per_week',)
     readonly_fields = ('description',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability',)
+    search_fields = ('name',)
+    list_filter = ('availability',)
 
     def get_duration_display_fr(self, obj):
         return obj.get_duration_display_fr()
@@ -30,6 +32,8 @@ class FormationAdmin(admin.ModelAdmin):
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     fields = ('name','formation', 'description',)
+    search_fields = ('name',)
+    list_filter = ('formation',)
     list_display = ('name', 'formation',)
     readonly_fields = ('description',)
 
@@ -43,6 +47,8 @@ class ModuleAdmin(admin.ModelAdmin):
 class PrerequisitesAdmin(admin.ModelAdmin):
     fields = ('name','level','image','formation',)
     list_display = ('name', 'level','formation',)
+    search_fields = ('name',)
+    list_filter = ('level','formation',)
 
     """def has_add_permission(self, request):
         return False"""
@@ -53,6 +59,7 @@ class PrerequisitesAdmin(admin.ModelAdmin):
 @admin.register(SkillGained)
 class SkillGainedAdmin(admin.ModelAdmin):
     fields = ('name','description_skill','formation',)
+    list_filter = ('formation',)
     list_display = ('name','description_skill','formation',)
 
     """def has_add_permission(self, request):
@@ -64,6 +71,7 @@ class SkillGainedAdmin(admin.ModelAdmin):
 @admin.register(MotivPoints)
 class MotivPointsAdmin(admin.ModelAdmin):
     fields = ('name','description','formation',)
+    list_filter = ('formation',)
     list_display = ('name', 'description','formation',)
 
     """def has_add_permission(self, request):
@@ -75,6 +83,7 @@ class MotivPointsAdmin(admin.ModelAdmin):
 @admin.register(Advantages)
 class AdvantagesAdmin(admin.ModelAdmin):
     fields = ('name', 'description','formation',)
+    list_filter = ('formation',)
     list_display = ('name', 'description','formation',)
 
     """def has_add_permission(self, request):
@@ -94,18 +103,22 @@ class TestimonyAdmin(admin.ModelAdmin):
 
 @admin.register(SignedUpUser)
 class SignedUpUserAdmin(admin.ModelAdmin):
-    fields = ('name','email','tel_number','formation_method','session','formation', 'description',)
+    fields = ('name','email','tel_number','availability','session','formation', 'description',)
+    list_filter = ('formation','session','availability',)
+    search_fields = ('name',)
     readonly_fields = ('description',)
 
-    list_display = ('name','email','tel_number','formation_method','session','formation')
+    list_display = ('name','email','tel_number','availability','session','formation')
 
     """def has_add_permission(self, request):
         return False"""
 
 @admin.register(UserBrochure)
 class UserBrochureAdmin(admin.ModelAdmin):
-    fields = ('name','email','method','formation', 'description',)
-    list_display = ('name','email','method','formation',)
+    fields = ('name','email','availability','formation', 'description',)
+    list_display = ('name','email','availability','formation',)
+    search_fields = ('name',)
+    list_filter = ('availability','formation',)
     readonly_fields = ('description',)
 
     """def has_add_permission(self, request):
@@ -115,6 +128,8 @@ class UserBrochureAdmin(admin.ModelAdmin):
 class UserRequestAdmin(admin.ModelAdmin):
     fields = ('name','email','formation', 'description',)
     list_display = ('name', 'email', 'formation',)
+    search_fields = ('name',)
+    list_filter = ('formation',)
     readonly_fields = ('description',)
 
     """def has_add_permission(self, request):

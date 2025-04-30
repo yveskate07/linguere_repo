@@ -5,7 +5,7 @@ from .models import SignedUpUser, UserBrochure, UserRequest
 class SignedUpUserForm(forms.ModelForm):
     class Meta:
         model = SignedUpUser
-        fields = ['name', 'email', 'tel_number', 'formation_method', 'session', 'message']
+        fields = ['name', 'email', 'tel_number', 'availability', 'session', 'message']
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -22,7 +22,7 @@ class SignedUpUserForm(forms.ModelForm):
                 'placeholder': 'Entrez votre numéro de téléphone', 'id': "inscription-phone",
         }),
 
-            'formation_method': forms.Select(attrs={
+            'availability': forms.Select(attrs={
                 'class': 'w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500',
                 'id': "inscription-method"}),
 
@@ -61,7 +61,7 @@ class SignedUpUserForm(forms.ModelForm):
 class BrochureForm(forms.ModelForm):
     class Meta:
         model = UserBrochure
-        fields = ['name', 'email', 'tel_number', 'method', 'message']
+        fields = ['name', 'email', 'tel_number', 'availability', 'message']
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -76,7 +76,7 @@ class BrochureForm(forms.ModelForm):
                 'class': 'w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500',
                 'placeholder': 'Entrez votre numéro de téléphone', 'id': "phone"}),
 
-            'method': forms.Select(attrs={
+            'availability': forms.Select(attrs={
                 'class': 'w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500',
                 'id': "method"}),
 

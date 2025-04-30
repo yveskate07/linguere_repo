@@ -7,9 +7,9 @@ from django.utils.text import slugify
 class Formations(models.Model):
 
     AVAILABILITY = [
-        ("En ligne","online"),
-        ("En présentiel","in person"),
-        ("En ligne / Présentiel", "both")
+        ("En ligne","En ligne"),
+        ("En présentiel","En présentiel"),
+        ("En ligne / Présentiel", "En ligne / Présentiel")
     ]
 
     name = models.CharField(max_length=30, verbose_name='Nom')
@@ -24,6 +24,7 @@ class Formations(models.Model):
 
     class Meta:
         verbose_name = 'Formation'
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -72,12 +73,16 @@ class Module(models.Model):
 
     description.short_description = "Description"
 
+    class Meta:
+        verbose_name = "Modules des formations"
+        ordering = ["name"]
+
 class Prerequisites(models.Model): # prerequis pour une formation
 
     LEVELS = [
-        ('1', 'Débutant'),
-        ('2', 'Amateur'),
-        ('3', 'Expert')
+        ('Débutant', 'Débutant'),
+        ('Amateur', 'Amateur'),
+        ('Expert', 'Expert')
     ]
 
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
@@ -89,6 +94,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
 
     class Meta:
         verbose_name = "Préréquis par formation"
+        ordering = ["name"]
 
     def __str__(self):
         return self.formation.name + ' - ' + self.name
@@ -105,6 +111,7 @@ class SkillGained(models.Model):
 
     class Meta:
         verbose_name = "Compétences acquise par formation"
+        ordering = ["name"]
 
     def __str__(self):
         return self.formation.name + ' - ' + self.name
@@ -120,7 +127,8 @@ class MotivPoints(models.Model):
     description = models.TextField()
 
     class Meta:
-        verbose_name = "Motivations"
+        verbose_name = "Motivation"
+        ordering = ["name"]
 
     def __str__(self):
         return 'Pourquoi apprendre '+ self.formation.determinant + ' ' +self.formation.name
@@ -132,6 +140,7 @@ class Advantages(models.Model):
 
     class Meta:
         verbose_name = "Avantages de nos formations"
+        ordering = ["name"]
 
     def __str__(self):
         return "Avantages de la formation "+self.formation.name
@@ -145,6 +154,7 @@ class Testimony(models.Model):
 
     class Meta:
         verbose_name = "Témoignage"
+        ordering = ["username"]
 
     def __str__(self):
         return self.username + ' - ' + self.formation
@@ -156,28 +166,29 @@ class Testimony(models.Model):
 
 class SignedUpUser(models.Model):
 
-    FORMATION_METHOD = [
-        ("en-ligne", "En ligne"),
-        ("presentiel", "En présentiel"),
-        ("hybride", "Hybride")
+    AVAILABILITY = [
+        ("En ligne", "En ligne"),
+        ("En présentiel", "En présentiel"),
+        ("En ligne / Présentiel", "En ligne / Présentiel")
     ]
 
     SESSIONS = [
-        ('matin', 'Matin (9h-12h)'),
-        ('apres-midi', 'Après-midi (14h-17h)'),
-        ('soir', 'Soir (18h-21h)')
+        ('Matin (9h-12h)', 'Matin (9h-12h)'),
+        ('Après-midi (14h-17h)', 'Après-midi (14h-17h)'),
+        ('Soir (18h-21h)', 'Soir (18h-21h)')
     ]
 
     name = models.CharField(max_length=50, verbose_name="Nom")
     email = models.EmailField()
     tel_number = models.CharField(max_length=20, verbose_name="Téléphone")
-    formation_method = models.CharField(choices=FORMATION_METHOD, max_length=30, default='en-ligne', verbose_name="Méthode de formation")
-    session = models.CharField(choices=SESSIONS, max_length=30, default='matin')
+    availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel', verbose_name="Disponibilité")
+    session = models.CharField(choices=SESSIONS, max_length=30, default='Matin (9h-12h)')
     message = models.TextField(blank=True)
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Personnes Inscrite"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -189,21 +200,22 @@ class SignedUpUser(models.Model):
 
 class UserBrochure(models.Model):
 
-    METHOD = [
-        ("en-ligne", "En ligne"),
-        ("presentiel", "En présentiel"),
-        ("hybride", "Hybride")
+    AVAILABILITY = [
+        ("En ligne", "En ligne"),
+        ("En présentiel", "En présentiel"),
+        ("En ligne / Présentiel", "En ligne / Présentiel")
     ]
 
     name = models.CharField(max_length=50, verbose_name='Nom')
     email = models.EmailField()
     tel_number = models.CharField(max_length=20, verbose_name='Téléphone')
     message = models.TextField(blank=True, null=True)
-    method = models.CharField(max_length=20, choices=METHOD, default='en-ligne', verbose_name='Méthode de formation')
+    availability = models.CharField(max_length=22, choices=AVAILABILITY, default='En ligne', verbose_name='Méthode de formation')
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
 
     class Meta:
         verbose_name = "Utilisateurs ayant demandé brochure"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -223,6 +235,7 @@ class UserRequest(models.Model):
 
     class Meta:
         verbose_name = "Utilisateurs ayant prit renseignement"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

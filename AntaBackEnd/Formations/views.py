@@ -70,7 +70,7 @@ def SigningUp(request, formation_name):
 def returnBrochure(request, formation_name):
     if request.method == "POST":
         form = BrochureForm({'name':request.POST.get('name'), 'email':request.POST.get('email'),
-                             'tel_number':request.POST.get('tel_number'), 'method':request.POST.get('method'),
+                             'tel_number':request.POST.get('tel_number'), 'availability':request.POST.get('availability'),
                              'message':request.POST.get('message')})
         if form.is_valid():
             user = form.save(commit=False)
