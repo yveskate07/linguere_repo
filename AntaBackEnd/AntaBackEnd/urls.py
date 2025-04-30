@@ -28,7 +28,4 @@ urlpatterns = [
     path('services/', include("Services.urls")),
     path('activities/', include("Activities.urls")),
     path('formations/',include('Formations.urls')),
-]
-
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

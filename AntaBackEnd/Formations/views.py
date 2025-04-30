@@ -2,39 +2,54 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from Formations.forms import SignedUpUserForm, BrochureForm, RequestForm
-from Formations.models import Formations
+from Formations.models import Formations, Module, Prerequisites, SkillGained, MotivPoints, Advantages
 
 
 # Create your views here.
 def formationView(request, formation_name):
 
-    broderie_num = Formations.objects.get(name="Broderie Numérique")
-    fraiseuse_num = Formations.objects.get(name="Fraiseuse Numérique (CNC)")
-    impression_3d = Formations.objects.get(name="Impression 3D")
-    impression_num = Formations.objects.get(name="Impression Numérique")
-    laser = Formations.objects.get(name="Découpe Laser")
+    formation = Formations.objects.get(slug=formation_name)
+    modules = Module.objects.filter(formation=formation.pk)
+    prerequisites = Prerequisites.objects.filter(formation=formation.pk)
+    gainedskills = SkillGained.objects.filter(formation=formation.pk)
+    motiv_points = MotivPoints.objects.filter(formation=formation.pk)
+    advantages = Advantages.objects.filter(formation=formation.pk)
 
-    FORMATIONS = {broderie_num.slug: 'Formations/broderie_num/index.html',
-                  fraiseuse_num.slug: 'Formations/fraiseuse_num/index.html',
-                  impression_3d.slug: 'Formations/impression_3d/index.html',
-                  impression_num.slug: 'Formations/impression_num/index.html',
-                  laser.slug: 'Formations/laser/index.html'}
 
-    template_name = FORMATIONS[formation_name]
+    f_name = formation.name
+    motiv = formation.motiv
+    price = formation.price
+    duration = int(formation.duration.total_seconds() // 3600)
+    nb_h_per_week = formation.hours_per_week
+    availability = formation.availability
 
-    formation = {broderie_num.slug: broderie_num,
-                  fraiseuse_num.slug: fraiseuse_num,
-                  impression_3d.slug: impression_3d,
-                  impression_num.slug: impression_num,
-                  laser.slug: laser}[formation_name]
+    det_plus_name = formation.determinant +' '+ formation.name
+    modules_ = [mod.name for mod in modules]
+    prerequisites_ = [(p.image.url,p.name, p.level) for p in prerequisites]
+    skillgained_ = [(s.name, s.description_skill) for s in gainedskills]
+    m_points = [(mp.name,mp.description) for mp in motiv_points]
+    advantages_ = [(a.name, a.description) for a in advantages]
 
     form1 = SignedUpUserForm()
     form2 = BrochureForm()
     form3 = RequestForm()
 
-    return render(request, template_name,
+    return render(request, 'Formations/index.html',
                       {'formSignedUpUser': form1, 'formBrochure': form2, 'formRequest': form3,
-                       'id_formation': formation.id,'slug':formation.slug})
+                       'formation_image_url':formation.image.url,
+                       'id_formation': formation.id,'slug':formation.slug,
+                       'f_name':f_name,
+                       'motiv':motiv,
+                       'price':price,
+                       'duration':duration,
+                       'nb_h_per_week':nb_h_per_week,
+                       'availability':availability,
+                       'det_plus_name':det_plus_name,
+                       'modules_':modules_,
+                       'prerequisites_':prerequisites_,
+                       'skillgained_':skillgained_,
+                       'm_points':m_points,
+                       'advantages_':advantages_})
 
 
 def SigningUp(request, formation_name):
