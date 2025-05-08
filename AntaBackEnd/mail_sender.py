@@ -1,7 +1,8 @@
 import smtplib
 from email.message import EmailMessage
 import ssl
-
+from pathlib import Path
+import AntaBackEnd.settings as settings
 from dotenv import load_dotenv
 import os
 
@@ -12,7 +13,7 @@ sender_email = os.environ["SENDER"]
 password = os.environ["PASSWORD"]  # ATTENTION : utilisez un mot de passe d'application ou une méthode plus sécurisée
 
 # une fonction qui envoie un mail a l'utilisateur qui a demandé la brochure
-def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason='téléchargeant une brochure'):
+def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason='téléchargeant une brochure', msg_=None):
     msg = EmailMessage()
     msg["From"] = sender_email
     msg["To"] = receiver_email
@@ -31,6 +32,8 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
     """
     msg.set_content(corps)
 
+    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name
+
     # Lecture et ajout du fichier PDF
     with open(chemin_pdf, 'rb') as f:
         pdf_data = f.read()
@@ -42,10 +45,12 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
         serveur.login(sender_email, password)
         serveur.send_message(msg)
 
-        send_alert_for_request(formation_name=formation_name, user=user, reason=reason)
+        send_alert_for_request(formation_name=formation_name, user=user, reason=reason, msg_=msg_)
 
 # une fonction qui envoie un mail a Linguere Fablab avec la requete de l'utilisateur voulant prendre contact
-def send_alert_for_request(formation_name:str,user:dict, reason=None):
+def send_alert_for_request(formation_name:str,user:dict, reason=None, msg_=None):
+
+    user_msg = f"Message: {user['message']}" if user['message'] else ""
 
     if not reason:
         msg = EmailMessage()
@@ -62,6 +67,8 @@ def send_alert_for_request(formation_name:str,user:dict, reason=None):
         Nom: {user['name']}
         Adresse mail: {user['e-mail']}
         Formation: {user['formation']}
+        
+        {user_msg}
     
         """
         msg.set_content(corps)
@@ -88,8 +95,11 @@ def send_alert_for_request(formation_name:str,user:dict, reason=None):
                 Nom: {user['name']}
                 Adresse mail: {user['e-mail']}
                 Formation: {user['formation']}
+                
+                {user_msg}
 
                 """
+        # {"Message: " + msg_ if msg_ else ''}
         msg.set_content(corps)
 
         # Envoi via SMTP sécurisé
@@ -107,6 +117,7 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
     msg["Subject"] = f"Nouvelle inscription pour {formation_name}"
 
     # Corps du message professionnel
+    user_msg = f"Message: {user['message']}" if user['message'] else ""
     corps = f"""\
         Bonjour,
 
@@ -115,6 +126,8 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
         Nom: {user['name']}
         Adresse mail: {user['e-mail']}
         Formation: {user['formation']}
+        
+        {user_msg}
 
         """
     msg.set_content(corps)

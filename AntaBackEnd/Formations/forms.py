@@ -51,9 +51,13 @@ class SignedUpUserForm(forms.ModelForm):
                 name__iexact=cleaned_data['name'],
                 email__iexact=cleaned_data['email']
             ).exists():
+                print("Un utilisateur avec ce nom et cet email est déjà inscrit.")
                 raise forms.ValidationError(
                     "Un utilisateur avec ce nom et cet email est déjà inscrit."
                 )
+
+            else:
+                print("Enregistrement d'un nouveau client")
 
         return cleaned_data
 

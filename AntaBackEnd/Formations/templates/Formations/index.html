@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
 
+    <!--<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>-->
 </head>
 <body>
 
@@ -502,7 +503,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:signup' formation_name=slug %}">
+        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
             {% csrf_token %}
 
             <input type="hidden" value="{{ id_formation }}" name="id_formation_inscription" id="id_formation_inscription">
@@ -574,7 +575,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:get-brochure' formation_name=slug %}" >
+        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
 
             {% csrf_token %}
             <input type="hidden" value="{{ id_formation }}" name="id_formation_brochure" id="id_formation_brochure">
@@ -637,7 +638,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="POST" action="{% url 'formations:get-in-touch' formation_name=slug %}">
+        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
             {% csrf_token %}
 
             <input type="hidden" value="{{ id_formation }}" name="id_formation_contact" id="id_formation_contact">
@@ -675,6 +676,18 @@
     </div>
 </div>
 
+<!-- Ajoute ce bloc HTML quelque part dans ton template, idéalement juste avant la balise </body> -->
+<div aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999;">
+    <div class="toast" id="successToast" data-delay="5000">
+        <div class="toast-header bg-success text-white">
+            <strong class="mr-auto">Félicitation</strong>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+        </div>
+    </div>
+</div>
+
 
 {% include 'AntaBackEnd/header_footer/footer.html' %}
 
@@ -697,6 +710,91 @@
             observer.observe(card);
         });
     });
+
+/* Redirection Django
+    $(document).on('submit', '#inscription-form', function(e){
+    e.preventDefault();
+    $.ajax({
+        type:'POST',
+        url: "{% url 'formations:signup' formation_name=slug %}",
+        data:{
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'id_formation_inscription': $('#id_formation_inscription').val(),
+            'name': $('#inscription-name').val(),
+            'email': $('#inscription-email').val(),
+            'tel_number': $('#inscription-phone').val(),
+            'availability': $('#inscription-method').val(),
+            'session': $('#inscription-session').val(),
+            'message': $('#inscription-message').val()
+        },
+        success: function(){
+            // fermeture du pop-up
+            $('#inscription-modal').hide();
+            // creation d'un pop-up de notification
+            $('#successToast').text('Vous êtes inscrit(e) à la formation !');
+
+            $('#successToast').toast('show');
+        },
+        error: function(){
+            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
+        }
+    })
+    })
+
+    $(document).on('submit', '#brochure-form', function(e){
+    e.preventDefault();
+    $.ajax({
+        type:'POST',
+        url: "{% url 'formations:get-brochure' formation_name=slug %}",
+        data:{
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'id_formation_brochure': $('#id_formation_brochure').val(),
+            'name': $('#name').val(),
+            'email': $('#email').val(),
+            'tel_number': $('#phone').val(),
+            'availability': $('#method').val(),
+            'message': $('#message').val()
+        },
+        success: function(){
+            // fermeture du pop-up
+            $('#modal-form').hide();
+            // creation d'un pop-up de notification
+            $('#successToast').text('La brochure a été envoyée à votre adresse e-mail !');
+
+            $('#successToast').toast('show');
+        },
+        error: function(){
+            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
+        }
+    })
+    })
+
+    $(document).on('submit', '#contact-form', function(e){
+    e.preventDefault();
+    $.ajax({
+        type:'POST',
+        url: "{% url 'formations:get-in-touch' formation_name=slug %}",
+        data:{
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'id_formation_contact': $('#id_formation_contact').val(),
+            'name': $('#contact-name').val(),
+            'email': $('#contact-email').val(),
+            'tel_number': $('#contact-phone').val(),
+            'message': $('#contact-message').val()
+        },
+        success: function(){
+            // fermeture du pop-up
+            $('#contact-modal').hide();
+            // creation d'un pop-up de notification
+            $('#successToast').text('Votre message a été envoyé avec succès !');
+
+            $('#successToast').toast('show');
+        },
+        error: function(){
+            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
+        }
+    })
+    })*/
 </script>
 
 
@@ -735,7 +833,7 @@
 
         closeInscriptionBtn.addEventListener('click', closeInscriptionModal);
         inscriptionModal.addEventListener('click', closeInscriptionModal);
-    });
+    })
 </script>
 
 <!-- telecharger brochure -->
@@ -772,7 +870,7 @@
 
         closeModalBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', closeModal);
-    });
+    })
 </script>
 
 
@@ -791,7 +889,7 @@
             observer.observe(card);
             card.style.setProperty('--animate-delay', `${index * 0.1}s`);
         });
-    });
+    })
 </script>
 
 <!-- contact -->
@@ -830,7 +928,7 @@
 
         closeContactBtn.addEventListener('click', closeContactModal);
         contactModal.addEventListener('click', closeContactModal);
-    });
+    })
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -887,6 +985,5 @@
     });
 </script>
 
-</div>
 </body>
 </html>
