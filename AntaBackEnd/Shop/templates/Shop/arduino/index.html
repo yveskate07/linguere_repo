@@ -18,6 +18,7 @@
     
     {% include 'AntaBackEnd/header.html' %}
 
+
     <!-- Confirmation Message -->
     <div id="confirmation-message" class="confirmation-message">
         <i class="fas fa-check-circle me-2"></i> Produit ajouté au panier!
@@ -79,19 +80,16 @@
                         <label for="in-stock">En stock</label>
                     </div>
                     <div class="filter-option">
-                        <input type="checkbox" id="low-stock">
+                        <input type="checkbox" id="low-stock" checked>
                         <label for="low-stock">Stock limité</label>
                     </div>
                     <div class="filter-option">
-                        <input type="checkbox" id="out-of-stock">
+                        <input type="checkbox" id="out-of-stock" checked>
                         <label for="out-of-stock">En rupture</label>
                     </div>
                 </div>
             </div>
-            
-            <button class="btn btn-primary w-100 mt-3">
-                <i class="fas fa-sync-alt me-2"></i> Appliquer les filtres
-            </button>
+
         </aside>
 
         <!-- Product Section -->
@@ -100,11 +98,9 @@
                 <h1><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</h1>
                 <div class="sort-options">
                     <select class="form-select">
-                        <option>Trier par : Pertinence</option>
+                        <option>croissance ou Decroissance</option>
                         <option>Prix croissant</option>
                         <option>Prix décroissant</option>
-                        <option>Nouveautés</option>
-                        <option>Meilleures ventes</option>
                     </select>
                 </div>
             </div>
@@ -124,7 +120,7 @@
                         <p class="product-description">Carte puissante avec plus d'entrées/sorties que l'Uno.</p>
                         <p class="product-price">15 000 CFA</p>
                         <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (50 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Arduino Méga', 15000, 'Kits Arduino')">
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Méga', 15000, 'Kits Arduino','Arduino mega.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -139,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                
+        
                 <!-- Product Card 2 -->
                 <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Kits Arduino">
                     <img src="Arduino uno.png" alt="Arduino Uno">
@@ -153,7 +149,7 @@
                         <p class="product-description">La carte Arduino la plus populaire pour les débutants.</p>
                         <p class="product-price">10 000 CFA</p>
                         <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (100 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Arduino Uno', 10000, 'Kits Arduino')">
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Uno', 10000, 'Kits Arduino','Arduino uno.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -183,7 +179,7 @@
                         <p class="product-description">Version compacte de l'Arduino pour les projets avec espace limité.</p>
                         <p class="product-price">8 000 CFA</p>
                         <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (30 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Arduino Nano', 8000, 'Kits Arduino')">
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Nano', 8000, 'Kits Arduino','Arduino nano.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -212,7 +208,7 @@
                         <p class="product-description">Microcontrôleur avec Wi-Fi et Bluetooth intégrés pour projets IoT.</p>
                         <p class="product-price">12 000 CFA</p>
                         <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (15 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('ESP32', 12000, 'Composants IoT')">
+                        <button class="add-to-cart-button" onclick="addToCart('ESP32', 12000, 'Composants IoT','esp32.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -241,7 +237,7 @@
                         <p class="product-description">Capteur de température et d'humidité numérique.</p>
                         <p class="product-price">5 000 CFA</p>
                         <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (25 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Capteur DHT11', 5000, 'Capteurs')">
+                        <button class="add-to-cart-button" onclick="addToCart('Capteur DHT11', 5000, 'Capteurs','Capteur DHT11.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -270,7 +266,7 @@
                         <p class="product-description">Utilisé pour mesurer des distances avec précision ou détecter des obstacles.</p>
                         <p class="product-price">7 500 CFA</p>
                         <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (10 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Capteur ultrason', 7500, 'Capteurs')">
+                        <button class="add-to-cart-button" onclick="addToCart('Capteur ultrason', 7500, 'Capteurs','Capteur ultrason.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -299,7 +295,7 @@
                         <p class="product-description">Tout ce dont vous avez besoin pour commencer avec Arduino.</p>
                         <p class="product-price">25 000 CFA</p>
                         <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (8 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Kit de démarrage', 25000, 'Kits Arduino')">
+                        <button class="add-to-cart-button" onclick="addToCart('Kit de démarrage', 25000, 'Kits Arduino','kits de demarrage.png')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -329,7 +325,7 @@
                         <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
                         <p class="product-price">35 000 CFA</p>
                         <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
-                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique','kits robotique 1.jpg')">
                             <i class="fas fa-cart-plus"></i> Ajouter au panier
                         </button>
                         <div class="product-meta">
@@ -492,11 +488,6 @@
             <div class="row">
                 <div class="col-md-6 p-4">
                     <img src="" alt="" id="quick-view-img" class="w-100">
-                    <div class="d-flex mt-3">
-                        <img src="" alt="" class="thumb-img me-2" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
-                        <img src="" alt="" class="thumb-img me-2" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
-                        <img src="" alt="" class="thumb-img" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
-                    </div>
                 </div>
                 <div class="col-md-6 p-4">
                     <h2 id="quick-view-title"></h2>
@@ -565,224 +556,1019 @@
         </div>
     </div>
 
+<!-- Modal de paiement complet -->
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-content">
+        <span class="close-payment" onclick="closePaymentModal()">&times;</span>
+        <h3>Finalisation de la Commande</h3>
+        
+        <!-- Informations client -->
+        <div class="section">
+            <h4><i class="fas fa-user"></i> Informations Client</h4>
+            <form id="customer-info-form">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first-name" class="form-label">Prénom</label>
+                        <input type="text" id="first-name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last-name" class="form-label">Nom</label>
+                        <input type="text" id="last-name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Téléphone</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Informations de livraison -->
+        <div class="section">
+            <h4><i class="fas fa-truck"></i> Livraison</h4>
+            <div class="mb-3">
+                <label for="address" class="form-label">Adresse</label>
+                <input type="text" id="address" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col-md-8 mb-3">
+                    <label for="city" class="form-label">Ville</label>
+                    <input type="text" id="city" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Méthodes de paiement -->
+        <div class="section">
+            <h4><i class="fas fa-credit-card"></i> Paiement</h4>
+            
+            <!-- Logos des moyens de paiement -->
+            <div class="payment-methods mb-4 text-center">
+                <div class="d-flex justify-content-center gap-4">
+                    <div class="payment-method-option">
+                        <input type="radio" id="orange-money" name="payment-method" value="orange-money" checked>
+                        <label for="orange-money" class="payment-method-label">
+                            <img src="data:image/png;base64,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" alt="Orange Money" title="Orange Money" style="height: 40px;">
+                        </label>
+                    </div>
+                    <div class="payment-method-option">
+                        <input type="radio" id="wave" name="payment-method" value="wave">
+                        <label for="wave" class="payment-method-label">
+                            <img src="data:image/jpeg;base64,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" alt="Wave" title="Wave" style="height: 40px;">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formulaire de paiement simplifié -->
+            <form id="payment-form">
+                <div class="mb-3">
+                    <label for="payment-phone" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" id="payment-phone" class="form-control" placeholder="77 123 45 67" required>
+                </div>
+                <div class="mb-3">
+                    <label for="payment-code" class="form-label">Code de transaction (si applicable)</label>
+                    <input type="text" id="payment-code" class="form-control" placeholder="Optionnel">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-lock"></i> Payer <span id="total-amount">0</span> CFA
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
     {% include 'AntaBackEnd/footer.html' %}
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialisation AOS
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
+
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialisation AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Fonction pour extraire le prix numérique d'un élément de prix
+function extractPrice(priceElement) {
+const priceText = priceElement.textContent;
+return parseInt(priceText.replace(/\D/g, '')) || 0;
+}
+
+// Fonction pour appliquer tous les filtres
+function applyFilters() {
+const productCards = document.querySelectorAll('.product-card');
+const priceRange = document.querySelector('.price-range').value;
+const categoryFilters = {
+    arduino: document.getElementById('arduino').checked,
+    iot: document.getElementById('iot').checked,
+    robotics: document.getElementById('robotics').checked,
+    sensors: document.getElementById('sensors').checked
+};
+const stockFilters = {
+    inStock: document.getElementById('in-stock').checked,
+    lowStock: document.getElementById('low-stock').checked,
+    outOfStock: document.getElementById('out-of-stock').checked
+};
+
+// Si aucune option de disponibilité n'est cochée, toutes les afficher
+const noStockFilterSelected = !stockFilters.inStock && !stockFilters.lowStock && !stockFilters.outOfStock;
+if (noStockFilterSelected) {
+    document.getElementById('in-stock').checked = true;
+    document.getElementById('low-stock').checked = true;
+    document.getElementById('out-of-stock').checked = true;
+    stockFilters.inStock = true;
+    stockFilters.lowStock = true;
+    stockFilters.outOfStock = true;
+}
+
+productCards.forEach(card => {
+    const priceElement = card.querySelector('.product-price');
+    const productPrice = extractPrice(priceElement);
+    const productCategory = card.dataset.category;
+    const stockElement = card.querySelector('.product-stock');
+    const isInStock = stockElement.classList.contains('in-stock');
+    const isLowStock = stockElement.classList.contains('low-stock');
+    const isOutOfStock = !isInStock && !isLowStock;
+
+    // Vérifier les filtres
+    let shouldShow = true;
+
+    // Filtre par prix
+    if (productPrice > parseInt(priceRange)) {
+shouldShow = false;
+}
+
+    // Filtre par catégorie
+    if (shouldShow) {
+        const categoryMatch = 
+            (productCategory.includes('Kits Arduino') && categoryFilters.arduino) ||
+            (productCategory.includes('Composants IoT') && categoryFilters.iot) ||
+            (productCategory.includes('Robotique') && categoryFilters.robotics) ||
+            (productCategory.includes('Capteurs') && categoryFilters.sensors);
         
-        // Initialisation du panier
-        let cart = [];
-        let total = 0;
+        shouldShow = shouldShow && categoryMatch;
+    }
+
+    // Filtre par disponibilité
+    if (shouldShow) {
+        const stockMatch = 
+            (isInStock && stockFilters.inStock) ||
+            (isLowStock && stockFilters.lowStock) ||
+            (isOutOfStock && stockFilters.outOfStock);
         
-        // Fonction pour basculer les filtres
-        function toggleFilter(id) {
-            const filter = document.getElementById(id);
-            const icon = filter.previousElementSibling.querySelector('i');
-            
-            filter.classList.toggle('show');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
-        }
-        
-        // Fonction pour afficher l'aperçu rapide
-        function showQuickView(name, image, description, price, stock, category) {
-            const modal = document.getElementById('quick-view-modal');
-            document.getElementById('quick-view-title').textContent = name;
-            document.getElementById('quick-view-img').src = image;
-            document.getElementById('quick-view-desc').textContent = description;
-            document.getElementById('quick-view-price').textContent = price.toLocaleString() + ' CFA';
-            document.getElementById('quick-view-category').textContent = category;
-            
-            if (stock > 10) {
-                document.getElementById('quick-view-stock').innerHTML = '<span class="text-success"><i class="fas fa-check-circle me-1"></i> En stock (' + stock + ' unités)</span>';
-            } else if (stock > 0) {
-                document.getElementById('quick-view-stock').innerHTML = '<span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (' + stock + ' unités)</span>';
-            } else {
-                document.getElementById('quick-view-stock').innerHTML = '<span class="text-danger"><i class="fas fa-times-circle me-1"></i> En rupture de stock</span>';
-            }
-            
-            modal.style.display = 'flex';
-        }
-        
-        // Fonction pour fermer l'aperçu rapide
-        function closeQuickView() {
-            document.getElementById('quick-view-modal').style.display = 'none';
-        }
-        
-        // Fonction pour augmenter la quantité
-        function increaseQuantity() {
-            const quantityInput = document.getElementById('quantity');
-            quantityInput.value = parseInt(quantityInput.value) + 1;
-        }
-        
-        // Fonction pour diminuer la quantité
-        function decreaseQuantity() {
-            const quantityInput = document.getElementById('quantity');
-            if (parseInt(quantityInput.value) > 1) {
-                quantityInput.value = parseInt(quantityInput.value) - 1;
-            }
-        }
-        
-        // Fonction pour ajouter au panier depuis l'aperçu rapide
-        function addToCartFromQuickView() {
-            const name = document.getElementById('quick-view-title').textContent;
-            const priceText = document.getElementById('quick-view-price').textContent;
-            const price = parseInt(priceText.replace(/\D/g, ''));
-            const quantity = parseInt(document.getElementById('quantity').value);
-            const category = document.getElementById('quick-view-category').textContent;
-            
-            for (let i = 0; i < quantity; i++) {
-                addToCart(name, price, category);
-            }
-            
-            closeQuickView();
-        }
-        
-        // Fonction pour mettre à jour l'affichage du panier
-        function updateCartDisplay() {
-            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            document.querySelector('.cart-count').setAttribute('data-count', cartCount);
-            document.querySelector('.cart-count span').textContent = cartTotal.toLocaleString() + ' CFA';
-        }
-        
-        // Fonction pour ajouter un produit au panier
-        function addToCart(productName, productPrice, productCategory) {
-            const existingProduct = cart.find(item => item.name === productName);
-            
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                cart.push({ 
-                    name: productName, 
-                    price: productPrice, 
-                    quantity: 1,
-                    image: document.getElementById('quick-view-img').src || 'default-product.jpg',
-                    category: productCategory
-                });
-            }
-            
-            total += productPrice;
-            updateCartDisplay();
-            
-            // Afficher le message de confirmation
-            const confirmationMessage = document.getElementById('confirmation-message');
-            confirmationMessage.style.display = 'block';
-            setTimeout(() => {
-                confirmationMessage.style.display = 'none';
-            }, 3000);
-        }
-        
-        // Fonction pour afficher le panier
-        function showCart() {
-            const cartModal = document.getElementById('cart-modal');
-            const cartItemsContainer = document.getElementById('cart-items');
-            const totalPriceElement = document.getElementById('total-price');
-            
-            cartItemsContainer.innerHTML = '';
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p class="text-center py-4">Votre panier est vide</p>';
-                totalPriceElement.textContent = '0 CFA';
-            } else {
-                cart.forEach(item => {
-                    const cartItemDiv = document.createElement('div');
-                    cartItemDiv.classList.add('cart-item');
-                    
-                    cartItemDiv.innerHTML = `
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">${item.price.toLocaleString()} CFA</div>
-                            <div class="cart-item-quantity">
-                                <button class="quantity-btn" onclick="updateCartItem('${item.name}', -1)">-</button>
-                                <span class="quantity-value">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateCartItem('${item.name}', 1)">+</button>
-                            </div>
-                            <div class="remove-item" onclick="removeCartItem('${item.name}')">
-                                <i class="fas fa-trash-alt me-1"></i> Supprimer
-                            </div>
-                        </div>
-                    `;
-                    
-                    cartItemsContainer.appendChild(cartItemDiv);
-                });
-                
-                const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                totalPriceElement.textContent = cartTotal.toLocaleString() + ' CFA';
-            }
-            
-            cartModal.style.display = 'flex';
-        }
-        
-        // Fonction pour mettre à jour un article du panier
-        function updateCartItem(productName, change) {
-            const product = cart.find(item => item.name === productName);
-            
-            if (product) {
-                if (product.quantity + change > 0) {
-                    product.quantity += change;
-                    total += product.price * change;
-                } else {
-                    removeCartItem(productName);
-                    return;
-                }
-                
-                updateCartDisplay();
-                showCart();
-            }
-        }
-        
-        // Fonction pour supprimer un article du panier
-        function removeCartItem(productName) {
-            const productIndex = cart.findIndex(item => item.name === productName);
-            
-            if (productIndex !== -1) {
-                total -= cart[productIndex].price * cart[productIndex].quantity;
-                cart.splice(productIndex, 1);
-                updateCartDisplay();
-                showCart();
-            }
-        }
-        
-        // Fonction pour passer la commande
-        function checkout() {
-            if (cart.length > 0) {
-                alert('Commande passée avec succès !');
-                cart = [];
-                total = 0;
-                updateCartDisplay();
-                document.getElementById('cart-modal').style.display = 'none';
-            } else {
-                alert('Votre panier est vide !');
-            }
-        }
-        
-        // Écouteurs d'événements
-        document.querySelector('.cart-count').addEventListener('click', showCart);
-        document.getElementById('close-cart').addEventListener('click', () => {
-            document.getElementById('cart-modal').style.display = 'none';
-        });
-        document.getElementById('checkout-button').addEventListener('click', checkout);
-        
-        // Fermer les modals en cliquant à l'extérieur
-        window.addEventListener('click', (event) => {
-            if (event.target === document.getElementById('quick-view-modal')) {
-                closeQuickView();
-            }
-            if (event.target === document.getElementById('cart-modal')) {
-                document.getElementById('cart-modal').style.display = 'none';
-            }
-        });
-    </script>
+        shouldShow = shouldShow && stockMatch;
+    }
+
+    // Appliquer le filtre
+    if (shouldShow) {
+        card.style.display = 'block';
+    } else {
+        card.style.display = 'none';
+    }
+});
+
+// Mettre à jour l'affichage des valeurs de prix
+updatePriceValues();
+}
+
+// Fonction pour mettre à jour l'affichage des valeurs de prix
+function updatePriceValues() {
+const priceRange = document.querySelector('.price-range');
+const priceValues = document.querySelectorAll('.price-values span');
+priceValues[1].textContent = parseInt(priceRange.value).toLocaleString() + ' CFA';
+}
+
+// Initialisation des événements des filtres
+function initFilters() {
+// Événement pour le range de prix
+const priceRange = document.querySelector('.price-range');
+priceRange.addEventListener('input', applyFilters);
+
+// Événements pour les cases à cocher
+const checkboxes = document.querySelectorAll('.filter-option input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', applyFilters);
+});
+
+// Événement pour le bouton "Appliquer les filtres"
+const applyButton = document.querySelector('.filter-section button');
+applyButton.addEventListener('click', applyFilters);
+
+// Initialiser les valeurs de prix
+updatePriceValues();
+}
+
+// Appeler initFilters lorsque le DOM est chargé
+document.addEventListener('DOMContentLoaded', function() {
+initFilters();
+
+// Ajouter également cette ligne si vous avez d'autres initialisations
+if (typeof AOS !== 'undefined') {
+    AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+}
+});
+
+
+
+
+
+
+
+
+
+
+// Fonction pour trier les produits
+function sortProducts(sortBy) {
+const productContainer = document.querySelector('.product-grid');
+const products = Array.from(productContainer.querySelectorAll('.product-card'));
+
+products.sort((a, b) => {
+    const priceA = extractPrice(a.querySelector('.product-price'));
+    const priceB = extractPrice(b.querySelector('.product-price'));
+    
+    switch(sortBy) {
+        case 'Prix croissant':
+            return priceA - priceB;
+        case 'Prix décroissant':
+            return priceB - priceA;
+        default: // 'Pertinence'
+            return 0; // Ordre original
+    }
+});
+
+// Vider le conteneur
+productContainer.innerHTML = '';
+
+// Réinsérer les produits dans le nouvel ordre
+products.forEach(product => {
+    productContainer.appendChild(product);
+});
+}
+
+// Écouteur d'événement pour le menu déroulant de tri
+document.addEventListener('DOMContentLoaded', function() {
+const sortSelect = document.querySelector('.sort-options select');
+if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+        sortProducts(this.value);
+    });
+}
+
+// Initialiser les autres fonctions comme avant
+initFilters();
+if (typeof AOS !== 'undefined') {
+    AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------------
+// Variables pour le paiement
+let selectedPaymentMethod = 'orange'; // Par défaut Orange Money
+
+// Fonction pour sélectionner le mode de paiement
+function selectPayment(method) {
+selectedPaymentMethod = method;
+
+// Retirer la classe active de toutes les options
+document.querySelectorAll('.payment-option').forEach(option => {
+    option.classList.remove('active');
+});
+
+// Ajouter la classe active à l'option sélectionnée
+const options = document.querySelectorAll('.payment-option');
+if (method === 'orange') {
+    options[0].classList.add('active');
+} else if (method === 'wave') {
+    options[1].classList.add('active');
+}
+}
+
+// Fonction pour ouvrir le modal de paiement
+function openPaymentModal() {
+if (cart.length === 0) {
+    alert('Votre panier est vide. Ajoutez des produits avant de passer commande.');
+    return;
+}
+
+// Mettre à jour le montant total dans le modal
+document.getElementById('total-amount').textContent = total.toLocaleString();
+
+// Réinitialiser le formulaire
+document.getElementById('payment-form').reset();
+
+// Afficher le modal
+document.getElementById('payment-modal').style.display = 'block';
+document.getElementById('cart-modal').style.display = 'none';
+}
+
+// Fonction pour fermer le modal de paiement
+function closePaymentModal() {
+document.getElementById('payment-modal').style.display = 'none';
+}
+
+// Gestion de la soumission du formulaire de paiement
+document.getElementById('payment-form').addEventListener('submit', function(e) {
+e.preventDefault();
+
+// Validation des champs
+const requiredFields = ['first-name', 'last-name', 'email', 'phone', 'address', 'postal-code', 'city', 'mobile-number'];
+let isValid = true;
+
+requiredFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (!field.value.trim()) {
+        isValid = false;
+        field.classList.add('is-invalid');
+    } else {
+        field.classList.remove('is-invalid');
+    }
+});
+
+if (!isValid) {
+    alert('Veuillez remplir tous les champs obligatoires.');
+    return;
+}
+
+// Simulation du processus de paiement
+processPayment();
+});
+
+// Fonction pour simuler le processus de paiement (version corrigée)
+function processPayment() {
+const { discount, subtotal, gift } = calculateDiscounts();
+const phoneNumber = document.getElementById('mobile-number').value;
+const paymentCode = document.getElementById('payment-code').value;
+
+// Message de confirmation
+let confirmationMessage = `Paiement ${selectedPaymentMethod === 'orange' ? 'Orange Money' : 'Wave'} de ${subtotal.toLocaleString()} CFA effectué avec succès!`;
+
+// Informations client
+const customerName = `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`;
+confirmationMessage += `\n\nMerci ${customerName} pour votre commande !`;
+
+alert(confirmationMessage);
+
+// Réinitialiser le panier
+cart = [];
+total = 0;
+updateCartDisplay();
+
+// Fermer le modal
+closePaymentModal();
+
+// Réinitialiser les formulaires
+document.getElementById('customer-info-form').reset();
+document.getElementById('payment-form').reset();
+}
+
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+// Sélectionner Orange Money par défaut
+selectPayment('orange');
+
+// Événement pour le bouton de commande
+document.getElementById('checkout-button').addEventListener('click', openPaymentModal);
+
+// Fermer le modal en cliquant à l'extérieur
+window.addEventListener('click', function(event) {
+    if (event.target === document.getElementById('payment-modal')) {
+        closePaymentModal();
+    }
+});
+});
+
+
+// Fonction simplifiée sans réductions ni cadeaux
+function calculateDiscounts() {
+// Retourne simplement le total sans aucune réduction
+return { 
+    discount: 0, 
+    subtotal: total, 
+    gift: '' 
+};
+}
+
+// Fonction pour mettre à jour l'affichage du panier avec les nouvelles règles
+function updateCartDisplay() {
+const cartItemsContainer = document.getElementById('cart-items');
+const cartCountElement = document.querySelector('.cart-count');
+const totalPriceElement = document.getElementById('total-price');
+
+// Calculer les réductions selon les nouvelles règles
+const { discount, subtotal, gift } = calculateDiscounts();
+
+// Vider le conteneur
+cartItemsContainer.innerHTML = '';
+
+// Ajouter chaque article
+cart.forEach((item, index) => {
+    const itemElement = document.createElement('div');
+    itemElement.className = 'cart-item';
+    itemElement.innerHTML = `
+        <div class="cart-item-image">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+        </div>
+        <div class="cart-item-info">
+            <h5>${item.name}</h5>
+            <p>${item.price.toLocaleString()} CFA</p>
+            <small>${item.category}</small>
+        </div>
+        <div class="cart-item-quantity">
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, -1)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <span class="quantity-value">${item.quantity}</span>
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, 1)">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="cart-item-actions">
+            <span class="cart-item-total">${(item.price * item.quantity).toLocaleString()} CFA</span>
+            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    cartItemsContainer.appendChild(itemElement);
+});
+
+// Ajouter la section des réductions/cadeaux
+if (discount > 0 || gift) {
+    const discountElement = document.createElement('div');
+    discountElement.className = 'cart-discounts';
+    
+    let discountHTML = '';
+    if (discount > 0) {
+        discountHTML += `
+            <div class="discount-item">
+                <span>Réduction (10% sur kits Arduino/Robotique)</span>
+                <span class="text-danger">-${discount.toLocaleString()} CFA</span>
+            </div>
+        `;
+    }
+    
+    if (gift) {
+        discountHTML += `
+            <div class="gift-item">
+                <span><i class="fas fa-gift text-success"></i> ${gift}</span>
+            </div>
+        `;
+    }
+    
+    discountElement.innerHTML = discountHTML;
+    cartItemsContainer.appendChild(discountElement);
+}
+
+// Mettre à jour le total
+const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+cartCountElement.setAttribute('data-count', itemCount);
+cartCountElement.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">${subtotal.toLocaleString()} CFA</span>`;
+
+totalPriceElement.textContent = `${subtotal.toLocaleString()} CFA`;
+document.getElementById('total-amount').textContent = subtotal.toLocaleString();
+}
+
+
+
+
+
+
+
+
+
+
+
+// Fonction pour mettre à jour l'affichage du panier
+function updateCartDisplay() {
+const cartItemsContainer = document.getElementById('cart-items');
+const cartCountElement = document.querySelector('.cart-count');
+const totalPriceElement = document.getElementById('total-price');
+
+// Calculer les réductions selon les nouvelles règles
+const { discount, subtotal, gift } = calculateDiscounts();
+
+// Vider le conteneur
+cartItemsContainer.innerHTML = '';
+
+// Ajouter chaque article
+cart.forEach((item, index) => {
+    const itemElement = document.createElement('div');
+    itemElement.className = 'cart-item';
+    itemElement.innerHTML = `
+        <div class="cart-item-image">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+        </div>
+        <div class="cart-item-info">
+            <h5>${item.name}</h5>
+            <p>${item.price.toLocaleString()} CFA</p>
+            <small>${item.category}</small>
+        </div>
+        <div class="cart-item-quantity">
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, -1)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <span class="quantity-value">${item.quantity}</span>
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, 1)">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="cart-item-actions">
+            <span class="cart-item-total">${(item.price * item.quantity).toLocaleString()} CFA</span>
+            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    cartItemsContainer.appendChild(itemElement);
+});
+
+// Ajouter la section des réductions/cadeaux
+if (discount > 0 || gift) {
+    const discountElement = document.createElement('div');
+    discountElement.className = 'cart-discounts';
+    
+    let discountHTML = '';
+    if (discount > 0) {
+        discountHTML += `
+            <div class="discount-item">
+                <span>Réduction (10% sur 10+ kits Arduino/Robotique)</span>
+                <span class="text-danger">-${discount.toLocaleString()} CFA</span>
+            </div>
+        `;
+    }
+    
+    if (gift) {
+        discountHTML += `
+            <div class="gift-item">
+                <span><i class="fas fa-gift text-success"></i> ${gift}</span>
+            </div>
+        `;
+    }
+    
+    discountElement.innerHTML = discountHTML;
+    cartItemsContainer.appendChild(discountElement);
+}
+
+// Mettre à jour le total
+const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+cartCountElement.setAttribute('data-count', itemCount);
+cartCountElement.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">${subtotal.toLocaleString()} CFA</span>`;
+
+totalPriceElement.textContent = `${subtotal.toLocaleString()} CFA`;
+document.getElementById('total-amount').textContent = subtotal.toLocaleString();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialisation du panier
+let cart = [];
+let total = 0;
+
+// Fonction pour ajouter un produit au panier (avec image)
+function addToCart(name, price, category, image, quantity = 1) {
+// Vérifier si le produit est déjà dans le panier
+const existingItem = cart.find(item => item.name === name);
+
+if (existingItem) {
+    existingItem.quantity += quantity;
+} else {
+    cart.push({
+        name: name,
+        price: price,
+        category: category,
+        image: image,
+        quantity: quantity
+    });
+}
+
+// Mettre à jour le total
+total += price * quantity;
+
+// Mettre à jour l'affichage du panier
+updateCartDisplay();
+
+// Afficher la confirmation
+showConfirmation();
+}
+function updateCartDisplay() {
+const cartItemsContainer = document.getElementById('cart-items');
+const cartCountElement = document.querySelector('.cart-count');
+const totalPriceElement = document.getElementById('total-price');
+
+// Calculer les réductions selon les nouvelles règles
+const { discount, subtotal, gift } = calculateDiscounts();
+
+// Vider le conteneur
+cartItemsContainer.innerHTML = '';
+
+// Ajouter chaque article
+cart.forEach((item, index) => {
+    const itemElement = document.createElement('div');
+    itemElement.className = 'cart-item';
+    itemElement.innerHTML = `
+        <div class="cart-item-image">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+        </div>
+        <div class="cart-item-info">
+            <h5>${item.name}</h5>
+            <p>${item.price.toLocaleString()} CFA</p>
+            <small>${item.category}</small>
+        </div>
+        <div class="cart-item-quantity">
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, -1)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <span class="quantity-value">${item.quantity}</span>
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, 1)">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="cart-item-actions">
+            <span class="cart-item-total">${(item.price * item.quantity).toLocaleString()} CFA</span>
+            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    cartItemsContainer.appendChild(itemElement);
+});
+
+// Ajouter la section des réductions/cadeaux
+if (discount > 0 || gift) {
+    const discountElement = document.createElement('div');
+    discountElement.className = 'cart-discounts';
+    
+    let discountHTML = '';
+    if (discount > 0) {
+        discountHTML += `
+            <div class="discount-item">
+                <span>Réduction (10% sur kits Arduino/Robotique)</span>
+                <span class="text-danger">-${discount.toLocaleString()} CFA</span>
+            </div>
+        `;
+    }
+    
+    if (gift) {
+        discountHTML += `
+            <div class="gift-item">
+                <span><i class="fas fa-gift text-success"></i> ${gift}</span>
+            </div>
+        `;
+    }
+    
+    discountElement.innerHTML = discountHTML;
+    cartItemsContainer.appendChild(discountElement);
+}
+
+// Mettre à jour le total
+const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+cartCountElement.setAttribute('data-count', itemCount);
+cartCountElement.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">${subtotal.toLocaleString()} CFA</span>`;
+
+totalPriceElement.textContent = `${subtotal.toLocaleString()} CFA`;
+document.getElementById('total-amount').textContent = subtotal.toLocaleString();
+}
+
+
+
+
+// Fonction pour modifier la quantité d'un article
+function changeCartItemQuantity(index, change) {
+const newQuantity = cart[index].quantity + change;
+
+if (newQuantity < 1) {
+    removeFromCart(index);
+} else {
+    total += cart[index].price * change;
+    cart[index].quantity = newQuantity;
+    updateCartDisplay();
+}
+}
+
+// Fonction pour supprimer un article
+function removeFromCart(index) {
+const item = cart[index];
+total -= item.price * item.quantity;
+cart.splice(index, 1);
+updateCartDisplay();
+}
+
+// Fonction pour afficher la confirmation
+function showConfirmation() {
+const confirmation = document.getElementById('confirmation-message');
+confirmation.style.display = 'block';
+confirmation.style.opacity = '1';
+
+setTimeout(() => {
+    confirmation.style.opacity = '0';
+    setTimeout(() => confirmation.style.display = 'none', 300);
+}, 3000);
+}
+
+// Fonctions pour l'aperçu rapide
+function showQuickView(name, image, description, price, stock, category) {
+const modal = document.getElementById('quick-view-modal');
+document.getElementById('quick-view-title').textContent = name;
+document.getElementById('quick-view-img').src = image;
+document.getElementById('quick-view-desc').textContent = description;
+document.getElementById('quick-view-price').textContent = price.toLocaleString() + ' CFA';
+document.getElementById('quick-view-category').textContent = category;
+document.getElementById('quantity').value = 1;
+
+let stockHtml = '';
+if (stock > 10) {
+    stockHtml = `<span class="text-success"><i class="fas fa-check-circle me-1"></i> En stock (${stock} unités)</span>`;
+} else if (stock > 0) {
+    stockHtml = `<span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (${stock} unités)</span>`;
+} else {
+    stockHtml = `<span class="text-danger"><i class="fas fa-times-circle me-1"></i> En rupture de stock</span>`;
+}
+document.getElementById('quick-view-stock').innerHTML = stockHtml;
+
+modal.style.display = 'flex';
+}
+
+function closeQuickView() {
+document.getElementById('quick-view-modal').style.display = 'none';
+}
+
+function increaseQuantity() {
+const quantityInput = document.getElementById('quantity');
+quantityInput.value = parseInt(quantityInput.value) + 1;
+}
+
+function decreaseQuantity() {
+const quantityInput = document.getElementById('quantity');
+if (parseInt(quantityInput.value) > 1) {
+    quantityInput.value = parseInt(quantityInput.value) - 1;
+}
+}
+
+// Fonction pour ajouter depuis l'aperçu rapide
+function addToCartFromQuickView() {
+const name = document.getElementById('quick-view-title').textContent;
+const priceText = document.getElementById('quick-view-price').textContent;
+const price = parseInt(priceText.replace(/\D/g, ''));
+const category = document.getElementById('quick-view-category').textContent;
+const image = document.getElementById('quick-view-img').src;
+const quantity = parseInt(document.getElementById('quantity').value);
+
+addToCart(name, price, category, image, quantity);
+}
+
+
+
+
+
+// Gestion des modales
+function toggleCartModal() {
+const cartModal = document.getElementById('cart-modal');
+if (cartModal.style.display === 'block') {
+    cartModal.style.display = 'none';
+} else {
+    cartModal.style.display = 'block';
+}
+}
+
+function openPaymentModal() {
+if (cart.length === 0) {
+    alert('Votre panier est vide. Ajoutez des produits avant de passer commande.');
+    return;
+}
+document.getElementById('payment-modal').style.display = 'block';
+document.getElementById('cart-modal').style.display = 'none';
+}
+
+function closePaymentModal() {
+document.getElementById('payment-modal').style.display = 'none';
+}
+
+// Gestion du formulaire de paiement
+document.getElementById('payment-form').addEventListener('submit', function(e) {
+e.preventDefault();
+
+// Validation
+const requiredFields = ['first-name', 'last-name', 'email', 'phone', 'address'];
+let isValid = true;
+
+requiredFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (!field.value.trim()) {
+        isValid = false;
+        field.classList.add('is-invalid');
+    } else {
+        field.classList.remove('is-invalid');
+    }
+});
+
+if (!isValid) {
+    alert('Veuillez remplir tous les champs obligatoires.');
+    return;
+}
+
+// Simulation de paiement réussi
+alert(`Paiement réussi!\n\nMerci pour votre commande de ${total.toLocaleString()} CFA.`);
+
+// Réinitialisation
+cart = [];
+total = 0;
+updateCartDisplay();
+this.reset();
+closePaymentModal();
+});
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+// Événements
+document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
+document.getElementById('close-cart').addEventListener('click', toggleCartModal);
+document.getElementById('checkout-button').addEventListener('click', openPaymentModal);
+
+// Fermer les modales en cliquant à l'extérieur
+window.addEventListener('click', function(event) {
+    if (event.target === document.getElementById('quick-view-modal')) {
+        closeQuickView();
+    }
+    if (event.target === document.getElementById('cart-modal')) {
+        toggleCartModal();
+    }
+    if (event.target === document.getElementById('payment-modal')) {
+        closePaymentModal();
+    }
+});
+
+// Initialiser AOS (si présent)
+if (typeof AOS !== 'undefined') {
+    AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+}
+});
+
+// Fonction pour les filtres
+function toggleFilter(id) {
+const filter = document.getElementById(id);
+const icon = filter.previousElementSibling.querySelector('i');
+filter.classList.toggle('show');
+icon.classList.toggle('fa-chevron-down');
+icon.classList.toggle('fa-chevron-up');
+}
+</script>
 </body>
 </html>
