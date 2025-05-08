@@ -9,3 +9,6 @@ def CNC(request):
 
 def laser(request):
     return render(request, "Services/laser/index.html")
+
+def serviceView(request):
+    return render(request, '')
