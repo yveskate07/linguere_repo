@@ -503,7 +503,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:signup' formation_name=slug %}">  
             {% csrf_token %}
 
             <input type="hidden" value="{{ id_formation }}" name="id_formation_inscription" id="id_formation_inscription">
@@ -575,7 +575,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:get-brochure' formation_name=slug %}">
 
             {% csrf_token %}
             <input type="hidden" value="{{ id_formation }}" name="id_formation_brochure" id="id_formation_brochure">
@@ -638,7 +638,7 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto">
+        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:get-in-touch' formation_name=slug %}">
             {% csrf_token %}
 
             <input type="hidden" value="{{ id_formation }}" name="id_formation_contact" id="id_formation_contact">

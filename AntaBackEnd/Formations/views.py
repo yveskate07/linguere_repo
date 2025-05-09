@@ -68,7 +68,7 @@ def SigningUp(request, formation_name):
             user.save()
 
             # envoi d'un mail au client puis notification a linguere
-            #send_alert_for_sign_up(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, 'message':request.POST.get('message')})
+            send_alert_for_sign_up(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, 'message':request.POST.get('message')})
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
@@ -87,7 +87,7 @@ def returnBrochure(request, formation_name):
             user.save()
 
             # envoi de la brochure par mail puis notification a linguere
-            #send_brochure_through_mail(receiver_email=user.email, formation_name=formation_name, msg_=request.POST.get('message'), user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message":request.POST.get('message')})
+            send_brochure_through_mail(receiver_email=user.email, formation_name=formation_name, msg_=request.POST.get('message'), user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message":request.POST.get('message')})
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite !!!"})
@@ -106,7 +106,7 @@ def userGetInTouch(request, formation_name):
             user.save()
 
             # envoi d'alerte a linguere
-            #send_alert_for_request(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message": request.POST.get('message')}, msg=request.POST.get('message'))
+            send_alert_for_request(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message": request.POST.get('message')}, msg=request.POST.get('message'))
 
             return JsonResponse({'status': 'success'})
 
