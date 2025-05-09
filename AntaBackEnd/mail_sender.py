@@ -20,7 +20,7 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
     msg["Subject"] = f"Brochure {formation_name}"
 
     # Corps du message
-    corps = """\
+    corps = f"""\
     Bonjour,
 
     Veuillez trouver ci-joint la brochure pour la formation {formation_name}.
@@ -135,4 +135,3 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=contexte) as serveur:
         serveur.login(sender_email, password)
         serveur.send_message(msg)
-        print("envoi d'un mail au client")
