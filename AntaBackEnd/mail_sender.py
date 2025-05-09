@@ -32,7 +32,7 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
     """
     msg.set_content(corps)
 
-    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name 
+    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name / 'brochure.pdf'
 
     # Lecture et ajout du fichier PDF
     with open(chemin_pdf, 'rb') as f:
