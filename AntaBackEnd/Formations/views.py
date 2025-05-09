@@ -73,7 +73,7 @@ def SigningUp(request, formation_name):
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
 
-    return HttpResponseRedirect(request.path)
+    return formationView(request, formation_name)
 
 
 def returnBrochure(request, formation_name):
@@ -92,7 +92,7 @@ def returnBrochure(request, formation_name):
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite !!!"})
 
-    return HttpResponseRedirect(request.path)
+    return formationView(request, formation_name)
 
 
 def userGetInTouch(request, formation_name):
@@ -106,15 +106,13 @@ def userGetInTouch(request, formation_name):
             user.save()
 
             # envoi d'alerte a linguere
-            send_alert_for_request(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message": request.POST.get('message')}, msg=request.POST.get('message'))
-
-            return JsonResponse({'status': 'success'})
+            send_alert_for_request(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message": request.POST.get('message')}, msg_=request.POST.get('message'))
 
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
 
-    return HttpResponseRedirect(request.path)
+    return formationView(request, formation_name)
 
 
 """def formationNotif(request, formation_name):

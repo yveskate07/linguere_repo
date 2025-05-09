@@ -137,4 +137,4 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=contexte) as serveur:
         serveur.login(sender_email, password)
         serveur.send_message(msg)
-        # print("Notification envoyée avec succès.")
+        print("envoi d'un mail au client")
