@@ -1,14 +1,17 @@
 from django.shortcuts import render
 
 # Create your views here.
-def broderie(request):
+def broderie_numerique(request):
     return render(request, "Services/broderie/index.html")
 
-def CNC(request):
+def fraiseuse_numerique(request):
     return render(request, "Services/CNC/index.html")
 
-def laser(request):
+def decoupe_laser(request):
     return render(request, "Services/laser/index.html")
 
-def serviceView(request):
-    return render(request, '')
+def impression_3D(request):
+    return render(request, 'Services/')
+
+def impression_num_proposees(request):
+    return render(request, 'Services/')
