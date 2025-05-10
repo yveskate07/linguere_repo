@@ -1,17 +1,19 @@
 :root {
     --primary: #2178d0;
-    --primary-light: #06203b;
+    --primary-light: #2178d0;
     --secondary: #e74c3c;
     --accent: #d05649;
     --light: #ecf0f1;
-    --dark: #033363;
+    --dark: #2178d0;
     --text-light: #7f8c8d;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
     --shadow-md: 0 4px 6px rgba(0,0,0,0.16);
     --shadow-lg: 0 10px 20px rgba(0,0,0,0.19);
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
-    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    /* --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); */
+    --gradient-primary: linear-gradient(135deg, #2178d0 0%, #033363 100%);
+
 }
 
 /* Base Styles */
@@ -19,13 +21,13 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: var(--text-color);
     overflow-x: hidden;
-    background-color: #ffffff;
+    background-color: var(--light);
 }
 
 
 /* ------ Style amélioré pour le Service Header ------ */
 .service-header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: linear-gradient(135deg, #2178d0 0%, #06203b 100%);
     color: white;
     padding: 1rem 2rem; 
     position: relative;
@@ -69,9 +71,10 @@ body {
     letter-spacing: -0.5px;
     animation: fadeIn 0.8s ease-out both;
 }
+
 .service-icon {
     font-size: 2.5rem; 
-    color: var(--accent);
+    color: #d05649;
     margin-right: 1rem;
     vertical-align: middle;
     display: inline-block;
@@ -325,7 +328,7 @@ body {
 .section-title {
     font-size: 2.2rem;
     font-weight: 800;
-    color: var(--primary);
+    color: #2178d0;
     margin-bottom: 1rem;
     text-align: center;
     position: relative;
@@ -1019,7 +1022,7 @@ body {
 .customization-intro h3 {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(150deg, var(--primary));
+    background: linear-gradient(150deg, #2178d0);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -1036,7 +1039,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--secondary);
+    color: var(--accent);
     font-size: 1.2rem;
     opacity: 0.7;
 }
@@ -1046,7 +1049,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--primary);
+    color: #2178d0;
     font-size: 1.2rem;
     opacity: 0.7;
 }
@@ -1103,7 +1106,7 @@ body {
     display: block;
     margin-bottom: 0.8rem;
     font-weight: 700;
-    color: var(--primary);
+    color: #2178d0;
     font-size: 1rem;
     transition: all 0.3s ease;
     display: flex;
@@ -1840,6 +1843,6 @@ body {
     gap: 8px;
     border-radius: 8px;
     padding: 10px; 
-    background: var(--primary);
+    background: #2178d0;
 
 }
