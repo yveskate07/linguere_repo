@@ -3,536 +3,828 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service de Fraiseuse Numérique (CNC) - Linguère Fablab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="boutique.css">
-    <title>LINGUERE FABLAB</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-.top-bar {
-    background: #2c8aed;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    padding: 5px;
-    font-size: 14px;
-}
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-}
-.logo-img {
-    width: 50px;
-    height: 50px;
-}
-.search-bar {
-    display: flex;
-    width: 600px;
-    align-items: center;
-    background: #f1f1f1;
-    padding: 5px;
-    border-radius: 5px;
-}
-.search-bar input {
-    border: none;
-    width: 600px;
-    background: transparent;
-    padding: 5px;
-    outline: none;
-}
-.icons span {
-    margin-left: 15px;
-    cursor: pointer;
-}
-.nav-bar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: #4a84f9;
-    color: white;
-    position: relative;
-}
-.nav-bar a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    position: relative;
-}
-.nav-bar a:hover {
-    background: #0056b3;
-    border-radius: 5px;
-}
-.dropdown {
-    position: relative;
-}
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    width: 300px;
-}
-.dropdown-menu a {
-    display: block;
-    color: black;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-.dropdown-menu a:hover {
-    background-color: #2c8aed;
-    color: white;
-    transform: translateX(5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.dropdown:hover .dropdown-menu {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-@keyframes slideDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.dropdown:hover .dropdown-menu {
-    display: block;
-    animation: slideDown 0.3s ease forwards;
-}
-main {
-    display: flex;
-    margin-top: 20px;
-}
-.video1 {
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 130px;
-    width: 100%;
-}
-.video2{
-    height: 300px;
-    width: 100%;
-    overflow: hidden;
-    float: left;
-    position: relative;
-}
-.video3{
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-    float: left;
-    position: relative;
-}
-.video4{
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-    float: left;
-    position: relative;
-}
-.video5{
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-    float: left;
-    position: relative;
-    margin-bottom: 30px;
-}
-.vi1 {
-    height: 130px;
-    width: 49%;
-    overflow: hidden;
-    float: left;
-    position: relative;
-}
-.vi2 {
-    height: 130px;
-    width: 50%;
-    overflow: hidden;
-    float: right;
-    position: relative;
-}
-.vi1 video, .vi2 video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.container h1 {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #2c3e50;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: -1px;
-    position: relative;
-    display: inline-block;
-}
-.container h1::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: #3498db;
-    margin: 10px auto 0;
-    transition: width 0.3s ease;
-}
-.container h1:hover::after {
-    width: 100px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    height: 350px;
-    max-width: 1000px;
-    margin-left: 120px;
-    width: 100%;
-}
-.card {
-    position: relative;
-    width: 80%;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-.card:hover .overlay {
-    background-color: rgba(0, 0, 0, 0.9);
-}
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-.card-description {
-    font-size: 0.9rem;
-    font-weight: normal;
-    opacity: 0.8;
-}
-.carousel-item img {
-    width: 1000px;
-    height: auto;
-    object-fit: contain;
-    max-width: 100%;
-    display: block;
-    margin: auto;
-}
-#carouselExampleAutoplaying {
-    max-width: 1000px;
-    margin: auto;
-}
-
-    </style>
-
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="service.css">
+    <link rel="stylesheet" href="aaaaa.css">
 </head>
 <body>
-{% include 'AntaBackEnd/header.html' %}
-<main>
-    <aside class="filter-section">
-        <div class="dropdown">
-            <a href="#"> CATALOGUE</a>
-            <div class="dropdown-menu">
-                <a href="#">Kits Arduino</a>
-                <a href="#">Machines Numériques</a>
-                <a href="#">Imprimantes 3D</a>
-                <a href="#">Composants Électroniques</a>
-                <a href="#">Outils de Fabrication</a>
-                <a href="#">Matériaux de Construction</a>
-                <a href="#">Logiciels de Conception</a>
-                <a href="#">Accessoires</a>
+    <div class="top-bar">
+        <div class="container d-flex flex-wrap justify-content-center justify-content-md-between">
+            <span><a href="localisation.html"><i class="fas fa-map-marker-alt me-2"></i> LOCALISATION</a></span>
+            <span><i class="fas fa-truck me-2"></i> Livraison Partout au Sénégal</span>
+            <span><i class="far fa-clock me-2"></i> 08:00 - 17:00</span>
+            <span><i class="fas fa-phone me-2"></i> (+221) 77 077 18 32</span>
+            <span><a href="https://wa.me/+221770771832" target="_blank"><i class="fab fa-whatsapp me-2"></i> WHATSAPP</a></span>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <div class="logo animate__animated animate__fadeInLeft d-flex align-items-center">
+                <a href="index.html"><img src="logos.jpeg" alt="Logo" class="logo-img me-3"></a>
+                <span class="nav-brand">LINGUERE FABLAB</span>
+            </div>
+            
+            <div class="search-bar animate__animated animate__zoomIn">
+                <input type="text" placeholder="Rechercher produits...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="icons d-flex align-items-center">
+                <span class="me-3"><i class="far fa-heart"></i></span>
+                <span class="me-3"><i class="far fa-user"></i></span>
+                <span class="cart-count" data-count="0"><i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">0 CFA</span></span>
             </div>
         </div>
-    </aside>
-    <section class="product-container">
-        <div class="centered-content">
-            <h1>Services avec CNC</h1>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="image/kit robotique 1.png" alt="Produit 1">
-                    <div class="product-info">
-                        <h3 class="product-name">Arduino Uno</h3>
-                        <p class="product-description">Carte de développement Arduino idéale pour les projets IoT.</p>
-                        <p class="product-price">Prix : 15 000 CFA</p>
-                        <p class="product-stock">Stock : 50 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
-                    </div>
+    </nav>
+    
+    <!-- Main Navigation -->
+    <div class="nav-bar">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <a href="#" style="color: rgb(255, 68, 0);"><i class="fas fa-home me-2"></i> ACCUEIL</a>
+            <div class="dropdown">
+                <a href="#"><i class="fas fa-list me-2"></i> CATALOGUE <i class="fas fa-chevron-down ms-1"></i></a>
+                <div class="dropdown-menu">
+                    <a href="arduino.html"><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</a>
+                    <a href="machine.html"><i class="fas fa-robot me-2"></i> Machines Numériques</a>
+                    <a href="installation.html"><i class="fas fa-tools me-2"></i> Installations Fablab</a>
+                    <a href="broderie.html"><i class="fas fa-tshirt me-2"></i> Broderie numérique</a>
+                    <a href="CNC.html"><i class="fas fa-cogs me-2"></i> Fraiseuses Numérique</a>
+                    <a href="laser.html"><i class="fas fa-cut me-2"></i> Découpe laser</a>
+                    <a href="boutique"><i class="fas fa-laptop-code me-2"></i> Logiciels</a>
+                    <a href="boutique"><i class="fas fa-plug me-2"></i> Accessoires</a>
                 </div>
-                <div class="product-card">
-                    <img src="image/kits Arduino mega.png" alt="Produit 2">
-                    <div class="product-info">
-                        <h3 class="product-name">Imprimante 3D Creality</h3>
-                        <p class="product-description">Imprimante 3D haute précision pour vos créations.</p>
-                        <p class="product-price">Prix : 250 000 CFA</p>
-                        <p class="product-stock">Stock : 10 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+            </div> 
+            <a href="#"><i class="fas fa-certificate me-2"></i> NOUVEAUTÉS</a>
+            <a href="apropos.html"><i class="fas fa-info-circle me-2"></i> À PROPOS</a>
+            <a href="#con"><i class="fas fa-envelope me-2"></i> CONTACT</a>
+        </div>
+    </div>
+    
+    <header class="service-header animate__animated animate__fadeInUp">
+        <h2 class="service-title">
+            <i class="fas fa-tshirt service-icon"></i>
+            Service de Fraiseuse Numérique (CNC)
+        </h2>
+        <p class="service-subtitle">Notre fraiseuse numérique vous permet d’usiner des matériaux solides (bois, aluminium, plastique, etc.) pour des pièces techniques ou décoratives.</p>
+    </header>
+    <div class="tab-container" data-active-tab="gallery">
+        <div class="tab active" data-tab="gallery">
+            <i class="fas fa-images"></i> Notre Galerie
+        </div>
+        <div class="tab" data-tab="upload">
+            <i class="fas fa-upload"></i> Importer mon design
+        </div>
+    </div>
+
+        <!-- Gallery Section -->
+        <div class="tab-content active" id="gallery-tab">
+            <section class="gallery-section">
+                <h3 class="section-title">
+                    <i class="fas fa-photo-video"></i> Notre Galerie Exclusive
+                </h3>
+                <p class="section-description">
+                    Découvrez nos créations uniques et personnalisez-les selon vos goûts. 
+                    Chaque motif est conçu avec soin par nos artistes pour un rendu exceptionnel.
+                </p>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits arduino petit.png" alt="Produit 3">
-                    <div class="product-info">
-                        <h3 class="product-name">Kit de Composants Électroniques</h3>
-                        <p class="product-description">Kit complet pour débuter en électronique.</p>
-                        <p class="product-price">Prix : 10 000 CFA</p>
-                        <p class="product-stock">Stock : 100 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1583744946564-b52d01e2da64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie géométrique">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie animal">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie lettrage">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1560743641-3914f2aae0b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie tribal">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1579273166152-d725a4e2b755?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie minimaliste">
                     </div>
-                </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
                     </div>
+                    <!-- Ajoutez les autres items de la galerie de la même manière -->
                 </div>
-                <div class="product-card">
-                    <img src="image/kits de demarrage.png" alt="Produit 4">
-                    <div class="product-info">
-                        <h3 class="product-name">Découpeuse Laser</h3>
-                        <p class="product-description">Machine de découpe laser professionnelle.</p>
-                        <p class="product-price">Prix : 500 000 CFA</p>
-                        <p class="product-stock">Stock : 5 unités</p>
-                        <button class="add-to-cart-button">Ajouter au panier</button>
-                    </div>
+            </section>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="tab-content" id="upload-tab">
+            <section class="upload-section">
+                <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Importer votre propre design</h3>
+                <p class="section-description">Téléchargez votre image, logo ou fichier de broderie pour créer une pièce véritablement unique.</p>
+
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h4>Glissez-déposez votre fichier ici</h4>
+                    <p>ou</p>
+                    <button class="cta-button"><i class="fas fa-folder-open"></i> Parcourir vos fichiers</button>
+                    <input type="file" id="file-input" accept="image/*,.svg,.dst" style="display: none;">
+                    <p class="small">Formats acceptés :Fichier 3D ou vectoriel (format STL, DXF, AI)</p>
                 </div>
+            </section>
+        </div>
+
+        <!-- HTML pour la section de personnalisation -->
+        <section class="customization-section">
+        <div class="customization-intro animate__animated animate__fadeIn">
+            <h3><i class="fas fa-magic"></i> Personnalisation Avancée</h3>
+            <p>Créez un design unique avec nos outils de personnalisation</p>
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInLeft">
+            <label class="option-label"><i class="fas fa-tshirt"></i> Type de service </label>
+            <select class="option-select" id="support-type">
+                <option value="choix">Choisir un support</option>
+                <option value="Decoupe">Decoupe</option>
+                <option value="gravure">Gravure</option>
+            </select>
+            <input type="text" class="option-input" id="other-support" placeholder="Précisez le support" style="display: none; margin-top: 0.8rem;">
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <input type="number" class="option-input" id="width" placeholder="Largeur" min="1" max="50" value="10">
+                <span style="font-weight: 600; color: var(--primary);">×</span>
+                <input type="number" class="option-input" id="height" placeholder="Hauteur" min="1" max="50" value="10">
             </div>
         </div>
-    </section>
-</main>
-<div id="cart-modal" class="cart-modal">
-    <div class="cart-content">
-        <h2>Votre Panier</h2>
-        <div id="cart-items"></div>
-        <div class="total">
-            <strong>Total : </strong><span id="total-price">0 CFA</span>
+
+
+
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-thread"></i>Matériau utilisé</label>
+            <select class="option-select" id="thread-type">
+                <option value="standard">Bois</option>
+                <option value="metallise">Aluminium</option>
+                <option value="fluo">PVC</option>
+            </select>
         </div>
-        <button id="checkout-button">Passer la commande</button>
-        <button id="close-cart">Fermer</button>
+
+        <div class="option-group animate__animated animate__fadeInLeft">
+            <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="number" class="option-input" id="quantity" min="1" value="1" style="max-width: 80px;">
+            </div>
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions spéciales</label>
+            <textarea class="option-textarea" id="special-notes" placeholder="Ajoutez des instructions particulières (position, détails, etc.)..."></textarea>
+        </div>
+            </section>
+            <!-- Lightbox Structure -->
+            <div class="lightbox" id="lightbox">
+            <span class="lightbox-close">&times;</span>
+            <div class="lightbox-content">
+                <img src="" alt="" class="lightbox-img" id="lightbox-img">
+                <div class="lightbox-counter" id="lightbox-counter"></div>
+                <!-- Ajoutez ce bouton -->
+                <button class="select-btn" id="select-image-btn">
+                    <i class="fas fa-check"></i> Sélectionner ce motif
+                </button>
+                <button class="close-btn" id="close-lightbox-btn">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+            <span class="lightbox-nav lightbox-prev">&#10094;</span>
+            <span class="lightbox-nav lightbox-next">&#10095;</span>
+            </div>
+
+
+        <!-- Section Aperçu Général -->
+        <section class="summary-section">
+            <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+            <div class="summary-container" id="summary-container">
+                <!-- Le contenu sera généré dynamiquement par JavaScript -->
+            </div>
+
+            <!-- Aperçu de votre galerie déplacé ici -->
+            <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+                <div class="preview-box">
+                    <div class="preview-loading"></div>
+                    <img src="https://via.placeholder.com/200x200?text=Choisissez+un+motif"
+                        alt="Aperçu de la broderie"
+                        class="preview-image"
+                        id="preview-image"
+                        style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </section>
+
+
+<!-- Bouton pour afficher le formulaire -->
+<div class="show-form-container animate__animated animate__fadeInUp">
+    <button id="show-form-btn" class="btn btn-primary btn-lg">
+        <i class="fas fa-edit"></i> Remplir le formulaire de commande
+    </button>
+</div>
+
+<!-- Formulaire (caché initialement) -->
+<section class="contact-form-section" id="contact-form" style="display: none;">
+    <div class="container">
+        <div class="form-container animate__animated animate__fadeInUp">
+            <h3 class="form-title">
+                <i class="fas fa-user-edit"></i> Informations Personnelles
+            </h3>
+            <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de broderie personnalisée</p>
+            
+            <form id="embroidery-form">
+                <!-- Section Informations Client -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fullname"><i class="fas fa-user"></i> Nom Complet *</label>
+                            <input type="text" id="fullname" name="fullname" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                            <input type="email" id="email" name="email" required class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Téléphone *</label>
+                            <input type="tel" id="phone" name="phone" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="address"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                            <input type="text" id="address" name="address" required class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Champs Cachés pour la Personnalisation -->
+                <input type="hidden" id="selected-design" name="design">
+                <input type="hidden" id="selected-support" name="support">
+                <input type="hidden" id="selected-dimensions" name="dimensions">
+                <input type="hidden" id="selected-thread" name="thread_type">
+                <input type="hidden" id="selected-quantity" name="quantity">
+                <input type="hidden" id="selected-notes" name="special_notes">
+                <input type="hidden" id="uploaded-design" name="uploaded_design">
+                
+                <!-- Mode de Livraison -->
+                <div class="form-group">
+                    <label for="delivery"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                    <select id="delivery" name="delivery" required class="form-control">
+                        <option value="">Sélectionnez une option</option>
+                        <option value="pickup">Retrait sur place (Dakar)</option>
+                        <option value="delivery_dakar">Livraison à domicile (Dakar)</option>
+                        <option value="delivery_senegal">Livraison à domicile (Autres régions)</option>
+                    </select>
+                </div>
+                
+                <!-- Conditions Générales -->
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="terms" name="terms" required class="form-check-input">
+                        <label for="terms" class="form-check-label">
+                            J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Bouton de Soumission -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Modal pour les conditions générales (conservez cette partie inchangée) -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Conditions Générales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Processus de commande</h6>
+                <p>Après soumission de votre demande, notre équipe vous contactera dans les 24 heures pour confirmer les détails et vous fournir un devis final.</p>
+                
+                <h6>2. Paiement</h6>
+                <p>Un acompte de 50% sera requis avant le début de la production. Le solde devra être réglé avant la livraison.</p>
+                
+                <h6>3. Délais de production</h6>
+                <p>Les délais standard sont de 3 à 5 jours ouvrés selon la complexité du design. Des délais plus courts peuvent être arrangés avec un supplément.</p>
+                
+                <h6>4. Livraison</h6>
+                <p>Les frais de livraison varient selon la destination. Les retraits se font à notre atelier à Dakar.</p>
+                
+                <h6>5. Retours et échanges</h6>
+                <p>En raison de la nature personnalisée de nos produits, les retours ne sont pas acceptés sauf en cas d'erreur de notre part.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">J'ai compris</button>
+            </div>
+        </div>
     </div>
 </div>
-{% include 'AntaBackEnd/footer.html' %}
-<script>
-    // Initialisation du panier
-let cart = [];
-let total = 0;
+        
 
-// Fonction pour mettre à jour l'affichage du panier
-function updateCartDisplay() {
-const cartElement = document.getElementById('cart');
-cartElement.textContent = `🛒 ${total} CFA`;
+        
+   
+
+
+    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-5 mb-md-0">
+                    <h3 class="footer-heading">LINGUÈRE FABLAB</h3>
+                    <p>Votre partenaire en fabrication numérique au Sénégal. Machines, formations et services sur mesure pour particuliers, écoles et entreprises.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
+                    <h3 class="footer-heading">LIENS RAPIDES</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Accueil</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Boutique</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Services</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Formations</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>À propos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
+                    <h3 class="footer-heading">CATÉGORIES</h3>
+                    <ul class="footer-links">
+                        <li><a href="arduino.html"><i class="fas fa-chevron-right me-2"></i>Arduino & IoT</a></li>
+                        <li><a href="machine.html"><i class="fas fa-chevron-right me-2"></i>Machines</a></li>
+                        <li><a href="installation.html"><i class="fas fa-chevron-right me-2"></i>Installations</a></li>
+                        <li><a href="broderie.html"><i class="fas fa-chevron-right me-2"></i>Broderie</a></li>
+                        <li><a href="CNC.html"><i class="fas fa-chevron-right me-2"></i>Fraiseuses Numérique</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-12">
+                    <div id="con"></div>
+                    <h3 class="footer-heading">CONTACT</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Avenue de l'Innovation, Dakar, Sénégal</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>(+221) 77 077 18 32</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>linguerefablab@gmail.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Lun-Ven: 08:00 - 17:00<br>Sam: 09:00 - 13:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom pt-4 mt-5">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start">
+                        <p class="mb-0">&copy; 2025 Linguère Fablab. Tous droits réservés.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p class="mb-0">Conçu avec <i class="fas fa-heart text-danger"></i> par Linguère Fablab Team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Cart Counter Animation
+        const cartCount = document.querySelector('.cart-count');
+        let count = 0;
+        
+        // Simulate adding items to cart (for demo)
+        setInterval(() => {
+            if (count < 5) {
+                count++;
+                cartCount.setAttribute('data-count', count);
+                
+                // Add animation
+                cartCount.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    cartCount.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 1000);
+            }
+        }, 5000);
+        
+        // Dropdown menu animation
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'block';
+                menu.classList.add('animate__animated', 'animate__fadeIn');
+            });
+            
+            dropdown.addEventListener('mouseleave', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'none';
+                menu.classList.remove('animate__animated', 'animate__fadeIn');
+            });
+        });
+        
+        // Search bar focus effect
+        const searchInput = document.querySelector('.search-bar input');
+        
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('animate__animated', 'animate__pulse');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('animate__animated', 'animate__pulse');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Système d'onglets
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+        
+            // Gestion du support
+            const supportSelect = document.getElementById('support-type');
+            const otherSupportInput = document.getElementById('other-support');
+            supportSelect.addEventListener('change', function() {
+                otherSupportInput.style.display = this.value === 'autre' ? 'block' : 'none';
+            });
+        
+            // Sélection de couleur
+          // Sélection multiple de couleurs
+        const colorOptions = document.querySelectorAll('.color-option');
+        const selectedColorsInput = document.getElementById('selected-colors');
+        const selectedColorsDisplay = document.getElementById('selected-colors-display');
+        let selectedColors = [];
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                
+                // Vérifier si la couleur est déjà sélectionnée
+                const colorIndex = selectedColors.indexOf(color);
+                
+                if (colorIndex === -1) {
+                    // Ajouter la couleur
+                    selectedColors.push(color);
+                    this.classList.add('selected');
+                } else {
+                    // Retirer la couleur
+                    selectedColors.splice(colorIndex, 1);
+                    this.classList.remove('selected');
+                }
+                
+                // Mettre à jour le champ caché
+                selectedColorsInput.value = selectedColors.join(',');
+                
+                // Mettre à jour l'affichage
+                updateSelectedColorsDisplay();
+            });
+        });
+        
+        function updateSelectedColorsDisplay() {
+            selectedColorsDisplay.innerHTML = '';
+            
+            selectedColors.forEach(color => {
+                const colorElement = document.createElement('div');
+                colorElement.className = 'selected-color';
+                colorElement.style.background = color;
+                colorElement.setAttribute('data-color', color);
+                
+                // Ajouter un bouton pour supprimer la couleur
+                colorElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const colorToRemove = this.getAttribute('data-color');
+                    selectedColors = selectedColors.filter(c => c !== colorToRemove);
+                    selectedColorsInput.value = selectedColors.join(',');
+                    
+                    // Retirer la classe selected de l'option correspondante
+                    document.querySelectorAll('.color-option').forEach(opt => {
+                        if (opt.getAttribute('data-color') === colorToRemove) {
+                            opt.classList.remove('selected');
+                        }
+                    });
+                    
+                    updateSelectedColorsDisplay();
+                });
+                
+                selectedColorsDisplay.appendChild(colorElement);
+            });
+        }
+        
+            // Lightbox simplifiée
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const lightboxPrev = document.querySelector('.lightbox-prev');
+            const lightboxNext = document.querySelector('.lightbox-next');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            const selectImageBtn = document.getElementById('select-image-btn');
+            
+            let currentImageIndex = 0;
+            const images = Array.from(document.querySelectorAll('.gallery-item')).map(item => item.querySelector('img').src);
+            const previewImage = document.getElementById('preview-image');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+        
+            // Lightbox navigation
+            function updateLightboxImage() {
+                lightboxImg.src = images[currentImageIndex];
+                lightboxCounter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+            }
+        
+            // Ouvrir lightbox depuis la galerie
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    updateLightboxImage();
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+        
+            // Navigation lightbox
+            lightboxPrev.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                updateLightboxImage();
+            });
+        
+            lightboxNext.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                updateLightboxImage();
+            });
+        
+            // Fermer lightbox et sélectionner l'image
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        
+            // Sélectionner l'image et fermer la lightbox
+            selectImageBtn.addEventListener('click', () => {
+                previewImage.src = images[currentImageIndex];
+                galleryItems.forEach(item => item.classList.remove('selected'));
+                galleryItems[currentImageIndex].classList.add('selected');
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Après la déclaration de selectImageBtn
+            const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+
+            closeLightboxBtn.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        
+            // Gestion de l'upload
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            const ctaButton = dropArea.querySelector('.cta-button');
+        
+            dropArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropArea.classList.add('active');
+            });
+        
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.classList.remove('active');
+            });
+        
+            dropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropArea.classList.remove('active');
+                handleFile(e.dataTransfer.files[0]);
+            });
+        
+            ctaButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+        
+            fileInput.addEventListener('change', function() {
+                handleFile(this.files[0]);
+            });
+        
+            function handleFile(file) {
+                if (file && (file.type.startsWith('image/') || file.name.endsWith('.svg'))) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file && file.name.endsWith('.dst')) {
+                    previewImage.src = 'https://via.placeholder.com/320x320/CCCCCC/808080?Text=Fichier+DST';
+                    alert('Le fichier DST est un format de broderie, la prévisualisation peut ne pas être exacte.');
+                } else if (file) {
+                    alert('Format de fichier non supporté. Veuillez utiliser une image (PNG, JPG, SVG) ou un fichier DST.');
+                }
+            }
+        
+            // Navigation clavier
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else if (e.key === 'ArrowLeft') {
+                    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                    updateLightboxImage();
+                } else if (e.key === 'ArrowRight') {
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    updateLightboxImage();
+                }
+            });
+        });
+ // Fonction pour mettre à jour l'aperçu général
+ function updateSummary() {
+        const summaryContainer = document.getElementById('summary-container');
+        const supportType = document.getElementById('support-type');
+        const otherSupport = document.getElementById('other-support');
+        const width = document.getElementById('width');
+        const height = document.getElementById('height');
+        const threadType = document.getElementById('thread-type');
+        const quantity = document.getElementById('quantity');
+        const specialNotes = document.getElementById('special-notes');
+        const previewImage = document.getElementById('preview-image').src;
+        
+        // Déterminer le type de support
+        let supportText = supportType.options[supportType.selectedIndex].text;
+        if (supportType.value === 'choix' && otherSupport.value) {
+            supportText = otherSupport.value;
+        }
+        
+        // Créer le HTML de l'aperçu
+        summaryContainer.innerHTML = `
+            <div class="summary-item">
+                <h4><i class="fas fa-tshirt"></i> Type de service</h4>
+                <p>${supportText}</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-ruler-combined"></i> Dimensions</h4>
+                <p>${width.value} cm × ${height.value} cm</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-thread"></i> Matériau utilisé</h4>
+                <p>${threadType.options[threadType.selectedIndex].text}</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-boxes"></i> Quantité</h4>
+                <p>${quantity.value} pièce(s)</p>
+            </div>
+            
+            ${specialNotes.value ? `
+            <div class="summary-item">
+                <h4><i class="fas fa-clipboard-list"></i> Instructions</h4>
+                <p>${specialNotes.value}</p>
+            </div>
+            ` : ''}
+        `;
+    }
+    
+    // Écouteurs d'événements pour mettre à jour l'aperçu
+    document.querySelectorAll('#support-type, #width, #height, #thread-type, #quantity, #special-notes').forEach(element => {
+        element.addEventListener('change', updateSummary);
+        element.addEventListener('input', updateSummary);
+    });
+    
+    document.getElementById('other-support').addEventListener('input', updateSummary);
+    
+    // Mettre à jour l'aperçu lors de la sélection d'une image
+    document.getElementById('select-image-btn')?.addEventListener('click', updateSummary);
+    document.getElementById('file-input')?.addEventListener('change', function() {
+        setTimeout(updateSummary, 100);
+    });
+    
+    // Initialiser l'aperçu au chargement
+    updateSummary();
+
+    function handleFile(file) {
+    if (file && (file.type.startsWith('image/') || file.name.endsWith('.svg'))) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            // Mettre à jour le champ caché pour l'image uploadée
+            document.getElementById('uploaded-design').value = file.name;
+            // Mettre à jour le résumé
+            updateSummary();
+        };
+        reader.readAsDataURL(file);
+    } else if (file && file.name.endsWith('.dst')) {
+        previewImage.src = 'https://via.placeholder.com/320x320/CCCCCC/808080?Text=Fichier+DST';
+        document.getElementById('uploaded-design').value = file.name;
+        updateSummary();
+        alert('Le fichier DST est un format de broderie, la prévisualisation peut ne pas être exacte.');
+    } else if (file) {
+        alert('Format de fichier non supporté. Veuillez utiliser une image (PNG, JPG, SVG) ou un fichier DST.');
+    }
 }
-
-// Fonction pour ajouter un produit au panier
-function addToCart(productName, productPrice) {
-const existingProduct = cart.find(item => item.name === productName);
-if (existingProduct) {
-existingProduct.quantity += 1;
-} else {
-cart.push({ name: productName, price: productPrice, quantity: 1 });
-}
-total += productPrice;
-updateCartDisplay();
-
-// Show confirmation message
-const confirmationMessage = document.getElementById('confirmation-message');
-confirmationMessage.style.display = 'block';
-setTimeout(() => {
-confirmationMessage.style.display = 'none';
-}, 3000); // Hide message after 3 seconds
-}
-
-// Fonction pour afficher le panier
-function showCart() {
-const cartModal = document.getElementById('cart-modal');
-const cartItemsContainer = document.getElementById('cart-items');
-cartItemsContainer.innerHTML = '';
-
-cart.forEach(item => {
-const cartItemDiv = document.createElement('div');
-cartItemDiv.classList.add('cart-item');
-
-cartItemDiv.innerHTML = `
-  <span>${item.name} (${item.quantity}) - ${(item.price * item.quantity).toFixed(2)} CFA</span>
-  <div class="quantity-controls">
-    <button onclick="updateQuantity('${item.name}', -1)">-</button>
-    <span>${item.quantity}</span>
-    <button onclick="updateQuantity('${item.name}', 1)">+</button>
-  </div>
-  <button onclick="removeProduct('${item.name}')">Supprimer</button>
-`;
-
-cartItemsContainer.appendChild(cartItemDiv);
+// Gestion de l'affichage du formulaire
+document.getElementById('show-form-btn').addEventListener('click', function() {
+    const formSection = document.getElementById('contact-form');
+    formSection.style.display = 'block';
+    this.style.display = 'none'; // Cache le bouton après clic
+    
+    // Animation pour le formulaire
+    formSection.scrollIntoView({ behavior: 'smooth' });
+    formSection.querySelector('.form-container').classList.add('animate__fadeInUp');
 });
-
-// Mettre à jour le prix total
-document.getElementById('total-price').textContent = `${total.toFixed(2)} CFA`;
-
-// Afficher le modal
-cartModal.style.display = 'flex';
-}
-
-// Fonction pour fermer le panier
-document.getElementById('close-cart').addEventListener('click', () => {
-document.getElementById('cart-modal').style.display = 'none';
-});
-
-// Fonction pour augmenter/diminuer la quantité
-function updateQuantity(productName, change) {
-const product = cart.find(item => item.name === productName);
-if (product) {
-if (product.quantity + change > 0) {
-  product.quantity += change;
-  total += product.price * change;
-} else {
-  total -= product.price * product.quantity;
-  cart = cart.filter(item => item.name !== productName);
-}
-updateCartDisplay();
-showCart();
-}
-}
-
-// Fonction pour supprimer un produit
-function removeProduct(productName) {
-const productIndex = cart.findIndex(item => item.name === productName);
-if (productIndex !== -1) {
-total -= cart[productIndex].price * cart[productIndex].quantity;
-cart.splice(productIndex, 1);
-updateCartDisplay();
-showCart();
-}
-}
-
-// Ajouter des écouteurs d'événements aux boutons "Ajouter au panier"
-document.querySelectorAll('.add-to-cart-button').forEach(button => {
-button.addEventListener('click', () => {
-const productName = button.parentElement.querySelector('.product-name').textContent;
-const productPrice = parseFloat(
-  button.parentElement.querySelector('.product-price').textContent.replace('Prix : ', '').replace(' CFA', '')
-);
-addToCart(productName, productPrice);
-});
-});
-
-// Ajouter un écouteur d'événements pour afficher le panier
-document.getElementById('cart').addEventListener('click', showCart);
-document.getElementById('checkout-button').addEventListener('click', () => {
-if (cart.length > 0) {
-alert('Commande passée avec succès !');
-// Vous pouvez ajouter ici la logique pour traiter la commande
-cart = [];
-total = 0;
-updateCartDisplay();
-document.getElementById('cart-modal').style.display = 'none';
-} else {
-alert('Votre panier est vide !');
-}
-});
-</script>
+                </script>
 </body>
 </html>
