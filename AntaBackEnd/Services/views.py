@@ -5,7 +5,7 @@ def broderie_numerique(request):
     return render(request, "Services/broderie/index.html")
 
 def fraiseuse_numerique(request):
-    return render(request, "Services/CNC/index.html")
+    return render(request, "Services/fraiseuse/index.html")
 
 def decoupe_laser(request):
     return render(request, "Services/laser/index.html")
