@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,64 +14,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="service.css">
-    <link rel="stylesheet" href="aaaaa.css">
+    <link rel="stylesheet" href="{% static 'Services/Service/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
 </head>
 <body>
-    <div class="top-bar">
-        <div class="container d-flex flex-wrap justify-content-center justify-content-md-between">
-            <span><a href="localisation.html"><i class="fas fa-map-marker-alt me-2"></i> LOCALISATION</a></span>
-            <span><i class="fas fa-truck me-2"></i> Livraison Partout au Sénégal</span>
-            <span><i class="far fa-clock me-2"></i> 08:00 - 17:00</span>
-            <span><i class="fas fa-phone me-2"></i> (+221) 77 077 18 32</span>
-            <span><a href="https://wa.me/+221770771832" target="_blank"><i class="fab fa-whatsapp me-2"></i> WHATSAPP</a></span>
-        </div>
-    </div>
-    
-    <!-- Navigation -->
-    <nav>
-        <div class="container d-flex flex-wrap justify-content-between align-items-center">
-            <div class="logo animate__animated animate__fadeInLeft d-flex align-items-center">
-                <a href="index.html"><img src="logos.jpeg" alt="Logo" class="logo-img me-3"></a>
-                <span class="nav-brand">LINGUERE FABLAB</span>
-            </div>
-            
-            <div class="search-bar animate__animated animate__zoomIn">
-                <input type="text" placeholder="Rechercher produits...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-            
-            <div class="icons d-flex align-items-center">
-                <span class="me-3"><i class="far fa-heart"></i></span>
-                <span class="me-3"><i class="far fa-user"></i></span>
-                <span class="cart-count" data-count="0"><i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">0 CFA</span></span>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Main Navigation -->
-    <div class="nav-bar">
-        <div class="container d-flex flex-wrap justify-content-center">
-            <a href="#" style="color: rgb(255, 68, 0);"><i class="fas fa-home me-2"></i> ACCUEIL</a>
-            <div class="dropdown">
-                <a href="#"><i class="fas fa-list me-2"></i> CATALOGUE <i class="fas fa-chevron-down ms-1"></i></a>
-                <div class="dropdown-menu">
-                    <a href="arduino.html"><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</a>
-                    <a href="machine.html"><i class="fas fa-robot me-2"></i> Machines Numériques</a>
-                    <a href="installation.html"><i class="fas fa-tools me-2"></i> Installations Fablab</a>
-                    <a href="broderie.html"><i class="fas fa-tshirt me-2"></i> Broderie numérique</a>
-                    <a href="CNC.html"><i class="fas fa-cogs me-2"></i> Fraiseuses Numérique</a>
-                    <a href="laser.html"><i class="fas fa-cut me-2"></i> Découpe laser</a>
-                    <a href="boutique"><i class="fas fa-laptop-code me-2"></i> Logiciels</a>
-                    <a href="boutique"><i class="fas fa-plug me-2"></i> Accessoires</a>
-                </div>
-            </div> 
-            <a href="#"><i class="fas fa-certificate me-2"></i> NOUVEAUTÉS</a>
-            <a href="apropos.html"><i class="fas fa-info-circle me-2"></i> À PROPOS</a>
-            <a href="#con"><i class="fas fa-envelope me-2"></i> CONTACT</a>
-        </div>
-    </div>
-    
+
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+
+
     <header class="service-header animate__animated animate__fadeInUp">
         <h2 class="service-title">
             <i class="fas fa-tshirt service-icon"></i>
@@ -359,80 +311,7 @@
    
 
 
-    
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-5 mb-md-0">
-                    <h3 class="footer-heading">LINGUÈRE FABLAB</h3>
-                    <p>Votre partenaire en fabrication numérique au Sénégal. Machines, formations et services sur mesure pour particuliers, écoles et entreprises.</p>
-                    <div class="social-icons mt-4">
-                        <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
-                    <h3 class="footer-heading">LIENS RAPIDES</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Accueil</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Boutique</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Services</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>Formations</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right me-2"></i>À propos</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
-                    <h3 class="footer-heading">CATÉGORIES</h3>
-                    <ul class="footer-links">
-                        <li><a href="arduino.html"><i class="fas fa-chevron-right me-2"></i>Arduino & IoT</a></li>
-                        <li><a href="machine.html"><i class="fas fa-chevron-right me-2"></i>Machines</a></li>
-                        <li><a href="installation.html"><i class="fas fa-chevron-right me-2"></i>Installations</a></li>
-                        <li><a href="broderie.html"><i class="fas fa-chevron-right me-2"></i>Broderie</a></li>
-                        <li><a href="CNC.html"><i class="fas fa-chevron-right me-2"></i>Fraiseuses Numérique</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-4 col-md-12">
-                    <div id="con"></div>
-                    <h3 class="footer-heading">CONTACT</h3>
-                    <ul class="footer-contact">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Avenue de l'Innovation, Dakar, Sénégal</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <span>(+221) 77 077 18 32</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>linguerefablab@gmail.com</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Lun-Ven: 08:00 - 17:00<br>Sam: 09:00 - 13:00</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom pt-4 mt-5">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start">
-                        <p class="mb-0">&copy; 2025 Linguère Fablab. Tous droits réservés.</p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <p class="mb-0">Conçu avec <i class="fas fa-heart text-danger"></i> par Linguère Fablab Team</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+{% include 'AntaBackEnd/header_footer/footer.html' %}
     
     <!-- Back to Top Button -->
     <div class="back-to-top">
