@@ -15,7 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import impression_num_proposees, broderie_numerique, fraiseuse_numerique, decoupe_laser, impression_3D
+from .views import impression_num_proposees, broderie_numerique, fraiseuse_numerique, decoupe_laser, impression_3D, \
+    save_broderie_order
 
 urlpatterns = [
     path('impression-3d/' , impression_3D, name="service-impression-3d"),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('fraiseuse-numerique/' , fraiseuse_numerique, name="services-fraiseuse"),
     path('broderie-numerique/' , broderie_numerique, name="services-broderie"),
     path('impression-numerique-propose', impression_num_proposees, name="service-impression-numerique-propose"),
+    path('broderie-order', save_broderie_order, name='broderie-order'),
 ]
