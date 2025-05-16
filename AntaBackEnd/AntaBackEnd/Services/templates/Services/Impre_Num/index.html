@@ -1,0 +1,1276 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{imp_num_serviceName}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="aaaaa.css">
+
+    <link rel="stylesheet" href="{% static 'Services/Service/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+</head>
+<body>
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    
+    <header class="service-header animate__animated animate__fadeInUp">
+        <h2 class="service-title">
+            <i class="fas fa-tshirt service-icon"></i>
+            {{imp_num_serviceName}}
+        </h2>
+        <p class="service-subtitle">{{imp_num_serviceDesc}}</p>
+    </header>
+    <div class="tab-container" data-active-tab="gallery">
+        <div class="tab active" data-tab="gallery">
+            <i class="fas fa-images"></i> Notre Galerie
+        </div>
+        <div class="tab" data-tab="upload">
+            <i class="fas fa-upload"></i> Importer mon design
+        </div>
+    </div>
+
+        <!-- Gallery Section -->
+        <div class="tab-content active" id="gallery-tab">
+            <section class="gallery-section">
+                <h3 class="section-title">
+                    <i class="fas fa-photo-video"></i> Notre Galerie Exclusive
+                </h3>
+                <p class="section-description">
+                    Découvrez nos créations uniques et personnalisez-les selon vos goûts. 
+                    Chaque motif est conçu avec soin par nos artistes pour un rendu exceptionnel.
+                </p>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img1}}" alt="Motif broderie floral">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img2}}" alt="Motif broderie géométrique">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img3}}" alt="Motif broderie animal">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img4}}" alt="Motif broderie lettrage">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img5}}" alt="Motif broderie tribal">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img6}}" alt="Motif broderie floral">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img7}}" alt="Motif broderie minimaliste">
+                    </div>
+                    <div class="gallery-item" data-img="design1.jpg">
+                        <img src="{{img8}}" alt="Motif broderie floral">
+                    </div>
+                    <!-- Ajoutez les autres items de la galerie de la même manière -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="tab-content" id="upload-tab">
+            <section class="upload-section">
+                <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Importer votre propre design</h3>
+                <p class="section-description">Téléchargez votre image, logo ou fichier de broderie pour créer une pièce véritablement unique.</p>
+
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h4>Glissez-déposez votre fichier ici</h4>
+                    <p>ou</p>
+                    <button class="cta-button"><i class="fas fa-folder-open"></i> Parcourir vos fichiers</button>
+                    {{imp_num_form.upload_design_picture}}
+                    <p class="small">Fichier 3D (format STL, OBJ)</p>
+                </div>
+            </section>
+        </div>
+
+
+
+
+
+
+        <!-- HTML pour la section de personnalisation Impression sur Papier et Supports Rigides -->
+        <section class="customization-section" id="paper-section">
+        <div class="customization-intro animate__animated animate__fadeIn">
+            <h3><i class="fas fa-magic"></i>Impression sur Papier et Supports Rigides</h3>
+            <p>Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding </p>
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInLeft">
+            <label class="option-label"><i class="fas fa-thread"></i>Format souhaité</label>
+            <select class="option-select" id="format-select">
+                <option value="A3">A3</option>
+                <option value="A4">A4</option>
+                <option value="A5">A5</option>
+                <option value="autre">Autre (Presiez)</option>
+            </select>
+            <input type="text" class="option-input" id="other-format" placeholder="Précisez le support" style="display: none; margin-top: 0.8rem;">
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <input type="number" class="option-input" id="width-paper" placeholder="Largeur" min="1" max="50" value="10">
+                <span style="font-weight: 600; color: var(--primary);">×</span>
+                <input type="number" class="option-input" id="height-paper" placeholder="Hauteur" min="1" max="50" value="10">
+            </div>
+        </div>
+
+
+        <div class="option-group animate__animated animate__fadeInLeft">
+            <label class="option-label"><i class="fas fa-palette"></i> Couleurs de broderie</label>
+            <div class="color-options" id="color-options-paper">
+                <div class="color-option" style="background: #000000;" data-color="#000000" title="Noir"></div>
+                <div class="color-option" style="background: #FF0000;" data-color="#FF0000" title="Rouge"></div>
+                <div class="color-option" style="background: #0000FF;" data-color="#0000FF" title="Bleu"></div>
+                <div class="color-option" style="background: #FFFFFF; border: 1px solid #ddd;" data-color="#FFFFFF" title="Blanc"></div>
+                <div class="color-option" style="background: #FFC0CB;" data-color="#FFC0CB" title="Rose"></div>
+                <div class="color-option" style="background: #5E35B1;" data-color="#5E35B1" title="Violet"></div>
+                <div class="color-option" style="background: #32CD32;" data-color="#32CD32" title="Vert"></div>
+                <div class="color-option" style="background: #FFA500;" data-color="#FFA500" title="Orange"></div>
+                <div class="color-option" style="background: #FFD700;" data-color="#FFD700" title="Or"></div>
+                <div class="color-option" style="background: #C0C0C0;" data-color="#C0C0C0" title="Argent"></div>
+            </div>
+            <input type="hidden" id="selected-colors-paper" value="">
+            <div class="selected-colors-display" id="selected-colors-display-paper"></div>
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-thread"></i>Type de papier</label>
+            <select class="option-select" id="thread-type-paper">
+                <option value="standard">mat</option>
+                <option value="metallise">brillant</option>
+                <option value="PETG">recyclé</option>
+                <option value="Résine">Autre (Presiez)</option>
+            </select>
+            <input type="text" class="option-input" id="other-thread-type-paper" placeholder="Précisez le matériau" style="display: none; margin-top: 0.8rem;">
+        </div>
+
+
+        <div class="option-group animate__animated animate__fadeInRight">
+            <label class="option-label"><i class="fas fa-thread"></i>Fichier du design</label>
+            <select class="option-select" id="design-file-type-1">
+                <option value="PNG">PNG</option>
+                <option value="AI">AI</option>
+                <option value="PSD">PSD</option>
+                <option value="autre">Autre (Presiez)</option>
+            </select>
+            <input type="text" class="option-input" id="other-design-file-1" placeholder="Précisez le type de fichier" style="display: none; margin-top: 0.8rem;">
+        </div>
+
+        <div class="option-group animate__animated animate__fadeInLeft">
+            <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+            <div style=" align-items: center;">
+                <input type="number" class="option-input" id="quantity-paper" min="1" value="1" style="max-width: 80px;">
+            </div>
+        </div>
+        
+
+        <div class="option-group animate__animated animate__fadeInRight" style="width: 300px;">
+            <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions spéciales</label>
+            <textarea class="option-textarea" id="special-notes-paper" placeholder="Ajoutez des instructions particulières (position, détails, etc.)..."></textarea>
+        </div>
+
+            <div class="option-bou animate__animated animate__fadeInRight" style="width: 500px;">
+                <button class="preview-btn" data-section="paper">
+                    <a href="#bt_ap">Cliquer pour voir l'aperçu général</a>
+                </button>
+            </div>
+            
+            </section>
+            
+
+
+
+
+
+                <!-- HTML pour la section de personnalisation Impression sur Textiles et Vêtements -->
+                <section class="customization-section" id="textile-section">
+                    <div class="customization-intro animate__animated animate__fadeIn">
+                        <h3><i class="fas fa-magic"></i>Impression sur Textiles et Vêtements</h3>
+                        <p>Nous imprimons vos designs sur différents textiles pour des vêtements et accessoires personnalisés </p>
+                    </div>
+            
+                    <div class="option-group animate__animated animate__fadeInLeft">
+                        <label class="option-label"><i class="fas fa-thread"></i>Type de textile</label>
+                        <select class="option-select" id="textile-type">
+                            <option value="coton">coton</option>
+                            <option value="polyester">polyester</option>
+                            <option value="autre">Autre (Presiez)</option>
+                        </select>
+                        <input type="text" class="option-input" id="other-textile" placeholder="Précisez le support" style="display: none; margin-top: 0.8rem;">
+                    </div>
+            
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+                        <div style="display: flex; gap: 0.8rem; align-items: center;">
+                            <input type="number" class="option-input" id="width-textile" placeholder="Largeur" min="1" max="50" value="10">
+                            <span style="font-weight: 600; color: var(--primary);">×</span>
+                            <input type="number" class="option-input" id="height-textile" placeholder="Hauteur" min="1" max="50" value="10">
+                        </div>
+                    </div>
+            
+            
+                    <div class="option-group animate__animated animate__fadeInLeft">
+                        <label class="option-label"><i class="fas fa-palette"></i> Couleurs de broderie</label>
+                        <div class="color-options" id="color-options-textile">
+                            <div class="color-option" style="background: #000000;" data-color="#000000" title="Noir"></div>
+                            <div class="color-option" style="background: #FF0000;" data-color="#FF0000" title="Rouge"></div>
+                            <div class="color-option" style="background: #0000FF;" data-color="#0000FF" title="Bleu"></div>
+                            <div class="color-option" style="background: #FFFFFF; border: 1px solid #ddd;" data-color="#FFFFFF" title="Blanc"></div>
+                            <div class="color-option" style="background: #FFC0CB;" data-color="#FFC0CB" title="Rose"></div>
+                            <div class="color-option" style="background: #5E35B1;" data-color="#5E35B1" title="Violet"></div>
+                            <div class="color-option" style="background: #32CD32;" data-color="#32CD32" title="Vert"></div>
+                            <div class="color-option" style="background: #FFA500;" data-color="#FFA500" title="Orange"></div>
+                            <div class="color-option" style="background: #FFD700;" data-color="#FFD700" title="Or"></div>
+                            <div class="color-option" style="background: #C0C0C0;" data-color="#C0C0C0" title="Argent"></div>
+                        </div>
+                        <input type="hidden" id="selected-colors-textile" value="">
+                        <div class="selected-colors-display" id="selected-colors-display-textile"></div>
+                    </div>
+            
+            
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-thread"></i>Technique d’impression souhaitée</label>
+                        <select class="option-select" id="thread-type-textile">
+                            <option value="sérigraphie">sérigraphie</option>
+                            <option value="sublimation">sublimation</option>
+                            <option value="impression">impression</option>
+                            <option value="directe">directe</option>
+                        </select>
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-thread"></i>Fichier du design</label>
+                        <select class="option-select" id="design-file-type-2">
+                            <option value="PNG">PNG</option>
+                            <option value="AI">AI</option>
+                            <option value="PSD">PSD</option>
+                            <option value="autre">Autre (Presiez)</option>
+                        </select>
+                        <input type="text" class="option-input" id="other-design-file-2" placeholder="Précisez le type de fichier" style="display: none; margin-top: 0.8rem;">
+                    </div>
+            
+                    <div class="option-group animate__animated animate__fadeInLeft">
+                        <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="number" class="option-input" id="quantity-textile" min="1" value="1" style="max-width: 80px;">
+                        </div>
+                    </div>
+            
+                    <div class="option-group animate__animated animate__fadeInRight" style="width: 300px;">
+                        <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions spéciales</label>
+                        <textarea class="option-textarea" id="special-notes-textile" placeholder="Ajoutez des instructions particulières (position, détails, etc.)..."></textarea>
+                    </div>
+
+                    <div class="option-bou animate__animated animate__fadeInRight" style="width: 500px;">
+                        <button class="preview-btn" data-section="textile">
+                            <a href="#bt_ap">Cliquer pour voir l'aperçu général</a>
+                        </button>
+                    </div>
+                        </section>
+
+
+
+
+
+
+                            <!-- HTML pour la section de personnalisation Impression sur Objets Personnalisés -->
+            <section class="customization-section" id="object-section">
+            <div class="customization-intro animate__animated animate__fadeIn">
+                <h3><i class="fas fa-magic"></i>Impression sur Objets Personnalisés</h3>
+                <p>Personnalisez divers objets grâce à l’impression numérique </p>
+            </div>
+    
+            <div class="option-group animate__animated animate__fadeInLeft">
+                <label class="option-label"><i class="fas fa-tshirt"></i>Type d’objet à personnaliser</label>
+                <select class="option-select" id="support-type">
+                    <option value="choix">Choisir un support</option>
+                    <option value="t-shirt">T-shirt</option>
+                    <option value="casquette">Casquette</option>
+                    <option value="Laoste">Laoste</option>
+                    <option value="polo">Polo</option>
+                    <option value="sweat">Sweat à capuche</option>
+                    <option value="serviette">Serviette</option>
+                    <option value="sac">Sac</option>
+                    <option value="autre">Autre (précisez)</option>
+                </select>
+                <input type="text" class="option-input" id="other-support" placeholder="Précisez le support" style="display: none; margin-top: 0.8rem;">
+            </div>
+    
+            <div class="option-group animate__animated animate__fadeInRight">
+                <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+                <div style="display: flex; gap: 0.8rem; align-items: center;">
+                    <input type="number" class="option-input" id="width-object" placeholder="Largeur" min="1" max="50" value="10">
+                    <span style="font-weight: 600; color: var(--primary);">×</span>
+                    <input type="number" class="option-input" id="height-object" placeholder="Hauteur" min="1" max="50" value="10">
+                </div>
+            </div>
+    
+    
+            <div class="option-group animate__animated animate__fadeInLeft">
+                <label class="option-label"><i class="fas fa-palette"></i> Couleurs de broderie</label>
+                <div class="color-options" id="color-options-object">
+                    <div class="color-option" style="background: #000000;" data-color="#000000" title="Noir"></div>
+                    <div class="color-option" style="background: #FF0000;" data-color="#FF0000" title="Rouge"></div>
+                    <div class="color-option" style="background: #0000FF;" data-color="#0000FF" title="Bleu"></div>
+                    <div class="color-option" style="background: #FFFFFF; border: 1px solid #ddd;" data-color="#FFFFFF" title="Blanc"></div>
+                    <div class="color-option" style="background: #FFC0CB;" data-color="#FFC0CB" title="Rose"></div>
+                    <div class="color-option" style="background: #5E35B1;" data-color="#5E35B1" title="Violet"></div>
+                    <div class="color-option" style="background: #32CD32;" data-color="#32CD32" title="Vert"></div>
+                    <div class="color-option" style="background: #FFA500;" data-color="#FFA500" title="Orange"></div>
+                    <div class="color-option" style="background: #FFD700;" data-color="#FFD700" title="Or"></div>
+                    <div class="color-option" style="background: #C0C0C0;" data-color="#C0C0C0" title="Argent"></div>
+                </div>
+                <input type="hidden" id="selected-colors-object" value="">
+                <div class="selected-colors-display" id="selected-colors-display-object"></div>
+            </div>
+    
+    
+            <div class="option-group animate__animated animate__fadeInRight">
+                <label class="option-label"><i class="fas fa-thread"></i>Fichier du design</label>
+                <select class="option-select" id="design-file-type-3">
+                    <option value="PNG">PNG</option>
+                    <option value="AI">AI</option>
+                    <option value="PSD">PSD</option>
+                    <option value="autre">Autre (Presiez)</option>
+                </select>
+                <input type="text" class="option-input" id="other-design-file-3" placeholder="Précisez le type de fichier" style="display: none; margin-top: 0.8rem;">
+            </div>
+    
+            <div class="option-group animate__animated animate__fadeInLeft">
+                <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="number" class="option-input" id="quantity-object" min="1" value="1" style="max-width: 80px;">
+                </div>
+            </div>
+    
+            <div class="option-group animate__animated animate__fadeInRight" style="width: 300px;">
+                <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions spéciales</label>
+                <textarea class="option-textarea" id="special-notes-object" placeholder="Ajoutez des instructions particulières (position, détails, etc.)..."></textarea>
+            </div>
+            <div class="option-bou animate__animated animate__fadeInRight" style="width: 500px;">
+                <button class="preview-btn" data-section="object">
+                    <a href="#bt_ap">Cliquer pour voir l'aperçu général</a>
+                </button>
+            </div>
+            </section>
+                </section>
+
+
+                <!-- Lightbox Structure -->
+                <div class="lightbox" id="lightbox">
+                <span class="lightbox-close">&times;</span>
+                <div class="lightbox-content">
+                    <img src="" alt="" class="lightbox-img" id="lightbox-img">
+                    <div class="lightbox-counter" id="lightbox-counter"></div>
+                    <!-- Ajoutez ce bouton -->
+                    <button class="select-btn" id="select-image-btn">
+                        <i class="fas fa-check"></i> Sélectionner ce motif
+                    </button>
+                    <button class="close-btn" id="close-lightbox-btn">
+                        <i class="fas fa-times"></i> Fermer
+                    </button>
+                </div>
+                <span class="lightbox-nav lightbox-prev">&#10094;</span>
+                <span class="lightbox-nav lightbox-next">&#10095;</span>
+                </div>
+
+            <!-- Section Aperçu Général -->
+             <div id="bt_ap"></div>
+            <section class="summary-section">
+                <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+                <div class="summary-container" id="summary-container">
+                    <!-- Le contenu sera généré dynamiquement par JavaScript -->
+                </div>
+                
+    
+                <!-- Aperçu de votre galerie déplacé ici -->
+                <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+                    <div class="preview-box">
+                        <div class="preview-loading"></div>
+                        <img src="https://via.placeholder.com/200x200?text=Choisissez+un+motif"
+                            alt="Aperçu de la broderie"
+                            class="preview-image"
+                            id="preview-image"
+                            style="width: 100%; height: auto;">
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Bouton pour afficher le formulaire -->
+<div class="show-form-container animate__animated animate__fadeInUp">
+    <button id="show-form-btn" class="btn btn-primary btn-lg">
+        <i class="fas fa-edit"></i> Remplir le formulaire de commande
+    </button>
+</div>
+
+<!-- Formulaire (caché initialement) -->
+<section class="contact-form-section" id="contact-form" style="display: none;">
+    <div class="container">
+        <div class="form-container animate__animated animate__fadeInUp">
+            <h3 class="form-title">
+                <i class="fas fa-user-edit"></i> Informations Personnelles
+            </h3>
+            <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de broderie personnalisée</p>
+            
+            <form id="embroidery-form">
+                <!-- Section Informations Client -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name"><i class="fas fa-user"></i> Nom Complet *</label>
+                            {{imp_num_form.name}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                            {{imp_num_form.email}}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tel_number"><i class="fas fa-phone"></i> Téléphone *</label>
+                            {{imp_num_form.tel_number}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="town"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                            {{imp_num_form.town}}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Champs Cachés pour la Personnalisation -->
+                {{imp_num_form.wished_format}}
+                {{imp_num_form.paper}}
+                {{imp_num_form.textile}}
+                {{imp_num_form.design_file}}
+                {{imp_num_form.support_type}}
+                {{imp_num_form.impression_type}}
+                {{imp_num_form.dim_1}}
+                {{imp_num_form.dim_2}}
+                {{imp_num_form.codeCouleur}}
+                {{imp_num_form.quantity}}
+                {{imp_num_form.special_instructions}}
+                {{imp_num_form.design_picture}}
+
+                <!-- Mode de Livraison -->
+                <div class="form-group">
+                    <label for="delivery_mode"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                    {{imp_num_form.delivery_mode}}
+                </div>
+                
+                <!-- Conditions Générales -->
+                <div class="form-group">
+                    <div class="form-check">
+                        {{imp_num_form.cgu_accept}}
+                        <label for="cgu_accept" class="form-check-label">
+                            J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Bouton de Soumission -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Modal pour les conditions générales (conservez cette partie inchangée) -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Conditions Générales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Processus de commande</h6>
+                <p>Après soumission de votre demande, notre équipe vous contactera dans les 24 heures pour confirmer les détails et vous fournir un devis final.</p>
+                
+                <h6>2. Paiement</h6>
+                <p>Un acompte de 50% sera requis avant le début de la production. Le solde devra être réglé avant la livraison.</p>
+                
+                <h6>3. Délais de production</h6>
+                <p>Les délais standard sont de 3 à 5 jours ouvrés selon la complexité du design. Des délais plus courts peuvent être arrangés avec un supplément.</p>
+                
+                <h6>4. Livraison</h6>
+                <p>Les frais de livraison varient selon la destination. Les retraits se font à notre atelier à Dakar.</p>
+                
+                <h6>5. Retours et échanges</h6>
+                <p>En raison de la nature personnalisée de nos produits, les retours ne sont pas acceptés sauf en cas d'erreur de notre part.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">J'ai compris</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <script>
+
+
+
+
+
+
+
+
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Cart Counter Animation
+        const cartCount = document.querySelector('.cart-count');
+        let count = 0;
+        
+        // Simulate adding items to cart (for demo)
+        setInterval(() => {
+            if (count < 5) {
+                count++;
+                cartCount.setAttribute('data-count', count);
+                
+                // Add animation
+                cartCount.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    cartCount.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 1000);
+            }
+        }, 5000);
+        
+        // Dropdown menu animation
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'block';
+                menu.classList.add('animate__animated', 'animate__fadeIn');
+            });
+            
+            dropdown.addEventListener('mouseleave', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'none';
+                menu.classList.remove('animate__animated', 'animate__fadeIn');
+            });
+        });
+        
+        // Search bar focus effect
+        const searchInput = document.querySelector('.search-bar input');
+        
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('animate__animated', 'animate__pulse');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('animate__animated', 'animate__pulse');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Système d'onglets
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+        
+            // Gestion du support
+            const supportSelect = document.getElementById('support-type');
+            const otherSupportInput = document.getElementById('other-support');
+            supportSelect.addEventListener('change', function() {
+                otherSupportInput.style.display = this.value === 'autre' ? 'block' : 'none';
+            });
+        
+            // Sélection de couleur
+          // Sélection multiple de couleurs
+        const colorOptions = document.querySelectorAll('.color-option');
+        const selectedColorsInput = document.getElementById('selected-colors');
+        const selectedColorsDisplay = document.getElementById('selected-colors-display');
+        let selectedColors = [];
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                
+                // Vérifier si la couleur est déjà sélectionnée
+                const colorIndex = selectedColors.indexOf(color);
+                
+                if (colorIndex === -1) {
+                    // Ajouter la couleur
+                    selectedColors.push(color);
+                    this.classList.add('selected');
+                } else {
+                    // Retirer la couleur
+                    selectedColors.splice(colorIndex, 1);
+                    this.classList.remove('selected');
+                }
+                
+                // Mettre à jour le champ caché
+                selectedColorsInput.value = selectedColors.join(',');
+                
+                // Mettre à jour l'affichage
+                updateSelectedColorsDisplay();
+            });
+        });
+        
+        function updateSelectedColorsDisplay() {
+            selectedColorsDisplay.innerHTML = '';
+            
+            selectedColors.forEach(color => {
+                const colorElement = document.createElement('div');
+                colorElement.className = 'selected-color';
+                colorElement.style.background = color;
+                colorElement.setAttribute('data-color', color);
+                
+                // Ajouter un bouton pour supprimer la couleur
+                colorElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const colorToRemove = this.getAttribute('data-color');
+                    selectedColors = selectedColors.filter(c => c !== colorToRemove);
+                    selectedColorsInput.value = selectedColors.join(',');
+                    
+                    // Retirer la classe selected de l'option correspondante
+                    document.querySelectorAll('.color-option').forEach(opt => {
+                        if (opt.getAttribute('data-color') === colorToRemove) {
+                            opt.classList.remove('selected');
+                        }
+                    });
+                    
+                    updateSelectedColorsDisplay();
+                });
+                
+                selectedColorsDisplay.appendChild(colorElement);
+            });
+        }
+        
+            // Lightbox simplifiée
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const lightboxPrev = document.querySelector('.lightbox-prev');
+            const lightboxNext = document.querySelector('.lightbox-next');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            const selectImageBtn = document.getElementById('select-image-btn');
+            
+            let currentImageIndex = 0;
+            const images = Array.from(document.querySelectorAll('.gallery-item')).map(item => item.querySelector('img').src);
+            const previewImage = document.getElementById('preview-image');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+        
+            // Lightbox navigation
+            function updateLightboxImage() {
+                lightboxImg.src = images[currentImageIndex];
+                lightboxCounter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+            }
+        
+            // Ouvrir lightbox depuis la galerie
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    updateLightboxImage();
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+        
+            // Navigation lightbox
+            lightboxPrev.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                updateLightboxImage();
+            });
+        
+            lightboxNext.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                updateLightboxImage();
+            });
+        
+            // Fermer lightbox et sélectionner l'image
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        
+            // Sélectionner l'image et fermer la lightbox
+            selectImageBtn.addEventListener('click', () => {
+                previewImage.src = images[currentImageIndex];
+                galleryItems.forEach(item => item.classList.remove('selected'));
+                galleryItems[currentImageIndex].classList.add('selected');
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Après la déclaration de selectImageBtn
+            const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+
+            closeLightboxBtn.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        
+            // Gestion de l'upload
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            const ctaButton = dropArea.querySelector('.cta-button');
+        
+            dropArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropArea.classList.add('active');
+            });
+        
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.classList.remove('active');
+            });
+        
+            dropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropArea.classList.remove('active');
+                handleFile(e.dataTransfer.files[0]);
+            });
+        
+            ctaButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+        
+            fileInput.addEventListener('change', function() {
+                handleFile(this.files[0]);
+            });
+        
+            function handleFile(file) {
+                if (file && (file.type.startsWith('image/') || file.name.endsWith('.svg'))) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file && file.name.endsWith('.dst')) {
+                    previewImage.src = 'https://via.placeholder.com/320x320/CCCCCC/808080?Text=Fichier+DST';
+                    alert('Le fichier DST est un format de broderie, la prévisualisation peut ne pas être exacte.');
+                } else if (file) {
+                    alert('Format de fichier non supporté. Veuillez utiliser une image (PNG, JPG, SVG) ou un fichier DST.');
+                }
+            }
+        
+            // Navigation clavier
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else if (e.key === 'ArrowLeft') {
+                    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                    updateLightboxImage();
+                } else if (e.key === 'ArrowRight') {
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    updateLightboxImage();
+                }
+            });
+        });
+    // Fonction pour mettre à jour l'aperçu général
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fonction pour gérer la sélection des couleurs
+        function setupColorSelection(colorOptionsId, selectedColorsInputId, selectedColorsDisplayId) {
+            const colorOptions = document.querySelectorAll(`#${colorOptionsId} .color-option`);
+            const selectedColorsInput = document.getElementById(selectedColorsInputId);
+            const selectedColorsDisplay = document.getElementById(selectedColorsDisplayId);
+            let selectedColors = [];
+
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    const color = this.getAttribute('data-color');
+
+                    // Vérifier si la couleur est déjà sélectionnée
+                    const colorIndex = selectedColors.indexOf(color);
+
+                    if (colorIndex === -1) {
+                        // Ajouter la couleur
+                        selectedColors.push(color);
+                        this.classList.add('selected');
+                    } else {
+                        // Retirer la couleur
+                        selectedColors.splice(colorIndex, 1);
+                        this.classList.remove('selected');
+                    }
+
+                    // Mettre à jour le champ caché
+                    selectedColorsInput.value = selectedColors.join(',');
+
+                    // Mettre à jour l'affichage
+                    updateSelectedColorsDisplay(selectedColors, selectedColorsDisplay);
+                });
+            });
+
+            function updateSelectedColorsDisplay(colors, displayElement) {
+                displayElement.innerHTML = '';
+
+                colors.forEach(color => {
+                    const colorElement = document.createElement('div');
+                    colorElement.className = 'selected-color';
+                    colorElement.style.background = color;
+                    colorElement.setAttribute('data-color', color);
+
+                    // Ajouter un bouton pour supprimer la couleur
+                    colorElement.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const colorToRemove = this.getAttribute('data-color');
+                        selectedColors = selectedColors.filter(c => c !== colorToRemove);
+                        selectedColorsInput.value = selectedColors.join(',');
+
+                        // Retirer la classe selected de l'option correspondante
+                        document.querySelectorAll(`#${colorOptionsId} .color-option`).forEach(opt => {
+                            if (opt.getAttribute('data-color') === colorToRemove) {
+                                opt.classList.remove('selected');
+                            }
+                        });
+
+                        updateSelectedColorsDisplay(selectedColors, displayElement);
+                    });
+
+                    displayElement.appendChild(colorElement);
+                });
+            }
+        }
+
+        // Configurer la sélection des couleurs pour chaque section
+        setupColorSelection('color-options-paper', 'selected-colors-paper', 'selected-colors-display-paper');
+        setupColorSelection('color-options-textile', 'selected-colors-textile', 'selected-colors-display-textile');
+        setupColorSelection('color-options-object', 'selected-colors-object', 'selected-colors-display-object');
+    });
+
+    // Fonction pour mettre à jour l'aperçu en fonction de la section
+    function updateSummary(sectionType) {
+    const summaryContainer = document.getElementById('summary-container');
+    let summaryHTML = '';
+
+    // Références aux champs cachés
+    const hiddenDesign = document.getElementById('selected-design');
+    const hiddenSupport = document.getElementById('selected-support');
+    const hiddenDimensions = document.getElementById('selected-dimensions');
+    const hiddenColors = document.getElementById('selected-colors');
+    const hiddenThread = document.getElementById('selected-thread');
+    const hiddenQuantity = document.getElementById('selected-quantity');
+    const hiddenNotes = document.getElementById('selected-notes');
+
+    switch (sectionType) {
+        case 'paper':
+            const formatSelect = document.getElementById('format-select');
+            const otherFormat = document.getElementById('other-format');
+            const paperType = document.getElementById('thread-type-paper');
+            const otherPaperType = document.getElementById('other-thread-type-paper');
+            const paperColors = document.getElementById('selected-colors-paper');
+            const paperQuantity = document.getElementById('quantity-paper');
+            const paperNotes = document.getElementById('special-notes-paper');
+            const widthPaper = document.getElementById('width-paper').value;
+            const heightPaper = document.getElementById('height-paper').value;
+            const designFileType1 = document.getElementById('design-file-type-1');
+            const otherDesignFile1 = document.getElementById('other-design-file-1');
+
+            summaryHTML = `
+                <div class="summary-section">
+                    <h4><i class="fas fa-file-alt"></i> Impression sur Papier</h4>
+                    <div class="summary-item">
+                        <strong>Format:</strong> ${formatSelect.value === 'autre' ? otherFormat.value : formatSelect.options[formatSelect.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Type de papier:</strong> 
+                        ${paperType.value === 'Résine' ? otherPaperType.value : paperType.options[paperType.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Dimensions:</strong> ${widthPaper} cm × ${heightPaper} cm
+                    </div>
+                    <div class="summary-item">
+                        <strong>Couleurs:</strong> ${paperColors.value ? paperColors.value.split(',').map(c => `<span class="color-swatch" style="background:${c}"></span>`).join('') : 'Non spécifié'}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Fichier du design:</strong> 
+                        ${designFileType1.value === 'autre' ? otherDesignFile1.value : designFileType1.options[designFileType1.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Quantité:</strong> ${paperQuantity.value}
+                    </div>
+                    ${paperNotes.value ? `
+                    <div class="summary-item">
+                        <strong>Instructions:</strong> ${paperNotes.value}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Mettre à jour les champs cachés
+            hiddenDesign.value = designFileType1.value === 'autre' ? otherDesignFile1.value : designFileType1.options[designFileType1.selectedIndex].text;
+            hiddenSupport.value = formatSelect.value === 'autre' ? otherFormat.value : formatSelect.options[formatSelect.selectedIndex].text;
+            hiddenDimensions.value = `${widthPaper} cm × ${heightPaper} cm`;
+            hiddenColors.value = paperColors.value;
+            hiddenThread.value = paperType.value === 'Résine' ? otherPaperType.value : paperType.options[paperType.selectedIndex].text;
+            hiddenQuantity.value = paperQuantity.value;
+            hiddenNotes.value = paperNotes.value || '';
+            break;
+
+        case 'textile':
+            const textileType = document.getElementById('textile-type');
+            const otherTextile = document.getElementById('other-textile');
+            const technique = document.getElementById('thread-type-textile');
+            const textileColors = document.getElementById('selected-colors-textile');
+            const textileQuantity = document.getElementById('quantity-textile');
+            const textileNotes = document.getElementById('special-notes-textile');
+            const widthTextile = document.getElementById('width-textile').value;
+            const heightTextile = document.getElementById('height-textile').value;
+            const designFileType2 = document.getElementById('design-file-type-2');
+            const otherDesignFile2 = document.getElementById('other-design-file-2');
+
+            summaryHTML = `
+                <div class="summary-section">
+                    <h4><i class="fas fa-tshirt"></i> Impression sur Textile</h4>
+                    <div class="summary-item">
+                        <strong>Type de textile:</strong> ${textileType.value === 'autre' ? otherTextile.value : textileType.options[textileType.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Dimensions:</strong> ${widthTextile} cm × ${heightTextile} cm
+                    </div>
+                    <div class="summary-item">
+                        <strong>Technique:</strong> ${technique.options[technique.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Couleurs:</strong> ${textileColors.value ? textileColors.value.split(',').map(c => `<span class="color-swatch" style="background:${c}"></span>`).join('') : 'Non spécifié'}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Fichier du design:</strong> 
+                        ${designFileType2.value === 'autre' ? otherDesignFile2.value : designFileType2.options[designFileType2.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Quantité:</strong> ${textileQuantity.value}
+                    </div>
+                    ${textileNotes.value ? `
+                    <div class="summary-item">
+                        <strong>Instructions:</strong> ${textileNotes.value}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Mettre à jour les champs cachés
+            hiddenDesign.value = designFileType2.value === 'autre' ? otherDesignFile2.value : designFileType2.options[designFileType2.selectedIndex].text;
+            hiddenSupport.value = textileType.value === 'autre' ? otherTextile.value : textileType.options[textileType.selectedIndex].text;
+            hiddenDimensions.value = `${widthTextile} cm × ${heightTextile} cm`;
+            hiddenColors.value = textileColors.value;
+            hiddenThread.value = technique.options[technique.selectedIndex].text;
+            hiddenQuantity.value = textileQuantity.value;
+            hiddenNotes.value = textileNotes.value || '';
+            break;
+
+        case 'object':
+            const objectType = document.getElementById('support-type');
+            const otherObject = document.getElementById('other-support');
+            const objectColors = document.getElementById('selected-colors-object');
+            const objectQuantity = document.getElementById('quantity-object');
+            const objectNotes = document.getElementById('special-notes-object');
+            const widthObject = document.getElementById('width-object').value;
+            const heightObject = document.getElementById('height-object').value;
+            const designFileType3 = document.getElementById('design-file-type-3');
+            const otherDesignFile3 = document.getElementById('other-design-file-3');
+
+            summaryHTML = `
+                <div class="summary-section">
+                    <h4><i class="fas fa-cube"></i> Impression sur Objet</h4>
+                    <div class="summary-item">
+                        <strong>Type d'objet:</strong> ${objectType.value === 'autre' ? otherObject.value : objectType.options[objectType.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Dimensions:</strong> ${widthObject} cm × ${heightObject} cm
+                    </div>
+                    <div class="summary-item">
+                        <strong>Couleurs:</strong> ${objectColors.value ? objectColors.value.split(',').map(c => `<span class="color-swatch" style="background:${c}"></span>`).join('') : 'Non spécifié'}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Fichier du design:</strong> 
+                        ${designFileType3.value === 'autre' ? otherDesignFile3.value : designFileType3.options[designFileType3.selectedIndex].text}
+                    </div>
+                    <div class="summary-item">
+                        <strong>Quantité:</strong> ${objectQuantity.value}
+                    </div>
+                    ${objectNotes.value ? `
+                    <div class="summary-item">
+                        <strong>Instructions:</strong> ${objectNotes.value}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Mettre à jour les champs cachés
+            hiddenDesign.value = designFileType3.value === 'autre' ? otherDesignFile3.value : designFileType3.options[designFileType3.selectedIndex].text;
+            hiddenSupport.value = objectType.value === 'autre' ? otherObject.value : objectType.options[objectType.selectedIndex].text;
+            hiddenDimensions.value = `${widthObject} cm × ${heightObject} cm`;
+            hiddenColors.value = objectColors.value;
+            hiddenThread.value = ''; // Pas de type de fil pour les objets
+            hiddenQuantity.value = objectQuantity.value;
+            hiddenNotes.value = objectNotes.value || '';
+            break;
+    }
+
+    summaryContainer.innerHTML = summaryHTML;
+}
+    document.addEventListener('DOMContentLoaded', function () {
+        // Attacher les événements aux boutons d'aperçu
+        const previewButtons = document.querySelectorAll('.preview-btn');
+        previewButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const sectionType = this.getAttribute('data-section'); // Récupérer la section à afficher
+                updateSummary(sectionType); // Appeler la fonction updateSummary avec la section correspondante
+            });
+        });
+    });
+    // Ajouter des écouteurs d'événements à tous les champs de formulaire
+    document.querySelectorAll('.customization-section input, .customization-section select, .customization-section textarea').forEach(element => {
+        element.addEventListener('change', updateSummary);
+        element.addEventListener('input', updateSummary);
+    });
+    document.querySelectorAll('.preview-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const sectionType = this.getAttribute('data-section');
+            updateSummary(sectionType);
+        });
+    });
+    // Initialiser l'aperçu
+    updateSummary();
+        // Écouteurs d'événements pour mettre à jour l'aperçu
+        document.querySelectorAll('#support-type, #width, #height, #thread-type, #quantity, #special-notes').forEach(element => {
+            element.addEventListener('change', updateSummary);
+        });
+        
+        document.getElementById('other-support').addEventListener('input', updateSummary);
+        document.getElementById('selected-colors').addEventListener('change', updateSummary);
+        
+        // Mettre à jour l'aperçu lors de la sélection d'une image
+        document.getElementById('select-image-btn').addEventListener('click', updateSummary);
+        document.getElementById('file-input').addEventListener('change', function() {
+            setTimeout(updateSummary, 100);
+        });
+        // Initialiser l'aperçu au chargement
+        updateSummary();
+
+        function handleFile(file) {
+        if (file && (file.type.startsWith('image/') || file.name.endsWith('.svg'))) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                // Mettre à jour le champ caché pour l'image uploadée
+                document.getElementById('uploaded-design').value = file.name;
+                // Mettre à jour le résumé
+                updateSummary();
+            };
+            reader.readAsDataURL(file);
+        } else if (file && file.name.endsWith('.dst')) {
+            previewImage.src = 'https://via.placeholder.com/320x320/CCCCCC/808080?Text=Fichier+DST';
+            document.getElementById('uploaded-design').value = file.name;
+            updateSummary();
+            alert('Le fichier DST est un format de broderie, la prévisualisation peut ne pas être exacte.');
+        } else if (file) {
+            alert('Format de fichier non supporté. Veuillez utiliser une image (PNG, JPG, SVG) ou un fichier DST.');
+        }
+    }
+    // Gestion de l'affichage du formulaire
+    document.getElementById('show-form-btn').addEventListener('click', function() {
+        const formSection = document.getElementById('contact-form');
+        formSection.style.display = 'block';
+        this.style.display = 'none'; // Cache le bouton après clic
+        
+        // Animation pour le formulaire
+        formSection.scrollIntoView({ behavior: 'smooth' });
+        formSection.querySelector('.form-container').classList.add('animate__fadeInUp');
+    });
+
+
+
+    // Gestion de l'affichage de l'input "Autre" pour le format
+    document.addEventListener('DOMContentLoaded', function () {
+        const formatSelect = document.getElementById('format-select');
+        const otherFormatInput = document.getElementById('other-format');
+
+        formatSelect.addEventListener('change', function () {
+            if (this.value === 'autre') {
+                otherFormatInput.style.display = 'block'; // Affiche l'input
+            } else {
+                otherFormatInput.style.display = 'none'; // Cache l'input
+            }
+        });
+    });
+
+
+
+    // Gestion de l'affichage de l'input "Autre" pour le type de fil
+    document.addEventListener('DOMContentLoaded', function () {
+        const threadTypePaper = document.getElementById('thread-type-paper');
+        const otherThreadTypePaper = document.getElementById('other-thread-type-paper');
+
+        threadTypePaper.addEventListener('change', function () {
+            if (this.value === 'Résine') {
+                otherThreadTypePaper.style.display = 'block'; // Affiche l'input
+            } else {
+                otherThreadTypePaper.style.display = 'none'; // Cache l'input
+            }
+        });
+    });
+
+
+
+    // Gestion de l'affichage de l'input "Autre" pour le type de fichier de design
+    document.addEventListener('DOMContentLoaded', function () {
+        const designFileTypeSelect = document.getElementById('design-file-type');
+        const otherDesignFileInput = document.getElementById('other-design-file');
+
+        designFileTypeSelect.addEventListener('change', function () {
+            if (this.value === 'autre') {
+                otherDesignFileInput.style.display = 'block'; // Affiche l'input
+            } else {
+                otherDesignFileInput.style.display = 'none'; // Cache l'input
+            }
+        });
+    });
+
+
+    // Gestion de l'affichage de l'input "Autre" pour le type de support
+    document.addEventListener('DOMContentLoaded', function () {
+        const textileTypeSelect = document.getElementById('textile-type');
+        const otherTextileInput = document.getElementById('other-textile');
+
+        textileTypeSelect.addEventListener('change', function () {
+            if (this.value === 'autre') {
+                otherTextileInput.style.display = 'block'; // Affiche l'input
+            } else {
+                otherTextileInput.style.display = 'none'; // Cache l'input
+            }
+        });
+    });
+
+
+
+    // Gestion de l'affichage de l'input "Autre" pour le type de support
+    document.addEventListener('DOMContentLoaded', function () {
+        const supportTypeSelect = document.getElementById('support-type');
+        const otherSupportInput = document.getElementById('other-support');
+
+        supportTypeSelect.addEventListener('change', function () {
+            if (this.value === 'autre') {
+                otherSupportInput.style.display = 'block'; // Affiche l'input
+            } else {
+                otherSupportInput.style.display = 'none'; // Cache l'input
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    // Première section
+    const designFileTypeSelect1 = document.getElementById('design-file-type-1');
+    const otherDesignFileInput1 = document.getElementById('other-design-file-1');
+    designFileTypeSelect1.addEventListener('change', function () {
+        if (this.value === 'autre') {
+            otherDesignFileInput1.style.display = 'block';
+        } else {
+            otherDesignFileInput1.style.display = 'none';
+        }
+    });
+
+    // Deuxième section
+    const designFileTypeSelect2 = document.getElementById('design-file-type-2');
+    const otherDesignFileInput2 = document.getElementById('other-design-file-2');
+    designFileTypeSelect2.addEventListener('change', function () {
+        if (this.value === 'autre') {
+            otherDesignFileInput2.style.display = 'block';
+        } else {
+            otherDesignFileInput2.style.display = 'none';
+        }
+    });
+
+        // Troisième section
+        const designFileTypeSelect3 = document.getElementById('design-file-type-3');
+        const otherDesignFileInput3 = document.getElementById('other-design-file-3');
+        designFileTypeSelect3.addEventListener('change', function () {
+            if (this.value === 'autre') {
+                otherDesignFileInput3.style.display = 'block';
+            } else {
+                otherDesignFileInput3.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

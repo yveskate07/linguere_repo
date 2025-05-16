@@ -20,7 +20,7 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
     msg["Subject"] = f"Brochure {formation_name}"
 
     # Corps du message
-    corps = """\
+    corps = f"""\
     Bonjour,
 
     Veuillez trouver ci-joint la brochure pour la formation {formation_name}.
@@ -32,7 +32,7 @@ def send_brochure_through_mail(receiver_email, formation_name, user:dict, reason
     """
     msg.set_content(corps)
 
-    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name
+    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name / 'brochure.pdf'
 
     # Lecture et ajout du fichier PDF
     with open(chemin_pdf, 'rb') as f:
@@ -111,9 +111,11 @@ def send_alert_for_request(formation_name:str,user:dict, reason=None, msg_=None)
 
 # une fonction qui envoie un mail a Linguere fablab indiquant qu'un utilisateur s'est inscrit à tel formation.
 def send_alert_for_sign_up(formation_name:str, user:dict):
+
+    print(user)
     msg = EmailMessage()
     msg["From"] = sender_email
-    msg["To"] = sender_email
+    msg["To"] = user['e-mail']
     msg["Subject"] = f"Nouvelle inscription pour {formation_name}"
 
     # Corps du message professionnel
@@ -121,13 +123,9 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
     corps = f"""\
         Bonjour,
 
-        une nouvelle inscription a été enregistré pour la formation {formation_name}.
-        
-        Nom: {user['name']}
-        Adresse mail: {user['e-mail']}
-        Formation: {user['formation']}
-        
-        {user_msg}
+        Nous avons bien reçu votre inscription pour la formation {formation_name}.
+
+        Nous vous contacterons prochainement pour vous fournir plus d'informations.
 
         """
     msg.set_content(corps)
@@ -137,4 +135,3 @@ def send_alert_for_sign_up(formation_name:str, user:dict):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=contexte) as serveur:
         serveur.login(sender_email, password)
         serveur.send_message(msg)
-        # print("Notification envoyée avec succès.")
