@@ -131,18 +131,17 @@
         <div class="option-group animate__animated animate__fadeInLeft">
             <label class="option-label"><i class="fas fa-palette"></i> Couleurs de broderie</label>
             <div class="color-options">
-                <div class="color-option" style="background: #000000;" data-color="#000000" title="Noir"></div>
-                <div class="color-option" style="background: #FF0000;" data-color="#FF0000" title="Rouge"></div>
-                <div class="color-option" style="background: #0000FF;" data-color="#0000FF" title="Bleu"></div>
-                <div class="color-option" style="background: #FFFFFF; border: 1px solid #ddd;" data-color="#FFFFFF" title="Blanc"></div>
-                <div class="color-option" style="background: #FFC0CB;" data-color="#FFC0CB" title="Rose"></div>
-                <div class="color-option" style="background: #5E35B1;" data-color="#5E35B1" title="Violet"></div>
-                <div class="color-option" style="background: #32CD32;" data-color="#32CD32" title="Vert"></div>
-                <div class="color-option" style="background: #FFA500;" data-color="#FFA500" title="Orange"></div>
-                <div class="color-option" style="background: #FFD700;" data-color="#FFD700" title="Or"></div>
-                <div class="color-option" style="background: #C0C0C0;" data-color="#C0C0C0" title="Argent"></div>
+                <div class="color-option" onclick="getColor('#000000')" style="background: #000000;" data-color="#000000" title="Noir"></div>
+                <div class="color-option" onclick="getColor('#FF0000')" style="background: #FF0000;" data-color="#FF0000" title="Rouge"></div>
+                <div class="color-option" onclick="getColor('#0000FF')" style="background: #0000FF;" data-color="#0000FF" title="Bleu"></div>
+                <div class="color-option" onclick="getColor('#FFFFFF')" style="background: #FFFFFF; border: 1px solid #ddd;" data-color="#FFFFFF" title="Blanc"></div>
+                <div class="color-option" onclick="getColor('#FFC0CB')" style="background: #FFC0CB;" data-color="#FFC0CB" title="Rose"></div>
+                <div class="color-option" onclick="getColor('#5E35B1')" style="background: #5E35B1;" data-color="#5E35B1" title="Violet"></div>
+                <div class="color-option" onclick="getColor('#32CD32')" style="background: #32CD32;" data-color="#32CD32" title="Vert"></div>
+                <div class="color-option" onclick="getColor('#FFA500')" style="background: #FFA500;" data-color="#FFA500" title="Orange"></div>
+                <div class="color-option" onclick="getColor('#FFD700')" style="background: #FFD700;" data-color="#FFD700" title="Or"></div>
+                <div class="color-option" onclick="getColor('#C0C0C0')" style="background: #C0C0C0;" data-color="#C0C0C0" title="Argent"></div>
             </div>
-            <input type="hidden" id="selected-colors" value="">
             <div class="selected-colors-display" id="selected-colors-display"></div>
         </div>
 
@@ -430,7 +429,34 @@
             const otherSupportInput = document.getElementById('other-support');
             supportSelect.addEventListener('change', function() {
                 otherSupportInput.style.display = this.value === 'autre' ? 'block' : 'none';
+                document.getElementById("selected-support").value = supportSelect.value;
             });
+            const width = document.getElementById('width');
+            const height = document.getElementById('height');
+
+            function getColor(colorCode){
+
+            }
+            const quantity = document.getElementById('quantity');
+            const specialNotes = document.getElementById('special-notes');
+            document.getElementById('selected-design').value = document.getElementById('preview-image').src;
+            //------ YVES: code pour recuperer en direct toutes les modifs et les affecter aux champs cachés
+            width.addEventListener('input', function() {
+                document.getElementById('first-dimension-selected').value = width.value;
+            })
+
+            height.addEventListener('input', function() {
+                document.getElementById('second-dimension-selected').value = height.value;
+            })
+
+            quantity.addEventListener('input', function() {
+                document.getElementById('selected-quantity').value = quantity.value;
+            })
+
+            specialNotes.addEventListener('input', function() {
+                document.getElementById('selected-notes').value = specialNotes.value;
+            })
+            //------
         
             // Sélection de couleur
           // Sélection multiple de couleurs
@@ -619,10 +645,14 @@
                 }
             });
         });
+
+    
+
     // Fonction pour mettre à jour l'aperçu général
     function updateSummary() {
         const summaryContainer = document.getElementById('summary-container');
         const supportType = document.getElementById('support-type');
+        document.getElementById("selected-support").value = supportType.value;
         const otherSupport = document.getElementById('other-support');
         const width = document.getElementById('width');
         const height = document.getElementById('height');
@@ -630,6 +660,8 @@
         const quantity = document.getElementById('quantity');
         const specialNotes = document.getElementById('special-notes');
         const previewImage = document.getElementById('preview-image').src;
+
+        
         
         // Déterminer le type de support
         let supportText = supportType.options[supportType.selectedIndex].text;
@@ -676,6 +708,19 @@
             </div>
             ` : ''}
         `;
+        document.getElementById('first-dimension-selected').value = width.value;
+
+        document.getElementById('second-dimension-selected').value = height.value;
+
+        document.getElementById('selected-quantity').value = quantity.value;
+
+        document.getElementById('selected-notes').value = specialNotes.value;
+
+        if(supportType.value==="autre"){
+            document.getElementById("selected-support").value = otherSupport.value;
+        }
+
+        document.getElementById('selected-design').value = document.getElementById('preview-image').src;
     }
     
     // Écouteurs d'événements pour mettre à jour l'aperçu
