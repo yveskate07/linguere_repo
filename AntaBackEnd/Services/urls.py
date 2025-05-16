@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path
 from .views import impression_num_proposees, broderie_numerique, fraiseuse_numerique, decoupe_laser, impression_3D, \
-    save_broderie_order
+    save_broderie_order, save_fraiseuse_order, save_laser_order, save_imp_num_order, save_imp_3d_order
 
 urlpatterns = [
     path('impression-3d/' , impression_3D, name="service-impression-3d"),
@@ -25,4 +25,8 @@ urlpatterns = [
     path('broderie-numerique/' , broderie_numerique, name="services-broderie"),
     path('impression-numerique-propose', impression_num_proposees, name="service-impression-numerique-propose"),
     path('broderie-order', save_broderie_order, name='broderie-order'),
+    path('fraiseuse-order', save_fraiseuse_order, name='fraiseuse-order'),
+    path('laser-order', save_laser_order, name='laser-order'),
+    path('imp-num-order', save_imp_num_order, name='imp-num-order'),
+    path('imp-3d-order', save_imp_3d_order, name='imp-3d-order'),
 ]

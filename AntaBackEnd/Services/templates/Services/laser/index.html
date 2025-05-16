@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Découpe et Gravure Laser - Linguère Fablab</title>
+    <title>{{laser_serviceName}} - Linguère Fablab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,9 +25,9 @@
     <header class="service-header animate__animated animate__fadeInUp">
         <h2 class="service-title">
             <i class="fas fa-tshirt service-icon"></i>
-            Découpe et Gravure Laser
+            {{laser_serviceName}}
         </h2>
-        <p class="service-subtitle">La découpe et la gravure laser permettent de personnaliser divers supports en bois, acrylique, cuir ou métal avec une extrême précision.</p>
+        <p class="service-subtitle">{{laser_serviceDesc}}</p>
     </header>
     <div class="tab-container" data-active-tab="gallery">
         <div class="tab active" data-tab="gallery">
@@ -51,28 +51,28 @@
                 
                 <div class="gallery-grid">
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
+                        <img src="{{img1}}" alt="Motif broderie floral">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1583744946564-b52d01e2da64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie géométrique">
+                        <img src="{{img2}}" alt="Motif broderie géométrique">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie animal">
+                        <img src="{{img3}}" alt="Motif broderie animal">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie lettrage">
+                        <img src="{{img4}}" alt="Motif broderie lettrage">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1560743641-3914f2aae0b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie tribal">
+                        <img src="{{img5}}" alt="Motif broderie tribal">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
+                        <img src="{{img6}}" alt="Motif broderie floral">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1579273166152-d725a4e2b755?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie minimaliste">
+                        <img src="{{img7}}" alt="Motif broderie minimaliste">
                     </div>
                     <div class="gallery-item" data-img="design1.jpg">
-                        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Motif broderie floral">
+                        <img src="{{img8}}" alt="Motif broderie floral">
                     </div>
                     <!-- Ajoutez les autres items de la galerie de la même manière -->
                 </div>
@@ -90,7 +90,7 @@
                     <h4>Glissez-déposez votre fichier ici</h4>
                     <p>ou</p>
                     <button class="cta-button"><i class="fas fa-folder-open"></i> Parcourir vos fichiers</button>
-                    <input type="file" id="file-input" accept="image/*,.svg,.dst" style="display: none;">
+                    {{ laser_form.upload_design }}
                     <p class="small">Formats acceptés : SVG, DXF ou AI</p>
                 </div>
             </section>
@@ -201,19 +201,20 @@
             </h3>
             <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de broderie personnalisée</p>
             
-            <form id="embroidery-form">
+            <form id="embroidery-form" method="POST" action="{% url 'laser-order' %}">
+                {% csrf_token %}
                 <!-- Section Informations Client -->
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="fullname"><i class="fas fa-user"></i> Nom Complet *</label>
-                            <input type="text" id="fullname" name="fullname" required class="form-control">
+                            <label for="name"><i class="fas fa-user"></i> Nom Complet *</label>
+                            {{  laser_form.name }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email"><i class="fas fa-envelope"></i> Email *</label>
-                            <input type="email" id="email" name="email" required class="form-control">
+                            {{ laser_form.email }}
                         </div>
                     </div>
                 </div>
@@ -221,43 +222,38 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="phone"><i class="fas fa-phone"></i> Téléphone *</label>
-                            <input type="tel" id="phone" name="phone" required class="form-control">
+                            <label for="tel_number"><i class="fas fa-phone"></i> Téléphone *</label>
+                            {{ laser_form.tel.number }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="address"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
-                            <input type="text" id="address" name="address" required class="form-control">
+                            <label for="town"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                            {{ laser_form.town }}
                         </div>
                     </div>
                 </div>
                 
                 <!-- Champs Cachés pour la Personnalisation -->
-                <input type="hidden" id="selected-design" name="design">
-                <input type="hidden" id="selected-support" name="support">
-                <input type="hidden" id="selected-dimensions" name="dimensions">
-                <input type="hidden" id="selected-thread" name="thread_type">
-                <input type="hidden" id="selected-quantity" name="quantity">
-                <input type="hidden" id="selected-notes" name="special_notes">
-                <input type="hidden" id="uploaded-design" name="uploaded_design">
+                {{ laser_form.design_picture }}
+                {{ laser_form.service_type }}
+                {{ laser_form.dim_1 }}
+                {{ laser_form.dim_2 }}
+                {{ laser_form.quantity }}
+                {{ laser_form.special_instructions }}
+                {{ laser_form.upload_design_picture }}
                 
                 <!-- Mode de Livraison -->
                 <div class="form-group">
-                    <label for="delivery"><i class="fas fa-truck"></i> Mode de Livraison *</label>
-                    <select id="delivery" name="delivery" required class="form-control">
-                        <option value="">Sélectionnez une option</option>
-                        <option value="pickup">Retrait sur place (Dakar)</option>
-                        <option value="delivery_dakar">Livraison à domicile (Dakar)</option>
-                        <option value="delivery_senegal">Livraison à domicile (Autres régions)</option>
-                    </select>
+                    <label for="delivery_mode"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                    {{ laser_form.delivery_mode }}
                 </div>
                 
                 <!-- Conditions Générales -->
                 <div class="form-group">
                     <div class="form-check">
-                        <input type="checkbox" id="terms" name="terms" required class="form-check-input">
-                        <label for="terms" class="form-check-label">
+                        {{ laser_form.cgu_accept }}
+                        <label for="cgu_accept" class="form-check-label">
                             J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
                         </label>
                     </div>
