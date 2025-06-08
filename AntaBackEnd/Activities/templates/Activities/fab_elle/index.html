@@ -1,0 +1,297 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguère Fablab - Fab'Elle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'Activities/css/fab_elle/style.css' %}">
+    
+</head>
+<body>
+
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    
+    <!-- Hero Section -->
+    <section class="pres animate__animated animate__fadeIn">
+        <h1>Fab'Elles</h1>
+        <p>Briser les barrières et encourager plus de femmes à oser créer, innover et entreprendre.</p>
+    </section><br><br>
+
+    <!-- Project Introduction -->
+    <section class="project-intro animate-in">
+        <span class="project-tag">Projet Phare</span>
+        <h2>Un programme dédié à l’inclusion des filles et des femmes dans les métiers du numérique, de la fabrication et de l’innovation.</h2>
+        <p>Fab'Elles vise à déclencher des vocations en rendant la fabrication numérique accessible à tous, où qu'ils soient.</p>
+    </section>
+
+    <!-- Réalisations Section -->
+    <section class="realisations">
+        <div class="realisations-header">
+            <h2 class="realisations-title">Nos Réalisations</h2>
+            <p class="realisations-subtitle">Découvrez les succès concrets de notre programme Smart Coders en chiffres et en actions</p>
+        </div>
+        
+        <div class="realisations-grid">
+            <div class="realisation-card">
+                <div class="realisation-icon">📅</div>
+                <h3 class="realisation-title">Ateliers Réguliers</h3>
+                <p class="realisation-desc">30 ateliers organisés chaque mois dans nos locaux et écoles partenaires pour initier les jeunes au numérique.</p>
+                <div class="realisation-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">Écoles partenaires</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Participants mensuels</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="realisation-card">
+                <div class="realisation-icon">🏆</div>
+                <h3 class="realisation-title">Compétitions</h3>
+                <p class="realisation-desc">5 compétitions annuelles de robotique et coding qui stimulent la créativité et l'esprit d'équipe.</p>
+                <div class="realisation-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">42</span>
+                        <span class="stat-label">Projets présentés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Prix décernés</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="realisation-card">
+                <div class="realisation-icon">⚙️</div>
+                <h3 class="realisation-title">FabLabs Équipés</h3>
+                <p class="realisation-desc">2 espaces dédiés avec matériel high-tech pour donner vie aux idées des jeunes créateurs.</p>
+                <div class="realisation-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Équipements</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Accès gratuit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Results Section -->
+<!-- Results Section -->
+<section class="project-section results-section animate-in">
+    <div class="section-content results-content">
+        <h3 class="realisations-title">Résultats Concrets</h3>
+        <p class="section-text results-text">En moins de deux ans, Smart Coders a déjà formé plus de 200 jeunes aux fondamentaux du codage et de la robotique.</p>
+        <p class="section-text results-text">Nos participants ont développé des projets innovants qui démontrent leur maîtrise croissante des technologies.</p>
+        <p class="section-text results-text">Parmi les réalisations notables : une application mobile de gestion des devoirs, un robot trieur de déchets programmable, et plusieurs jeux vidéo éducatifs.</p>
+    </div>
+    <div class="section-image results-image">
+        <img src="data:image/jpeg;base64,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" alt="Projets réalisés par les jeunes">
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section animate-in">
+    <div class="stats-container">
+        <div class="stats-box">
+            <div class="stat-number">200+</div>
+            <div class="stat-label">Jeunes formés</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">42</div>
+            <div class="stat-label">Ateliers mensuels</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Projets aboutis</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">94%</div>
+            <div class="stat-label">Satisfaction</div>
+        </div>
+    </div>
+</section>
+    <!-- Impact Section -->
+    <section class="impact-section animate-in">
+        <h3 class="section-title" style="text-align: center;">Notre Impact</h3>
+        <p class="section-text" style="max-width: 800px; margin: 0 auto 3rem;">Fab'Tour inspire les jeunes et les communautés à explorer les possibilités infinies de la fabrication numérique.</p>
+        
+        <div class="impact-grid">
+            <div class="impact-card">
+                <div class="impact-icon">👩‍💻</div>
+                <h4>Éducation Numérique</h4>
+                <p>Des centaines de jeunes initiés aux outils numériques et à la fabrication.</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🚀</div>
+                <h4>Projets Innovants</h4>
+                <p>Des projets concrets réalisés par les participants pour résoudre des problèmes locaux.</p>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🌍</div>
+                <h4>Impact Communautaire</h4>
+                <p>Des solutions technologiques adoptées par des écoles et villages.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section animate-in">
+        <div class="section-title">
+            <h3>Galerie Smart Coders</h3>
+            <p>Découvrez en images l'énergie et la créativité de nos jeunes participants</p>
+        </div>
+        
+        <div class="gallery-grid" id="animated-gallery">
+            <a href="Pompe 5v.png" class="gallery-item">
+                <img src="Capteur Infrarouge.png" alt="Atelier de codage">
+                <div class="gallery-caption">
+                    <h4>Atelier interactif</h4>
+                    <p>Les enfants découvrent les bases de la programmation</p>
+                </div>
+            </a>
+            
+            <a href="Imprimante 3d adventure3.png" class="gallery-item">
+                <img src="aaa.png" alt="Projets réalisés">
+                <div class="gallery-caption">
+                    <h4>Projets créatifs</h4>
+                    <p>Réalisation concrète des jeunes participants</p>
+                </div>
+            </a>
+            
+            <a href="Ecran LCD.png" class="gallery-item">
+                <img src="esp32.png" alt="Robotique éducative">
+                <div class="gallery-caption">
+                    <h4>Robotique éducative</h4>
+                    <p>Apprentissage par la pratique avec nos kits robotiques</p>
+                </div>
+            </a>
+            
+            <a href="roue1.png" class="gallery-item">
+                <img src="roue 2 .png" alt="Compétition annuelle">
+                <div class="gallery-caption">
+                    <h4>Compétition annuelle</h4>
+                    <p>Nos jeunes talents présentent leurs inventions</p>
+                </div>
+            </a>
+            
+            <a href="kits Arduino mega.png" class="gallery-item">
+                <img src="aaaa.png" alt="Cérémonie de remise de prix">
+                <div class="gallery-caption">
+                    <h4>Récompenses</h4>
+                    <p>Cérémonie de remise des prix aux meilleurs projets</p>
+                </div>
+            </a>
+            
+            <a href="logos.jpeg" class="gallery-item">
+                <img src="a.png" alt="Équipe encadrante">
+                <div class="gallery-caption">
+                    <h4>Équipe pédagogique</h4>
+                    <p>Nos formateurs dévoués accompagnent chaque enfant</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-zoom/2.7.1/lg-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-fullscreen/2.7.1/lg-fullscreen.min.js"></script>
+    <script>
+        // Animation au défilement
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Animation des chiffres au scroll
+            document.addEventListener('DOMContentLoaded', function() {
+                const statsSection = document.querySelector('.stats-section');
+                
+                const animateNumbers = () => {
+                    const statNumbers = document.querySelectorAll('.stat-number');
+                    
+                    statNumbers.forEach(number => {
+                        const target = parseInt(number.getAttribute('data-target'));
+                        const suffix = number.textContent.includes('+') ? '+' :
+                                    number.textContent.includes('%') ? '%' : '';
+                        const duration = 2000;
+                        const start = 0;
+                        const increment = target / (duration / 16);
+                        
+                        let current = start;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                clearInterval(timer);
+                                number.textContent = target + suffix;
+                                number.classList.add('animated');
+                            } else {
+                                number.textContent = Math.floor(current) + suffix;
+                            }
+                        }, 16);
+                    });
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            animateNumbers();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                
+                if (statsSection) {
+                    observer.observe(statsSection);
+                }
+            });
+            
+            // Initialisation de la galerie lightgallery
+            lightGallery(document.getElementById('animated-gallery'), {
+                selector: '.gallery-item',
+                download: false,
+                zoom: true,
+                thumbnail: true,
+                animateThumb: true,
+                showThumbByDefault: true
+            });
+        });
+    </script>
+</body>
+</html>

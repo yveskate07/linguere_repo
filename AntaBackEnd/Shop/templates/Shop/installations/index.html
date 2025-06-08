@@ -1,0 +1,788 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique - LINGUERE FABLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'Shop/css/style.css' %}">
+    
+</head>
+<body>
+    
+    {% include 'AntaBackEnd/header.html' %}
+
+    <!-- Confirmation Message -->
+    <div id="confirmation-message" class="confirmation-message">
+        <i class="fas fa-check-circle me-2"></i> Produit ajouté au panier!
+    </div>
+
+    <!-- Main Content -->
+    <main class="shop-container container py-4">
+        <!-- Filter Section -->
+        <aside class="filter-section">
+            <h3 class="mb-4"><i class="fas fa-filter me-2"></i> Filtres</h3>
+            
+            <div class="filter-group">
+                <div class="filter-title" onclick="toggleFilter('category-filter')">
+                    <span>Catégories</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options" id="category-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" id="arduino" checked>
+                        <label for="arduino">Kits Arduino</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="iot" checked>
+                        <label for="iot">Composants IoT</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="robotics" checked>
+                        <label for="robotics">Robotique</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="sensors" checked>
+                        <label for="sensors">Capteurs</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-title" onclick="toggleFilter('price-filter')">
+                    <span>Prix</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options show" id="price-filter">
+                    <input type="range" class="price-range" min="0" max="500000" value="500000" step="1000">
+                    <div class="price-values">
+                        <span>0 CFA</span>
+                        <span>500 000 CFA</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-title" onclick="toggleFilter('stock-filter')">
+                    <span>Disponibilité</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options" id="stock-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" id="in-stock" checked>
+                        <label for="in-stock">En stock</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="low-stock">
+                        <label for="low-stock">Stock limité</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" id="out-of-stock">
+                        <label for="out-of-stock">En rupture</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary w-100 mt-3">
+                <i class="fas fa-sync-alt me-2"></i> Appliquer les filtres
+            </button>
+        </aside>
+
+        <!-- Product Section -->
+        <section class="product-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-microchip me-2"></i>Installations Fablab</h1>
+                <div class="sort-options">
+                    <select class="form-select">
+                        <option>Trier par : Pertinence</option>
+                        <option>Prix croissant</option>
+                        <option>Prix décroissant</option>
+                        <option>Nouveautés</option>
+                        <option>Meilleures ventes</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="product-grid">
+                <!-- Product Card 1 -->
+                <div class="product-card" data-aos="fade-up" data-category="Kits Arduino">
+                    <span class="product-badge">Nouveau</span>
+                    <img src="Arduino mega.png" alt="Arduino Méga">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Arduino Méga', 'Arduino mega.png', 'Carte puissante avec plus d\'entrées/sorties que l\'Uno.', 15000, 50, 'Kits Arduino')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Arduino Méga</h3>
+                        <p class="product-description">Carte puissante avec plus d'entrées/sorties que l'Uno.</p>
+                        <p class="product-price">15 000 CFA</p>
+                        <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (50 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Méga', 15000, 'Kits Arduino')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: ARD-MEGA-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 2 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Kits Arduino">
+                    <img src="Arduino uno.png" alt="Arduino Uno">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Arduino Uno', 'Arduino uno.png', 'La carte Arduino la plus populaire pour les débutants.', 10000, 100, 'Kits Arduino')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Arduino Uno</h3>
+                        <p class="product-description">La carte Arduino la plus populaire pour les débutants.</p>
+                        <p class="product-price">10 000 CFA</p>
+                        <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (100 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Uno', 10000, 'Kits Arduino')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <span class="product-sku">REF: ARD-UNO-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 3 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="200" data-category="Kits Arduino">
+                    <span class="product-badge" style="background: #27ae60;">Promo</span>
+                    <img src="Arduino nano.png" alt="Arduino Nano">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Arduino Nano', 'Arduino nano.png', 'Version compacte de l\'Arduino pour les projets avec espace limité.', 8000, 30, 'Kits Arduino')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Arduino Nano</h3>
+                        <p class="product-description">Version compacte de l'Arduino pour les projets avec espace limité.</p>
+                        <p class="product-price">8 000 CFA</p>
+                        <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (30 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Arduino Nano', 8000, 'Kits Arduino')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="product-sku">REF: ARD-NANO-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 4 -->
+                <div class="product-card" data-aos="fade-up" data-category="Composants IoT">
+                    <img src="esp32.png" alt="ESP32">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('ESP32', 'esp32.png', 'Microcontrôleur avec Wi-Fi et Bluetooth intégrés pour projets IoT.', 12000, 15, 'Composants IoT')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">ESP32</h3>
+                        <p class="product-description">Microcontrôleur avec Wi-Fi et Bluetooth intégrés pour projets IoT.</p>
+                        <p class="product-price">12 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (15 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('ESP32', 12000, 'Composants IoT')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <span class="product-sku">REF: ESP-32-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 5 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Capteurs">
+                    <img src="Capteur DHT11.png" alt="Capteur DHT11">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Capteur DHT11', 'Capteur DHT11.png', 'Capteur de température et d\'humidité numérique.', 5000, 25, 'Capteurs')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Capteur DHT11</h3>
+                        <p class="product-description">Capteur de température et d'humidité numérique.</p>
+                        <p class="product-price">5 000 CFA</p>
+                        <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock (25 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Capteur DHT11', 5000, 'Capteurs')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                            <span class="product-sku">REF: SEN-DHT11-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 6 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="200" data-category="Capteurs">
+                    <img src="Capteur ultrason.png" alt="Capteur ultrason">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Capteur ultrason', 'Capteur ultrason.png', 'Utilisé pour mesurer des distances avec précision ou détecter des obstacles.', 7500, 10, 'Capteurs')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Capteur ultrason</h3>
+                        <p class="product-description">Utilisé pour mesurer des distances avec précision ou détecter des obstacles.</p>
+                        <p class="product-price">7 500 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (10 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Capteur ultrason', 7500, 'Capteurs')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: SEN-USON-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 7 -->
+                <div class="product-card" data-aos="fade-up" data-category="Kits Arduino">
+                    <img src="kits de demarrage.png" alt="Kit de démarrage">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit de démarrage', 'kits de demarrage.png', 'Tout ce dont vous avez besoin pour commencer avec Arduino.', 25000, 8, 'Kits Arduino')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit de démarrage</h3>
+                        <p class="product-description">Tout ce dont vous avez besoin pour commencer avec Arduino.</p>
+                        <p class="product-price">25 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (8 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit de démarrage', 25000, 'Kits Arduino')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-START-01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card 8 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Robotique">
+                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                    <img src="kits robotique 1.jpg" alt="Kit robotique">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit robotique', 'kits robotique 1.jpg', 'Kit complet pour construire votre premier robot programmable.', 35000, 5, 'Robotique')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit robotique</h3>
+                        <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
+                        <p class="product-price">35 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-ROBOT-01</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 8 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Robotique">
+                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                    <img src="kits robotique 1.jpg" alt="Kit robotique">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit robotique', 'kits robotique 1.jpg', 'Kit complet pour construire votre premier robot programmable.', 35000, 5, 'Robotique')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit robotique</h3>
+                        <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
+                        <p class="product-price">35 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-ROBOT-01</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 8 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Robotique">
+                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                    <img src="kits robotique 1.jpg" alt="Kit robotique">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit robotique', 'kits robotique 1.jpg', 'Kit complet pour construire votre premier robot programmable.', 35000, 5, 'Robotique')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit robotique</h3>
+                        <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
+                        <p class="product-price">35 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-ROBOT-01</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 8 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Robotique">
+                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                    <img src="kits robotique 1.jpg" alt="Kit robotique">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit robotique', 'kits robotique 1.jpg', 'Kit complet pour construire votre premier robot programmable.', 35000, 5, 'Robotique')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit robotique</h3>
+                        <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
+                        <p class="product-price">35 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-ROBOT-01</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 8 -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100" data-category="Robotique">
+                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                    <img src="kits robotique 1.jpg" alt="Kit robotique">
+                    <div class="quick-view">
+                        <button class="quick-view-btn" onclick="showQuickView('Kit robotique', 'kits robotique 1.jpg', 'Kit complet pour construire votre premier robot programmable.', 35000, 5, 'Robotique')">
+                            <i class="fas fa-eye me-1"></i> Aperçu rapide
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Kit robotique</h3>
+                        <p class="product-description">Kit complet pour construire votre premier robot programmable.</p>
+                        <p class="product-price">35 000 CFA</p>
+                        <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (5 unités)</p>
+                        <button class="add-to-cart-button" onclick="addToCart('Kit robotique', 35000, 'Robotique')">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                        <div class="product-meta">
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                            <span class="product-sku">REF: KIT-ROBOT-01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal" id="quick-view-modal">
+        <div class="quick-view-content">
+            <span class="close-quick-view" onclick="closeQuickView()">&times;</span>
+            <div class="row">
+                <div class="col-md-6 p-4">
+                    <img src="" alt="" id="quick-view-img" class="w-100">
+                    <div class="d-flex mt-3">
+                        <img src="" alt="" class="thumb-img me-2" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
+                        <img src="" alt="" class="thumb-img me-2" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
+                        <img src="" alt="" class="thumb-img" style="width: 60px; height: 60px; object-fit: contain; border: 1px solid #ddd; cursor: pointer;">
+                    </div>
+                </div>
+                <div class="col-md-6 p-4">
+                    <h2 id="quick-view-title"></h2>
+                    <div class="rating mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                        <span class="ms-2">(12 avis)</span>
+                    </div>
+                    <p id="quick-view-price" class="h4 text-danger mb-3"></p>
+                    <p id="quick-view-desc" class="mb-4"></p>
+                    
+                    <div class="availability mb-4">
+                        <strong>Disponibilité : </strong>
+                        <span id="quick-view-stock"></span>
+                    </div>
+                    
+                    <div class="quantity-selector mb-4">
+                        <label for="quantity" class="form-label">Quantité :</label>
+                        <div class="input-group" style="max-width: 150px;">
+                            <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">-</button>
+                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1">
+                            <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">+</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100 mb-3" onclick="addToCartFromQuickView()">
+                        <i class="fas fa-cart-plus me-2"></i> Ajouter au panier
+                    </button>
+                    
+                    <div class="product-meta mt-4">
+                        <div class="meta-item">
+                            <strong>Référence :</strong> <span id="quick-view-sku">ARD-MEGA-01</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Catégorie :</strong> <span id="quick-view-category">Kits Arduino</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Tags :</strong> <span>Arduino, Microcontrôleur, DIY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart me-2"></i> Votre Panier</h3>
+            <button id="close-cart" class="btn btn-sm btn-outline-danger">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Les éléments du panier seront ajoutés ici dynamiquement -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total :</span>
+                <span id="total-price">0 CFA</span>
+            </div>
+            <button id="checkout-button" class="checkout-btn">
+                <i class="fas fa-credit-card me-2"></i> Passer la commande
+            </button>
+        </div>
+    </div>
+
+    {% include 'AntaBackEnd/footer.html' %}
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialisation AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Initialisation du panier
+        let cart = [];
+        let total = 0;
+        
+        // Fonction pour basculer les filtres
+        function toggleFilter(id) {
+            const filter = document.getElementById(id);
+            const icon = filter.previousElementSibling.querySelector('i');
+            
+            filter.classList.toggle('show');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+        
+        // Fonction pour afficher l'aperçu rapide
+        function showQuickView(name, image, description, price, stock, category) {
+            const modal = document.getElementById('quick-view-modal');
+            document.getElementById('quick-view-title').textContent = name;
+            document.getElementById('quick-view-img').src = image;
+            document.getElementById('quick-view-desc').textContent = description;
+            document.getElementById('quick-view-price').textContent = price.toLocaleString() + ' CFA';
+            document.getElementById('quick-view-category').textContent = category;
+            
+            if (stock > 10) {
+                document.getElementById('quick-view-stock').innerHTML = '<span class="text-success"><i class="fas fa-check-circle me-1"></i> En stock (' + stock + ' unités)</span>';
+            } else if (stock > 0) {
+                document.getElementById('quick-view-stock').innerHTML = '<span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Stock limité (' + stock + ' unités)</span>';
+            } else {
+                document.getElementById('quick-view-stock').innerHTML = '<span class="text-danger"><i class="fas fa-times-circle me-1"></i> En rupture de stock</span>';
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Fonction pour fermer l'aperçu rapide
+        function closeQuickView() {
+            document.getElementById('quick-view-modal').style.display = 'none';
+        }
+        
+        // Fonction pour augmenter la quantité
+        function increaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        }
+        
+        // Fonction pour diminuer la quantité
+        function decreaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        }
+        
+        // Fonction pour ajouter au panier depuis l'aperçu rapide
+        function addToCartFromQuickView() {
+            const name = document.getElementById('quick-view-title').textContent;
+            const priceText = document.getElementById('quick-view-price').textContent;
+            const price = parseInt(priceText.replace(/\D/g, ''));
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const category = document.getElementById('quick-view-category').textContent;
+            
+            for (let i = 0; i < quantity; i++) {
+                addToCart(name, price, category);
+            }
+            
+            closeQuickView();
+        }
+        
+        // Fonction pour mettre à jour l'affichage du panier
+        function updateCartDisplay() {
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.querySelector('.cart-count').setAttribute('data-count', cartCount);
+            document.querySelector('.cart-count span').textContent = cartTotal.toLocaleString() + ' CFA';
+        }
+        
+        // Fonction pour ajouter un produit au panier
+        function addToCart(productName, productPrice, productCategory) {
+            const existingProduct = cart.find(item => item.name === productName);
+            
+            if (existingProduct) {
+                existingProduct.quantity += 1;
+            } else {
+                cart.push({ 
+                    name: productName, 
+                    price: productPrice, 
+                    quantity: 1,
+                    image: document.getElementById('quick-view-img').src || 'default-product.jpg',
+                    category: productCategory
+                });
+            }
+            
+            total += productPrice;
+            updateCartDisplay();
+            
+            // Afficher le message de confirmation
+            const confirmationMessage = document.getElementById('confirmation-message');
+            confirmationMessage.style.display = 'block';
+            setTimeout(() => {
+                confirmationMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Fonction pour afficher le panier
+        function showCart() {
+            const cartModal = document.getElementById('cart-modal');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price');
+            
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center py-4">Votre panier est vide</p>';
+                totalPriceElement.textContent = '0 CFA';
+            } else {
+                cart.forEach(item => {
+                    const cartItemDiv = document.createElement('div');
+                    cartItemDiv.classList.add('cart-item');
+                    
+                    cartItemDiv.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price.toLocaleString()} CFA</div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateCartItem('${item.name}', -1)">-</button>
+                                <span class="quantity-value">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateCartItem('${item.name}', 1)">+</button>
+                            </div>
+                            <div class="remove-item" onclick="removeCartItem('${item.name}')">
+                                <i class="fas fa-trash-alt me-1"></i> Supprimer
+                            </div>
+                        </div>
+                    `;
+                    
+                    cartItemsContainer.appendChild(cartItemDiv);
+                });
+                
+                const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPriceElement.textContent = cartTotal.toLocaleString() + ' CFA';
+            }
+            
+            cartModal.style.display = 'flex';
+        }
+        
+        // Fonction pour mettre à jour un article du panier
+        function updateCartItem(productName, change) {
+            const product = cart.find(item => item.name === productName);
+            
+            if (product) {
+                if (product.quantity + change > 0) {
+                    product.quantity += change;
+                    total += product.price * change;
+                } else {
+                    removeCartItem(productName);
+                    return;
+                }
+                
+                updateCartDisplay();
+                showCart();
+            }
+        }
+        
+        // Fonction pour supprimer un article du panier
+        function removeCartItem(productName) {
+            const productIndex = cart.findIndex(item => item.name === productName);
+            
+            if (productIndex !== -1) {
+                total -= cart[productIndex].price * cart[productIndex].quantity;
+                cart.splice(productIndex, 1);
+                updateCartDisplay();
+                showCart();
+            }
+        }
+        
+        // Fonction pour passer la commande
+        function checkout() {
+            if (cart.length > 0) {
+                alert('Commande passée avec succès !');
+                cart = [];
+                total = 0;
+                updateCartDisplay();
+                document.getElementById('cart-modal').style.display = 'none';
+            } else {
+                alert('Votre panier est vide !');
+            }
+        }
+        
+        // Écouteurs d'événements
+        document.querySelector('.cart-count').addEventListener('click', showCart);
+        document.getElementById('close-cart').addEventListener('click', () => {
+            document.getElementById('cart-modal').style.display = 'none';
+        });
+        document.getElementById('checkout-button').addEventListener('click', checkout);
+        
+        // Fermer les modals en cliquant à l'extérieur
+        window.addEventListener('click', (event) => {
+            if (event.target === document.getElementById('quick-view-modal')) {
+                closeQuickView();
+            }
+            if (event.target === document.getElementById('cart-modal')) {
+                document.getElementById('cart-modal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

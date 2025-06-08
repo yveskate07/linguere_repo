@@ -1,0 +1,79 @@
+{% load static %}
+
+{% block footer %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-5 mb-md-0">
+                <h3 class="footer-heading">LINGUÈRE FABLAB</h3>
+                <p>Votre partenaire en fabrication numérique au Sénégal. Machines, formations et services sur mesure
+                    pour particuliers, écoles et entreprises.</p>
+                <div class="social-icons mt-4">
+                    <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
+                <h3 class="footer-heading">LIENS RAPIDES</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'home' %}"><i class="fas fa-chevron-right me-2"></i>Accueil</a></li>
+                    <li><a href="{% url 'home' %}#shop-section"><i class="fas fa-chevron-right me-2"></i>Boutique</a></li>
+                    <li><a href="{% url 'home' %}#services-section"><i class="fas fa-chevron-right me-2"></i>Services</a></li>
+                    <li><a href="{% url 'home' %}#formations-section"><i class="fas fa-chevron-right me-2"></i>Formations</a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-chevron-right me-2"></i>À propos</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-6 mb-5 mb-md-0">
+                <h3 class="footer-heading">CATÉGORIES</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'shop-arduino' %}"><i class="fas fa-chevron-right me-2"></i>Arduino & IoT</a></li>
+                    <li><a href="{% url 'shop-machine' %}"><i class="fas fa-chevron-right me-2"></i>Machines</a></li>
+                    <li><a href="{% url 'shop-installations' %}"><i class="fas fa-chevron-right me-2"></i>Installations</a></li>
+                    <li><a href="{% url 'services-broderie' %}"><i class="fas fa-chevron-right me-2"></i>Broderie</a></li>
+                    <li><a href="{% url 'services-fraiseuse' %}"><i class="fas fa-chevron-right me-2"></i>Fraiseuse numérique</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <div id="con"></div>
+                <h3 class="footer-heading">CONTACT</h3>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Avenue de l'Innovation, Dakar, Sénégal</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>(+221) 77 077 18 32</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>linguerefablab@gmail.com</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>Lun-Ven: 08:00 - 17:00<br>Sam: 09:00 - 13:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom pt-4 mt-5">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Linguère Fablab. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Conçu avec <i class="fas fa-heart text-danger"></i> par Linguère Fablab Team</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}
