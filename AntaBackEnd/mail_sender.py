@@ -1,6 +1,8 @@
 import smtplib
 from email.message import EmailMessage
 import ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from pathlib import Path
 import AntaBackEnd.settings as settings
 from dotenv import load_dotenv
@@ -48,19 +50,24 @@ def brochure_to_client_through_mail(receiver_email, formation_name, user:dict, r
         mail_to_fablab(formation_name=formation_name, user=user, reason=reason, msg_=msg_)
 
 # une fonction qui envoie un mail a Linguere Fablab avec la requete de l'utilisateur voulant prendre contact
-def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subject="Demande d'information sur la formation"):
+def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subject="Demande d'information sur la formation", html_msg=None):
 
-    user_msg = f"Message: {user['message']}" if user['message'] else ""
+    user_msg = f"Message: {user['message']}" if user.get('message',None) else ""
+
+    msg = EmailMessage()
+    if html_msg:
+        msg = MIMEMultipart()
+        msg.attach(MIMEText(html_msg, 'html'))
+        msg["Subject"] = subject
+
+    msg["From"] = sender_email
+    msg["To"] = sender_email
 
     if not reason:
-        msg = EmailMessage()
-        msg["From"] = sender_email
-        msg["To"] = sender_email
-
 
         # Corps du message professionnel
 
-        if not msg:
+        if not msg_:
             msg["Subject"] = subject + f" {formation_name}"
 
             corps = f"""\
@@ -77,9 +84,12 @@ def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subje
             """
 
         else:
-            corps = msg
+            corps = msg_
+            msg["Subject"] = subject + f" {formation_name}"
+            
 
-        msg.set_content(corps)
+        if not html_msg:
+            msg.set_content(corps)
 
         # Envoi via SMTP sécurisé
         contexte = ssl.create_default_context()
@@ -89,9 +99,6 @@ def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subje
             #print("Notification envoyée avec succès.")
 
     else:
-        msg = EmailMessage()
-        msg["From"] = sender_email
-        msg["To"] = sender_email
         msg["Subject"] = "Demande d'information sur la formation"
 
         # Corps du message professionnel
@@ -108,7 +115,8 @@ def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subje
 
                 """
         # {"Message: " + msg_ if msg_ else ''}
-        msg.set_content(corps)
+        if not html_msg:
+            msg.set_content(corps)
 
         # Envoi via SMTP sécurisé
         contexte = ssl.create_default_context()
@@ -118,16 +126,20 @@ def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subje
             # print("Notification envoyée avec succès.")
 
 # une fonction qui envoie un mail a Linguere fablab indiquant qu'un utilisateur s'est inscrit à tel formation.
-def mail_to_the_client(user:dict, formation_name=None, msg=None, subject="Nouvelle inscription pour"):
+def mail_to_the_client(user:dict, formation_name=None, msg_txt=None, subject="Nouvelle inscription pour", html_msg = None):
 
     msg = EmailMessage()
+    if html_msg:
+        msg = MIMEMultipart()
+        msg.attach(MIMEText(html_msg, 'html'))
+    
     msg["From"] = sender_email
     msg["To"] = user['e-mail']
 
     # Corps du message professionnel
-    user_msg = f"Message: {user['message']}" if user['message'] else ""
+    #user_msg = f"Message: {user['message']}" if user['message'] else ""
 
-    if not msg:
+    if not msg_txt:
 
         msg["Subject"] = subject + f" {formation_name}"
         corps = f"""\
@@ -140,9 +152,11 @@ def mail_to_the_client(user:dict, formation_name=None, msg=None, subject="Nouvel
             """
 
     else:
-        corps = msg
+        msg['Subject'] = subject
+        corps = msg_txt
 
-    msg.set_content(corps)
+    if not html_msg:
+        msg.set_content(corps)
 
     # Envoi via SMTP sécurisé
     contexte = ssl.create_default_context()

@@ -38,6 +38,7 @@ class ClientCustomizationForBroderieNumerique(models.Model):
 
     support_type = models.CharField(choices=SUPPORTS, verbose_name='Type de support', max_length=30)
     other_support = models.TextField(blank=True, null=True, verbose_name='Support personnalisé')
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.IntegerField(verbose_name='Dimension 1')
     dim_2 = models.IntegerField(verbose_name='Dimension 2')
     quantity = models.IntegerField(verbose_name='Quantité')
@@ -76,6 +77,7 @@ class ClientCustomizationForFraiseuseNumerique(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
     service_type = models.CharField(choices=SERVICES, verbose_name='Type de service', max_length=30)
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(max_length=30, verbose_name='Dimension 2')
     used_materials = models.CharField(choices=MATERIALS, max_length=30, verbose_name='Matériau utilisé')
@@ -112,6 +114,7 @@ class ClientCustomizationForDecoupeLaser(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
     service_type = models.CharField(blank=True, null=True, choices=SERVICES, verbose_name='Type de service', max_length=30)
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 2')
     used_materials = models.CharField(blank=True, null=True, max_length=30, choices=MATERIALS, verbose_name='Matériau utilisé')
@@ -150,6 +153,7 @@ class ClientCustomizationForImpression3D(models.Model):
 
     impression_type = models.CharField(choices=IMPRESSIONS, verbose_name="Type d'impression",
                                     max_length=30)
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 2')
     codeCouleur = models.CharField(max_length=80, blank=True, null=True, verbose_name='Code couleur')
@@ -204,6 +208,7 @@ class ClientCustomizationForPaper(models.Model):
 
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 2')
     codeCouleur = models.CharField(max_length=80, blank=True, null=True, verbose_name='Code couleur')
@@ -252,6 +257,7 @@ class ClientCustomizationForTextile(models.Model):
     design_file = models.CharField(choices=DESIGNS_FILE, max_length=30, verbose_name='Fichier du design')
     other_design_file = models.CharField(max_length=60, blank=True, null=True, verbose_name='Autre fichier de design')
 
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 2')
     codeCouleur = models.CharField(max_length=80, blank=True, null=True, verbose_name='Code couleur')
@@ -302,6 +308,7 @@ class ClientCustomizationForObjects(models.Model):
     other_design_file = models.CharField(max_length=60, blank=True, null=True, verbose_name='Autre fichier de design')
 
 
+    date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 1')
     dim_2 = models.CharField(blank=True, null=True, max_length=30, verbose_name='Dimension 2')
     codeCouleur = models.CharField(max_length=80, blank=True, null=True, verbose_name='Code couleur')

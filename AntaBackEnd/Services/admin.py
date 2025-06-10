@@ -18,7 +18,7 @@ class BroderieOrderAdmin(admin.ModelAdmin):
                   'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForFraiseuseNumerique)
 class FraiseuseOrderAdmin(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class FraiseuseOrderAdmin(admin.ModelAdmin):
                   'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForDecoupeLaser)
 class LaserOrderAdmin(admin.ModelAdmin):
@@ -36,7 +36,7 @@ class LaserOrderAdmin(admin.ModelAdmin):
                   'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForImpression3D)
 class Imp3DOrderAdmin(admin.ModelAdmin):
@@ -45,7 +45,7 @@ class Imp3DOrderAdmin(admin.ModelAdmin):
                   'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForPaper)
 class PaperOrderAdmin(admin.ModelAdmin):
@@ -62,7 +62,7 @@ class PaperOrderAdmin(admin.ModelAdmin):
               'name', 'email', 'tel_number', 'town',
               'delivery_mode','cgu_accept',)
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForTextile)
 class TextileOrderAdmin(admin.ModelAdmin):
@@ -86,7 +86,7 @@ class TextileOrderAdmin(admin.ModelAdmin):
             'delivery_mode',
             'cgu_accept',)
 
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
 
 @admin.register(ClientCustomizationForObjects)
 class ObjectsOrderAdmin(admin.ModelAdmin):
@@ -111,4 +111,4 @@ class ObjectsOrderAdmin(admin.ModelAdmin):
         'cgu_accept',
     )
     
-    list_display = ('name','email', 'tel_number','town','service',)
+    list_display = ('name','email', 'tel_number','town','service', 'date',)
