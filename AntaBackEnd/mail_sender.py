@@ -61,7 +61,7 @@ def mail_to_fablab(user:dict, formation_name=None, reason=None, msg_=None, subje
         msg["Subject"] = subject
 
     msg["From"] = sender_email
-    msg["To"] = "kateyveschadrac@gmail.com"
+    msg["To"] = sender_email
 
     if not reason: # si reason = None alors le mail est envoyé dans le contexte d'une nouvelle inscription à une formation sans plus d'infos (reason)
 
