@@ -11,12 +11,12 @@ from Services.models import Service
 from mail_sender import mail_to_the_client, mail_to_fablab
 
 
-def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, colors=None):
+def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None):
 
     colors_html = ""
     colors_css = ""
     if colors:
-        colors_html = ' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors])
+        colors_html = "<p><span class='highlight'>Couleurs souhaitées </span>: "+' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors]) + "</p>"
         colors_css = ' '.join([f"""
         .circle-{color.lstrip('#')}""" + """ {
             width: 15px; 
@@ -93,8 +93,9 @@ def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment,
         <p><span class="highlight">Objet :</span> {obj}</p>
         <p><span class="highlight">Dimensions du design </span>: {width} (largeur) x {height} (longueur)</p>
         <p><span class="highlight">Quantité </span>: {quantite} exemplaires</p>
-        <p><span class="highlight">{"Couleurs souhaitées </span>: " + colors_html if colors else ""}</p>
+        {colors_html}
         <p><span class="highlight">Commentaire </span>: {comment}</p>
+        <p><span class="highlight">Image du design choisi: </span>: <img src={img_path} alt="design picture"/></p>
     </div>
 
     <p>Votre commande est actuellement en cours de traitement.<br>{msg_deliver}
@@ -124,7 +125,7 @@ def get_msg_for_admin_mail(request , **kwargs):
 
     if colors:
 
-        colors_html = ' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors])
+        colors_html = "<p><span class='highlight'>Couleurs souhaitées </span>: " + ' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors]) + "</p>"
         colors_css = ' '.join([f"""
                 .circle-{color.lstrip('#')}""" + """ {
                     width: 15px; 
@@ -244,11 +245,16 @@ def get_msg_for_admin_mail(request , **kwargs):
                 <span>{kwargs['quantity']} exemplaires</span>
             </div>
 
-            {"<div class='detail-item'><span class='detail-label'>Couleurs souhaitées" + colors_html + " :</span><span></span></div>" if colors else ""}
+            {colors_html}
 
             <div class="detail-item">
                 <span class="detail-label">Commentaire :</span>
                 <span>{kwargs['comment']}</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Image du design choisi: </span>
+                <img src={kwargs['img_path']} alt="design picture"/>
             </div>
 
             <div class="detail-item">
@@ -436,6 +442,11 @@ def save_broderie_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -452,6 +463,7 @@ def save_broderie_order(request):
                                                 quantite=request.POST.get('quantity'),
                                                 colors=request.POST.get('codeCouleur').split(','),
                                                 comment = request.POST.get('special_instructions'),
+                                                img_path=design_path,
                                                 msg_deliver=msg_deliver)
 
             msg_body2 = get_msg_for_admin_mail(request=request, service="Broderie Numérique", obj=request.POST.get('support_type'),
@@ -460,6 +472,7 @@ def save_broderie_order(request):
                                                quantity=request.POST.get('quantity'),
                                                comment=request.POST.get('special_instructions'),
                                                delivery=request.POST.get('delivery_mode'),
+                                               img_path=design_path,
                                                colors=request.POST.get('codeCouleur').split(','),
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
@@ -516,6 +529,12 @@ def save_fraiseuse_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -528,6 +547,7 @@ def save_fraiseuse_order(request):
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
+                                                img_path=design_path,
                                                 quantite=request.POST.get('quantity'),
                                                 comment=request.POST.get('special_instructions'),
                                                 msg_deliver=msg_deliver)
@@ -538,6 +558,7 @@ def save_fraiseuse_order(request):
                                                quantity=request.POST.get('quantity'),
                                                comment=request.POST.get('special_instructions'),
                                                delivery=request.POST.get('delivery_mode'),
+                                               img_path=design_path,
                                                colors=None,
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
@@ -592,6 +613,12 @@ def save_laser_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -605,6 +632,7 @@ def save_laser_order(request):
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
+                                                img_path=design_path,
                                                 comment=request.POST.get('special_instructions'),
                                                 msg_deliver=msg_deliver)
 
@@ -614,6 +642,7 @@ def save_laser_order(request):
                                                quantity=request.POST.get('quantity'),
                                                comment=request.POST.get('special_instructions'),
                                                delivery=request.POST.get('delivery_mode'),
+                                               img_path=design_path,
                                                colors=None,
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
@@ -670,6 +699,12 @@ def save_imp_3d_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -684,6 +719,7 @@ def save_imp_3d_order(request):
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
                                                 colors=request.POST.get('codeCouleur').split(','),
+                                                img_path=design_path,
                                                 comment=request.POST.get('special_instructions'),
                                                 msg_deliver=msg_deliver)
 
@@ -694,6 +730,7 @@ def save_imp_3d_order(request):
                                                comment=request.POST.get('special_instructions'),
                                                delivery=request.POST.get('delivery_mode'),
                                                colors=request.POST.get('codeCouleur').split(','),
+                                               img_path=design_path,
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
                                                tel_number=request.POST.get('tel_number'),
@@ -728,6 +765,12 @@ def save_imp_text_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -742,6 +785,7 @@ def save_imp_text_order(request):
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
                                                 comment=request.POST.get('special_instructions'),
+                                                img_path=design_path,
                                                 msg_deliver=msg_deliver,
                                                 colors=request.POST.get('codeCouleur').split(','))
 
@@ -752,6 +796,7 @@ def save_imp_text_order(request):
                                                quantite=request.POST.get('quantity'),
                                                comment=request.POST.get('special_instructions'),
                                                msg_deliver=msg_deliver,
+                                               img_path=design_path,
                                                colors=request.POST.get('codeCouleur').split(','),
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
@@ -786,6 +831,12 @@ def save_imp_paper_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -800,6 +851,7 @@ def save_imp_paper_order(request):
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
                                                 comment=request.POST.get('special_instructions'),
+                                                img_path=design_path,
                                                 msg_deliver=msg_deliver,
                                                 colors=request.POST.get('codeCouleur').split(','))
 
@@ -811,6 +863,7 @@ def save_imp_paper_order(request):
                                                comment=request.POST.get('special_instructions'),
                                                msg_deliver=msg_deliver,
                                                colors=request.POST.get('codeCouleur').split(','),
+                                               img_path=design_path,
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
                                                tel_number=request.POST.get('tel_number'),
@@ -844,6 +897,12 @@ def save_imp_object_order(request):
             order = form.save(commit=False)
             order.service = Service.objects.get(pk=int(request.POST.get("service")))
             order.save()
+
+            if not request.POST.get('upload_design_picture'):
+                design_path = request.POST.get('design_picture')
+            else:
+                design_path = request.build_absolute_uri(order.upload_design_picture.url)
+
             # envoi d'un email
             if request.POST.get('delivery_mode') == "Retrait sur place Dakar":
                 msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
@@ -858,6 +917,7 @@ def save_imp_object_order(request):
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
                                                 comment=request.POST.get('special_instructions'),
+                                                img_path=design_path,
                                                 msg_deliver=msg_deliver,
                                                 colors=request.POST.get('codeCouleur').split(','))
 
@@ -869,6 +929,7 @@ def save_imp_object_order(request):
                                                comment=request.POST.get('special_instructions'),
                                                msg_deliver=msg_deliver,
                                                colors=request.POST.get('codeCouleur').split(','),
+                                               img_path=design_path,
                                                name=request.POST.get('name'),
                                                email=request.POST.get('email'),
                                                tel_number=request.POST.get('tel_number'),
