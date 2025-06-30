@@ -134,7 +134,7 @@ class ClientCustomizationForDecoupeLaser(models.Model):
     design_picture = models.CharField(verbose_name="Image du design", blank=True, null=True, max_length=260)
     upload_design_picture = models.ImageField(verbose_name="Design uploadé", upload_to="Services/uploaded_design",
                                               blank=True, null=True,
-                                              validators=[validate_file_size, validate_file_extension3])
+                                              validators=[validate_file_size, validate_file_extension1])
 
     name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
     email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
