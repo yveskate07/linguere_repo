@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de réception de votre commande</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            font-size: 0.9em;
+            color: #777777;
+        }
+        .order-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .order-details p {
+            margin: 5px 0;
+        }
+        .highlight {
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        {% if colors_list %}
+            {% for color in colors_list %}
+                .circle-{{color}}{
+                    width: 15px;
+                    height: 15px;
+                    background-color:#{{color}};
+                    border-radius: 50%;
+                    margin-bottom: 12px;}
+            {% endfor %}
+        {% endif %}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Confirmation de réception de votre commande</h2>
+    </div>
+
+    <p>Bonjour,</p>
+
+    <p>Nous vous remercions pour votre commande <span class="highlight">{{Service_name}}</span> : {{obj}}.</p>
+
+    <div class="order-details">
+        <p>Nous vous confirmons que nous avons bien reçu votre demande de personnalisation avec les indications suivantes :</p>
+
+        <p><span class="highlight">Objet :</span> {{obj}}</p>
+        <p><span class="highlight">Dimensions du design </span>: {{width}} (largeur) x {{height}} (longueur)</p>
+        <p><span class="highlight">Quantité </span>: {{quantite}} exemplaires</p>
+        {% if colors_list %}
+            <p><span class='highlight'>Couleurs souhaitées </span>:
+            {% for color in colors_list %}
+                <div class="circle-{{color}}"></div>
+            {% endfor %}
+            </p>
+        {% endif %}
+        <p><span class="highlight">Commentaire </span>: {{comment}}</p>
+        <p><span class="highlight">Image du design choisi: </span>: <img src="{{img_path}}" alt="design picture"/></p>
+    </div>
+
+    <p>Votre commande est actuellement en cours de traitement.<br>{{msg_deliver}}
+
+    <p>N'hésitez pas à nous contacter si vous avez des questions ou des précisions à apporter.</p>
+
+    <div class="footer">
+        <p>Cordialement,</p>
+        <p><strong>Linguere FabLab</strong><br>
+        Service Client</p>
+        <p>linguerefablab@gmail.com | +221 77 314 66 62</p>
+    </div>
+
+</body>
+</html>

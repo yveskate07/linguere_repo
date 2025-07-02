@@ -2,6 +2,7 @@ import json
 
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 from Services.forms import Broderie_num_customForm1, Fraiseuse_customForm1, Laser_customForm1, Imp_3D_customForm1, \
@@ -11,107 +12,24 @@ from Services.models import Service
 from mail_sender import mail_to_the_client, mail_to_fablab
 
 
-def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None):
+def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None, request=None):
 
-    colors_html = ""
-    colors_css = ""
     if colors:
-        colors_html = "<p><span class='highlight'>Couleurs souhaitées </span>: "+' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors]) + "</p>"
-        colors_css = ' '.join([f"""
-        .circle-{color.lstrip('#')}""" + """ {
-            width: 15px; 
-            height: 15px;
-            background-color:"""+f""" {color}"""+""";
-            border-radius: 50%;  
-            margin-bottom: 12px;
-        }""" for color in colors])
+        colors = [i.lstrip('#') for i in colors]
 
-    msg_body = """
-        <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmation de réception de votre commande</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eeeeee;
-            margin-bottom: 20px;
-        }
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eeeeee;
-            font-size: 0.9em;
-            color: #777777;
-        }
-        .order-details {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .order-details p {
-            margin: 5px 0;
-        }
-        .highlight {
-            font-weight: bold;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 15px;
-        }"""+colors_css+ f"""
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h2>Confirmation de réception de votre commande</h2>
-    </div>
-
-    <p>Bonjour,</p>
-
-    <p>Nous vous remercions pour votre commande <span class="highlight">{Service_name}</span> : {obj}.</p>
-
-    <div class="order-details">
-        <p>Nous vous confirmons que nous avons bien reçu votre demande de personnalisation avec les indications suivantes :</p>
-
-        <p><span class="highlight">Objet :</span> {obj}</p>
-        <p><span class="highlight">Dimensions du design </span>: {width} (largeur) x {height} (longueur)</p>
-        <p><span class="highlight">Quantité </span>: {quantite} exemplaires</p>
-        {colors_html}
-        <p><span class="highlight">Commentaire </span>: {comment}</p>
-        <p><span class="highlight">Image du design choisi: </span>: <img src={img_path} alt="design picture"/></p>
-    </div>
-
-    <p>Votre commande est actuellement en cours de traitement.<br>{msg_deliver}
-
-    <p>N'hésitez pas à nous contacter si vous avez des questions ou des précisions à apporter.</p>
-
-    <div class="footer">
-        <p>Cordialement,</p>
-        <p><strong>Linguere FabLab</strong><br>
-        Service Client</p>
-        <p>linguerefablab@gmail.com | +221 77 314 66 62</p>
-    </div>
-
-</body>
-</html>
-"""
+    msg_body = render_to_string(request=request, template_name="Services/mail_for_users/index.html", context={'Service_name':Service_name,
+                                                                                                              'obj':obj,
+                                                                                                              'width':width,
+                                                                                                              'height':height,
+                                                                                                              'quantite':quantite,
+                                                                                                              'comment':comment,
+                                                                                                              'img_path':img_path,
+                                                                                                              'msg_deliver':msg_deliver,
+                                                                                                              'colors_list':colors
+                                                                                                              }
+                                                                                                             )
+    with open("code1.html",'w') as f:
+        f.write(msg_body)
 
     return msg_body
 
@@ -119,184 +37,30 @@ def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment,
 def get_msg_for_admin_mail(request , **kwargs):
     admin_url = reverse('admin:index')
     absolute_admin_url = request.build_absolute_uri(admin_url)
-    colors_html = ""
-    colors_css = ""
     colors = kwargs.get('colors', None)
 
     if colors:
+        colors = [i.lstrip('#') for i in kwargs['colors']]
 
-        colors_html = "<p><span class='highlight'>Couleurs souhaitées </span>: " + ' '.join([f"""<div class="circle-{i.lstrip('#')}"></div>""" for i in colors]) + "</p>"
-        colors_css = ' '.join([f"""
-                .circle-{color.lstrip('#')}""" + """ {
-                    width: 15px; 
-                    height: 15px;
-                    background-color: """+f"""{color}"""+""";
-                    border-radius: 50%;  /* Rend l'élément circulaire */
-                    margin-bottom: 12px;
-                }""" for color in colors])
-
-    msg_body = """
-    <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nouvelle commande enregistrée</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 25px;
-            background-color: #f5f5f5;
-        }
-        .email-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eaeaea;
-            margin-bottom: 25px;
-        }
-        .header h2 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .order-details {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-            border-left: 4px solid #3498db;
-        }
-        .detail-item {
-            margin-bottom: 12px;
-            display: flex;
-        }
-        .detail-label {
-            font-weight: 600;
-            color: #2c3e50;
-            min-width: 180px;
-        }
-        .divider {
-            height: 1px;
-            background-color: #eaeaea;
-            margin: 25px 0;
-        }
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eaeaea;
-            font-size: 0.9em;
-            color: #7f8c8d;
-            text-align: center;
-        }
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-weight: 500;
-        }
-        .highlight {
-            color: #e74c3c;
-            font-weight: 600;
-        }"""+colors_css+ f"""
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <div class="header">
-            <h2>Nouvelle commande enregistrée</h2>
-            <p style="color: #7f8c8d;">Linguere FabLab</p>
-        </div>
-
-        <p>Bonjour Linguere FabLab, une nouvelle commande a été passée sur le site.</p>
-
-        <div class="order-details">
-            <h3 style="margin-top: 0; color: #3498db;">Détails de la commande :</h3>
-
-            <div class="detail-item">
-                <span class="detail-label">Service :</span>
-                <span>{kwargs['service']}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Objet :</span>
-                <span>{kwargs['obj']}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Dimensions du design :</span>
-                <span>{kwargs['width']} (largeur) x {kwargs['height']} (longueur)</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Quantité :</span>
-                <span>{kwargs['quantity']} exemplaires</span>
-            </div>
-
-            {colors_html}
-
-            <div class="detail-item">
-                <span class="detail-label">Commentaire :</span>
-                <span>{kwargs['comment']}</span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">Image du design choisi: </span>
-                <img src={kwargs['img_path']} alt="design picture"/>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Mode de livraison :</span>
-                <span>{kwargs['delivery']}</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="detail-item">
-                <span class="detail-label">Nom du client :</span>
-                <span>{kwargs.get('name')}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">E-mail du client :</span>
-                <span>{kwargs.get('email')}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Téléphone :</span>
-                <span>{kwargs.get('tel_number')}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Ville :</span>
-                <span>{kwargs.get('town')}</span>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin: 30px 0;">
-            <a href="{absolute_admin_url}" class="button">Voir la commande</a>
-        </div>
-
-        <div class="footer">
-            <p>Ceci est une notification automatique - merci de ne pas répondre à cet email</p>
-            <p>© 2023 Linguere FabLab. Tous droits réservés.</p>
-        </div>
-    </div>
-</body>
-</html>
-"""
+    msg_body = render_to_string(request=request, template_name="Services/mail_for_fablab/index.html",
+                                context={'colors_list':colors,
+                                         'Service_name': kwargs['service'],
+                                         'obj': kwargs['obj'],
+                                         'width': kwargs['width'],
+                                         'height': kwargs['height'],
+                                         'quantite': kwargs['quantity'],
+                                         'comment': kwargs['comment'],
+                                         'img_path': kwargs['img_path'],
+                                         'deliver': kwargs['delivery'],
+                                         'name':kwargs.get('name'),
+                                         'email':kwargs.get('email'),
+                                         'tel_number':kwargs.get('tel_number'),
+                                         'town':kwargs.get('town'),
+                                         'absolute_admin_url':absolute_admin_url
+                                         }
+                                )
+    with open("code2.html",'w') as f:
+        f.write(msg_body)
 
     return msg_body
 
@@ -456,7 +220,7 @@ def save_broderie_order(request):
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Broderie',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Broderie',
                                                 obj=request.POST.get('support_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -543,7 +307,7 @@ def save_fraiseuse_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Fraiseuse',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Fraiseuse',
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -627,7 +391,7 @@ def save_laser_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name="Découpe Laser",
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name="Découpe Laser",
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -713,7 +477,7 @@ def save_imp_3d_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Impression 3D',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Impression 3D',
                                                 obj=request.POST.get('impression_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -779,7 +543,7 @@ def save_imp_text_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Impression Textile',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Impression Textile',
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -845,7 +609,7 @@ def save_imp_paper_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Impression Papier',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Impression Papier',
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
@@ -911,7 +675,7 @@ def save_imp_object_order(request):
                 msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('town')}</span>, via notre service de livraison.
                 Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            msg_body1 = get_msg_for_client_mail(Service_name='Impression Objets',
+            msg_body1 = get_msg_for_client_mail(request = request, Service_name='Impression Objets',
                                                 obj=request.POST.get('service_type'),
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
