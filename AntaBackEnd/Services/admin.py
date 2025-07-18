@@ -15,37 +15,37 @@ class ServiceAdmin(admin.ModelAdmin):
 class BroderieOrderAdmin(admin.ModelAdmin):
     fields = ('support_type', 'other_support', 'dim_1', 'dim_2', 'quantity',
                   'special_instructions', 'codeCouleur',
-                  'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
+                  'town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForFraiseuseNumerique)
 class FraiseuseOrderAdmin(admin.ModelAdmin):
     fields = ('service_type', 'dim_1', 'dim_2', 'quantity',
                   'special_instructions', 'used_materials',
-                  'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
+                  'town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForDecoupeLaser)
 class LaserOrderAdmin(admin.ModelAdmin):
     fields = ('service_type', 'dim_1', 'dim_2', 'quantity',
                   'special_instructions', 'used_materials',
-                  'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
+                  'town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForImpression3D)
 class Imp3DOrderAdmin(admin.ModelAdmin):
     fields = ('impression_type', 'dim_1', 'dim_2', 'quantity',
                   'special_instructions', 'used_materials','codeCouleur',
-                  'name','email', 'tel_number','town', 'upload_design_picture','design_picture',
+                  'town', 'upload_design_picture','design_picture',
                   'delivery_mode', 'cgu_accept', 'service', )
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForPaper)
 class PaperOrderAdmin(admin.ModelAdmin):
@@ -59,10 +59,10 @@ class PaperOrderAdmin(admin.ModelAdmin):
               'dim_2', 'quantity',
               'special_instructions', 'codeCouleur',
               'design_picture', 'upload_design_picture',
-              'name', 'email', 'tel_number', 'town',
+              'town',
               'delivery_mode','cgu_accept',)
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForTextile)
 class TextileOrderAdmin(admin.ModelAdmin):
@@ -79,14 +79,11 @@ class TextileOrderAdmin(admin.ModelAdmin):
             'special_instructions',
             'design_picture',
             'upload_design_picture',
-            'name',
-            'email',
-            'tel_number',
             'town',
             'delivery_mode',
             'cgu_accept',)
 
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)
 
 @admin.register(ClientCustomizationForObjects)
 class ObjectsOrderAdmin(admin.ModelAdmin):
@@ -103,12 +100,9 @@ class ObjectsOrderAdmin(admin.ModelAdmin):
         'special_instructions',
         'design_picture',
         'upload_design_picture',
-        'name',
-        'email',
-        'tel_number',
         'town',
         'delivery_mode',
         'cgu_accept',
     )
     
-    list_display = ('name','email', 'tel_number','town','service', 'date',)
+    list_display = ('town','service', 'date',)

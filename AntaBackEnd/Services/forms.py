@@ -12,8 +12,7 @@ class Broderie_num_customForm1(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForBroderieNumerique
         fields = ['support_type', 'other_support', 'dim_1', 'dim_2', 'quantity',
-                  'special_instructions', 'design_picture', 'codeCouleur',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'design_picture', 'codeCouleur','town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {
@@ -29,9 +28,6 @@ class Broderie_num_customForm1(forms.ModelForm):
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes1',
                                                                  'class':"option-textarea",
                             'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname1'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email1'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone1'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address1'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery1'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms1','class':'form-check-input'}),
@@ -70,8 +66,7 @@ class Broderie_num_customForm2(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForBroderieNumerique
         fields = ['support_type', 'other_support', 'dim_1', 'dim_2', 'quantity',
-                  'special_instructions', 'codeCouleur',
-                  'name','email', 'tel_number','town', 'upload_design_picture',
+                  'special_instructions', 'codeCouleur','town', 'upload_design_picture',
                   'delivery_mode', 'cgu_accept']
         
         widgets = {
@@ -87,9 +82,6 @@ class Broderie_num_customForm2(forms.ModelForm):
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes2',
                                                                  'class':"option-textarea",
                             'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname2'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email2'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone2'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address2'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery2'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms2','class':'form-check-input'}),
@@ -131,8 +123,7 @@ class Fraiseuse_customForm1(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForFraiseuseNumerique
         fields = ['service_type', 'dim_1', 'dim_2', 'quantity', 'used_materials' ,
-                  'special_instructions', 'design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'design_picture','town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {'service_type':forms.Select(attrs={'class':"option-select" , 'id':'selected-service1'}),
@@ -143,9 +134,6 @@ class Fraiseuse_customForm1(forms.ModelForm):
                    'used_materials': forms.Select(attrs={'id': 'selected-support1', 'class':"option-select"}),
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes1', 'class':"option-textarea",
                             'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname1'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email1'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone1'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address1'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery1'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms1','class':'form-check-input'}),
@@ -169,8 +157,7 @@ class Fraiseuse_customForm2(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForFraiseuseNumerique
         fields = ['service_type', 'dim_1', 'dim_2', 'quantity', 'used_materials' ,
-                  'special_instructions', 'upload_design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'upload_design_picture','town',
                   'delivery_mode', 'cgu_accept']
         
         widgets = {'service_type':forms.Select(attrs={'class':"option-select" , 'id':'selected-service2'}),
@@ -179,9 +166,6 @@ class Fraiseuse_customForm2(forms.ModelForm):
                    'quantity':forms.NumberInput(attrs={'id':'quantity2', 'class':"option-input",'min':"1", 'value':"1",'style':"max-width: 80px;"}),
                    'used_materials': forms.Select(attrs={'id': 'selected-support2', 'class':"option-select"}),
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes2', 'class':"option-textarea",'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname2'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email2'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone2'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address2'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery2'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms2','class':'form-check-input'}),
@@ -204,8 +188,7 @@ class Laser_customForm1(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForDecoupeLaser
         fields = ['service_type', 'dim_1', 'dim_2', 'quantity', 'used_materials' ,
-                  'special_instructions', 'design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'design_picture','town',
                   'delivery_mode', 'cgu_accept']
         
         widgets = {'service_type':forms.Select(attrs={'class':"option-select" , 'id':'selected-service1'}),
@@ -216,9 +199,6 @@ class Laser_customForm1(forms.ModelForm):
                    'used_materials': forms.Select(attrs={'id': 'selected-support1', 'class':"option-select"}),
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes1', 'class':"option-textarea",
                             'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname1'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email1'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone1'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address1'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery1'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms1','class':'form-check-input'}),
@@ -241,8 +221,7 @@ class Laser_customForm2(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForDecoupeLaser
         fields = ['service_type', 'dim_1', 'dim_2', 'quantity', 'used_materials' ,
-                  'special_instructions','upload_design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions','upload_design_picture','town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {'service_type':forms.Select(attrs={'class':"option-select" , 'id':'selected-service2'}),
@@ -251,9 +230,6 @@ class Laser_customForm2(forms.ModelForm):
                    'quantity':forms.NumberInput(attrs={'id':'quantity2', 'class':"option-input",'min':"1", 'value':"1",'style':"max-width: 80px;"}),
                    'used_materials': forms.Select(attrs={'id': 'selected-support2', 'class':"option-select"}),
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes2', 'class':"option-textarea",'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname2'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email2'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone2'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address2'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery2'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms2','class':'form-check-input'}),
@@ -276,8 +252,7 @@ class Imp_3D_customForm1(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForImpression3D
         fields = ['impression_type', 'dim_1', 'dim_2', 'quantity', 'codeCouleur', 'used_materials' ,
-                  'special_instructions', 'design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'design_picture','town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {'impression_type':forms.Select(attrs={'class':"option-select", 'id':'selected-impression1'}),
@@ -287,9 +262,6 @@ class Imp_3D_customForm1(forms.ModelForm):
                    'quantity':forms.NumberInput(attrs={'id':'quantity1', 'class':"option-input",'min':"1", 'value':"1",'style':"max-width: 80px;"}),
                    'used_materials': forms.Select(attrs={'id': 'selected-support1', 'class':"option-select"}),
                    'special_instructions':forms.TextInput(attrs={'id':'selected-notes1', 'class':"option-textarea",'placeholder':"Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name':forms.TextInput(attrs={'class':'form-control','id':'fullname1'}),
-                   'email':forms.EmailInput(attrs={'class':'form-control', 'id':'email1'}),
-                   'tel_number':forms.TextInput(attrs={'class':'form-control','id':'phone1'}),
                    'town':forms.TextInput(attrs={'class':'form-control','id':'address1'}),
                    'delivery_mode':forms.Select(attrs={'class':'form-control','id':'delivery1'}),
                    'cgu_accept':forms.CheckboxInput(attrs={'id':'terms1','class':'form-check-input'}),
@@ -312,8 +284,7 @@ class Imp_3D_customForm2(forms.ModelForm):
     class Meta:
         model = ClientCustomizationForImpression3D
         fields = ['impression_type', 'dim_1', 'dim_2', 'quantity', 'codeCouleur', 'used_materials' ,
-                  'special_instructions', 'upload_design_picture',
-                  'name','email', 'tel_number','town',
+                  'special_instructions', 'upload_design_picture','town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {'impression_type': forms.Select(attrs={'class': "option-select", 'id': 'selected-impression2'}),
@@ -328,9 +299,6 @@ class Imp_3D_customForm2(forms.ModelForm):
                    'used_materials': forms.Select(attrs={'id': 'selected-support2', 'class': "option-select"}),
                    'special_instructions': forms.TextInput(attrs={'id': 'selected-notes2', 'class': "option-textarea",
                                                                   'placeholder': "Ajoutez des instructions particulières (position, détails, etc.)..."}),
-                   'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'fullname2'}),
-                   'email': forms.EmailInput(attrs={'class': 'form-control', 'id': 'email2'}),
-                   'tel_number': forms.TextInput(attrs={'class': 'form-control', 'id': 'phone2'}),
                    'town': forms.TextInput(attrs={'class': 'form-control', 'id': 'address2'}),
                    'delivery_mode': forms.Select(attrs={'class': 'form-control', 'id': 'delivery2'}),
                    'cgu_accept': forms.CheckboxInput(attrs={'id': 'terms2', 'class': 'form-check-input'}),
@@ -356,7 +324,7 @@ class Paper_customForm1(forms.ModelForm):
         fields = [
             'wished_format', 'other_format','paper','other_paper','design_file','other_design_file',
             'dim_1','dim_2','codeCouleur','quantity','special_instructions',
-            'design_picture','name','email','tel_number','town','delivery_mode','cgu_accept'
+            'design_picture','town','delivery_mode','cgu_accept'
         ]
 
         widgets = {
@@ -421,21 +389,6 @@ class Paper_customForm1(forms.ModelForm):
                 'id': 'special-notes1', 
                 'class': 'option-textarea', 
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'id': 'fullname1', 
-                'required': True
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control', 
-                'id': 'email1', 
-                'required': True
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'id': 'phone1', 
-                'required': True
             }),
             'town': forms.TextInput(attrs={
                 'class': 'form-control', 
@@ -515,7 +468,7 @@ class Paper_customForm2(forms.ModelForm):
         fields = [
             'wished_format', 'other_format','paper','other_paper','design_file','other_design_file',
             'dim_1','dim_2','codeCouleur','quantity','special_instructions',
-            'upload_design_picture','name','email','tel_number','town','delivery_mode','cgu_accept'
+            'upload_design_picture','town','delivery_mode','cgu_accept'
         ]
 
         widgets = {
@@ -580,21 +533,6 @@ class Paper_customForm2(forms.ModelForm):
                 'id': 'special-notes2', 
                 'class': 'option-textarea', 
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'id': 'fullname2', 
-                'required': True
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control', 
-                'id': 'email2', 
-                'required': True
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'id': 'phone2', 
-                'required': True
             }),
             'town': forms.TextInput(attrs={
                 'class': 'form-control', 
@@ -671,8 +609,7 @@ class Textile_customForm1(forms.ModelForm):
         fields = [
             'textile_type', 'other_textile', 'other_design_file',
             'design_file', 'impression_wished', 'dim_1', 'dim_2', 'codeCouleur',
-            'quantity', 'special_instructions', 'design_picture', 'name', 'email',
-            'tel_number', 'town', 'delivery_mode', 'cgu_accept'
+            'quantity', 'special_instructions', 'design_picture', 'town', 'delivery_mode', 'cgu_accept'
         ]
 
         widgets = {
@@ -731,21 +668,6 @@ class Textile_customForm1(forms.ModelForm):
                 'id': 'special-notes1',
                 'class': 'option-textarea',
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'class': 'form-control',
-                'id': 'fullname1',
-                'required': True
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control',
-                'id': 'email1',
-                'required': True
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'class': 'form-control',
-                'id': 'phone1',
-                'required': True
             }),
             'town': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -814,8 +736,7 @@ class Textile_customForm2(forms.ModelForm):
         fields = [
             'textile_type', 'other_textile', 'other_design_file',
             'design_file', 'impression_wished', 'dim_1', 'dim_2', 'codeCouleur',
-            'quantity', 'special_instructions', 'upload_design_picture', 'name', 'email',
-            'tel_number', 'town', 'delivery_mode', 'cgu_accept'
+            'quantity', 'special_instructions', 'upload_design_picture', 'town', 'delivery_mode', 'cgu_accept'
         ]
 
         widgets = {
@@ -874,21 +795,6 @@ class Textile_customForm2(forms.ModelForm):
                 'id': 'special-notes2',
                 'class': 'option-textarea',
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'class': 'form-control',
-                'id': 'fullname2',
-                'required': True
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-control',
-                'id': 'email2',
-                'required': True
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'class': 'form-control',
-                'id': 'phone2',
-                'required': True
             }),
             'town': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -957,9 +863,7 @@ class Objects_customForm1(forms.ModelForm):
                   'design_file', 'other_design_file',
                   'dim_1', 'dim_2', 'codeCouleur',
                   'quantity', 'special_instructions',
-                  'design_picture',
-                  'name', 'email',
-                  'tel_number', 'town',
+                  'design_picture', 'town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {
@@ -997,18 +901,6 @@ class Objects_customForm1(forms.ModelForm):
             'special_instructions': forms.Textarea(attrs={
                 'class': 'option-textarea', 'id': 'special-notes1',
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'type': 'text', 'id': 'fullname1',
-                'name': 'fullname', 'required': True, 'class': 'form-control'
-            }),
-            'email': forms.EmailInput(attrs={
-                'type': 'email', 'id': 'email1',
-                'name': 'email', 'required': True, 'class': 'form-control'
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'type': 'tel', 'id': 'phone1',
-                'name': 'phone', 'required': True, 'class': 'form-control'
             }),
             'town': forms.TextInput(attrs={
                 'type': 'text', 'id': 'address1',
@@ -1076,9 +968,7 @@ class Objects_customForm2(forms.ModelForm):
                   'design_file', 'other_design_file',
                   'dim_1', 'dim_2', 'codeCouleur',
                   'quantity', 'special_instructions',
-                  'upload_design_picture',
-                  'name', 'email',
-                  'tel_number', 'town',
+                  'upload_design_picture', 'town',
                   'delivery_mode', 'cgu_accept']
 
         widgets = {
@@ -1116,18 +1006,6 @@ class Objects_customForm2(forms.ModelForm):
             'special_instructions': forms.Textarea(attrs={
                 'class': 'option-textarea', 'id': 'special-notes2',
                 'placeholder': 'Ajoutez des instructions particulières (position, détails, etc.)...'
-            }),
-            'name': forms.TextInput(attrs={
-                'type': 'text', 'id': 'fullname2',
-                'name': 'fullname', 'required': True, 'class': 'form-control'
-            }),
-            'email': forms.EmailInput(attrs={
-                'type': 'email', 'id': 'email2',
-                'name': 'email', 'required': True, 'class': 'form-control'
-            }),
-            'tel_number': forms.TextInput(attrs={
-                'type': 'tel', 'id': 'phone2',
-                'name': 'phone', 'required': True, 'class': 'form-control'
             }),
             'town': forms.TextInput(attrs={
                 'type': 'text', 'id': 'address2',

@@ -1,7 +1,7 @@
 import spacy
 from django.db import models
 from django.utils.text import slugify
-
+from Users.models import Fab_User
 
 # Create your models here.
 class Formations(models.Model):
@@ -147,14 +147,14 @@ class Advantages(models.Model):
 
 class Testimony(models.Model):
 
-    username = models.CharField(max_length=30,verbose_name="Nom d'utiisateur")
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     status = models.CharField(max_length=30,verbose_name="Statut")
     comment = models.TextField(verbose_name="Commentaire")
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Témoignage"
-        ordering = ["username"]
+        #ordering = ["username"]
 
     def __str__(self):
         return self.username + ' - ' + self.formation
@@ -178,9 +178,7 @@ class SignedUpUser(models.Model):
         ('Soir (18h-21h)', 'Soir (18h-21h)')
     ]
 
-    name = models.CharField(max_length=50, verbose_name="Nom")
-    email = models.EmailField()
-    tel_number = models.CharField(max_length=20, verbose_name="Téléphone")
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel', verbose_name="Disponibilité")
     session = models.CharField(choices=SESSIONS, max_length=30, default='Matin (9h-12h)')
     message = models.TextField(blank=True)
@@ -188,7 +186,7 @@ class SignedUpUser(models.Model):
 
     class Meta:
         verbose_name = "Personnes Inscrite"
-        ordering = ["name"]
+        #ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -206,16 +204,14 @@ class UserBrochure(models.Model):
         ("En ligne / Présentiel", "En ligne / Présentiel")
     ]
 
-    name = models.CharField(max_length=50, verbose_name='Nom')
-    email = models.EmailField()
-    tel_number = models.CharField(max_length=20, verbose_name='Téléphone')
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     message = models.TextField(blank=True, null=True)
     availability = models.CharField(max_length=22, choices=AVAILABILITY, default='En ligne', verbose_name='Méthode de formation')
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
 
     class Meta:
         verbose_name = "Utilisateurs ayant demandé brochure"
-        ordering = ["name"]
+        #ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -227,15 +223,13 @@ class UserBrochure(models.Model):
 
 class UserRequest(models.Model):
 
-    name = models.CharField(max_length=50, verbose_name='Nom')
-    email = models.EmailField()
-    tel_number = models.CharField(max_length=20, verbose_name='Téléphone')
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     message = models.TextField(blank=True)
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
 
     class Meta:
         verbose_name = "Utilisateurs ayant prit renseignement"
-        ordering = ["name"]
+        #ordering = ["name"]
 
     def __str__(self):
         return self.name

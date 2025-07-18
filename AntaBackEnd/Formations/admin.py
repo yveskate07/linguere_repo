@@ -95,7 +95,7 @@ class AdvantagesAdmin(admin.ModelAdmin):
 @admin.register(Testimony)
 class TestimonyAdmin(admin.ModelAdmin):
     fields = ('formation','username','status','comment', 'description',)
-    list_display = ('formation','username','status','comment',)
+    list_display = ('formation','status','comment',)
     readonly_fields = ('description',)
 
     """def has_add_permission(self, request):
@@ -103,21 +103,22 @@ class TestimonyAdmin(admin.ModelAdmin):
 
 @admin.register(SignedUpUser)
 class SignedUpUserAdmin(admin.ModelAdmin):
-    fields = ('name','email','tel_number','availability','session','formation', 'description',)
+    fields = ('availability','session','formation', 'description',)
     list_filter = ('formation','session','availability',)
-    search_fields = ('name',)
+    #search_fields = ('name',)
     readonly_fields = ('description',)
 
-    list_display = ('name','email','tel_number','availability','session','formation')
+    #list_display = ('name','email','tel_number','availability','session','formation')
+    list_display = ('availability', 'session', 'formation')
 
     """def has_add_permission(self, request):
         return False"""
 
 @admin.register(UserBrochure)
 class UserBrochureAdmin(admin.ModelAdmin):
-    fields = ('name','email','availability','formation', 'description',)
-    list_display = ('name','email','availability','formation',)
-    search_fields = ('name',)
+    fields = ('availability','formation', 'description',)
+    list_display = ('availability','formation',)
+    #search_fields = ('name',)
     list_filter = ('availability','formation',)
     readonly_fields = ('description',)
 
@@ -126,9 +127,9 @@ class UserBrochureAdmin(admin.ModelAdmin):
 
 @admin.register(UserRequest)
 class UserRequestAdmin(admin.ModelAdmin):
-    fields = ('name','email','formation', 'description',)
-    list_display = ('name', 'email', 'formation',)
-    search_fields = ('name',)
+    fields = ('formation', 'description',)
+    list_display = ('formation',)
+    #search_fields = ('name',)
     list_filter = ('formation',)
     readonly_fields = ('description',)
 

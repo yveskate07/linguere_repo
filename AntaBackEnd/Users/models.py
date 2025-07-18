@@ -1,16 +1,29 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import shortuuid
+
 
 # Create your models here.
 
-class User(AbstractUser):
+class Fab_User(AbstractUser):
+
+    STATUS = [("Admin","Admin"),
+              ("Client","Client")]
+
     tel_num = models.CharField(max_length=50, null=False, blank=False, verbose_name="Numéro de telephone")
     adress = models.TextField(blank=False, null=False, verbose_name="Adresse")
-    picture_profile = models.ImageField(blank=False, null=False, verbose_name="Photo de profil", upload_to="User/profil_pictures")
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name="Date d'inscription")
+    status = models.CharField(blank=False, null=False, verbose_name="Statut", max_length=20, choices=STATUS, default="Client")
+    uuid = models.CharField(unique=True, blank=True, null=True, max_length=50)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+
+    def save(self, *args, **kwargs):
+        # ton code avant la sauvegarde éventuelle
+        self.uuid = shortuuid.uuid()
+        super().save(*args, **kwargs)  # très important
 
     class Meta:
         verbose_name = "Utilisateur"

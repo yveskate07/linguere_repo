@@ -1,4 +1,5 @@
 from django.db import models
+from Users.models import Fab_User
 from .validators import validate_file_size, validate_file_extension1, validate_file_extension3, \
     validate_file_extension2, validate_file_extension4
 
@@ -57,9 +58,7 @@ class ClientCustomizationForBroderieNumerique(models.Model):
                                               validators=[validate_file_size, validate_file_extension1])
     codeCouleur = models.CharField(max_length=80, verbose_name='Code couleur', blank=True, null=True)
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON, verbose_name="Mode de livraison", blank=False, null=False, default="Retrait sur place Dakar")
@@ -98,9 +97,7 @@ class ClientCustomizationForFraiseuseNumerique(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension1])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)")
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISONS, verbose_name="Mode de livraison", default="Retrait sur place Dakar")
@@ -136,9 +133,7 @@ class ClientCustomizationForDecoupeLaser(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension3])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -177,9 +172,7 @@ class ClientCustomizationForImpression3D(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(blank=False, null=False, max_length=60, verbose_name="Adresse (ville)")
     delivery_mode = models.CharField(blank=False, null=False, max_length=50, choices=LIVRAISON,
@@ -230,9 +223,7 @@ class ClientCustomizationForPaper(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -280,9 +271,7 @@ class ClientCustomizationForTextile(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -330,9 +319,7 @@ class ClientCustomizationForObjects(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    name = models.CharField(max_length=30, verbose_name="Nom complet", blank=False, null=False)
-    email = models.EmailField(max_length=50, verbose_name="Adresse mail", blank=False, null=False)
-    tel_number = models.CharField(max_length=50, verbose_name="Numéro de téléphone", blank=False, null=False)
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,

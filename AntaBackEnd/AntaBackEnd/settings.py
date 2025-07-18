@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
-from django.conf.global_settings import AUTH_USER_MODEL
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -28,6 +30,14 @@ SECRET_KEY = 'django-insecure-q#nq!+7r74hvtt3(hqfv_=!xm=ns%x*-=1fc#di&311&u+c*nx
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ['SMTP_SERVER']
+EMAIL_PORT = os.environ['SMTP_PORT']
+EMAIL_HOST_USER = os.environ['SENDER']
+EMAIL_HOST_PASSWORD = os.environ['PASSWORD']  # ne pas utiliser ton mot de passe Gmail directement
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # Application definition
@@ -78,9 +88,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
-
 ASGI_APPLICATION = 'AntaBackEnd.asgi.application'
+#WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -138,9 +156,15 @@ STATICFILES_DIRS = [
     BASE_DIR / "Users" / "static", BASE_DIR / "Services" / "static", BASE_DIR / "Formations" / "static",
 ]
 
+LOGIN_REDIRECT_URL = "home"
+
+LOGIN_URL = 'login'
+
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "Users.User"
+AUTH_USER_MODEL = "Users.Fab_User"

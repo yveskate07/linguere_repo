@@ -3,7 +3,6 @@ from email.message import EmailMessage
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from pathlib import Path
 import AntaBackEnd.settings as settings
 from dotenv import load_dotenv
 import os
@@ -13,6 +12,12 @@ load_dotenv()
 # Paramètres
 sender_email = os.environ["SENDER"]
 password = os.environ["PASSWORD"]  # ATTENTION : utilisez un mot de passe d'application ou une méthode plus sécurisée
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = sender_email
 
 # une fonction qui envoie un mail a l'utilisateur qui a demandé la brochure
 def brochure_to_client_through_mail(receiver_email, formation_name, user:dict, reason='téléchargeant une brochure', msg_=None):
