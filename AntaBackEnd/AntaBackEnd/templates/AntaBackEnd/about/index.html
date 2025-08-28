@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A PROPOS - LINGUERE FABLAB</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/about/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+</head>
+<body>
+
+{% include 'AntaBackEnd/header_footer/header.html' %}
+    {% include 'Shop/cart_and_payment_modals/index.html' %}
+
+<section class="hero">
+    <div class="hero-content">
+        <h1 data-aos="fade-down" data-aos-duration="1000">Notre Engagement pour l'Afrique Numérique</h1>
+        <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">Transformer les idées en réalité grâce à
+            l'innovation, l'éducation et l'accès aux technologies</p>
+        <a href="#vision" class="btn" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="600">Découvrir notre
+            vision</a>
+    </div>
+</section>
+
+<section id="vision" class="section">
+    <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
+         alt="" class="section-bg">
+    <div class="section-overlay"></div>
+
+    <div class="section-title" data-aos="fade-up">
+        <h2>Notre Vision</h2>
+    </div>
+
+    <div class="vision-card" data-aos="zoom-in" data-aos-delay="300">
+        <i class="fas fa-bullseye floating"></i>
+        <h3>Être un moteur d'innovation et de développement</h3>
+        <p>Nous aspirons à être la force motrice derrière l'innovation, l'éducation numérique et le développement
+            économique au Sénégal et à travers l'Afrique, en créant un écosystème technologique dynamique et
+            inclusif.</p>
+    </div>
+</section>
+
+<section class="section"
+         style="background: linear-gradient(135deg, rgba(236, 240, 241, 0.9), rgba(236, 240, 241, 0.7)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Nos Valeurs</h2>
+    </div>
+
+    <div class="values-grid">
+        <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-lightbulb"></i>
+            <h3>Innovation</h3>
+            <p>Créer, expérimenter et transformer les idées en solutions concrètes qui répondent aux défis de notre
+                temps.</p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+            <i class="fas fa-universal-access"></i>
+            <h3>Accessibilité</h3>
+            <p>Rendre les technologies et le matériel numérique accessibles à tous, sans barrières économiques ou
+                sociales.</p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+            <i class="fas fa-award"></i>
+            <h3>Qualité</h3>
+            <p>Proposer des produits et services fiables, adaptés aux besoins des innovateurs et créateurs
+                africains.</p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="500">
+            <i class="fas fa-users"></i>
+            <h3>Inclusion</h3>
+            <p>Favoriser la participation active des jeunes, des femmes et de toutes les communautés dans la révolution
+                numérique.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="mission-container" data-aos="fade-in">
+        <div class="mission-content">
+            <h2 data-aos="fade-down">Notre Mission</h2>
+            <ul>
+                <li data-aos="fade-right" data-aos-delay="200">Former, équiper et accompagner les innovateurs,
+                    entrepreneurs, étudiants et passionnés de technologie
+                </li>
+                <li data-aos="fade-right" data-aos-delay="300">Créer un espace de fabrication numérique ouvert et
+                    collaboratif
+                </li>
+                <li data-aos="fade-right" data-aos-delay="400">Développer des programmes de formation adaptés aux
+                    besoins actuels du marché
+                </li>
+                <li data-aos="fade-right" data-aos-delay="500">Offrir une boutique en ligne avec des équipements et
+                    machines numériques de qualité
+                </li>
+                <li data-aos="fade-right" data-aos-delay="600">Permettre à chacun de passer de l'idée à la réalisation
+                    concrète
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="section"
+         style="background: linear-gradient(135deg, rgba(236, 240, 241, 0.9), rgba(236, 240, 241, 0.7)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Nos Objectifs</h2>
+    </div>
+
+    <div class="objectives">
+        <div class="objective-card" data-aos="flip-left" data-aos-delay="200">
+            <h3><i class="fas fa-graduation-cap"></i> Formation</h3>
+            <p>Former des milliers de jeunes et d'entrepreneurs aux compétences numériques et à la fabrication
+                technologique pour les préparer aux emplois de demain.</p>
+        </div>
+
+        <div class="objective-card" data-aos="flip-left" data-aos-delay="300">
+            <h3><i class="fas fa-project-diagram"></i> Accompagnement</h3>
+            <p>Accompagner la création de projets innovants et à impact social, en fournissant les ressources et le
+                mentorat nécessaires.</p>
+        </div>
+
+        <div class="objective-card" data-aos="flip-left" data-aos-delay="400">
+            <h3><i class="fas fa-shopping-cart"></i> Accessibilité</h3>
+            <p>Faciliter l'accès à du matériel technologique de qualité grâce à notre boutique en ligne, avec des
+                options adaptées à tous les budgets.</p>
+        </div>
+
+        <div class="objective-card" data-aos="flip-right" data-aos-delay="200">
+            <h3><i class="fas fa-chart-line"></i> Entrepreneuriat</h3>
+            <p>Promouvoir l'entrepreneuriat technologique local et durable, en créant un écosystème favorable à
+                l'innovation africaine.</p>
+        </div>
+
+        <div class="objective-card" data-aos="flip-right" data-aos-delay="300">
+            <h3><i class="fas fa-industry"></i> Développement</h3>
+            <p>Contribuer au développement d'une industrie numérique forte et compétitive au Sénégal et en Afrique.</p>
+        </div>
+
+        <div class="objective-card" data-aos="flip-right" data-aos-delay="400">
+            <h3><i class="fas fa-handshake"></i> Collaboration</h3>
+            <p>Établir des partenariats stratégiques avec des institutions académiques, des entreprises et des
+                gouvernements pour amplifier notre impact.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-content">
+        <h2 data-aos="fade-down">Prêt à rejoindre la révolution numérique ?</h2>
+        <p data-aos="fade-up" data-aos-delay="200">Que vous soyez un innovateur, un entrepreneur ou simplement passionné
+            par la technologie, nous avons les ressources et l'expertise pour vous aider à réussir.</p>
+        <a href="#con" class="btn" data-aos="zoom-in" data-aos-delay="400">Contactez-nous</a>
+    </div>
+</section>
+
+
+{% include 'AntaBackEnd/header_footer/footer.html' %}
+
+<!-- Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="{% static 'AntaBackEnd/js/toggle_cart.js' %}"></script>
+<script>
+    // Initialisation des animations AOS
+    AOS.init({
+        duration: 1000,
+        once: false,
+        easing: 'ease-in-out',
+        mirror: true
+    });
+
+    // Animation des cartes au scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        // Effet parallaxe pour les images de fond
+        const sections = document.querySelectorAll('.section');
+
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset;
+
+            sections.forEach(section => {
+                const bg = section.querySelector('.section-bg');
+                if (bg) {
+                    const speed = 0.3;
+                    const yPos = -(scrollPosition * speed);
+                    bg.style.transform = `translate3d(0, ${yPos}px, 0)`;
+                }
+            });
+        });
+
+        // Animation au survol des cartes de valeurs
+        const valueCards = document.querySelectorAll('.value-card');
+
+        valueCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('i');
+                icon.style.transform = 'rotate(360deg) scale(1.2)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('i');
+                icon.style.transform = 'rotate(0) scale(1)';
+            });
+        });
+
+        // Effet de vague pour le bouton CTA
+        const ctaBtn = document.querySelector('.cta-section .btn');
+        if (ctaBtn) {
+            ctaBtn.addEventListener('mouseenter', function() {
+                this.querySelector('::before').style.left = '100%';
+            });
+        }
+    });
+</script>
+    <script type='text/javascript' src="{% static 'Shop/js/cart.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+cd AntaBackEnd
+DJANGO_SETTINGS_MODULE=AntaBackEnd.settings daphne AntaBackEnd.asgi:application

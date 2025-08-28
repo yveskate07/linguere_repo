@@ -1,0 +1,669 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINGUERE FABLAB - Innovation et Fabrication Numérique au Sénégal</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+</head>
+<body>
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    {% include 'Shop/cart_and_payment_modals/index.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <video class="hero-video" autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInDown">INNOVATION & FABRICATION NUMÉRIQUE</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">Découvrez notre gamme complète de produits et services pour vos projets créatifs et industriels</p>
+            <button class="btn btn-hero animate__animated animate__fadeInUp animate__delay-2s">Explorer maintenant</button>
+        </div>
+    </section>
+
+    <!-- Promotions Carousel -->
+    <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'AntaBackEnd/images/aaaa.png' %}" class="d-block w-100" alt="Promotion 1">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Promotions exceptionnelles</h5>
+                    <p>Jusqu'à 30% de réduction sur les kits Arduino</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'AntaBackEnd/images/aa.png' %}" class="d-block w-100" alt="Promotion 2">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Nouveautés</h5>
+                    <p>Découvrez nos dernières machines numériques</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'AntaBackEnd/images/aaa.png' %}" class="d-block w-100" alt="Promotion 3">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Formations spécialisées</h5>
+                    <p>Inscrivez-vous à nos ateliers de fabrication numérique</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4 mb-md-0" data-aos="fade-up">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <h3>Livraison Rapide</h3>
+                        <p>Expédition dans tout le Sénégal sous 48h</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Paiement Sécurisé</h3>
+                        <p>Transactions 100% sécurisées</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Support 24/7</h3>
+                        <p>Assistance technique disponible</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-undo"></i></div>
+                        <h3>Retour Facile</h3>
+                        <p>15 jours pour changer d'avis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boutique Section -->
+    <div class="container py-5" id="shop-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>BOUTIQUE</h1>
+        </div>
+
+        <div class="grid">
+            <div class="card" data-aos="fade-up">
+                <a href="{% url 'shop-arduino' %}"><img src="{% static 'Shop/images/kits Arduino mega.png' %}" alt="Arduino"></a>
+                <div class="overlay">
+                    <div class="card-title">Kits Arduino et IOT</div>
+                    <div class="card-description">Découvrez nos kits Arduino complets pour vos projets IoT innovants. Capteurs, modules et composants de qualité.<br><br><a href="{% url 'shop-arduino' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Kits Arduino et IOT</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <a href="{% url 'shop-machine' %}"><img src="{% static 'Shop/images/Brother.png' %}" alt="Machine"></a>
+                <div class="overlay">
+                    <div class="card-title">Machines Numériques</div>
+                    <div class="card-description">Explorez nos machines numériques haute performance pour la fabrication additive, soustractive et bien plus.<br><br><a href="{% url 'shop-machine' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Machines Numériques</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <a href="{% url 'shop-installations' %}"><img src="{% static 'Shop/images/mini kits.png' %}" alt="Impressions"></a>
+                <div class="overlay">
+                    <div class="card-title">Installations Fablab</div>
+                    <div class="card-description">Nous concevons, installons et configurons votre Fablab clé en main avec formation du personnel.<br><br><a href="{% url 'shop-installations' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Installations Fablab</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Section 1 -->
+    <section class="video-section">
+        <video autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h2 data-aos="fade-up">CRÉATIVITÉ SANS LIMITES</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Découvrez comment nos solutions peuvent transformer vos idées en réalité</p>
+            <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Voir nos réalisations</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <div class="container py-5 services-section" id="services-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>NOS SERVICES</h1>
+        </div>
+        
+        <div class="grid">
+            <div class="card" data-aos="fade-up">
+                <a href="service.html"></a>
+                <div class="overlay">
+                    <div class="card-title">Broderie Numérique</div>
+                    <div class="card-description">Personnalisation textile de haute précision pour vêtements, accessoires et objets promotionnels.<br><br><a href="{% url 'services-broderie' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Broderie Numérique</h2>
+            </div>
+            
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <a href="CNC.html"></a>
+                <div class="overlay">
+                    <div class="card-title">Fraiseuses Numérique</div>
+                    <div class="card-description">Usinage de précision pour prototypes, pièces techniques et créations artistiques sur divers matériaux.<br><br><a href="{% url 'services-fraiseuse' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Fraiseuses Numérique</h2>
+            </div>
+            
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <a href="laser.html"></a>
+                <div class="overlay">
+                    <div class="card-title">Découpe Laser</div>
+                    <div class="card-description">Découpe et gravure laser haute précision sur bois, acrylique, cuir et autres matériaux.<br><br><a href="{% url 'services-laser' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Découpe Laser</h2>
+            </div>
+            
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <a href="#"></a>
+                <div class="overlay">
+                    <div class="card-title">Impression 3D</div>
+                    <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-3d' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Impression 3D</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                <a href="#"></a>
+                <div class="overlay">
+                    <div class="card-title">Impressions Numériques Proposées</div>
+                    <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding .<br><br><a class="modal-trigger" href="#">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Impressions Numériques Proposées</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour les elements du service 5 -->
+    <div id="modal-service5" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <div class="grid">
+                <div class="card">
+                    <!-- <a href="impress_sur_papier.html"><img src="mini kits.png" alt="Impressions"></a> -->
+                    <div class="overlay">
+                        <div class="card-title">Impression sur Papier et Supports Rigides</div>
+                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-papiers' %}">en savoir plus </a></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <!-- <a href="impress_sur_textil.html"><img src="mini kits.png" alt="Impressions"></a> -->
+                    <div class="overlay">
+                        <div class="card-title">Impression sur Textiles et Vêtements</div>
+                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-textile' %}">en savoir plus</a></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <!-- <a href="impress_sur_objet.html"><img src="mini kits.png" alt="Impressions"></a> -->
+                    <div class="overlay">
+                        <div class="card-title">Impression sur Objets Personnalisés</div>
+                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-objets' %}">en savoir plus</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Section 2 -->
+    <section class="video-section">
+        <video autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/vi2.mp4' %}" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h2 data-aos="fade-up">EXPERTISE TECHNIQUE</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Notre équipe d'experts est à votre disposition pour concrétiser vos projets les plus ambitieux</p>
+            <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Demander un devis</button>
+        </div>
+    </section>
+
+    <!-- Formations Section -->
+    <div class="proj" id="formations-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>NOS FORMATIONS</h1>
+        </div>
+        <div class="formations-container">
+            <div class="premiere-ligne">
+                <!-- Partie gauche -->
+                <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
+                    <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('impression-num.png'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
+                        <div class="content-wrapper">
+                            <h1 class="titre slide-in-title">Broderie Numérique</h1>
+                            <div class="description fade-in-description">
+                                Personnalisation textile de haute précision pour vêtements, accessoires et objets promotionnels.
+                                <div class="cta-button">
+                                    <a href="{% url 'formations:formationView' broderie_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('aa.png'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
+                        <div class="content-wrapper">
+                            <h1 class="titre slide-in-title">Fraiseuse Numérique (CNC)</h1>
+                            <div class="description fade-in-description">
+                                Apprenez à concevoir et usiner des pièces avec nos machines CNC. De la modélisation à la production.
+                                <div class="cta-button">
+                                    <a href="{% url 'formations:formationView' fraiseuse_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Partie droite -->
+                <div class="droite">
+                    <div class="droiteh" data-aos="fade-left" data-aos-delay="200">
+                        <div class="content-wrapper">
+                            <h1 class="titre slide-in-title">Impression Numérique</h1>
+                            <div class="description fade-in-description">
+                                Découvrez les techniques d'impression grand format et haute résolution sur divers supports. Apprenez la gestion des couleurs et la finition professionnelle.
+                                <div class="cta-button">
+                                    <a href="{% url 'formations:formationView' impression_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="droiteb" data-aos="fade-left" data-aos-delay="250">
+                        <div class="content-wrapper">
+                            <h1 class="titre slide-in-title">Découpe Laser</h1>
+                            <div class="description fade-in-description">
+                                Formation complète sur la découpe et gravure laser: logiciels, paramétrages et techniques avancées.
+                                <div class="cta-button">
+                                    <a href="{% url 'formations:formationView' laser_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formation en pleine largeur -->
+            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300">
+                <div class="content-wrapper">
+                    <h1 class="titre slide-in-title">Impression 3D</h1>
+                    <div class="description fade-in-description">
+                        Maîtrisez toutes les étapes de l'impression 3D
+                        <div class="cta-button">
+                            <a href="{% url 'formations:formationView' impression_3d_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials-Section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h1>TÉMOIGNAGES</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Le Fablab nous a fourni des machines de qualité et un excellent support technique pour notre école d'ingénieurs. Service professionnel et réactif.</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Dr. Amadou Diallo</h4>
+                                <p>Université de Dakar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Grâce à leur formation Arduino, nous avons pu développer un système d'irrigation intelligent pour notre coopérative agricole. Résultats impressionnants!</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Fatou Ndiaye</h4>
+                                <p>Coopérative Agricole</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">La découpe laser nous a permis de créer des produits uniques pour notre boutique d'artisanat. Qualité et précision au rendez-vous.</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Mamadou Sow</h4>
+                                <p>Artisan Créateur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <div class="container py-5" id="projects-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>PROJETS & INITIATIVES</h1>
+        </div>
+
+        <div class="grid">
+            <div class="card" data-aos="fade-up">
+                <img src="kits Arduino mega.png" alt="Projet Education">
+                <div class="overlay">
+                    <div class="card-title">Smart Coders</div>
+                    <div class="card-description">
+                        Développer les compétences numériques dès le plus jeune âge et former les innovateurs de demain.<br><br>
+                        <a href="{% url 'activities:smart_coders' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Smart Coders</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <img src="Brother.png" alt="Projet Entrepreneuriat">
+                <div class="overlay">
+                    <div class="card-title">Fab'Tour</div>
+                    <div class="card-description">
+                        Apporter la technologie au plus près des communautés rurales et urbaines et déclencher des vocations.<br><br>
+                        <a href="{% url 'activities:fab_tour' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Fab'Tour</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <img src="mini kits.png" alt="Projet Communautaire">
+                <div class="overlay">
+                    <div class="card-title">Fab'Elles</div>
+                    <div class="card-description">Briser les barrières et encourager plus de femmes à oser créer, innover et entreprendre.<br><br>
+                        <a href="{% url 'activities:fab_elle' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Fab'Elles</h2>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* ---pour la partie service 5--- */
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+}
+.close {
+    color: #0a0000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.card {
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background: linear-gradient(135deg, rgba(102, 175, 248, 0.9) 0%, rgba(79, 226, 245, 0.8) 100%); */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
+.card-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    text-align: center;
+    padding: 10px;
+}
+
+
+
+
+/* ------pour la corrrection du modale pour les conditions generales-------- */
+    .modal {
+        z-index: 1050;
+    }
+
+    .modal-backdrop {
+        z-index: 1040;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    }
+</style>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <h2 data-aos="fade-up">ABONNEZ-VOUS À NOTRE NEWSLETTER</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Recevez les dernières actualités, promotions et conseils techniques directement dans votre boîte mail.</p>
+
+            <form class="newsletter-form" data-aos="fade-up" data-aos-delay="200">
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Votre adresse email" required>
+                    <button class="btn btn-newsletter" type="submit">S'abonner</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Back to Top Button
+        const backToTopButton = document.querySelector('.back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Cart Counter Animation
+        const cartCount = document.querySelector('.cart-count');
+        let count = 0;
+
+        // Simulate adding items to cart (for demo)
+        setInterval(() => {
+            if (count < 5) {
+                count++;
+                cartCount.setAttribute('data-count', count);
+
+                // Add animation
+                cartCount.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    cartCount.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 1000);
+            }
+        }, 5000);
+
+        // Dropdown menu animation
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'block';
+                menu.classList.add('animate__animated', 'animate__fadeIn');
+            });
+
+            dropdown.addEventListener('mouseleave', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'none';
+                menu.classList.remove('animate__animated', 'animate__fadeIn');
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('.search-bar input');
+
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('animate__animated', 'animate__pulse');
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('animate__animated', 'animate__pulse');
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById("modal-service5");
+            var btn = document.querySelector(".modal-trigger");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function (event) {
+                event.preventDefault();
+                modal.style.display = "block";
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+
+    </script>
+
+    <!-- Scripts -->
+    <script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/cart_variables.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/wbsocket_connect.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/js_bunch1.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/success_fail_display.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/cart.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/wbsocket_receive.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/quick_view.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/handle_quantity.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/js_bunch2.js' %}"></script>
+
+</body>
+</html>

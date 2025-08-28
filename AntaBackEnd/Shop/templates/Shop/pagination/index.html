@@ -1,0 +1,28 @@
+<!-- Pagination Section-->
+<nav aria-label="Pagination des articles">
+    <ul class="pagination justify-content-center" id='pagination-list' data-page-number = "{{products.number}}" data-page-range = "{{page_range|safe}}">
+
+        {% if products.has_previous %}
+            <li class="page-item">
+                <button class="page-link" onclick="getProductsPage({{products.previous_page_number}}, {{page_range}})">&laquo;</button>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+
+        {% for num in page_range %}
+            <li class="page-item {% if num == products.number %}active{% endif %}">
+                <button class="page-link" onclick="getProductsPage({{num}}, {{page_range}})">{{ num }}</button>
+            </li>
+        {% endfor %}
+
+        {% if products.has_next %}
+            <li class="page-item">
+                <button class="page-link" onclick="getProductsPage({{products.next_page_number}}, {{page_range}})">&raquo;</button>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+
+    </ul>
+</nav>

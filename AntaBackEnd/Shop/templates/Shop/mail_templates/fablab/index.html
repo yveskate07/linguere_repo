@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle Commande No {{ numero_commande }} - À traiter</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #e74c3c; border-bottom: 2px solid #0d6efd; padding-bottom: 8px;">
+            <span style="color: #0d6efd;">🔔</span> Nouvelle Commande à préparer
+        </h2>
+        
+        <p style="font-size: 16px;">Bonjour Équipe Linguere Fab Lab,</p>
+        
+        <p>Un client vient de passer une commande qui nécessite votre attention. Voici le récapitulatif :</p>
+        
+        <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0d6efd; margin: 15px 0;">
+            <h3 style="color: #e74c3c; margin-top: 0;">Commande No {{ numero_commande }}</h3>
+            <p>
+                <strong>Date :</strong> {{ date_commande|date:"d/m/Y" }} à {{ date_commande|time:"H:i" }}<br>
+                <strong>Montant total :</strong> <span style="color: #e74c3c; font-weight: bold;">{{ total }} XOF</span><br>
+                <strong>Paiement :</strong> <span style="color: #0d6efd;">{{ mode_paiement }}</span><br>
+                <strong>Statut :</strong> <span style="background-color: #e74c3c; color: white; padding: 2px 5px; border-radius: 3px;">{{ statut }}</span>
+            </p>
+        </div>
+
+        <h3 style="color: #e74c3c; border-bottom: 2px solid #0d6efd; padding-bottom: 5px;">Détails des articles</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #0d6efd; color: white;">
+                    <th style="padding: 10px; text-align: left;">Article</th>
+                    <th style="padding: 10px; text-align: center;">Qté</th>
+                    <th style="padding: 10px; text-align: right;">Prix U.</th>
+                    <th style="padding: 10px; text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ligne in products %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">{{ ligne.product.name }} <small>(Ref: {{ ligne.product.reference }})</small></td>
+                    <td style="padding: 10px; text-align: center;">{{ ligne.quantity }}</td>
+                    <td style="padding: 10px; text-align: right;">{{ ligne.product.price }} XOF</td>
+                    <td style="padding: 10px; text-align: right;">{{ ligne.total }} XOF</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 style="color: #e74c3c; border-bottom: 2px solid #0d6efd; padding-bottom: 5px;">Informations Client</h3>
+        <div style="background-color: #f8f9fa; padding: 15px; margin-bottom: 20px;">
+            <p>
+                <strong>{{ first_name }} {{ second_name }}</strong><br>
+                📞 <a href="tel:{{ telephone }}" style="color: #0d6efd; text-decoration: none;">{{ telephone }}</a><br>
+                ✉️ <a href="mailto:{{ email }}" style="color: #0d6efd; text-decoration: none;">{{ email }}</a>
+            </p>
+            <p>
+                <strong>Adresse de livraison :</strong><br>
+                {{ adresse_livraison }}<br>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 25px 0;">
+            <a href="{{admin_link}}" style="background-color: #0d6efd; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Accéder à la commande dans le backoffice</a>
+        </div>
+
+
+        <div style="font-size: 12px; color: #777; border-top: 2px solid #0d6efd; padding-top: 15px; margin-top: 20px;">
+            <p>Cet email a été généré automatiquement. Merci de ne pas y répondre.</p>
+            <p>ℹ️ Délai de traitement recommandé : <strong>24 heures maximum</strong></p>
+        </div>
+    </div>
+</body>
+</html>

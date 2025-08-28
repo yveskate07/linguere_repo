@@ -1,0 +1,47 @@
+{% extends 'admin/base.html' %}
+{% block title %}LINGUERE FABLAB ADMINISTRATION{% endblock %}
+{% load static %}
+{% block extrahead %}{{ block.super }}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<style>
+  :root {
+    /* Barre de titre */
+#header {
+    background-color: #e74c3c !important;
+    color: white !important;
+}
+
+/* Lien du titre */
+#header h1 a {
+    color: white !important;
+}
+
+/* Menu de gauche */
+#nav-sidebar {
+    background-color: #2178d0 !important;
+}
+
+/* Boutons */
+button, input[type=submit], .button {
+    background: #e74c3c !important;
+    color: white !important;
+}
+
+  }
+
+  img {
+  max-width: 60px; /* Example: set equal width and height */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 50%;
+}
+</style>
+{% endblock %}
+
+{% block branding %}
+<img src="{% static 'AntaBackend/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3">
+<h1 id="site-name"><a href="{% url 'admin:index' %}">LINGUERE FABLAB ADMINISTRATION</a></h1>
+{% endblock %}
+
+{% block extrabody %}{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+{% endblock %}

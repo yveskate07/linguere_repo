@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FACTURE – LINGUERE FABLAB</title>
+  <style>
+    /* ——— Base & Print Setup ——— */
+    :root {
+      --ink: #111;
+      --muted: #666;
+      --accent: #0f172a; /* deep slate */
+      --border: #d6d6d6;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 13px/1.5 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, "Noto Sans", sans-serif;
+      background: #f7f7f7;
+    }
+
+    img {
+      max-width: 60px; /* Example: set equal width and height */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 50%;
+    }
+
+    .page {
+      width: 210mm;              /* A4 width */
+      min-height: 297mm;         /* A4 height */
+      margin: 12mm auto;         /* preview spacing */
+      background: #fff;
+      padding: 18mm 18mm 14mm;   /* page margins */
+      border: 1px solid #eee;
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+    }
+
+    /* ——— Header ——— */
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .brand {
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: .5px;
+    }
+    .brand small {
+      display: block;
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 12px;
+    }
+    .meta .title {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: .4px;
+    }
+
+    .meta .row { margin-top: 6px; }
+    .label { color: var(--muted); }
+
+    /* ——— Bill To ——— */
+    .to {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--accent);
+    }
+
+    /* ——— Table ——— */
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 8px; border: 1px solid var(--border); vertical-align: top; }
+    th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      background: #fafafa;
+    }
+    .num { text-align: right; white-space: nowrap; }
+    .desc { width: 52%; }
+
+    /* ——— Totals ——— */
+    .totals {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: start;
+    }
+    .sum table { border-collapse: collapse; width: 100%; }
+    .sum td { padding: 8px 10px; border: 1px solid var(--border); }
+    .sum tr td:first-child { color: var(--muted); }
+    .sum tr:last-child td { font-weight: 800; font-size: 14px; }
+
+    /* ——— Signature & Footer ——— */
+    .sign {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: end;
+    }
+    .sign .box {
+      height: 80px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: end;
+      padding: 10px 12px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 2px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* ——— Print ——— */
+    @page { size: A4; margin: 16mm; }
+    @media print {
+      body { background: transparent; }
+      .page { box-shadow: none; margin: 0; border: 0; width: auto; min-height: auto; padding: 0; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" role="document" aria-label="Proforma / Facture">
+
+    <!-- Header -->
+    <header class="header">
+      <div>
+        <img src="{{logo_path}}" alt="Logo" class="logo-img me-3">
+        <div class="brand">LINGUERE FABLAB</div>
+        <small>{{ invoice.rccm_number }} · {{ invoice.ninea_number }}</small>
+      </div>
+      <div class="meta">
+        <div class="title">{{ invoice.invoice_type }}</div>
+        <div class="row">
+          <span class="label">Numéro de la facture&nbsp;:</span>
+          <strong>{{ invoice.id }}</strong>
+        </div>
+        <div class="row">
+          <span class="label">Date&nbsp;:</span>
+          <strong>{{ invoice.invoice_date_time|date:"d/m/Y" }}</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- Client & Info -->
+    <section class="to">
+      <div class="card">
+        <h4>Client</h4>
+        <div>
+          {{ invoice.user.first_name }} {{invoice.user.last_name}}<br/>
+          {{ invoice.user.adress }}<br/>
+          {{ invoice.user.phone_number }} / {{ invoice.user.email }}
+        </div>
+      </div>
+      <div class="card">
+        <h4>Informations</h4>
+        <div>
+          <div><span class="label">Référence de paiement&nbsp;:</span> {{ invoice.order.transaction_id }}</div>
+          <div><span class="label">Échéance de paiement&nbsp;:</span> {{ invoice.echeance_payment}} jours</div>
+          <div><span class="label">Mode de paiement&nbsp;:</span> {{ invoice.order.payment_method }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Items table -->
+    <section class="items">
+      <table aria-label="Détails des articles">
+        <thead>
+          <tr>
+            <th class="desc">Désignation</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Prix Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in orderitem_set %}
+          <tr>
+            <td class="desc">{{ item.product.name }}</td>
+            <td class="num">{{ item.quantity }}</td>
+            <td class="num">{{ item.price }}</td>
+            <td class="num">{{ item.total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Totals -->
+    <section class="totals">
+      <div class="note card" aria-label="Note">
+        <h4>Note</h4>
+        <div>{{ invoice.comment|default:"Merci pour votre confiance." }}</div>
+      </div>
+      <div class="sum">
+        <table>
+          <tr>
+            <td>Sous-total HT</td>
+            <td class="num">{{ invoice.subtotal }}</td>
+          </tr>
+          <tr>
+            <td>TVA ({{ invoice.tax_amount }}%)</td>
+            <td class="num">{{ invoice.tax_value }}</td>
+          </tr>
+          <tr>
+            <td>Remise ({{ invoice.discount }}%)</td>
+            <td class="num">- {{ invoice.discount_value }}</td>
+          </tr>
+          <tr>
+            <td>Total TTC</td>
+            <td class="num">{{ invoice.total_with_taxes }}</td>
+          </tr>
+
+        </table>
+      </div>
+    </section>
+
+    <!-- Signature -->
+    <section class="sign">
+      <div></div>
+      <div>
+        <div style="margin-bottom:6px; font-weight:700;">Le Gérant</div>
+        <div class="box" aria-label="Zone de signature">Signature</div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div><strong>Adresse&nbsp;:</strong> GRAND YOFF MISSIRAH, Villa N° 23</div>
+      <div>© {{ invoice.invoice_date_time|date:"Y" }} LINGUERE FABLAB</div>
+    </footer>
+
+  </div>
+</body>
+</html>

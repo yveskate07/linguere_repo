@@ -1,0 +1,66 @@
+from Shop.models import CartItem, Cart, Product
+
+
+class CartService:
+    @staticmethod
+    def get_cart(user=None, session_token=None):
+        if user:
+            cart, _ = Cart.objects.get_or_create(user=user)
+        elif session_token:
+            cart, _ = Cart.objects.get_or_create(session_token=session_token)
+        else:
+            raise ValueError("User or guest required")
+        return cart
+
+    @staticmethod
+    def add_item(cart, quantity=1, product=None):
+        prod_obj = Product.objects.get(id=product)
+        item, created = CartItem.objects.get_or_create(cart=cart, product=prod_obj)
+        product = item.product
+        if created:
+            item.quantity = quantity
+        else:
+            item.quantity += quantity
+        item.save()
+        return item.id, product.id
+
+    @staticmethod
+    def remove_item(cart, item_id):
+        item = CartItem.objects.get(cart=cart, id=item_id)
+        if item:
+            item.delete()
+            return True
+        return False
+
+    @staticmethod
+    def update_quantity(cart, item_id, quantity):
+        try:
+            item = CartItem.objects.get(cart=cart, id=item_id)
+            product = item.product
+            if quantity <= 0:
+                item.delete()
+                
+            else:
+                item.quantity = int(quantity)
+                item.save()
+                
+            return product.id
+        except CartItem.DoesNotExist:
+            return 'does not exist'
+        
+    @staticmethod
+    def get_total_price(cart):
+        return cart.total_price
+
+    @staticmethod
+    def clear_cart(cart):
+        try:
+            cart.items.all().delete()
+            return True
+        except Exception as e:
+            return False
+
+    @staticmethod
+    def get_cart_data(user=None, session_token=None):
+        cart = CartService.get_cart(user=user, session_token=session_token)
+        return cart.to_dict

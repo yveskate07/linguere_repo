@@ -1,0 +1,649 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ frais_serviceName }} - Linguère Fablab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'Services/Service/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+</head>
+
+<body>
+
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    {% include 'Shop/cart_and_payment_modals/index.html' %}
+
+
+    <div class="service-header animate__animated animate__fadeInUp">
+        <h2 class="service-title">
+            <i class="fas fa-tshirt service-icon"></i>
+            {{ frais_serviceName }}
+        </h2>
+        <p class="service-subtitle">{{ frais_serviceDesc }}</p>
+    </div>
+    <div class="tab-container" data-active-tab="gallery">
+        <div class="tab active" data-tab="gallery">
+            <i class="fas fa-images"></i> Notre Galerie
+        </div>
+        <div class="tab" data-tab="upload">
+            <i class="fas fa-upload"></i> Importer mon design
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="tab-content active" id="gallery-tab">
+        <!-- design section -->
+        <section class="gallery-section">
+            <h3 class="section-title">
+                <i class="fas fa-photo-video"></i> Notre Galerie Exclusive
+            </h3>
+            <p class="section-description">
+                Découvrez nos créations uniques et personnalisez-les selon vos goûts.
+                Chaque motif est conçu avec soin par nos artistes pour un rendu exceptionnel.
+            </p>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img1 }}" alt="Motif broderie floral">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img2 }}" alt="Motif broderie géométrique">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img3 }}" alt="Motif broderie animal">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img4 }}" alt="Motif broderie lettrage">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img5 }}" alt="Motif broderie tribal">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img6 }}" alt="Motif broderie floral">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img7 }}" alt="Motif broderie minimaliste">
+                </div>
+                <div class="gallery-item" data-img="design1.jpg">
+                    <img src="{{ img8 }}" alt="Motif broderie floral">
+                </div>
+                <!-- Ajoutez les autres items de la galerie de la même manière -->
+            </div>
+        </section>
+        <!--form section-->
+        <section class="form-section">
+            <form id="embroidery-form1" method="POST" action="{% url 'fraiseuse-order' %}">
+                {% csrf_token %}
+                <input type="hidden" name="service" value="{{service_id}}">
+                <input type="hidden" name="with-upload-design" value="0">
+                <!--personnalisation section-->
+                <section class="form-section customization-section">
+                    <div class="customization-intro animate__animated animate__fadeIn">
+                        <h3><i class="fas fa-magic"></i> Personnalisation Avancée</h3>
+                        <p>Créez un design unique avec nos outils de personnalisation</p>
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInLeft">
+                        <label class="option-label"><i class="fas fa-tshirt"></i>Type de service</label>
+                        {{ fraiseuse_form1.service_type }}
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+                        <div style="display: flex; gap: 0.8rem; align-items: center;">
+                            {{fraiseuse_form1.dim_1}}
+                            <span style="font-weight: 600; color: var(--primary);">×</span>
+                            {{fraiseuse_form1.dim_2}}
+                        </div>
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-thread"></i>Matériau utilisé</label>
+                        {{fraiseuse_form1.used_materials}}
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInLeft">
+                        <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            {{ fraiseuse_form1.quantity }}
+                            <!-- <span style="font-size: 0.9rem; color: var(--text-light);">(Remise à partir de 5 pièces)</span> -->
+                        </div>
+                    </div>
+
+                    <div class="option-group animate__animated animate__fadeInRight">
+                        <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions spéciales</label>
+                        {{ fraiseuse_form1.special_instructions }}
+                    </div>
+                </section>
+
+                <!-- Section Aperçu Général -->
+                <section class="summary-section">
+                    <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+                    <div class="summary-container" id="summary-container1">
+                        <!-- Le contenu sera généré dynamiquement par JavaScript -->
+                    </div>
+
+                    <!-- Aperçu de votre galerie déplacé ici -->
+                    <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+                        <div class="preview-box">
+                            <div class="preview-loading"></div>
+                            <img src="https://via.placeholder.com/200x200?text=Choisissez+un+motif"
+                                alt="Aperçu de la broderie" class="preview-image" id="preview-image1"
+                                style="width: 100%; height: auto;">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bouton pour afficher le formulaire -->
+                <div class="show-form-container animate__animated animate__fadeInUp">
+                    <button type="button" id="show-form-btn1" class="btn btn-primary btn-lg">
+                        <i class="fas fa-edit"></i> Remplir le formulaire de commande
+                    </button>
+                </div>
+
+                <!-- Formulaire (caché initialement) -->
+                <section class="contact-form-section" id="contact-form1" style="display: none;">
+                    <div class="container">
+                        <div class="form-container animate__animated animate__fadeInUp hide-form1">
+                            <h3 class="form-title">
+                                <i class="fas fa-user-edit"></i> Informations Personnelles
+                            </h3>
+                            <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de broderie
+                                personnalisée</p>
+
+                            <!-- Section Informations Client -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name"><i class="fas fa-user"></i>Nom Complet *</label>
+                                        {{ fraiseuse_form1.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                                        {{ fraiseuse_form1.email }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tel_number"><i class="fas fa-phone"></i> Téléphone *</label>
+                                        {{ fraiseuse_form1.tel_number }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="town"><i class="fas fa-map-marker-alt"></i> Adresse (Ville)
+                                            *</label>
+                                        {{ fraiseuse_form1.town }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Champs Cachés pour la Personnalisation -->
+                            {{ fraiseuse_form1.design_picture }} <!-- id = design_picture -->
+
+                            <!-- Mode de Livraison -->
+                            <div class="form-group">
+                                <label for="delivery_mode"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                                {{ fraiseuse_form1.delivery_mode }}
+                            </div>
+
+                            <!-- Conditions Générales -->
+                            <div class="form-group">
+                                <div class="form-check">
+                                    {{ fraiseuse_form1.cgu_accept }}
+                                    <label for="terms" class="form-check-label">
+                                        J'accepte les <a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#termsModal">conditions générales</a> *
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Bouton de Soumission -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary submit-btn">
+                                    <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </section>
+    </div>
+
+    <!-- Lightbox Structure -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-img" id="lightbox-img">
+            <div class="lightbox-counter" id="lightbox-counter"></div>
+            <!-- Ajoutez ce bouton -->
+            <button class="select-btn" id="select-image-btn">
+                <i class="fas fa-check"></i> Sélectionner ce motif
+            </button>
+            <button class="close-btn" id="close-lightbox-btn">
+                <i class="fas fa-times"></i> Fermer
+            </button>
+        </div>
+        <span class="lightbox-nav lightbox-prev">&#10094;</span>
+        <span class="lightbox-nav lightbox-next">&#10095;</span>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="tab-content" id="upload-tab">
+        <section class="upload-section">
+            <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Importer votre propre design</h3>
+            <p class="section-description">Téléchargez votre image, logo ou fichier de broderie pour créer une pièce
+                véritablement unique.</p>
+
+            <section class="form-section">
+                <!--form section-->
+                <form id="embroidery-form2" method="POST" action="{% url 'fraiseuse-order' %}"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="service" value="{{service_id}}">
+                    <input type="hidden" name="with-upload-design" value="1">
+                    <!-- design section -->
+                    <div class="upload-area" id="drop-area">
+                        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <h4>Glissez-déposez votre fichier ici</h4>
+                        <p>ou</p>
+                        <button class="cta-button"><i class="fas fa-folder-open"></i> Parcourir vos
+                            fichiers</button>
+                        {{ fraiseuse_form2.upload_design_picture }}
+                        <p class="small">Formats acceptés : PNG, JPG, SVG, DST (max. 10MB)</p>
+                    </div>
+
+                    <!-- Personnalisation section -->
+
+                    <section class="form-section customization-section">
+                        <div class="customization-intro animate__animated animate__fadeIn">
+                            <h3><i class="fas fa-magic"></i>Personnalisation Avancée</h3>
+                            <p>Créez un design unique avec nos outils de personnalisation</p>
+                        </div>
+
+                        <div class="option-group animate__animated animate__fadeInLeft">
+                            <label class="option-label"><i class="fas fa-tshirt"></i>Type de service</label>
+                            {{ fraiseuse_form2.service_type }}
+                        </div>
+
+                        <div class="option-group animate__animated animate__fadeInRight">
+                            <label class="option-label"><i class="fas fa-ruler-combined"></i> Dimensions (cm)</label>
+                            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                                {{fraiseuse_form2.dim_1}}
+                                <span style="font-weight: 600; color: var(--primary);">×</span>
+                                {{fraiseuse_form2.dim_2}}
+                            </div>
+                        </div>
+
+                        <div class="option-group animate__animated animate__fadeInRight">
+                            <label class="option-label"><i class="fas fa-thread"></i>Matériau utilisé</label>
+                            {{fraiseuse_form2.used_materials}}
+                        </div>
+
+                        <div class="option-group animate__animated animate__fadeInLeft">
+                            <label class="option-label"><i class="fas fa-boxes"></i> Quantité</label>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                {{ fraiseuse_form2.quantity }}
+                                <!-- <span style="font-size: 0.9rem; color: var(--text-light);">(Remise à partir de 5 pièces)</span> -->
+                            </div>
+                        </div>
+
+                        <div class="option-group animate__animated animate__fadeInRight">
+                            <label class="option-label"><i class="fas fa-clipboard-list"></i> Instructions
+                                spéciales</label>
+                            {{ fraiseuse_form2.special_instructions }}
+                        </div>
+                    </section>
+
+                    <!-- Section Aperçu Général -->
+                    <section class="summary-section">
+                        <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+                        <div class="summary-container" id="summary-container2">
+                            <!-- Le contenu sera généré dynamiquement par JavaScript -->
+                        </div>
+
+                        <!-- Aperçu de votre galerie déplacé ici -->
+                        <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+                            <div class="preview-box">
+                                <div class="preview-loading"></div>
+                                <img src="https://via.placeholder.com/200x200?text=Choisissez+un+motif"
+                                    alt="Aperçu de la broderie" class="preview-image" id="preview-image2"
+                                    style="width: 100%; height: auto;">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Bouton pour afficher le formulaire -->
+                    <div class="show-form-container animate__animated animate__fadeInUp">
+                        <button type="button" id="show-form-btn2" class="btn btn-primary btn-lg">
+                            <i class="fas fa-edit"></i> Remplir le formulaire de commande
+                        </button>
+                    </div>
+
+                    <!-- Formulaire (caché initialement) -->
+                    <section class="contact-form-section" id="contact-form2" style="display: none;">
+                        <div class="container">
+                            <div class="form-container animate__animated animate__fadeInUp hide-form2">
+                                <h3 class="form-title">
+                                    <i class="fas fa-user-edit"></i> Informations Personnelles
+                                </h3>
+                                <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de
+                                    broderie personnalisée</p>
+
+                                <!-- Section Informations Client -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name"><i class="fas fa-user"></i> Nom Complet *</label>
+                                            {{ fraiseuse_form2.name }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                                            {{ fraiseuse_form2.email }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="tel_number"><i class="fas fa-phone"></i> Téléphone *</label>
+                                            {{ fraiseuse_form2.tel_number }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="town"><i class="fas fa-map-marker-alt"></i> Adresse (Ville)
+                                                *</label>
+                                            {{ fraiseuse_form2.town }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mode de Livraison -->
+                                <div class="form-group">
+                                    <label for="delivery_mode"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                                    {{ fraiseuse_form2.delivery_mode }}
+                                </div>
+
+                                <!-- Conditions Générales -->
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        {{ fraiseuse_form2.cgu_accept }}
+                                        <label for="terms" class="form-check-label">
+                                            J'accepte les <a href="#" data-bs-toggle="modal"
+                                                data-bs-target="#termsModal">conditions générales</a> *
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Bouton de Soumission -->
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary submit-btn">
+                                        <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </section>
+        </section>
+    </div>
+
+    <!-- Modal pour les conditions générales (conservez cette partie inchangée) -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Conditions Générales</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Processus de commande</h6>
+                    <p>Après soumission de votre demande, notre équipe vous contactera dans les 24 heures pour confirmer
+                        les détails et vous fournir un devis final.</p>
+
+                    <h6>2. Paiement</h6>
+                    <p>Un acompte de 50% sera requis avant le début de la production. Le solde devra être réglé avant la
+                        livraison.</p>
+
+                    <h6>3. Délais de production</h6>
+                    <p>Les délais standard sont de 3 à 5 jours ouvrés selon la complexité du design. Des délais plus
+                        courts peuvent être arrangés avec un supplément.</p>
+
+                    <h6>4. Livraison</h6>
+                    <p>Les frais de livraison varient selon la destination. Les retraits se font à notre atelier à
+                        Dakar.</p>
+
+                    <h6>5. Retours et échanges</h6>
+                    <p>En raison de la nature personnalisée de nos produits, les retours ne sont pas acceptés sauf en
+                        cas d'erreur de notre part.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">J'ai compris</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" aria-hidden="true" aria-labelledby="errorModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Erreur(s)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Veuillez renseigner correctement les champs du formulaire et/ou de choisir/importer l'image d'un modèle. Détails:
+                    <br>
+                    {% for error in errors_txt %}
+                        <strong>{{error}}</strong><br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" aria-hidden="true" aria-labelledby="successModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Succès</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ success_txt }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script src="{% static 'Services/js/aos_init.js' %}"></script>
+    <script src="{% static 'Services/js/tab_system.js' %}"></script>
+    <script src="{% static 'Services/js/toggle_cart.js' %}"></script>
+    <script src="{% static 'Services/js/lightbox.js' %}"></script>
+    <script src="{% static 'Services/js/keybrowse.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/cart.js' %}"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if(parseInt('{{errors}}')===1){
+                let modal = new bootstrap.Modal(document.getElementById('errorModal'));
+                modal.show();
+            }else if(parseInt('{{success}}')===1){
+                let modal = new bootstrap.Modal(document.getElementById('successModal'));
+                modal.show();
+            }
+        });
+
+        // galerie summary
+        document.getElementById('selected-service1').addEventListener('change', updateSummary);
+        document.getElementById('width1').addEventListener('input', updateSummary);
+        document.getElementById('height1').addEventListener('input', updateSummary);;
+        document.getElementById('quantity1').addEventListener('input', updateSummary);
+        document.getElementById('selected-notes1').addEventListener('input', updateSummary);
+        document.getElementById('selected-support1').addEventListener('change', updateSummary);
+
+        // input summary
+        document.getElementById('selected-service2').addEventListener('change', updateSummary2);
+        document.getElementById('width2').addEventListener('input', updateSummary2);
+        document.getElementById('height2').addEventListener('input', updateSummary2);;
+        document.getElementById('quantity2').addEventListener('input', updateSummary2);
+        document.getElementById('selected-notes2').addEventListener('input', updateSummary2);
+        document.getElementById('selected-support2').addEventListener('change', updateSummary2);
+
+        // Fonction pour mettre à jour l'aperçu général
+        function updateSummary() {
+            const summaryContainer = document.getElementById('summary-container1');
+            const supportType = document.getElementById('selected-service1');
+            const width = document.getElementById('width1');
+            const height = document.getElementById('height1');
+            const used_materials = document.getElementById('selected-support1')
+            const quantity = document.getElementById('quantity1');
+            const specialNotes = document.getElementById('selected-notes1');
+            const previewImage = document.getElementById('preview-image1').src;
+
+            // Déterminer le type de support
+            let supportText = supportType.options[supportType.selectedIndex].text;
+
+            // Créer le HTML de l'aperçu
+            summaryContainer.innerHTML = `
+            <div class="summary-item">
+                <h4><i class="fas fa-tshirt"></i> Type de service</h4>
+                <p>${supportText}</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-ruler-combined"></i> Dimensions</h4>
+                <p>${width.value} cm × ${height.value} cm</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-boxes"></i> Quantité</h4>
+                <p>${quantity.value} pièce(s)</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-clipboard-list"></i> Instructions</h4>
+                <p>${specialNotes.value}</p>
+            </div>
+
+            <div class="summary-item">
+                <h4><i class="fas fa-clipboard-list"></i> Matériau utilisé</h4>
+                <p>${used_materials.value}</p>
+            </div>
+
+            `;
+        }
+
+        function updateSummary2() {
+            const summaryContainer = document.getElementById('summary-container2');
+            const supportType = document.getElementById('selected-service2');
+            const width = document.getElementById('width2');
+            const height = document.getElementById('height2');
+            const used_materials = document.getElementById('selected-support2')
+            const quantity = document.getElementById('quantity2');
+            const specialNotes = document.getElementById('selected-notes2');
+            const previewImage = document.getElementById('preview-image2').src;
+
+            // Déterminer le type de support
+            let supportText = supportType.options[supportType.selectedIndex].text;
+
+            // Créer le HTML de l'aperçu
+            summaryContainer.innerHTML = `
+            <div class="summary-item">
+                <h4><i class="fas fa-tshirt"></i> Type de service</h4>
+                <p>${supportText}</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-ruler-combined"></i> Dimensions</h4>
+                <p>${width.value} cm × ${height.value} cm</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-boxes"></i> Quantité</h4>
+                <p>${quantity.value} pièce(s)</p>
+            </div>
+            
+            <div class="summary-item">
+                <h4><i class="fas fa-clipboard-list"></i> Instructions</h4>
+                <p>${specialNotes.value}</p>
+            </div>
+
+            <div class="summary-item">
+                <h4><i class="fas fa-clipboard-list"></i> Matériau utilisé</h4>
+                <p>${used_materials.value}</p>
+            </div>
+
+            `;
+        }
+
+        function handleFile(file) {
+            if (file && (file.type.startsWith('image/') || file.name.endsWith('.svg'))) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    // Mettre à jour le résumé
+                    updateSummary2();
+                };
+                reader.readAsDataURL(file);
+            } else if (file && file.name.endsWith('.dst')) {
+                previewImage.src = 'https://via.placeholder.com/320x320/CCCCCC/808080?Text=Fichier+DST';
+                document.getElementById('uploaded-design').value = file.name;
+                updateSummary2();
+                alert('Le fichier DST est un format de broderie, la prévisualisation peut ne pas être exacte.');
+            } else if (file) {
+                alert('Format de fichier non supporté. Veuillez utiliser une image (PNG, JPG, SVG) ou un fichier DST.');
+            }
+        }
+
+    </script>
+
+    <script src="{% static 'Services/js/unveilling_forms.js' %}"></script>
+    <script src="{% static 'Services/js/select_image.js' %}"></script>
+    <script src="{% static 'Services/js/upload_gestion.js' %}"></script>
+
+</body>
+
+</html>

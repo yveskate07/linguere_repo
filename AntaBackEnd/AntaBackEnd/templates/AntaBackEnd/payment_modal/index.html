@@ -1,0 +1,85 @@
+<!-- Modal de paiement complet -->
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-content">
+        <span class="close-payment" onclick="closePaymentModal()">&times;</span>
+        <h3>Finalisation de la Commande</h3>
+
+        <!-- Informations client -->
+        <div class="section">
+            <h4><i class="fas fa-user"></i> Informations Client</h4>
+            <form id="customer-info-form">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first-name" class="form-label">Prénom</label>
+                        <input type="text" id="first-name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last-name" class="form-label">Nom</label>
+                        <input type="text" id="last-name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Téléphone</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+            </form>
+        </div>
+
+        <!-- Informations de livraison -->
+        <div class="section">
+            <h4><i class="fas fa-truck"></i> Livraison</h4>
+            <div class="mb-3">
+                <label for="address" class="form-label">Adresse</label>
+                <input type="text" id="address" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col-md-8 mb-3">
+                    <label for="city" class="form-label">Ville</label>
+                    <input type="text" id="city" class="form-control" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Méthodes de paiement -->
+        <div class="section">
+            <h4><i class="fas fa-credit-card"></i> Paiement</h4>
+
+            <!-- Logos des moyens de paiement -->
+            <div class="payment-methods mb-4 text-center">
+                <div class="d-flex justify-content-center gap-4">
+                    <div class="payment-method-option">
+                        <input type="radio" id="orange-money" name="payment-method" value="orange-money" checked>
+                        <label for="orange-money" class="payment-method-label">
+                            <img src="data:image/png;base64,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" alt="Orange Money" title="Orange Money" style="height: 40px;">
+                        </label>
+                    </div>
+                    <div class="payment-method-option">
+                        <input type="radio" id="wave" name="payment-method" value="wave">
+                        <label for="wave" class="payment-method-label">
+                            <img src="data:image/jpeg;base64,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" alt="Wave" title="Wave" style="height: 40px;">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulaire de paiement simplifié -->
+            <form id="payment-form">
+                <div class="mb-3">
+                    <label for="payment-phone" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" id="payment-phone" class="form-control" placeholder="77 123 45 67" required>
+                </div>
+                <div class="mb-3">
+                    <label for="payment-code" class="form-label">Code de transaction (si applicable)</label>
+                    <input type="text" id="payment-code" class="form-control" placeholder="Optionnel">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-lock"></i> Payer <span id="total-amount">0</span> CFA
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

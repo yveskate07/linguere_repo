@@ -1,0 +1,260 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique - LINGUERE FABLAB</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{% static 'Shop/css/installation/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    
+    <script type='text/javascript'>
+        var user = '{{request.user}}';
+    </script>
+</head>
+<body data-user-id={{user_id}}>
+    
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+
+    <!-- Confirmation Message -->
+    <div id="confirmation-message" class="confirmation-message">
+        <i class="fas fa-check-circle me-2"></i> Produit ajouté au panier!
+    </div>
+
+    <!-- Main Content -->
+    <main class="shop-container container py-4">
+        <!-- Filter Section -->
+        <aside class="filter-section">
+            <h3 class="mb-4"><i class="fas fa-filter me-2"></i> Filtres</h3>
+
+            <div class="filter-group" style="display: none;">
+                <div class="filter-title" onclick="toggleFilter('category-filter')">
+                    <span>Catégories</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options" id="category-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" class="category_checks" value="Kits Arduino">
+                        <label for="arduino">Kits Arduino</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" class="category_checks" value="Composants IOT">
+                        <label for="iot">Composants IoT</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" class="category_checks" value="Robotique">
+                        <label for="robotics">Robotique</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" class="category_checks" value="Capteurs">
+                        <label for="sensors">Capteurs</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title" onclick="toggleFilter('price-filter')">
+                    <span>Prix</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options" id="price-filter">
+                    <input type='number' class='form-control' placeholder='minimum' value='0' min=0 id='minPrice' style="width:140px">
+                    <input type='number' class='form-control' placeholder='maximum' value='0' min=0 id='maxPrice' style="width:140px">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title" onclick="toggleFilter('stock-filter')">
+                    <span>Disponibilité</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-options" id="stock-filter">
+                    <div class="filter-option">
+                        <input type="checkbox" class="disponib_checks" value="En stock" checked>
+                        <label for="in-stock">En stock</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" class="disponib_checks" value="Stock limité" checked>
+                        <label for="low-stock">Stock limité</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="checkbox" class="disponib_checks" value="Rupture de stock" checked>
+                        <label for="out-of-stock">Rupture de stock</label>
+                    </div>
+                </div>
+            </div>
+            <button type='button' class="btn btn-danger" id='showBtn' style="display:none;">Afficher</button>
+
+        </aside>
+
+        <!-- Product Section -->
+        <section class="product-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-wrench me-2"></i> Installations Fablab</h1>
+                <div class="sort-options">
+                    <select class="form-select" id="sort-select">
+                        <option value='none'>Aucun tri</option>
+                        <option value='asc'>Prix croissant</option>
+                        <option value='desc'>Prix décroissant</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                {% if products%}
+                    {% for product in products %}
+                        <div class="product-card" data-aos="fade-up"> <!-- attr data-category ?-->
+                            {% if product.badge %}
+                                {% if product.badge|stringformat:"s" == "Nouveau" %}
+                                    <span class="product-badge">Nouveau</span>
+                                {% elif product.badge|stringformat:"s" == "Promo" %}
+                                    <span class="product-badge" style="background: #27ae60;">Promo</span>
+                                {% else %}
+                                    <span class="product-badge" style="background: #9b59b6;">Top vente</span>
+                                {% endif %}
+                            {% endif %}
+                            <img src='{{product.imageURL}}' alt='{{product.name}}'>
+                            <div class="quick-view">
+                                <button class="quick-view-btn" onclick="showQuickView('{{product.name}}', '{{product.imageURL}}', '{{product.description}}', {{product.price}}, {{product.stock}}, '{{product.category}}', {{product.id}})">
+                                    <i class="fas fa-eye me-1"></i> Aperçu rapide
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name">{{product.name}}</h3>
+                                <p class="product-description">{{product.description}}.</p>
+                                <p class="product-price">{{product.price}}</p>
+                                {% if product.disponibility|stringformat:"s" == 'En stock' %}
+                                    <p class="product-stock in-stock"><i class="fas fa-check-circle me-1"></i> En stock: ({{product.stock}})</p>
+                                {% elif product.disponibility|stringformat:"s" == 'Stock limité' %}
+                                    <p class="product-stock low-stock"><i class="fas fa-exclamation-circle me-1"></i> Stock limité ({{product.stock}})</p>
+                                {% else %}
+                                    <p class="product-stock out-of-stock"><i class="fas fa-times-circle me-1"></i> Rupture de stock</p>
+                                {% endif %}
+                                <button class="add-to-cart-button" onclick="addToCart('{{product.name}}', {{product.price}}, '{{product.category}}','{{product.imageURL}}', 1, {{product.id}})">
+                                    <i class="fas fa-cart-plus"></i> Ajouter au panier
+                                </button>
+                                <div class="product-meta">
+                                    <span class="product-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </span>
+                                    {% comment %} <span class="product-sku">REF: ARD-MEGA-01</span> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h2>Rien à afficher ici</h2>
+                {% endif %}
+            </div>
+
+            {% include 'Shop/pagination/index.html' %}
+        </section>
+    </main>
+
+    <!-- Quick View Modal -->
+    <div class="quick-view-modal" id="quick-view-modal">
+        <input type="hidden" name="prd_id" id='prd_id'>
+        <div class="quick-view-content">
+            <span class="close-quick-view" onclick="closeQuickView()">&times;</span>
+            <div class="row">
+                <div class="col-md-6 p-4">
+                    <img src="" alt="" id="quick-view-img" class="w-100">
+                </div>
+                <div class="col-md-6 p-4">
+                    <h2 id="quick-view-title"></h2>
+                    <div class="rating mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                        <span class="ms-2">(12 avis)</span>
+                    </div>
+                    <p id="quick-view-price" class="h4 text-danger mb-3"></p>
+                    <p id="quick-view-desc" class="mb-4"></p>
+
+                    <div class="availability mb-4">
+                        <strong>Disponibilité : </strong>
+                        <span id="quick-view-stock"></span>
+                    </div>
+
+                    <div class="quantity-selector mb-4">
+                        <label for="quantity" class="form-label">Quantité :</label>
+                        <div class="input-group" style="max-width: 150px;">
+                            <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">-</button>
+                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1">
+                            <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">+</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg w-100 mb-3" onclick="addToCartFromQuickView()">
+                        <i class="fas fa-cart-plus me-2"></i> Ajouter au panier
+                    </button>
+
+                    <div class="product-meta mt-4">
+                        <div class="meta-item">
+                            <strong>Référence :</strong> <span id="quick-view-sku">ARD-MEGA-01</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Catégorie :</strong> <span id="quick-view-category">Categorie installations</span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Tags :</strong> <span>Tags pour installations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'Shop/cart_and_payment_modals/index.html' %}
+
+<div aria-live="polite" id="success-toast" aria-atomic="true" style="position: relative; min-height: 200px;">
+    <div class="toast" style="position: absolute; bottom: 0; right: 0;">
+        <div class="toast-header">
+        <!--<img src="..." class="rounded mr-2" alt="...">-->
+            <strong class="mr-auto">Felicitations</strong>
+            <small>il y a un instant</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body" id="toast-msg">
+        </div>
+    </div>
+</div>
+
+
+{% include 'AntaBackEnd/header_footer/footer.html' %}
+
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/cart_variables.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/wbsocket_connect.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/js_bunch1.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/success_fail_display.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/filter_and_sort_products.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/cart.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/wbsocket_receive.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/payment.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/quick_view.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/handle_quantity.js' %}"></script>
+<script type='text/javascript' src="{% static 'Shop/js/js_bunch2.js' %}"></script>
+</body>
+</html>

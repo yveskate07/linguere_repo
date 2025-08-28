@@ -1,0 +1,84 @@
+{% load static %}
+
+<!-- Modal de paiement complet -->
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-content">
+        <span class="close-payment" onclick="closePaymentModal()">&times;</span>
+        <h3>Finalisation de la Commande</h3>
+        
+        <form id="payment-form">
+            <div class="section">
+                <h4><i class="fas fa-user"></i> Informations Client</h4>
+                <!-- Informations client -->
+                {% if user_authenticated|stringformat:"s" == 'No' %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first-name" class="form-label">Prénom</label>
+                            <input type="text" id="first-name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last-name" class="form-label">Nom</label>
+                            <input type="text" id="last-name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first-name" class="form-label">{{ user.first_name }}</label>
+                            <input type="text" id="first-name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last-name" class="form-label">{{ user.last_name }}</label>
+                            <input type="text" id="last-name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ user.email }}</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Informations de livraison -->
+            <div class="section">
+                <h4><i class="fas fa-truck"></i> Livraison</h4>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Adresse</label>
+                    <input type="text" id="address" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="city" class="form-label">Ville</label>
+                        <input type="text" id="city" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Méthodes de paiement -->
+            <div class="section">
+                <h4><i class="fas fa-credit-card"></i> Paiement</h4>
+
+                <!-- Logos des moyens de paiement -->
+                <div class="payment-methods mb-4 text-center">
+                    <img src="{% static 'Shop/images/cinetpaylogo.png' %}" alt="Logo CinetPay" style="max-width: 150px; height: auto;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="payment-phone" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" id="payment-phone" class="form-control" placeholder="77 123 45 67" required>
+                </div>
+                <div class="mb-3">
+                    <label for="payment-code" class="form-label">Code de transaction (si applicable)</label>
+                    <input type="text" id="payment-code" class="form-control" placeholder="Optionnel">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-lock"></i> Payer <span id="total-amount">0</span> CFA
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
