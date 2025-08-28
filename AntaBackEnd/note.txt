@@ -1,7 +1,0 @@
-Dans un autre terminal, execute:
-
-Pour te connecter:
-Username: alphonse2004
-pwd: alphonsedesire
-
-python manage.py runserver 0.0.0.0:8001
