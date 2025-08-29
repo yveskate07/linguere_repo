@@ -227,10 +227,6 @@
 
     <!-- Totals -->
     <section class="totals">
-      <div class="note card" aria-label="Note">
-        <h4>Note</h4>
-        <div>{{ invoice.comment|default:"Merci pour votre confiance." }}</div>
-      </div>
       <div class="sum">
         <table>
           <tr>
@@ -251,6 +247,10 @@
           </tr>
 
         </table>
+      </div>
+      <div class="note card" aria-label="Note">
+        <h4>Note</h4>
+        <div>{{ invoice.comment|default:"Merci pour votre confiance." }}</div>
       </div>
     </section>
 

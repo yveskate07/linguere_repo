@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView
@@ -6,6 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from Formations.models import Formations
+from Shop.services.cart_service import CartService
 from Users.auth_form import UserLoginForm, UserSignUpForm
 from Users.models import Fab_User
 
@@ -56,20 +59,33 @@ def home(request):
     impression_3d = Formations.objects.get(name="Impression 3D")
     impression_num = Formations.objects.get(name="Impression Numérique")
     laser = Formations.objects.get(name="Découpe Laser")
+    products_cart = CartService.get_cart_data_from_request(request)
 
     return render(request,'AntaBackEnd/accueil/index.html',
                   {'broderie_num_slug': broderie_num.slug,
                         'fraiseuse_num_slug': fraiseuse_num.slug,
                         'impression_3d_slug': impression_3d.slug,
                         'impression_num_slug': impression_num.slug,
-                        'laser_slug': laser.slug}
+                        'laser_slug': laser.slug,
+                        'products_cart': products_cart['products'],
+                        'products_cart_js': json.dumps(products_cart['products']),
+                        'total_price_cart': products_cart['total_price']
+                                   }
                   )
 
 def location(request):
-    return render(request, 'AntaBackEnd/location/index.html')
+    products_cart = CartService.get_cart_data_from_request(request)
+    return render(request, 'AntaBackEnd/location/index.html', context={
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price']})
 
 def about(request):
-    return render(request, "AntaBackEnd/about/index.html")
+    products_cart = CartService.get_cart_data_from_request(request)
+    return render(request, "AntaBackEnd/about/index.html", context={
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price']})
 
 class FabPassResetView(PasswordResetView):
     subject_template_name = "registration/password_reset_subject.txt"

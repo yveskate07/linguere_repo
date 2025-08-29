@@ -116,15 +116,6 @@ def return_url(request):
     else:
         return JsonResponse({"status": "error", "message": "Paiement échoué"}, status=400)
 
-def get_cart_data(request):
-    try:
-        user = request.user
-        cart_data = CartService.get_cart_data(user=user)
-    except:
-        sessionid = request.session.session_key # or sessionid = request.COOKIES.get("sessionid")
-        cart_data = CartService.get_cart_data(session_token=sessionid)
-    finally:
-        return cart_data
 
 def render_category_page(request, page_number, category, template):
     products = Product.objects.filter(main_category=category)
@@ -158,7 +149,7 @@ def render_category_page(request, page_number, category, template):
         page_range = range(start_page, min(end_page, paginator.num_pages) + 1)
 
     print(f"page range is : {list(page_range)}")
-    products_cart = get_cart_data(request)
+    products_cart = CartService.get_cart_data_from_request(request)
     context = {
         'user_authenticated': user_authenticated,
         'user_id': user_id,

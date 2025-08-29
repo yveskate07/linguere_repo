@@ -6,6 +6,7 @@ from django.shortcuts import render
 import json
 from Formations.forms import SignedUpUserForm, BrochureForm, RequestForm
 from Formations.models import Formations, Module, Prerequisites, SkillGained, MotivPoints, Advantages
+from Shop.services.cart_service import CartService
 from mail_sender import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
 
 
@@ -40,6 +41,7 @@ def formationView(request, formation_name):
     form1 = SignedUpUserForm()
     form2 = BrochureForm()
     form3 = RequestForm()
+    products_cart = CartService.get_cart_data_from_request(request)
 
     return render(request, 'Formations/index.html',
                       {'formSignedUpUser': form1, 'formBrochure': form2, 'formRequest': form3,
@@ -47,6 +49,9 @@ def formationView(request, formation_name):
                        'id_formation': formation.id,'slug':formation.slug,
                        'f_name':f_name,
                        'motiv':motiv,
+                        'products_cart': products_cart['products'],
+                        'products_cart_js': json.dumps(products_cart['products']),
+                        'total_price_cart': products_cart['total_price'],
                        'price':price,
                        'duration':duration,
                        'nb_h_per_week':nb_h_per_week,

@@ -354,6 +354,8 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 user = Fab_User.objects.get(uuid=uuid)
             except:
                 user = self.scope['user']
+            
+            cart = CartService.get_cart(user)
 
             order = Order.objects.get(transaction_id=order_datas.get('transactionId'), complete=False)
             order.complete = True
@@ -400,19 +402,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 to_email=to_email
             )
 
-    @sync_to_async
-    def empty_cart(self):
-        uuid = self.scope['url_route']['kwargs']['uuid']
-
-        if uuid != 'anonymous_id':
-            user = Fab_User.objects.get(uuid=uuid)
-            cart = CartService.get_cart(user)
-        else:
-            cart = CartService.get_cart(session_token=self.scope['cookies']['sessionid'])
-
-        response = CartService.clear_cart(cart)
-
-        return response
+            CartService.clear_cart(cart)
 
     async def receive(self, text_data):
 
@@ -496,13 +486,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
         elif message_type == "payment_achieved":
             response = await self.confirm_payment_order(data)
             await self.send(text_data=json.dumps({'type': 'payment_confirmed'}))
-
-        elif message_type == "empty-cart":
-            response = await self.empty_cart()
-            if response:
-                await self.send(text_data=json.dumps({'type': 'cart_emptied'}))
-            else:
-                await self.send(text_data=json.dumps({'type': 'cart_not_emptied'}))
 
         elif message_type == "product_page":
             page_number = data.get('page_number', 1)

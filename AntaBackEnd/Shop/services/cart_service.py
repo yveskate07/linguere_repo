@@ -64,3 +64,14 @@ class CartService:
     def get_cart_data(user=None, session_token=None):
         cart = CartService.get_cart(user=user, session_token=session_token)
         return cart.to_dict
+
+    @staticmethod
+    def get_cart_data_from_request(request):
+        try:
+            user = request.user
+            cart_data = CartService.get_cart_data(user=user)
+        except:
+            sessionid = request.session.session_key  # or sessionid = request.COOKIES.get("sessionid")
+            cart_data = CartService.get_cart_data(session_token=sessionid)
+        finally:
+            return cart_data

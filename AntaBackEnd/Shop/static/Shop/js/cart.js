@@ -35,7 +35,6 @@ function emptyCartModal() {
     cart = [];
     total = 0;
     updateCartDisplay();
-    socket.send(JSON.stringify({'type':'empty-cart'}));
 }
 
 

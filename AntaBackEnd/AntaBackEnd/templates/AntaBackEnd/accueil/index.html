@@ -654,16 +654,8 @@
     </script>
 
     <!-- Scripts -->
-    <script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/cart_variables.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/wbsocket_connect.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/js_bunch1.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/success_fail_display.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/cart.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/wbsocket_receive.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/quick_view.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/handle_quantity.js' %}"></script>
-    <script type='text/javascript' src="{% static 'Shop/js/js_bunch2.js' %}"></script>
+
+    {% include 'Shop/js_for_cart_and_payment/index.html' %}
 
 </body>
 </html>

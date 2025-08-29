@@ -20,12 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function getTotalPriceAndDisplayPaymentModal() {
     tr_Id = document.getElementById('payment-modal').getAttribute('data-transactionId');
     if (tr_Id) {
-        console.log('Transaction ID exists, getting order : ', tr_Id);
-        // Récupérer le total du panier
         socket.send(JSON.stringify({'type': 'get_order_datas', 'transaction_id': tr_Id}));
     }else{
-        console.log('creating new order')
-        // Récupérer le total du panier
         socket.send(JSON.stringify({'type': 'create_new_order'}));
     }
 }

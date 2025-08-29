@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -6,6 +8,7 @@ from Services.forms import Broderie_num_customForm1, Fraiseuse_customForm1, Lase
     Broderie_num_customForm2, Fraiseuse_customForm2, Laser_customForm2, Imp_3D_customForm2, Paper_customForm1, \
     Paper_customForm2, Textile_customForm1, Textile_customForm2, Objects_customForm1, Objects_customForm2
 from Services.models import Service
+from Shop.services.cart_service import CartService
 from mail_sender import mail_to_the_client, mail_to_fablab
 
 
@@ -29,7 +32,6 @@ def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment,
         f.write(msg_body)
 
     return msg_body
-
 
 def get_msg_for_admin_mail(request , **kwargs):
     admin_url = reverse('admin:index')
@@ -61,10 +63,10 @@ def get_msg_for_admin_mail(request , **kwargs):
 
     return msg_body
 
-
 # Create your views here.
 def broderie_numerique(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Broderie Numérique")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, "Services/broderie/index.html", {'broderie_form1': Broderie_num_customForm1(),
                                                             'broderie_form2': Broderie_num_customForm2(),
                                                             'service_id': service.pk,
@@ -74,11 +76,14 @@ def broderie_numerique(request, errors_txt=None, errors=0, success=0, success_tx
                                                             'img3': service.image3.url, 'img4': service.image4.url,
                                                             'img5': service.image5.url, 'img6': service.image6.url,
                                                             'img7': service.image7.url, 'img8': service.image8.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                                                             'errors': errors,'errors_txt':errors_txt})
-
 
 def fraiseuse_numerique(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Service de Fraiseuse Numérique (CNC)")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, "Services/fraiseuse/index.html", {'fraiseuse_form1': Fraiseuse_customForm1(),
                                                              'fraiseuse_form2': Fraiseuse_customForm2(),
                                                              'service_id': service.pk,
@@ -88,11 +93,14 @@ def fraiseuse_numerique(request, errors_txt=None, errors=0, success=0, success_t
                                                              'img3': service.image3.url, 'img4': service.image4.url,
                                                              'img5': service.image5.url, 'img6': service.image6.url,
                                                              'img7': service.image7.url, 'img8': service.image8.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                                                              'errors': errors,'errors_txt':errors_txt})
-
 
 def decoupe_laser(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Découpe et Gravure Laser")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, "Services/laser/index.html", {'laser_form1': Laser_customForm1(),
                                                          'laser_form2': Laser_customForm2(),
                                                          'service_id': service.pk,
@@ -102,11 +110,14 @@ def decoupe_laser(request, errors_txt=None, errors=0, success=0, success_txt=Non
                                                          'img3': service.image3.url, 'img4': service.image4.url,
                                                          'img5': service.image5.url, 'img6': service.image6.url,
                                                          'img7': service.image7.url, 'img8': service.image8.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                                                          'errors': errors,'errors_txt':errors_txt})
-
 
 def impression_3D(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Service d'Impression 3D")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, 'Services/Impre_3D/index.html', {'imp_3D_form1': Imp_3D_customForm1(),
                                                             'imp_3D_form2': Imp_3D_customForm2(),
                                                             'service_id': service.pk,
@@ -116,11 +127,14 @@ def impression_3D(request, errors_txt=None, errors=0, success=0, success_txt=Non
                                                             'img3': service.image3.url, 'img4': service.image4.url,
                                                             'img5': service.image5.url, 'img6': service.image6.url,
                                                             'img7': service.image7.url, 'img8': service.image8.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                                                             'errors': errors,'errors_txt':errors_txt})
-
 
 def impression_num_papiers(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Impression sur Papier et Supports Rigides")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, 'Services/Impre_Num_Prop/paper_solid_support/index.html',
                   {'paper_form1': Paper_customForm1(),
                    'paper_form2': Paper_customForm2(),
@@ -130,11 +144,14 @@ def impression_num_papiers(request, errors_txt=None, errors=0, success=0, succes
                    'img1': service.image1.url, 'img2': service.image2.url, 'img3': service.image3.url,
                    'img4': service.image4.url,
                    'img5': service.image5.url, 'img6': service.image6.url, 'img7': service.image7.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                    'img8': service.image8.url, 'errors': errors,'errors_txt':errors_txt})
-
 
 def impression_num_textile(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Impression sur Textiles et Vêtements")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, 'Services/Impre_Num_Prop/textile_vetements/index.html',
                   {'textile_form1': Textile_customForm1(),
                    'textile_form2': Textile_customForm2(),
@@ -144,11 +161,14 @@ def impression_num_textile(request, errors_txt=None, errors=0, success=0, succes
                    'img1': service.image1.url, 'img2': service.image2.url, 'img3': service.image3.url,
                    'img4': service.image4.url,
                    'img5': service.image5.url, 'img6': service.image6.url, 'img7': service.image7.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                    'img8': service.image8.url, 'errors': errors,'errors_txt':errors_txt})
-
 
 def impression_num_objects(request, errors_txt=None, errors=0, success=0, success_txt=None):
     service = Service.objects.get(name="Impression sur Objets Personnalisés")
+    products_cart = CartService.get_cart_data_from_request(request)
     return render(request, 'Services/Impre_Num_Prop/others_objects/index.html', {'object_form1': Objects_customForm1(),
                                                                                  'object_form2': Objects_customForm2(),
                                                                                  'object_serviceName': service.name,
@@ -162,8 +182,10 @@ def impression_num_objects(request, errors_txt=None, errors=0, success=0, succes
                                                                                  'img6': service.image6.url,
                                                                                  'img7': service.image7.url,
                                                                                  'img8': service.image8.url,
+        'products_cart': products_cart['products'],
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price'],
                                                                                  'errors': errors,'errors_txt':errors_txt})
-
 
 def save_broderie_order(request):
     if request.method == 'POST':
@@ -253,7 +275,6 @@ def save_broderie_order(request):
             errors = [error[0] for error in errors]
             return broderie_numerique(request, errors=1, errors_txt=errors)
 
-
 def save_fraiseuse_order(request):
     if request.method == 'POST':
         if request.POST.get("with-upload-design") == '0':
@@ -337,7 +358,6 @@ def save_fraiseuse_order(request):
             errors = [error[0] for error in errors]
             return fraiseuse_numerique(request, errors=1, errors_txt=errors)
 
-
 def save_laser_order(request):
     if request.method == 'POST':
         if request.POST.get("with-upload-design") == '0':
@@ -420,7 +440,6 @@ def save_laser_order(request):
             errors = list(form.errors.values())
             errors = [error[0] for error in errors]
             return decoupe_laser(request, errors=1, errors_txt=errors)
-
 
 def save_imp_3d_order(request):
     if request.method == 'POST':
@@ -510,7 +529,6 @@ def save_imp_3d_order(request):
             errors = [error[0] for error in errors]
             return impression_3D(request, errors=1, errors_txt=errors)
 
-
 def save_imp_text_order(request):
     if request.method == "POST":
         if request.POST.get("with-upload-design") == '0':
@@ -576,7 +594,6 @@ def save_imp_text_order(request):
             errors = [error[0] for error in errors]
             return impression_num_textile(request, errors=1, errors_txt=errors)
 
-
 def save_imp_paper_order(request):
     if request.method == "POST":
         if request.POST.get("with-upload-design") == '0':
@@ -641,7 +658,6 @@ def save_imp_paper_order(request):
             errors = list(form.errors.values())
             errors = [error[0] for error in errors]
             return impression_num_papiers(request, errors=1, errors_txt=errors)
-
 
 def save_imp_object_order(request):
     if request.method == "POST":

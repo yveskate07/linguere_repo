@@ -251,8 +251,8 @@ class Invoice(models.Model):
 
     user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True, verbose_name='Client')
     invoice_date_time = models.DateTimeField(auto_now_add=True)
-    rccm_number = models.CharField(max_length=160, verbose_name='Numéro Registre de Commerce et du Crédit Mobilier', null=True, blank=True, default='')
-    ninea_number = models.CharField(max_length=160, verbose_name='Numéro d’Identification Nationale des Entreprises et Associations', null=True, blank=True, default='')
+    rccm_number = models.CharField(max_length=160, verbose_name='Numéro Registre de Commerce et du Crédit Mobilier', null=True, blank=True, default='Numéro Registre de Commerce et du Crédit Mobilier')
+    ninea_number = models.CharField(max_length=160, verbose_name='Numéro d’Identification Nationale des Entreprises et Associations', null=True, blank=True, default='Numéro d’Identification Nationale des Entreprises et Associations')
     #reference = models.CharField(max_length=100,null=True,blank=True,verbose_name="Référence commande / projet")
     due_date = models.DateField(null=True,blank=True,verbose_name="Date d’échéance")
     last_updated_date = models.DateTimeField(null=True,blank=True,verbose_name='Dernière modification')
