@@ -1,0 +1,9 @@
+INSERT INTO "Formations_formations" ("availability", "slug", "determinant", "image", "id", "name", "duration", "motiv", "price", "hours_per_week") VALUES
+('En ligne / Présentiel', 'broderie-numerique', 'la', 'Formations/formation_image/im_brod.jpeg', 1, 'Broderie Numérique', '108000000000', 'La broderie numérique permet de créer des motifs personnalisés...', 280000, 5);
+INSERT INTO "Formations_formations" ("availability", "slug", "determinant", "image", "id", "name", "duration", "motiv", "price", "hours_per_week") VALUES
+(NULL, 'fraiseuse-numerique-cnc', 'la', 'Formations/formation_image/FraisageCNCdebois.jpg', 2, 'Fraiseuse Numérique (CNC)', '144000000000', 'La fraiseuse numérique est une machine de découpe polyvalente...', 200000, NULL);
+INSERT INTO "Formations_formations" ("availability", "slug", "determinant", "image", "id", "name", "duration", "motiv", "price", "hours_per_week") VALUES
+(NULL, 'decoupe-laser', 'la', 'Formations/formation_image/Boiiis.jpg', 3, 'Découpe Laser', '144000000000', 'La découpe laser permet de travailler des matériaux avec précision...', 150000, NULL);
+INSERT INTO "Formations_formations" ("availability", "slug", "determinant", "image", "id", "name", "duration", "motiv", "price", "hours_per_week") VALUES
+(NULL, 'impression-3d', 'l''', 'Formations/formation_image/pic3d.jpg', 4, 'Impression 3D', '144000000000', 'L''impression 3D permet de créer des objets physiques à partir de modèles...', 175000, NULL),
+(NULL, 'impression-numerique', 'l''', 'Formations/formation_image/imp_num.png', 5, 'Impression Numérique', '144000000000', 'L''impression numérique est une technique d''impression directe depuis un fichier...', 352000, NULL);

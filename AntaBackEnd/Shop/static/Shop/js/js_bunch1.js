@@ -275,15 +275,11 @@ function processPayment(paymentMethod, transactionId, amount, refCommande, clien
         .then(response => response.json())
         .then(data => {
         if (data.code === "201") {
-            data.transactionId = transactionId;
-            // Transaction créée avec succès, afficher un sweet alert de succès
-            // Envoi d'une requete ws au consumer avec type=payment_response
-            socket.send(JSON.stringify({ 'type': 'payment_achieved', 
-                'datas':data
-            }));
-            
-        } else {
-            // Erreur lors de la création de la transaction, afficher un sweet alert d'erreur
+            const paymentUrl = data.data.payment_url;
+            window.location.href = paymentUrl; // Redirige l’utilisateur vers CinetPay
+        }else {
+            sweetMSG('Erreur','Erreur lors de la création du paiement. Veuillez réessayer.', 'error');
+            return
         }
         })
         .catch(console.error);

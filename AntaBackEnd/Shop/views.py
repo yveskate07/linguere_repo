@@ -8,12 +8,13 @@ from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 
 from AntaBackEnd import settings
 from Users.models import Fab_User
-from .models import Product, Cart
-from django.http import JsonResponse, HttpResponseBadRequest
+from .models import Product, Order
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .services.cart_service import CartService
 
+CINETPAY_CHECK_URL = "https://api-checkout.cinetpay.com/v2/payment/check"
 
 @csrf_exempt
 def notify(request):
@@ -60,40 +61,87 @@ def init_payment(request):
 
     return JsonResponse({"error": "Méthode non autorisée"}, status=405)
 
+def _verify_transaction(transaction_id: str) -> dict:
+    payload = {
+        "apikey": settings.CINETPAY_API_KEY,
+        "site_id": settings.CINETPAY_SITE_ID,
+        "transaction_id": transaction_id,
+    }
+    r = requests.post(CINETPAY_CHECK_URL, json=payload, timeout=20)
+    return r.json()
 
-def verify_hmac(request):
-    if request.method == "POST":
-        try:
-            # Récupérer les données de la notification
-            data = request.POST
-            signature = data.get("signature")
+def verify_hmac(request): # vue qui recevra les notifications de CinetPay
+    if request.method != "POST":
+        # La doc recommande que l’URL soit dispo en GET/POST, mais le POST contient les data.
+        return HttpResponse(status=405)
 
-            # Créer la chaîne à signer
-            message = f"{data.get('cpm_site_id')}{data.get('cpm_trans_id')}{data.get('cpm_amount')}{data.get('cpm_currency')}{data.get('cpm_custom')}{data.get('cpm_payment_date')}"
+    # 1) Récupérer le HMAC envoyé par CinetPay dans le header `x-token`
+    received_token = request.headers.get("x-token") or request.META.get("HTTP_X_TOKEN", "")
+    data = request.POST  # x-www-form-urlencoded selon la doc
 
-            # Calculer le HMAC avec la clé secrète
-            secret_key = settings.CINETPAY_SECRET_KEY.encode()
-            calculated_signature = hmac.new(secret_key, message.encode(), hashlib.sha256).hexdigest()
 
-            # Comparer les signatures
-            if hmac.compare_digest(calculated_signature, signature):
-                # Vérifier le statut de la transaction
-                transaction_id = data.get("cpm_trans_id")
-                verification_response = verify_transaction(transaction_id)
+    # 2) Construire la chaîne à signer dans l’ORDRE EXACT défini par CinetPay
+    fields_in_order = [
+        "cpm_site_id",
+        "cpm_trans_id",
+        "cpm_trans_date",
+        "cpm_amount",
+        "cpm_currency",
+        "signature",
+        "payment_method",
+        "cel_phone_num",
+        "cpm_phone_prefixe",
+        "cpm_language",
+        "cpm_version",
+        "cpm_payment_config",
+        "cpm_page_action",
+        "cpm_custom",
+        "cpm_designation",
+        "cpm_error_message",
+    ]
 
-                if verification_response.get("code") == "00" and verification_response.get("data", {}).get(
-                        "status") == "ACCEPTED":
-                    # Traiter la commande
-                    return JsonResponse({"status": "success", "message": "Paiement validé"})
-                else:
-                    return JsonResponse({"status": "error", "message": "Paiement échoué"}, status=400)
-            else:
-                return JsonResponse({"status": "error", "message": "Signature invalide"}, status=400)
+    # recupérer l’identifiant de la transaction
+    transaction_id = data.get('cpm_trans_id', '')
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+    if not transaction_id:
+        return JsonResponse({"status": "error", "reason": "missing_transaction_id"}, status=400)
+    
+    order = get_object_or_404(Order, transaction_id=transaction_id)
 
-    return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+    if order.paid:
+        return JsonResponse({"status": "success", "reason": "already_paid"}, status=200)
+
+    message = "".join((data.get(k, "") or "") for k in fields_in_order)
+
+    # 3) Calculer le HMAC attendu (SHA256) avec ta Secret Key
+    secret_key = settings.CINETPAY_SECRET_KEY.encode("utf-8")
+    generated_token = hmac.new(secret_key, message.encode("utf-8"), hashlib.sha256).hexdigest()
+
+    # 4) Comparer de manière sûre
+    if not hmac.compare_digest(generated_token, (received_token or "").strip()):
+        # On répond quand même 200 pour éviter des retries infinis, mais on loggue l’erreur côté serveur
+        return JsonResponse({"status": "error", "reason": "invalid_hmac"}, status=200)
+
+    # 5) HMAC OK → vérifier officiellement la transaction via /payment/check
+    transaction_id = data.get("cpm_trans_id", "")
+    check = _verify_transaction(transaction_id)
+
+    # 6) Traiter selon la réponse officielle
+    is_paid = check.get("code") == "00" and check.get("data", {}).get("status") == "ACCEPTED"
+    if is_paid:
+        # TODO: marquer la commande comme payée, idempotent (si déjà traité, ne rien refaire)
+        # ex: Order.objects.filter(tx=transaction_id).update(is_paid=True, paid_at=timezone.now())
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        # REFUSED / PENDING / autre: on enregistre l’état mais on n’échoue pas le webhook
+        return JsonResponse(
+            {
+                "status": "not_accepted",
+                "code": check.get("code"),
+                "cp_status": check.get("data", {}).get("status"),
+            },
+            status=200,
+        )
 
 
 def verify_transaction(transaction_id):

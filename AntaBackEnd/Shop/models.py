@@ -151,6 +151,7 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=50, null=True, blank=True, verbose_name="Méthode de paiement",
                                       choices=PAYMENT_METHOD, default='Wave')
     delivery_price = models.IntegerField(default=0, verbose_name="Frais de livraison")
+    paid = models.BooleanField(default=False, verbose_name='Payé')
 
     def __str__(self):
         return f"Commande N° {self.id}"
