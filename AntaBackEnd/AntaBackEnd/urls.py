@@ -20,6 +20,8 @@ from django.urls import path, include
 from AntaBackEnd import views, settings
 from django.contrib.auth import views as auth_views
 
+from AntaBackEnd.views import cart_view
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
@@ -33,6 +35,7 @@ urlpatterns = [
     path('activities/', include("Activities.urls")),
     path('formations/',include('Formations.urls')),
     path('user/', include('Users.urls')),
+    path('cart/', cart_view, name='cart'),
     path('password-reset/', views.FabPassResetView.as_view(template_name='registration/password_reset.html'), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.FabPasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),

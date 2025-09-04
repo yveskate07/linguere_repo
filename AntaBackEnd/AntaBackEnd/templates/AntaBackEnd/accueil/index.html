@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
 </head>
-<body>
+<body data-user-id={{user_id}}>
     {% include 'AntaBackEnd/header_footer/header.html' %}
     {% include 'Shop/cart_and_payment_modals/index.html' %}
 
@@ -338,7 +338,7 @@
     <section class="testimonials" id="testimonials-Section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h1>TÉMOIGNAGES</h1>
+                <h1>TÉMOIGNAGES</h1> 
             </div>
 
             <div class="row">
@@ -583,23 +583,7 @@
             });
         });
 
-        // Cart Counter Animation
-        const cartCount = document.querySelector('.cart-count');
-        let count = 0;
 
-        // Simulate adding items to cart (for demo)
-        setInterval(() => {
-            if (count < 5) {
-                count++;
-                cartCount.setAttribute('data-count', count);
-
-                // Add animation
-                cartCount.classList.add('animate__animated', 'animate__bounceIn');
-                setTimeout(() => {
-                    cartCount.classList.remove('animate__animated', 'animate__bounceIn');
-                }, 1000);
-            }
-        }, 5000);
 
         // Dropdown menu animation
         const dropdowns = document.querySelectorAll('.dropdown');

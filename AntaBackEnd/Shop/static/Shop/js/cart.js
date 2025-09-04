@@ -1,8 +1,8 @@
 // Initialisation
 document.addEventListener('DOMContentLoaded', function() {
     // Événements
-    document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
-    document.getElementById('close-cart').addEventListener('click', toggleCartModal);
+    //document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
+    //document.getElementById('close-cart').addEventListener('click', toggleCartModal);
 
     cart = document.getElementById('cart-modal').dataset.cart ? JSON.parse(document.getElementById('cart-modal').dataset.cart) : cart;
     total = document.getElementById('cart-modal').dataset.totalPrice ? parseFloat(document.getElementById('cart-modal').dataset.totalPrice) : total;
@@ -37,7 +37,6 @@ function emptyCartModal() {
     updateCartDisplay();
 }
 
-
 // Fonction pour afficher la confirmation
 function showConfirmation() {
     const confirmation = document.getElementById('confirmation-message');
@@ -51,32 +50,11 @@ function showConfirmation() {
 }
 
 function addToCart(name, price, category, image, quantity, prd_id) {
-    // Vérifier si le produit est déjà dans le panier
-    const existingItem = cart.find(item => item.id === prd_id);
-
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        cart.push({
-            id: prd_id,
-            name: name,
-            price: price,
-            category: category,
-            image: image,
-            quantity: quantity,
-            item_id: 'null'
-        });
-    }
 
     socket.send(JSON.stringify({'type':'add-to-cart',
         'item':{'id':prd_id,'quantity':quantity}
-    }));
+        }));
 
-    // Mettre à jour le total
-    total += price * quantity;
-
-    // Afficher la confirmation
-    //showConfirmation();
 }
 
 function updateCartCountDisplay(){
@@ -170,25 +148,19 @@ function updateCartDisplay() {
 
 // Fonction pour modifier la quantité d'un article
 function changeCartItemQuantity(index, change, item_id) {
-    const newQuantity = cart[index].quantity + change;
 
     if (newQuantity < 1) {
         removeFromCart(index, item_id);
     } else {
-        total += cart[index].price * change;
-        cart[index].quantity = newQuantity;
+        socket.send(JSON.stringify({'type':'change-item-quantity',
+        'item':{'id':item_id, 'quantity':change}
+        }));
     }
-
-    socket.send(JSON.stringify({'type':'change-item-quantity',
-        'item':{'id':item_id, 'quantity':newQuantity}
-    })); 
+ 
 }
 
 // Fonction pour supprimer un article
-function removeFromCart(index, item_id) {
-    const item = cart[index];
-    total -= item.price * item.quantity;
-    cart.splice(index, 1);
+function removeFromCart(item_id) {
 
     socket.send(
         JSON.stringify({
@@ -196,3 +168,144 @@ function removeFromCart(index, item_id) {
             'item':item_id
     }));
 }
+
+// Initialisation AOS
+AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+});
+
+// Données du panier (simulées)
+let cartItems = [
+    { id: 1, name: "Arduino Méga", price: 15000, quantity: 1, image: "Arduino mega.png", category: "Kits Arduino", stock: "in-stock" },
+    { id: 2, name: "Capteur DHT11", price: 5000, quantity: 2, image: "Capteur DHT11.png", category: "Capteurs", stock: "low-stock" }
+];
+
+// Fonctions de gestion du panier
+function updateQuantity(index, change) {
+    const newQuantity = cartItems[index].quantity + change;
+    if (newQuantity < 1) {
+        removeItem(index);
+    } else {
+        cartItems[index].quantity = newQuantity;
+        updateCartDisplay();
+    }
+}
+
+function removeItem(index) {
+    cartItems.splice(index, 1);
+    updateCartDisplay();
+}
+
+function saveForLater(index) {
+    Swal.fire({
+        icon: 'info',
+        title: 'Article sauvegardé',
+        text: `L'article "${cartItems[index].name}" a été sauvegardé pour plus tard.`,
+        confirmButtonColor: '#2178d0'
+    });
+}
+
+function addToCart(name, price, category, image) {
+    const existingItem = cartItems.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cartItems.push({
+            id: cartItems.length + 1,
+            name: name,
+            price: price,
+            quantity: 1,
+            image: image,
+            category: category,
+            stock: "in-stock"
+        });
+    }
+    updateCartDisplay();
+    Toastify({
+        text: `${name} ajouté au panier!`,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#28a745",
+    }).showToast();
+}
+
+function updateCartDisplay() {
+    console.log("Panier mis à jour:", cartItems);
+}
+
+// Modal de paiement
+function proceedToCheckout() {
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    paymentModal.show();
+}
+
+function selectPaymentMethod(method) {
+    document.querySelectorAll('.payment-method').forEach(option => {
+        option.classList.remove('selected');
+    });
+    document.querySelector(`.payment-method[onclick*="${method}"]`).classList.add('selected');
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+        radio.checked = (radio.value === method);
+    });
+    document.getElementById('confirmPaymentBtn').disabled = false;
+
+    const instructions = document.getElementById('paymentInstructions');
+    if (method === 'wave') {
+        instructions.innerHTML = `
+            <h6><i class="fas fa-info-circle"></i> Instructions pour Wave</h6>
+            <ol>
+                <li>Ouvrez l'application <strong>Wave</strong>.</li>
+                <li>Allez dans "Payer".</li>
+                <li>Scannez le QR code ou entrez le numéro de marchand : <strong>771234567</strong>.</li>
+                <li>Validez le paiement de <strong>25 000 CFA</strong>.</li>
+            </ol>
+            <div class="qrcode-placeholder">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=WAVE_771234567_25000" alt="QR Code Wave">
+                <p class="mt-2 small text-muted">Code marchand : 771234567</p>
+            </div>
+        `;
+    } else {
+        instructions.innerHTML = `
+            <h6><i class="fas fa-info-circle"></i> Instructions pour Orange Money</h6>
+            <ol>
+                <li>Composez <strong>*144#</strong>.</li>
+                <li>Sélectionnez "Payer un marchand".</li>
+                <li>Entrez le code marchand : <strong>123456</strong>.</li>
+                <li>Validez le paiement de <strong>25 000 CFA</strong>.</li>
+            </ol>
+            <div class="qrcode-placeholder">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=ORANGE_123456_25000" alt="QR Code Orange Money">
+                <p class="mt-2 small text-muted">Code marchand : 123456</p>
+            </div>
+        `;
+    }
+    instructions.style.display = 'block';
+}
+
+// Confirmation de paiement
+document.getElementById('confirmPaymentBtn').addEventListener('click', function() {
+    const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const methodName = selectedMethod === 'wave' ? 'Wave Money' : 'Orange Money';
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+    modal.hide();
+
+    Swal.fire({
+        title: 'Traitement en cours...',
+        html: `Validation de votre paiement <strong>${methodName}</strong>.`,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => Swal.showLoading()
+    }).then(() => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Paiement réussi!',
+            text: `Votre commande a été payée avec ${methodName}.`,
+            confirmButtonColor: '#2178d0'
+        });
+    });
+});

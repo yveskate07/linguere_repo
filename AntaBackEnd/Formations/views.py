@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 import json
@@ -14,6 +15,8 @@ from mail_sender import brochure_to_client_through_mail, mail_to_fablab, mail_to
 #JSON_PATH = SCRIPT_PATH.parent / 'static' / 'Formations' / 'data' / 'data.json'
 
 # Create your views here.
+
+@login_required
 def formationView(request, formation_name):
 
     formation = Formations.objects.get(slug=formation_name)

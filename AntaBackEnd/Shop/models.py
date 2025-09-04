@@ -73,13 +73,16 @@ class Product(models.Model):
 class Cart(models.Model):
 
     user = models.OneToOneField(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='cart')
-    session_token = models.CharField(max_length=256, null=True, default='', verbose_name='Token Session')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def total_price(self):
         return sum(item.total_price for item in self.items.all())
+    
+    @property
+    def total_items(self):
+        return sum(item.quantity for item in self.items.all())
 
     @property
     def to_dict(self):
@@ -108,6 +111,12 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} et id:{self.id}"
+    
+    def delete(self, *args, **kwargs):
+        # removing the item and updating the cart total price
+        self.cart.updated_at = django.utils.timezone.now()
+        self.cart.save()
+        return super().delete(*args, **kwargs)
 
     @property
     def to_dict(self):
@@ -119,7 +128,9 @@ class CartItem(models.Model):
             "image": self.product.imageURL if self.product.image else None,
             "quantity": self.quantity,
             "total_price": self.total_price,
-            "item_id": self.id
+            "item_id": self.id,
+            "disponibility": self.product.disponibility,
+            "stock":self.product.stock
         }
 
 class Order(models.Model):
@@ -138,6 +149,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     date = models.DateTimeField(auto_now_add=True, verbose_name="Date de la commande")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Dernière mise à jour')
     total_amount = models.IntegerField(verbose_name="Montant total")
     complete = models.BooleanField(default=False, null=True, blank=True, verbose_name='Finalisée')
     transaction_id = models.CharField(max_length=200, unique=True)
@@ -163,6 +175,8 @@ class Order(models.Model):
         if is_new and not self.transaction_id:
             print("Creating transaction ID because it's a new order")
             self.transaction_id = f"{shortuuid.uuid()}-{self.id}"
+            
+            self.updated_at = timezone.now()
             super().save(update_fields=["transaction_id"])
 
         if self.complete:
@@ -198,9 +212,13 @@ class Order(models.Model):
             # Vider le panier de l'utilisateur
             cart_items.delete()
 
+            
+            self.updated_at = timezone.now()
             super().save(update_fields=["status"])
+
         else:
             print("Order is not complete. No further processing needed.")
+
 
     def send_confirmation(self, text_content, template_name, context, subject, to_email):
         context['products'] = self.order_item.all()

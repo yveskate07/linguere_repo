@@ -263,7 +263,7 @@ function processPayment(paymentMethod, transactionId, amount, refCommande, clien
             transaction_id: transactionId,
             amount: amount,
             metadata: refCommande,
-            channels: paymentMethod,
+            channels: paymentMethod, // MOBILE_MONEY, ALL
             notify_url: "{% url 'notify' %}",
             return_url: "{% url 'arduino' 1 %}",
             invoice_data: {

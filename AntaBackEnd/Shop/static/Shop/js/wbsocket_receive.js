@@ -2,7 +2,7 @@ socket.onmessage = function (e) {
     const data = JSON.parse(e.data);
     const type = data.type;
 
-    if (type === "display_products") {
+    if (type === "display_products") { // filter products 
         
         const pagination = data.pagination; // pour la pagination
         const productGrid = document.querySelector('.product-grid');
@@ -106,25 +106,32 @@ socket.onmessage = function (e) {
                 pag_link.innerHTML = html1 + html2 + html3;
 
     } else {
-        if (type === "add_to_cart_result"){
-            prd_id = data.product_id;
-            const existingItem = cart.find(item => item.id === prd_id);
-            if (existingItem) {
-                existingItem.item_id = data.item_id;
-            }
+        if (type === "add_to_cart_result"){ // result after item added
+            const count = document.getElementById('cart-count').getAttribute('data-count');
+            document.getElementById('cart-count').setAttribute('data-count', parseInt(count, 10) + 1);
 
-            updateCartDisplay();
+            document.getElementById('cart-count').innerHTML = `<i class="fas fa-shopping-cart"></i> 
+                    <span class="d-none d-md-inline">
+                            ${data.total_price} CFA
+                    </span>`
         }else{
-            if (type === "remove_item_result"){
-                updateCartDisplay(); 
+            if (type === "remove_item_result"){ // result after item removed
+                document.getElementById('cart-count').setAttribute('data-count', data.new_qtty);
+
+                document.getElementById('cart-count').innerHTML = `<i class="fas fa-shopping-cart"></i> 
+                        <span class="d-none d-md-inline">
+                                ${data.new_total} CFA
+                        </span>`
             }else{
-                if (type==="quantity_changed"){
-                    prd_id = data.product_id;
-                    const existingItem = cart.find(item => item.id === prd_id);
-                    if (existingItem) {
-                        existingItem.quantity = data.quantity;
-                    }
-                    updateCartDisplay();
+                if (type==="quantity_changed"){ // result after item quantity changed
+                    document.getElementById('cart-count').setAttribute('data-count', data.new_qtty);
+
+                    document.getElementById('cart-count').innerHTML = `<i class="fas fa-shopping-cart"></i> 
+                            <span class="d-none d-md-inline">
+                                    ${data.new_total} CFA
+                            </span>`;
+
+                    document.getElementById('quantity-value').textContent = data.item_qtty;
                 }else{
                         if (type === "checkout_result"){
                             // Afficher le message de succès
@@ -157,9 +164,11 @@ socket.onmessage = function (e) {
                                                     const amount = document.getElementById('payment-modal').dataset.totalPrice;
                                                     const refCommande = document.getElementById('payment-modal').dataset.refCommande;
                                                     const clientName = document.getElementById('payment-modal').dataset.clientName;
-                                                    // Simulation du processus de paiement, doit etre execute dans ws_receive
-                                                    //processPayment('ALL', transactionId, amount, refCommande, clientName);
-                                                    // pour test de confirmation
+                                                    /*if(data.paymentMethod==='Orange Money'){
+                                                        processPayment('ALL', transactionId, amount, refCommande, clientName);
+                                                    }else{
+                                                        processPayment('WAVE', transactionId, amount, refCommande, clientName);
+                                                    }*/
                                                     socket.send(JSON.stringify({ 'type': 'payment_achieved', 
                                                         'datas':{'transactionId': transactionId},
                                                     }));

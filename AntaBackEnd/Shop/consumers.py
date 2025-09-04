@@ -2,10 +2,8 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 from django.db.models import QuerySet
-from django.shortcuts import redirect
-
-from Users.models import Fab_User, Client
-from .models import Order, Product, CartItem, Invoice
+from Users.models import Fab_User
+from .models import Order, Product
 from asgiref.sync import sync_to_async
 
 from .services.cart_service import CartService
@@ -84,9 +82,9 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user)
         else:
-            cart = CartService.get_cart(session_token=self.scope['cookies']['sessionid'])
+            return 'user not authenticated'
 
-        item_id, product_id = CartService.add_item(cart, product=prd_id, quantity=quantity)
+        total_price = CartService.add_item(cart, product=prd_id, quantity=quantity)
 
         # user = Fab_User.objects.get(uuid=uuid)
         # cart = user.cart
@@ -98,7 +96,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
         #     msg = 'already in cart'
         # item.save()
         #
-        return item_id, product_id
+        return total_price
 
     @sync_to_async
     def change_item_qtty(self, item_data):
@@ -112,11 +110,11 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user)
         else:
-            cart = CartService.get_cart(session_token=self.scope['cookies']['sessionid'])
+            return 'user not authenticated'
 
         response = CartService.update_quantity(cart, item_id=item_id, quantity=qtty)
 
-        return response, qtty
+        return response
 
     @sync_to_async
     def remove_item_from_cart(self, item_data):
@@ -128,7 +126,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user = user)
         else:
-            cart = CartService.get_cart(session_token=self.scope['cookies']['sessionid'])
+            return 'user not authenticated'
 
         response = CartService.remove_item(cart, item_id=item_data.get('item'))
 
@@ -337,6 +335,8 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
 
             order.user = user
 
+            order.payment_method = order_datas.get('paymentMethod', order.payment_method)
+
             order.save()
 
             return 'success'
@@ -437,13 +437,13 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             if response == 'user not authenticated':
                 await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
                 return
-            await self.send(text_data=json.dumps({'type': 'add_to_cart_result', "item_id": response[0], 'product_id' : response[1]}))
+            await self.send(text_data=json.dumps({'type': 'add_to_cart_result', "total_price": response}))
             return
         elif message_type == "change-item-quantity": # change item quantity in cart
             response = await self.change_item_qtty(data.get('item', {}))
             if response == 'does not exist':
                 return
-            await self.send(text_data=json.dumps({'type': 'quantity_changed', "product_id": response[0], "quantity": response[1]}))
+            await self.send(text_data=json.dumps({'type': 'quantity_changed', "new_qtty": response[0], "new_total": response[1], 'item_qtty' : response[2]}))
             return
         elif message_type == "remove-item": # remove item from cart
             msg = await self.remove_item_from_cart(data)
@@ -451,7 +451,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
                 return
             await self.send(text_data=json.dumps(
-                {'type': 'remove_item_result', "status": "success", "message": "Item removed from cart"}))
+                {'type': 'remove_item_result', "status": "success", "new_qtty": response[0], "new_total": response[1]}))
             return
         
         elif message_type == "get_order_datas": # get order total price, transaction_id, ref_commande, client_name before payment then display payment modal in front end
@@ -480,7 +480,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             if response == 'user not authenticated':
                 await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
                 return
-            await self.send(text_data=json.dumps({'type': 'process_payment', 'response': 'success'}))
+            await self.send(text_data=json.dumps({'type': 'process_payment', 'paymentMethod': data.get('datas', {}).get('paymentMethod', 'WAVE')}))
             return
         
         elif message_type == "payment_achieved":

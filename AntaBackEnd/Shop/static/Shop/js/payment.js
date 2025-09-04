@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Événement pour le bouton de commande
     document.getElementById('checkout-button').addEventListener('click', getTotalPriceAndDisplayPaymentModal);
-    document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
-    document.getElementById('close-cart').addEventListener('click', toggleCartModal);
+    //document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
+    //document.getElementById('close-cart').addEventListener('click', toggleCartModal);
 
     // Fermer le modal en cliquant à l'extérieur
     window.addEventListener('click', function(event) {
@@ -99,6 +99,10 @@ document.getElementById('payment-form').addEventListener('submit', function(e) {
     }));
 
 });
+
+function gettingPaymentMethode(){
+    // sending either Orange Money or Wave to the consumer with type=prepayment_datas, the key is paymentMethod
+}
 
 function emptyPaymentForm() {
     document.getElementById('payment-form').reset();

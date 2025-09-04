@@ -97,7 +97,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / "AntaBackEnd" / "templates", BASE_DIR / "Activities" / "templates",
                  BASE_DIR / "Shop" / "templates", BASE_DIR / "Users" / "templates", BASE_DIR / "Services" / "templates",
-                 BASE_DIR / "Formations" / "templates", ],
+                 BASE_DIR / "Formations" / "templates", BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

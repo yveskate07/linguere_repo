@@ -28,8 +28,14 @@
         <div class="icons d-flex align-items-center">
             <span class="me-3"><i class="far fa-heart"></i></span>
             <span class="me-3" onclick="window.location.href='{% url 'user_home' %}'"><i class="far fa-user"></i></span>
-            <span class="cart-count" id="cart-count" data-count="{{products_cart|length}}"><i class="fas fa-shopping-cart"></i> <span
-                    class="d-none d-md-inline">{{total_price_cart}} CFA</span></span>
+            <a href="{% url 'cart' %}" class="cart-icon position-relative">
+                <span class="cart-count" id="cart-count" data-count="{{products_cart|length}}">
+                    <i class="fas fa-shopping-cart"></i> 
+                    <span class="d-none d-md-inline">
+                            {{total_price_cart}} CFA
+                    </span>
+                </span>
+            </a>
         </div>
     </div>
 </nav>

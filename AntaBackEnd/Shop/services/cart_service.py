@@ -3,11 +3,9 @@ from Shop.models import CartItem, Cart, Product
 
 class CartService:
     @staticmethod
-    def get_cart(user=None, session_token=None):
+    def get_cart(user=None):
         if user:
             cart, _ = Cart.objects.get_or_create(user=user)
-        elif session_token:
-            cart, _ = Cart.objects.get_or_create(session_token=session_token)
         else:
             raise ValueError("User or guest required")
         return cart
@@ -16,35 +14,31 @@ class CartService:
     def add_item(cart, quantity=1, product=None):
         prod_obj = Product.objects.get(id=product)
         item, created = CartItem.objects.get_or_create(cart=cart, product=prod_obj)
-        product = item.product
+        
         if created:
             item.quantity = quantity
         else:
             item.quantity += quantity
         item.save()
-        return item.id, product.id
+
+        return item.cart.total_price
 
     @staticmethod
     def remove_item(cart, item_id):
         item = CartItem.objects.get(cart=cart, id=item_id)
         if item:
             item.delete()
-            return True
-        return False
+        return item.cart.total_items, item.cart.total_price
 
     @staticmethod
     def update_quantity(cart, item_id, quantity):
         try:
             item = CartItem.objects.get(cart=cart, id=item_id)
-            product = item.product
-            if quantity <= 0:
-                item.delete()
+            item.quantity += int(quantity)
+            item.save()
                 
-            else:
-                item.quantity = int(quantity)
-                item.save()
-                
-            return product.id
+            return item.cart.total_items, item.cart.total_price, item.quantity
+        
         except CartItem.DoesNotExist:
             return 'does not exist'
         
@@ -61,8 +55,8 @@ class CartService:
             return False
 
     @staticmethod
-    def get_cart_data(user=None, session_token=None):
-        cart = CartService.get_cart(user=user, session_token=session_token)
+    def get_cart_data(user=None):
+        cart = CartService.get_cart(user=user)
         return cart.to_dict
 
     @staticmethod
@@ -71,7 +65,6 @@ class CartService:
             user = request.user
             cart_data = CartService.get_cart_data(user=user)
         except:
-            sessionid = request.session.session_key  # or sessionid = request.COOKIES.get("sessionid")
-            cart_data = CartService.get_cart_data(session_token=sessionid)
+            return 'user not authenticated'
         finally:
             return cart_data

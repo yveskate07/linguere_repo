@@ -60,6 +60,7 @@ def home(request):
     impression_num = Formations.objects.get(name="Impression Numérique")
     laser = Formations.objects.get(name="Découpe Laser")
     products_cart = CartService.get_cart_data_from_request(request)
+    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
 
     return render(request,'AntaBackEnd/accueil/index.html',
                   {'broderie_num_slug': broderie_num.slug,
@@ -67,23 +68,40 @@ def home(request):
                         'impression_3d_slug': impression_3d.slug,
                         'impression_num_slug': impression_num.slug,
                         'laser_slug': laser.slug,
+                        'user_id': user_id,
                         'products_cart': products_cart['products'],
                         'products_cart_js': json.dumps(products_cart['products']),
                         'total_price_cart': products_cart['total_price']
                                    }
                   )
 
+@login_required
 def location(request):
     products_cart = CartService.get_cart_data_from_request(request)
+    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, 'AntaBackEnd/location/index.html', context={
         'products_cart': products_cart['products'],
+        'user_id': user_id,
         'products_cart_js': json.dumps(products_cart['products']),
         'total_price_cart': products_cart['total_price']})
 
+@login_required
 def about(request):
     products_cart = CartService.get_cart_data_from_request(request)
+    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, "AntaBackEnd/about/index.html", context={
         'products_cart': products_cart['products'],
+        'user_id': user_id,
+        'products_cart_js': json.dumps(products_cart['products']),
+        'total_price_cart': products_cart['total_price']})
+
+@login_required
+def cart_view(request):
+    products_cart = CartService.get_cart_data_from_request(request)
+    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
+    return render(request,'cart/index.html', context={
+        'products_cart': products_cart['products'],
+        'user_id': user_id,
         'products_cart_js': json.dumps(products_cart['products']),
         'total_price_cart': products_cart['total_price']})
 

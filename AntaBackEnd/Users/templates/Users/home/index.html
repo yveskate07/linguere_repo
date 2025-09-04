@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{% static 'Users/css/style.css' %}">
     <title>Mon Compte</title>
 </head>
-<body>
+<body data-user-id={{user_id}}>
     {% include 'AntaBackEnd/header_footer/header.html' %}
     {% include 'Shop/cart_and_payment_modals/index.html' %}
     <div class="account-container">

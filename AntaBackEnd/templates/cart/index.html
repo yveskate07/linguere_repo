@@ -1,0 +1,287 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier - LINGUERE FABLAB</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{% static 'Shop/css/cart/style.css' %}">
+</head>
+<body data-user-id={{user_id}}>
+    <!-- Header avec barre de progression -->
+    <header class="cart-header">
+        <div class="container text-center">
+            <h1><i class="fas fa-shopping-cart me-2"></i> Votre Panier</h1>
+            <p>Revoyez vos articles et finalisez votre commande</p>
+
+            <div class="cart-progress">
+                <div class="cart-progress-step active" data-title="Panier">1</div>
+                <div class="cart-progress-step" data-title="Paiement">2</div>
+                <div class="cart-progress-bar">
+                    <div class="cart-progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main class="container">
+        <div class="cart-container">
+            <!-- Section des articles -->
+            <section class="cart-items" data-aos="fade-right">
+                <h2 class="mb-4">Articles dans votre panier</h2>
+                {% for product in products_cart %}
+                <!-- Article 1 -->
+                <div class="cart-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="cart-item-image">
+                        <img src="{{product.image}}" alt="{{product.name}}" loading="lazy">
+                    </div>
+                    <div class="cart-item-info">
+                        <h4>{{product.name}}</h4>
+                        <p>{{product.price}}</p>
+                        <!--<small>{{product.reference}}</small>-->
+                        {% if product.disponibility|stringformat:"s" == 'En stock' %}
+                            <div class="cart-item-stock in-stock">
+                                <i class="fas fa-check-circle me-1"></i> En stock
+                            </div>
+                        {% elif product.disponibility|stringformat:"s" == 'Stock limité' %}
+                            <div class="cart-item-stock low-stock">
+                                <i class="fas fa-exclamation-circle me-1"></i> Stock limité ({{product.stock}})
+                            </div>
+                        {% else %}
+                            <div class="cart-item-stock out-of-stock">
+                                <i class="fas fa-times-circle me-1"></i> Rupture de stock
+                            </div>
+                        {% endif %}
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="changeCartItemQuantity({{forloop.counter}}, -1, {{product.item_id}})">-</button>
+                            <span class="quantity-value" id="quantity-value" >1</span>
+                            <button class="quantity-btn" onclick="changeCartItemQuantity({{forloop.counter}}, 1, {{product.item_id}})">+</button>
+                        </div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="cart-item-price">{{product.price}}</div>
+                        <div>
+                            <div class="remove-item" onclick="removeFromCart({{product.item_id}})">
+                                <i class="fas fa-trash me-1"></i> Supprimer
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+
+            <!-- Section récapitulative -->
+            <section class="cart-summary" data-aos="fade-left">
+                <h3 class="summary-title">Récapitulatif de la commande</h3>
+                <!--<div class="summary-row">
+                    <span>Sous-total (3 articles)</span>
+                    <span>25 000 CFA</span>
+                </div>-->
+                <div class="summary-total">
+                    <div class="summary-row">
+                        <span>Total</span>
+                        <span>{{total_price_cart}} CFA</span>
+                    </div>
+                </div>
+                <button class="checkout-btn" onclick="proceedToCheckout()">
+                    <i class="fas fa-lock me-2"></i> Finaliser la commande
+                </button>
+                <div class="trust-signals">
+                    <div class="trust-signal-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Paiement 100% sécurisé</span>
+                    </div>
+                    <div class="trust-signal-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Retours faciles sous 14 jours</span>
+                    </div>
+                    <div class="trust-signal-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Support client à votre écoute</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Section recommandations -->
+        <section class="cart-recommendations">
+            <a href="{% url 'home' %}" class="back-to-shop">
+                <i class="fas fa-arrow-left"></i> Retour à la page d'accueil
+            </a>
+            <div class="recommendations-header">
+                <h3 class="recommendations-title">Articles fréquemment achetés ensemble</h3>
+                <h3 class="recommendations-title">Découvrez d'autres produits</h3>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- Colonnes pour les produits -->
+                <div class="recommendations-grid">
+                    <!-- Produit recommandé 1 -->
+                    <div class="recommendation-card" data-aos="fade-up">
+                        <div class="recommendation-image">
+                            <img src="Capteur ultrason.png" alt="Capteur ultrason">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>Capteur ultrason</h5>
+                            <div class="recommendation-price">7 500 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('Capteur ultrason', 7500, 'Capteurs', 'Capteur ultrason.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Produit recommandé 2 -->
+                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="recommendation-image">
+                            <img src="esp32.png" alt="ESP32">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>ESP32</h5>
+                            <div class="recommendation-price">12 000 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('ESP32', 12000, 'Composants IoT', 'esp32.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Produit recommandé 3 -->
+                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="recommendation-image">
+                            <img src="kits de demarrage.png" alt="Kit de démarrage">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>Kit de démarrage</h5>
+                            <div class="recommendation-price">25 000 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('Kit de démarrage', 25000, 'Kits Arduino', 'kits de demarrage.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Deuxième colonne -->
+                <div class="recommendations-grid">
+                    <!-- Produit 1 -->
+                    <div class="recommendation-card" data-aos="fade-up">
+                        <div class="recommendation-image">
+                            <img src="raspberry-pi.png" alt="Raspberry Pi">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>Raspberry Pi 4</h5>
+                            <div class="recommendation-price">45 000 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('Raspberry Pi 4', 45000, 'Ordinateurs monocartes', 'raspberry-pi.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Produit 2 -->
+                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="recommendation-image">
+                            <img src="breadboard.png" alt="Breadboard">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>Breadboard</h5>
+                            <div class="recommendation-price">3 500 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('Breadboard', 3500, 'Accessoires', 'breadboard.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Produit 3 -->
+                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="recommendation-image">
+                            <img src="cables-jumper.png" alt="Câbles Jumper">
+                        </div>
+                        <div class="recommendation-info">
+                            <h5>Câbles Jumper</h5>
+                            <div class="recommendation-price">2 000 CFA</div>
+                            <button class="add-recommendation" onclick="addToCart('Câbles Jumper', 2000, 'Accessoires', 'cables-jumper.png')">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de paiement -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Finaliser votre paiement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-methods">
+                        <!-- Wave Money -->
+                        <div class="payment-method" onclick="selectPaymentMethod('wave')">
+                            <div class="method-icon">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/WAVE_Money_logo.svg/1200px-WAVE_Money_logo.svg.png" alt="Wave Money">
+                            </div>
+                            <div class="method-details">
+                                <h6>Wave Money</h6>
+                                <p>Paiement mobile instantané et sécurisé</p>
+                            </div>
+                            <div class="radio-input">
+                                <input type="radio" name="paymentMethod" id="wave" value="wave">
+                            </div>
+                        </div>
+                        <!-- Orange Money -->
+                        <div class="payment-method" onclick="selectPaymentMethod('orange')">
+                            <div class="method-icon">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Orange_Money_logo.svg/1200px-Orange_Money_logo.svg.png" alt="Orange Money">
+                            </div>
+                            <div class="method-details">
+                                <h6>Orange Money</h6>
+                                <p>Solution de paiement mobile fiable</p>
+                            </div>
+                            <div class="radio-input">
+                                <input type="radio" name="paymentMethod" id="orange" value="orange">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment-instructions" id="paymentInstructions"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-confirm" id="confirmPaymentBtn" disabled>
+                        Confirmer le paiement
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 LINGUERE FABLAB. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="{% static 'Shop/js/filter_and_sort_products.js' %}"></script>
+    <script src="{% static 'Shop/js/wbsocket_connect.js' %}"></script>
+    <script src="{% static 'Shop/js/cart.js' %}"></script>
+    <script src="{% static 'Shop/js/wbsocket_receive.js' %}"></script>
+    <script src="{% static 'Shop/js/js_bunch1.js' %}"></script>
+    <script src="{% static 'Shop/js/js_bunch2.js' %}"></script>
+    <script src="{% static 'Shop/js/success_fail_display.js' %}"></script>
+    <script src="{% static 'Shop/js/sweet_alert.js' %}"></script>
+    
+</body>
+</html>
