@@ -24,11 +24,11 @@ function updateCartDisplay() {
                 <small>${item.category}</small>
             </div>
             <div class="cart-item-quantity">
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, -1, ${item.id})">
+                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(-1, ${item.id})">
                     <i class="fas fa-minus"></i>
                 </button>
                 <span class="quantity-value">${item.quantity}</span>
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, 1, ${item.id})">
+                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(1, ${item.id})">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>

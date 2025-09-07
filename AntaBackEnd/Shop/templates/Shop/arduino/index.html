@@ -164,7 +164,7 @@
                                 {% else %}
                                     <p class="product-stock out-of-stock"><i class="fas fa-times-circle me-1"></i> Rupture de stock</p>
                                 {% endif %}
-                                <button class="add-to-cart-button" onclick="addToCart('{{product.name}}', {{product.price}}, '{{product.category}}','{{product.imageURL}}', 1, {{product.id}})">
+                                <button class="add-to-cart-button" onclick="addToCart(1, {{product.id}})">
                                     <i class="fas fa-cart-plus"></i> Ajouter au panier
                                 </button>
                                 <div class="product-meta">

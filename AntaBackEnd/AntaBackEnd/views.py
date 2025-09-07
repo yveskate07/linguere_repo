@@ -95,16 +95,6 @@ def about(request):
         'products_cart_js': json.dumps(products_cart['products']),
         'total_price_cart': products_cart['total_price']})
 
-@login_required
-def cart_view(request):
-    products_cart = CartService.get_cart_data_from_request(request)
-    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    return render(request,'cart/index.html', context={
-        'products_cart': products_cart['products'],
-        'user_id': user_id,
-        'products_cart_js': json.dumps(products_cart['products']),
-        'total_price_cart': products_cart['total_price']})
-
 class FabPassResetView(PasswordResetView):
     subject_template_name = "registration/password_reset_subject.txt"
 

@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import arduino, machine, installations, verify_hmac, return_url, init_payment
+from .views import arduino, machine, installations, verify_hmac, return_url, init_payment, cart_view, payment_done
 
 # urlpatterns = [
 #     path('arduino/<int:page_number>', arduino, name='shop-arduino'),
@@ -30,5 +30,7 @@ urlpatterns = [
     path('installations/', installations, name='shop-installations'),
     path('create-payment/', init_payment, name='create_payment'),
     path('notify/', verify_hmac, name='verify_hmac'),
-    path('return/', return_url, name='return_url')
+    path('return/', return_url, name='return_url'),
+    path('cart/', cart_view, name='cart'),
+    path('payment-done/', payment_done, name='payment-done')
 ]

@@ -116,22 +116,17 @@ socket.onmessage = function (e) {
                     </span>`
         }else{
             if (type === "remove_item_result"){ // result after item removed
-                document.getElementById('cart-count').setAttribute('data-count', data.new_qtty);
 
-                document.getElementById('cart-count').innerHTML = `<i class="fas fa-shopping-cart"></i> 
-                        <span class="d-none d-md-inline">
-                                ${data.new_total} CFA
-                        </span>`
+                    const cart_item = document.getElementById(data.html_id);
+                    cart_item.remove();
+
+                    document.getElementById('total-order-price').textContent = data.total_price
             }else{
                 if (type==="quantity_changed"){ // result after item quantity changed
-                    document.getElementById('cart-count').setAttribute('data-count', data.new_qtty);
-
-                    document.getElementById('cart-count').innerHTML = `<i class="fas fa-shopping-cart"></i> 
-                            <span class="d-none d-md-inline">
-                                    ${data.new_total} CFA
-                            </span>`;
-
-                    document.getElementById('quantity-value').textContent = data.item_qtty;
+                    const idPrd = "quantity-value-"+ data.item_name
+                    document.getElementById(idPrd).textContent = data.item_qtty;
+                    document.getElementById("item-price-"+data.item_name).textContent = data.item_total;
+                    document.getElementById('total-order-price').textContent = data.new_total
                 }else{
                         if (type === "checkout_result"){
                             // Afficher le message de succès

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de Commande - LINGUERE FABLAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'Shop/css/validation_commande/style.css' %}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Header avec barre de progression -->
+    <header class="cart-header">
+        <div class="container text-center">
+            <h1><i class="fas fa-check-circle me-2"></i> Merci pour votre achat !</h1>
+            <p>Votre commande a bien été enregistrée et est en cours de traitement.</p>
+            
+            <div class="cart-progress">
+                <div class="cart-progress-step active" data-title="Panier">1</div>
+                <div class="cart-progress-step active" data-title="Paiement">2</div>
+                <div class="cart-progress-bar">
+                    <div class="cart-progress-bar-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="confirmation-card" data-aos="fade-up">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Merci pour votre commande !</h2>
+            <p>
+                Nous vous remercions pour votre confiance. <br> 
+                Un e-mail récapitulatif contenant les détails de votre commande et votre facture vous a été envoyé.
+            </p>
+            <div class="order-details">
+                <p class="mb-2"><strong>N° de commande :</strong> LF-2023-12-00123</p>
+                <p class="mb-2"><strong>Date :</strong> 15 Décembre 2023</p>
+                <p class="mb-0"><strong>Total :</strong> 155,00 €</p>
+            </div>
+            <div class="confirmation-actions">
+                <a href="#" class="btn-primary-custom">
+                    <i class="fas fa-store me-2"></i> Continuer mes achats
+                </a>
+            </div>
+        </div>
+    </main>
+ 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+          duration: 800,
+          once: true
+      });
+    </script>
+</body>
+</html>

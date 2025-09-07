@@ -42,8 +42,8 @@
             <section class="cart-items" data-aos="fade-right">
                 <h2 class="mb-4">Articles dans votre panier</h2>
                 {% for product in products_cart %}
-                <!-- Article 1 -->
-                <div class="cart-item" data-aos="fade-right" data-aos-delay="100">
+                <!-- Articles -->
+                <div class="cart-item" id="cart-item-{{product.name}}" data-aos="fade-right" data-aos-delay="100">
                     <div class="cart-item-image">
                         <img src="{{product.image}}" alt="{{product.name}}" loading="lazy">
                     </div>
@@ -65,15 +65,15 @@
                             </div>
                         {% endif %}
                         <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="changeCartItemQuantity({{forloop.counter}}, -1, {{product.item_id}})">-</button>
-                            <span class="quantity-value" id="quantity-value" >1</span>
-                            <button class="quantity-btn" onclick="changeCartItemQuantity({{forloop.counter}}, 1, {{product.item_id}})">+</button>
+                            <button class="quantity-btn" onclick="changeCartItemQuantity(-1, {{product.item_id}}, '{{product.name}}', 'cart-item-{{product.name}}')">-</button>
+                            <span class="quantity-value" id="quantity-value-{{product.name}}" >{{product.quantity}}</span>
+                            <button class="quantity-btn" onclick="changeCartItemQuantity(1, {{product.item_id}}, '{{product.name}}', 'cart-item-{{product.name}}')">+</button>
                         </div>
                     </div>
                     <div class="cart-item-actions">
-                        <div class="cart-item-price">{{product.price}}</div>
+                        <div class="cart-item-price" id="item-price-{{product.name}}">{{product.total_price}}</div>
                         <div>
-                            <div class="remove-item" onclick="removeFromCart({{product.item_id}})">
+                            <div class="remove-item" onclick="removeFromCart({{product.item_id}}, 'cart-item-{{product.name}}')">
                                 <i class="fas fa-trash me-1"></i> Supprimer
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                 <div class="summary-total">
                     <div class="summary-row">
                         <span>Total</span>
-                        <span>{{total_price_cart}} CFA</span>
+                        <span id="total-order-price">{{total_price_cart}} CFA</span>
                     </div>
                 </div>
                 <button class="checkout-btn" onclick="proceedToCheckout()">
@@ -120,96 +120,6 @@
             <a href="{% url 'home' %}" class="back-to-shop">
                 <i class="fas fa-arrow-left"></i> Retour à la page d'accueil
             </a>
-            <div class="recommendations-header">
-                <h3 class="recommendations-title">Articles fréquemment achetés ensemble</h3>
-                <h3 class="recommendations-title">Découvrez d'autres produits</h3>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <!-- Colonnes pour les produits -->
-                <div class="recommendations-grid">
-                    <!-- Produit recommandé 1 -->
-                    <div class="recommendation-card" data-aos="fade-up">
-                        <div class="recommendation-image">
-                            <img src="Capteur ultrason.png" alt="Capteur ultrason">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>Capteur ultrason</h5>
-                            <div class="recommendation-price">7 500 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('Capteur ultrason', 7500, 'Capteurs', 'Capteur ultrason.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Produit recommandé 2 -->
-                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="recommendation-image">
-                            <img src="esp32.png" alt="ESP32">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>ESP32</h5>
-                            <div class="recommendation-price">12 000 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('ESP32', 12000, 'Composants IoT', 'esp32.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Produit recommandé 3 -->
-                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="recommendation-image">
-                            <img src="kits de demarrage.png" alt="Kit de démarrage">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>Kit de démarrage</h5>
-                            <div class="recommendation-price">25 000 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('Kit de démarrage', 25000, 'Kits Arduino', 'kits de demarrage.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Deuxième colonne -->
-                <div class="recommendations-grid">
-                    <!-- Produit 1 -->
-                    <div class="recommendation-card" data-aos="fade-up">
-                        <div class="recommendation-image">
-                            <img src="raspberry-pi.png" alt="Raspberry Pi">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>Raspberry Pi 4</h5>
-                            <div class="recommendation-price">45 000 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('Raspberry Pi 4', 45000, 'Ordinateurs monocartes', 'raspberry-pi.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Produit 2 -->
-                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="recommendation-image">
-                            <img src="breadboard.png" alt="Breadboard">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>Breadboard</h5>
-                            <div class="recommendation-price">3 500 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('Breadboard', 3500, 'Accessoires', 'breadboard.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Produit 3 -->
-                    <div class="recommendation-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="recommendation-image">
-                            <img src="cables-jumper.png" alt="Câbles Jumper">
-                        </div>
-                        <div class="recommendation-info">
-                            <h5>Câbles Jumper</h5>
-                            <div class="recommendation-price">2 000 CFA</div>
-                            <button class="add-recommendation" onclick="addToCart('Câbles Jumper', 2000, 'Accessoires', 'cables-jumper.png')">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -274,7 +184,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="{% static 'Shop/js/filter_and_sort_products.js' %}"></script>
     <script src="{% static 'Shop/js/wbsocket_connect.js' %}"></script>
     <script src="{% static 'Shop/js/cart.js' %}"></script>
     <script src="{% static 'Shop/js/wbsocket_receive.js' %}"></script>

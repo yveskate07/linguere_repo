@@ -27,13 +27,9 @@ function closeQuickView() {
 
 // Fonction pour ajouter depuis l'aperçu rapide
 function addToCartFromQuickView() {
-    const name = document.getElementById('quick-view-title').textContent;
-    const priceText = document.getElementById('quick-view-price').textContent;
-    const price = parseInt(priceText.replace(/\D/g, ''));
-    const category = document.getElementById('quick-view-category').textContent;
-    const image = document.getElementById('quick-view-img').src;
+    
     const quantity = parseInt(document.getElementById('quantity').value);
     const prd_id = document.getElementById('prd_id').value;
 
-    addToCart(name, price, category, image, quantity, prd_id);
+    addToCart(quantity, prd_id);
 }

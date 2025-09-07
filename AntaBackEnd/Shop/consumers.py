@@ -1,4 +1,5 @@
 import json
+import re
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 from django.db.models import QuerySet
@@ -441,9 +442,18 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             return
         elif message_type == "change-item-quantity": # change item quantity in cart
             response = await self.change_item_qtty(data.get('item', {}))
+            print(f'response for change-item-quantity is : {response}')
             if response == 'does not exist':
                 return
-            await self.send(text_data=json.dumps({'type': 'quantity_changed', "new_qtty": response[0], "new_total": response[1], 'item_qtty' : response[2]}))
+            elif response[0] == 'deleted':
+                await self.send(text_data=json.dumps({'type': 'remove_item_result', "html_id": data.get('item').get('html_id'), "total_price": response[1]}))
+                return
+            await self.send(text_data=json.dumps({'type': 'quantity_changed', 
+                                                  "new_qtty": response[0], 
+                                                  "new_total": response[1], 
+                                                  'item_qtty' : response[2], 
+                                                  'item_name': response[3], 
+                                                  'item_total': response[4]}))
             return
         elif message_type == "remove-item": # remove item from cart
             msg = await self.remove_item_from_cart(data)
@@ -451,7 +461,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
                 return
             await self.send(text_data=json.dumps(
-                {'type': 'remove_item_result', "status": "success", "new_qtty": response[0], "new_total": response[1]}))
+                {'type': 'remove_item_result', "status": "success", 'total_price': msg, 'html_id': data.get('html_id')}))
             return
         
         elif message_type == "get_order_datas": # get order total price, transaction_id, ref_commande, client_name before payment then display payment modal in front end

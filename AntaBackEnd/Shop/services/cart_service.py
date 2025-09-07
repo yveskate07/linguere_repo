@@ -28,16 +28,20 @@ class CartService:
         item = CartItem.objects.get(cart=cart, id=item_id)
         if item:
             item.delete()
-        return item.cart.total_items, item.cart.total_price
+        return item.cart.total_price
 
     @staticmethod
     def update_quantity(cart, item_id, quantity):
-        try:
+        try:            
             item = CartItem.objects.get(cart=cart, id=item_id)
-            item.quantity += int(quantity)
-            item.save()
+            if item.quantity + int(quantity) <= 0 :
+                item.delete() 
+                return 'deleted', cart.total_price           
+            else:
+                item.quantity += int(quantity)
+                item.save()
                 
-            return item.cart.total_items, item.cart.total_price, item.quantity
+                return cart.total_items, cart.total_price, item.quantity, item.product.name, item.total_price
         
         except CartItem.DoesNotExist:
             return 'does not exist'

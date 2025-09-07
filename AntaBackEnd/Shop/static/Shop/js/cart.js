@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     //document.querySelector('.cart-count').addEventListener('click', toggleCartModal);
     //document.getElementById('close-cart').addEventListener('click', toggleCartModal);
 
-    cart = document.getElementById('cart-modal').dataset.cart ? JSON.parse(document.getElementById('cart-modal').dataset.cart) : cart;
-    total = document.getElementById('cart-modal').dataset.totalPrice ? parseFloat(document.getElementById('cart-modal').dataset.totalPrice) : total;
-
     // Fermer les modales en cliquant à l'extérieur
     window.addEventListener('click', function(event) {
         if (event.target === document.getElementById('quick-view-modal')) {
@@ -49,12 +46,11 @@ function showConfirmation() {
     }, 3000);
 }
 
-function addToCart(name, price, category, image, quantity, prd_id) {
+function addToCart(quantity, prd_id) {
 
     socket.send(JSON.stringify({'type':'add-to-cart',
         'item':{'id':prd_id,'quantity':quantity}
         }));
-
 }
 
 function updateCartCountDisplay(){
@@ -125,11 +121,11 @@ function updateCartDisplay() {
                 <small>${item.category}</small>
             </div>
             <div class="cart-item-quantity">
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, -1, ${item.item_id})">
+                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(-1, ${item.item_id})">
                     <i class="fas fa-minus"></i>
                 </button>
                 <span class="quantity-value">${item.quantity}</span>
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(${index}, 1, ${item.item_id})">
+                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(1, ${item.item_id})">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
@@ -147,25 +143,22 @@ function updateCartDisplay() {
 }
 
 // Fonction pour modifier la quantité d'un article
-function changeCartItemQuantity(index, change, item_id) {
+function changeCartItemQuantity(change, item_id, item_name, html_id) {
 
-    if (newQuantity < 1) {
-        removeFromCart(index, item_id);
-    } else {
-        socket.send(JSON.stringify({'type':'change-item-quantity',
-        'item':{'id':item_id, 'quantity':change}
-        }));
-    }
+    socket.send(JSON.stringify({'type':'change-item-quantity',
+    'item':{'id':item_id, 'quantity':change, 'name':item_name, 'html_id': html_id}
+    }));
  
 }
 
 // Fonction pour supprimer un article
-function removeFromCart(item_id) {
+function removeFromCart(item_id, html_id) {
 
     socket.send(
         JSON.stringify({
             'type':'remove-item',
-            'item':item_id
+            'item':item_id,
+            'html_id' : html_id
     }));
 }
 
@@ -205,32 +198,6 @@ function saveForLater(index) {
         text: `L'article "${cartItems[index].name}" a été sauvegardé pour plus tard.`,
         confirmButtonColor: '#2178d0'
     });
-}
-
-function addToCart(name, price, category, image) {
-    const existingItem = cartItems.find(item => item.name === name);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cartItems.push({
-            id: cartItems.length + 1,
-            name: name,
-            price: price,
-            quantity: 1,
-            image: image,
-            category: category,
-            stock: "in-stock"
-        });
-    }
-    updateCartDisplay();
-    Toastify({
-        text: `${name} ajouté au panier!`,
-        duration: 3000,
-        close: true,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "#28a745",
-    }).showToast();
 }
 
 function updateCartDisplay() {
