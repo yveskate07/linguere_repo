@@ -15,11 +15,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "date", "status", "total_amount", 'payment_method', "user")
-    fields = ("date", "status", "total_amount", 'payment_method', "user", 'delivery_price')
+    list_display = ("id", "date", "status", "user", 'complete')
+    fields = ("date", "status", "user", 'delivery_price', 'complete')
 
     search_fields = ("id", "user__username", "user__email")
-    list_filter = ("status", "payment_method", "date")
+    list_filter = ("status",  "date", 'complete')
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):

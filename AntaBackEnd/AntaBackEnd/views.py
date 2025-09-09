@@ -50,6 +50,8 @@ class SignUpView(CreateView):
         # pprint(form.errors.as_data())
         return self.render_to_response(self.get_context_data(form=form))
 
+def redirect_404(request, exception):
+    return redirect('home')
 
 @login_required
 def home(request):

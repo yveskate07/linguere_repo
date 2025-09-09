@@ -69,7 +69,6 @@ class Product(models.Model):
             url = "inserer ici le path d'une image par defaut"
         return url
 
-
 class Cart(models.Model):
 
     user = models.OneToOneField(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='cart')
@@ -142,53 +141,31 @@ class Order(models.Model):
         ('Remboursée', 'Remboursée'),
     ]
 
-    PAYMENT_METHOD = [
-        ('Orange Money', 'Orange Money'),
-        ('Wave', 'Wave')
-    ]
-
     user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     date = models.DateTimeField(auto_now_add=True, verbose_name="Date de la commande")
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Dernière mise à jour')
-    total_amount = models.IntegerField(verbose_name="Montant total")
     complete = models.BooleanField(default=False, null=True, blank=True, verbose_name='Finalisée')
-    transaction_id = models.CharField(max_length=200, unique=True)
-    echeance_payment = models.IntegerField(null=False, blank=False, verbose_name="Échéance de paiement en jour", default=7) 
-    payment_token = models.CharField(max_length=500, unique=True, verbose_name='Token de payment CINETPAY', default='')
-    payment_url = models.CharField(max_length=500, unique=True, verbose_name='Url de payment CINETPAY', default='')
-    api_response_id = models.CharField(max_length=500, unique=True, verbose_name='id reponse CINETPAY', default='')
-    tracking_number = models.CharField(max_length=200, null=True, blank=True, verbose_name="Numéro de suivi")
+    echeance_payment = models.IntegerField(null=False, blank=False, verbose_name="Échéance de paiement en jour", default=7)
+    tracking_number = models.CharField(max_length=200, null=True, blank=True, verbose_name="Numéro de suivi") # a definir seulement lors de reclamations concernant la commande
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='En cours',
                               verbose_name="État de la commande")
-    payment_method = models.CharField(max_length=50, null=True, blank=True, verbose_name="Méthode de paiement",
-                                      choices=PAYMENT_METHOD, default='Wave')
     delivery_price = models.IntegerField(default=0, verbose_name="Frais de livraison")
-    paid = models.BooleanField(default=False, verbose_name='Payé')
 
     def __str__(self):
         return f"Commande N° {self.id}"
 
     def save(self, *args, **kwargs):
-        is_new = self.pk is None
-        super().save(*args, **kwargs)  # Pour obtenir un id
-
-        if is_new and not self.transaction_id:
-            print("Creating transaction ID because it's a new order")
-            self.transaction_id = f"{shortuuid.uuid()}-{self.id}"
-            
-            self.updated_at = timezone.now()
-            super().save(update_fields=["transaction_id"])
 
         if self.complete:
-            print("Order is marked as complete. Processing order items and updating status.")
+            #print("Order is marked as complete. Processing order items and updating status.")
             self.status = 'Expédiée'
 
-            print('changing order status to Expédiée')
+            #print('changing order status to Expédiée')
 
             cart_items = self.user.cart.items.all()
-            print(f"getting cart items for user: {cart_items}")
+            #print(f"getting cart items for user: {cart_items}")
 
-            print('user is :', self.user)
+            #print('user is :', self.user)
 
             # Crée des OrderItem à partir des CartItems du panier du user
             for item in cart_items:
@@ -199,20 +176,10 @@ class Order(models.Model):
                     quantity=item.quantity
                 )
 
-            # generation de la facture
-            invoice = Invoice(
-                user=self.user,
-                subtotal=self.total_amount - self.delivery_price,
-                tax_amount=12,  # Exemple de TVA
-                discount=0,  # Exemple de remise
-                total=self.total_amount,
-                order=self
-            )
-            invoice.save()  # Sauvegarde pour générer le PDF
+            # creation d'un objet Payment
             # Vider le panier de l'utilisateur
             cart_items.delete()
 
-            
             self.updated_at = timezone.now()
             super().save(update_fields=["status"])
 
@@ -317,6 +284,8 @@ class Invoice(models.Model):
         # Met à jour la date de modification
         self.last_updated_date = timezone.now()
 
+        self.paid = self.order.paid
+
         super().save(*args, **kwargs)
 
         # Sauvegarder la référence du fichier dans le champ FileField
@@ -356,9 +325,46 @@ class OrderItem(models.Model):
     def total(self):
         return self.quantity * self.price
 
+class Payment(models.Model):
+
+    PAYMENT_METHOD = [
+        ('orange', 'orange'),
+        ('wave', 'wave')
+    ]
+
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, verbose_name="Commande", null=True)
+    transaction_id = models.CharField(max_length=200, unique=True, null=True)
+    payment_date = models.DateTimeField(auto_now_add=True, verbose_name='Date de paiement')
+    done = models.BooleanField(default=False, verbose_name='Payé')
+    payment_token = models.CharField(max_length=500, unique=True, verbose_name='Token de payment CINETPAY', default='')
+    api_response_id = models.CharField(max_length=500, unique=True, verbose_name='id reponse CINETPAY', default='')
+    payment_method = models.CharField(max_length=50, verbose_name="Méthode de paiement",choices=PAYMENT_METHOD)
+    total_amount = models.IntegerField(verbose_name="Montant total")
+
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)  # Pour obtenir un id
+
+        if is_new and not self.transaction_id:
+            self.transaction_id = f"{shortuuid.uuid()}-{self.id}"
+
+            super().save(update_fields=["transaction_id"])
+
+        if self.done and self.order:
+            invoice = Invoice(
+                user=self.order.user,
+                subtotal=self.total_amount - self.order.delivery_price,
+                tax_amount=12,  # Exemple de TVA
+                discount=0,  # Exemple de remise
+                total=self.total_amount,
+                order=self.order
+            )
+            invoice.save()  # Sauvegarde pour générer le PDF
+
 class AddressChipping(models.Model):
 
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, blank=True, null=True)
+    client = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, blank=True, null=True)
     commande = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     adress = models.CharField(max_length=100, null=True)
     ville = models.CharField(max_length=100, null=True)

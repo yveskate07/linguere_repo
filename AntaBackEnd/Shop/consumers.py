@@ -442,7 +442,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             return
         elif message_type == "change-item-quantity": # change item quantity in cart
             response = await self.change_item_qtty(data.get('item', {}))
-            print(f'response for change-item-quantity is : {response}')
             if response == 'does not exist':
                 return
             elif response[0] == 'deleted':

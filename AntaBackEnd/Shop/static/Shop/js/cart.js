@@ -251,9 +251,10 @@ function selectPaymentMethod(method) {
         `;
     }
     instructions.style.display = 'block';
+    document.getElementById('selected-payment').value = method
 }
 
-// Confirmation de paiement
+/* Confirmation de paiement
 document.getElementById('confirmPaymentBtn').addEventListener('click', function() {
     const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
     const methodName = selectedMethod === 'wave' ? 'Wave Money' : 'Orange Money';
@@ -275,4 +276,4 @@ document.getElementById('confirmPaymentBtn').addEventListener('click', function(
             confirmButtonColor: '#2178d0'
         });
     });
-});
+});*/

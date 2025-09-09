@@ -9,7 +9,7 @@ from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 
 from AntaBackEnd import settings
 from Users.models import Fab_User
-from .models import Product, Order
+from .models import Payment, Product, Order
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -77,27 +77,34 @@ def machine(request):
 @csrf_exempt
 def init_payment(request):
     if request.method == "POST":
+        user = request.user
+        cart = user.cart
         try:
             body = json.loads(request.body)
-
+            payment = Payment.objects.create(payment_method=body.get('metadata'), total_amount=int(body.get("amount")))
             # Construire la payload complète pour CINETPAY avec tes clés sensibles cachées dans settings
             payload = {
                 "apikey": settings.CINETPAY_API_KEY,
                 "site_id": settings.CINETPAY_SITE_ID,
-                "transaction_id": body.get("transaction_id"),
-                "amount": body.get("amount"),
+                "transaction_id": payment.transaction_id,
+                "amount": cart.total_price, # doit etre un multiple de 5
                 "currency": "XOF",
-                "notify_url": body.get('notify_url'),  # ton endpoint notify
-                "return_url": body.get('return_url'),  # ton endpoint retour
+                "metadata": user.id,
+                "notify_url": body.get('notify_url'),  # endpoint notify
+                "return_url": body.get('return_url'),  # endpoint retour
                 "channels": body.get("channels", "ALL"),
-                "metadata": body.get("metadata"),
                 "lang": "FR",
-                "invoice_data": body.get("invoice_data", {})
+                "invoice_data": {
+                    "Id Client": user.id,
+                    "Moyen de paiement": body.get("metadata"),
+                    "Montant payé": payment.total_amount + " CFA"
+                    }
             }
 
             # Envoi de la requête POST à CINETPAY
             response = requests.post("https://api-checkout.cinetpay.com/v2/payment", json=payload)
-
+            payment.payment_token = response.json().get("data", {}).get("payment_token", "")
+            payment.save()
             # On retourne la réponse telle quelle au client
             return JsonResponse(response.json(), status=response.status_code)
 
@@ -169,7 +176,9 @@ def verify_hmac(request): # vue qui recevra les notifications de CinetPay
     is_paid = check.get("code") == "00" and check.get("data", {}).get("status") == "ACCEPTED"
     if is_paid:
         # TODO: marquer la commande comme payée, idempotent (si déjà traité, ne rien refaire)
-        Order.objects.filter(transaction_id=transaction_id).update(paid=True)
+        user = Fab_User.objects.get(id=data.get('cpm_custom'))
+        order = Order.objects.create(user=user, complete=True, status="Expédiée")
+        Payment.objects.filter(transaction_id=transaction_id).update(done=True, order=order)
         return JsonResponse({"status": "success"}, status=200)
     else:
         # REFUSED / PENDING / autre: on enregistre l’état mais on n’échoue pas le webhook

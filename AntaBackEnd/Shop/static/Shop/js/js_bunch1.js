@@ -1,82 +1,19 @@
-// Fonction pour mettre à jour l'affichage du panier
-function updateCartDisplay() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartCountElement = document.querySelector('.cart-count');
-    const totalPriceElement = document.getElementById('total-price');
-
-    // Calculer les réductions selon les nouvelles règles
-    const { discount, subtotal, gift } = calculateDiscounts();
-
-    // Vider le conteneur
-    cartItemsContainer.innerHTML = '';
-
-    // Ajouter chaque article
-    cart.forEach((item, index) => {
-        const itemElement = document.createElement('div');
-        itemElement.className = 'cart-item';
-        itemElement.innerHTML = `
-            <div class="cart-item-image">
-                <img src="${item.image}" alt="${item.name}" loading="lazy">
-            </div>
-            <div class="cart-item-info">
-                <h5>${item.name}</h5>
-                <p>${item.price.toLocaleString()} CFA</p>
-                <small>${item.category}</small>
-            </div>
-            <div class="cart-item-quantity">
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(-1, ${item.id})">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <span class="quantity-value">${item.quantity}</span>
-                <button class="btn btn-sm btn-outline-secondary" onclick="changeCartItemQuantity(1, ${item.id})">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-            <div class="cart-item-actions">
-                <span class="cart-item-total">${(item.price * item.quantity).toLocaleString()} CFA</span>
-                <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${index}, ${item.id})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-        cartItemsContainer.appendChild(itemElement);
-    });
-
-    // Ajouter la section des réductions/cadeaux
-    if (discount > 0 || gift) {
-        const discountElement = document.createElement('div');
-        discountElement.className = 'cart-discounts';
-
-        let discountHTML = '';
-        if (discount > 0) {
-            discountHTML += `
-                <div class="discount-item">
-                    <span>Réduction (10% sur kits Arduino/Robotique)</span>
-                    <span class="text-danger">-${discount.toLocaleString()} CFA</span>
-                </div>
-            `;
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Est-ce que ce cookie commence par le nom qu'on cherche ?
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
         }
-
-        if (gift) {
-            discountHTML += `
-                <div class="gift-item">
-                    <span><i class="fas fa-gift text-success"></i> ${gift}</span>
-                </div>
-            `;
-        }
-
-        discountElement.innerHTML = discountHTML;
-        cartItemsContainer.appendChild(discountElement);
     }
-
-    // Mettre à jour le total
-    const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCountElement.setAttribute('data-count', itemCount);
-    cartCountElement.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="d-none d-md-inline">${subtotal.toLocaleString()} CFA</span>`;
-
-    totalPriceElement.textContent = `${subtotal.toLocaleString()} CFA`;
-    document.getElementById('total-amount').textContent = subtotal.toLocaleString();
+    return cookieValue;
 }
+
 
 // Fonction simplifiée sans réductions ni cadeaux
 function calculateDiscounts() {
@@ -199,7 +136,7 @@ function closePaymentModal() {
 }
 
 // Fonction pour simuler le processus de paiement
-function processPayment(paymentMethod, transactionId, amount, refCommande, clientName) {
+function processPayment() {
     /*const { discount, subtotal, gift } = calculateDiscounts();
     const phoneNumber = document.getElementById('mobile-number').value;
     const paymentCode = document.getElementById('payment-code').value;
@@ -253,23 +190,28 @@ function processPayment(paymentMethod, transactionId, amount, refCommande, clien
       console.log(error);
     });*/
 
-    fetch("/create-payment/", {
+    console.log('---processPayment called---')
+
+    const paymentMethod1 = document.getElementById('selected-payment').value;
+    let paymentMethod2;
+    
+    if(paymentMethod1==='wave'){
+        paymentMethod2 = 'WALLET';
+    }else{
+        paymentMethod2 = 'MOBILE_MONEY';
+    }
+
+    fetch("/shop/create-payment/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": getCookie("csrftoken")  // si CSRF activé
         },
         body: JSON.stringify({
-            transaction_id: transactionId,
-            amount: amount,
-            metadata: refCommande,
-            channels: paymentMethod, // MOBILE_MONEY, ALL
-            notify_url: "{% url 'notify' %}",
-            return_url: "{% url 'arduino' 1 %}",
-            invoice_data: {
-                "Nom Client": clientName,
-                "Moyen de paiement": 'CINETPAY',
-                "Montant payé": amount.toLocaleString() + " CFA"}
+            metadata: paymentMethod1,
+            channels: paymentMethod2, // MOBILE_MONEY, WALLET
+            notify_url: document.body.getAttribute('data-notify-url'),
+            return_url: document.body.getAttribute('data-return-url')
         }),
         })
         .then(response => response.json())
@@ -278,21 +220,10 @@ function processPayment(paymentMethod, transactionId, amount, refCommande, clien
             const paymentUrl = data.data.payment_url;
             window.location.href = paymentUrl; // Redirige l’utilisateur vers CinetPay
         }else {
-            sweetMSG('Erreur','Erreur lors de la création du paiement. Veuillez réessayer.', 'error');
+            sweetMSG('Erreur','Erreur lors du paiement. Veuillez réessayer.', 'error');
             return
         }
         })
         .catch(console.error);
 
-    // Réinitialiser le panier
-    cart = [];
-    total = 0;
-    updateCartDisplay();
-
-    // Fermer le modal
-    closePaymentModal();
-
-    // Réinitialiser les formulaires
-    document.getElementById('customer-info-form').reset();
-    document.getElementById('payment-form').reset();
 }

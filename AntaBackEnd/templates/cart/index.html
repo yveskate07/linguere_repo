@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{% static 'Shop/css/cart/style.css' %}">
 </head>
-<body data-user-id={{user_id}}>
+<body data-user-id={{user_id}} data-notify-url="{% url 'verify_hmac' %}" data-return-url="{% url 'return_url' %}">
     <!-- Header avec barre de progression -->
     <header class="cart-header">
         <div class="container text-center">
@@ -133,6 +133,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="payment-methods">
+                        <input type='hidden' id='selected-payment'>
                         <!-- Wave Money -->
                         <div class="payment-method" onclick="selectPaymentMethod('wave')">
                             <div class="method-icon">
@@ -164,7 +165,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-confirm" id="confirmPaymentBtn" disabled>
+                    <button type="button" class="btn btn-confirm" id="confirmPaymentBtn" disabled onclick="processPayment()">
                         Confirmer le paiement
                     </button>
                 </div>
