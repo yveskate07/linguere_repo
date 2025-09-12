@@ -4,7 +4,7 @@
 
         {% if products.has_previous %}
             <li class="page-item">
-                <button class="page-link" onclick="getProductsPage({{products.previous_page_number}}, {{page_range}})">&laquo;</button>
+                <a class="page-link">&laquo;</a>
             </li>
         {% else %}
             <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
@@ -12,13 +12,13 @@
 
         {% for num in page_range %}
             <li class="page-item {% if num == products.number %}active{% endif %}">
-                <button class="page-link" onclick="getProductsPage({{num}}, {{page_range}})">{{ num }}</button>
+                <a class="page-link">{{ num }}</a>
             </li>
         {% endfor %}
 
         {% if products.has_next %}
             <li class="page-item">
-                <button class="page-link" onclick="getProductsPage({{products.next_page_number}}, {{page_range}})">&raquo;</button>
+                <a class="page-link">&raquo;</a>
             </li>
         {% else %}
             <li class="page-item disabled"><span class="page-link">&raquo;</span></li>

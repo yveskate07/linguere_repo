@@ -63,16 +63,16 @@ def render_category_page(request, page_number, category, template):
     return render(request, template, context)
 
 @login_required
-def arduino(request):
-    return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=1)
+def arduino(request, page):
+    return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=page)
 
 @login_required
-def installations(request):
-    return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=1)
+def installations(request, page):
+    return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=page)
 
 @login_required
-def machine(request):
-    return render_category_page(request, category="Machines Numériques", template="Shop/machine/index.html", page_number=1)
+def machine(request, page):
+    return render_category_page(request, category="Machines Numériques", template="Shop/machine/index.html", page_number=page)
 
 @csrf_exempt
 def init_payment(request):

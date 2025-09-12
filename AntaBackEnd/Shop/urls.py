@@ -17,17 +17,10 @@ Including another URLconf
 from django.urls import path
 from .views import arduino, machine, installations, verify_hmac, return_url, init_payment, cart_view, payment_done
 
-# urlpatterns = [
-#     path('arduino/<int:page_number>', arduino, name='shop-arduino'),
-#     path('machine/<int:page_number>', machine, name='shop-machine'),
-#     path('installations/<int:page_number>', installations, name='shop-installations'),
-#     path('notify/', verify_hmac, name='verify_hmac'),
-#     path('return/', return_url, name='return_url')
-# ]
 urlpatterns = [
-    path('arduino/', arduino, name='shop-arduino'),
-    path('machine/', machine, name='shop-machine'),
-    path('installations/', installations, name='shop-installations'),
+    path('arduino/<int:page>', arduino, name='shop-arduino'),
+    path('machine/<int:page>', machine, name='shop-machine'),
+    path('installations/<int:page>', installations, name='shop-installations'),
     path('create-payment/', init_payment, name='create_payment'),
     path('notify/', verify_hmac, name='verify_hmac'),
     path('return/', return_url, name='return_url'),
