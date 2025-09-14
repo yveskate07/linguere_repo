@@ -15,9 +15,21 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .services.cart_service import CartService
 
-
-def render_category_page(request, page_number, category, template):
-    products = Product.objects.filter(main_category=category)
+def render_category_page(request, page_number, category, template, fetch_articles=None):
+    print('render_category_page called with fetch_articles=', fetch_articles)
+    if not fetch_articles:
+        products = Product.objects.filter(main_category=category)
+        print('No filters applied, total products:', products.count())
+    else:
+        products = Product.objects.filter(category__in=fetch_articles['categories']).filter(disponibility__in=fetch_articles['stocks'])
+        print(f"Products count after filtering: {products.count()}")
+        if fetch_articles['prices'][1]>0:
+            products = products.filter(price__gte=fetch_articles['prices'][0], price__lte=fetch_articles['prices'][1])
+            print(f"Products count after price filtering: {products.count()}")
+        if fetch_articles['sort'] in ['asc', 'desc']:
+            products = products.order_by('price' if fetch_articles['sort'] == 'asc' else '-price')
+            print(f"Products ordered by price {fetch_articles['sort']}")
+        
     paginator = Paginator(products, 30)
     page = paginator.get_page(page_number)
     user_authenticated = 'YES' if request.user.is_authenticated else 'No'
@@ -48,12 +60,14 @@ def render_category_page(request, page_number, category, template):
         page_range = range(start_page, min(end_page, paginator.num_pages) + 1)
 
     print(f"page range is : {list(page_range)}")
+    print('number of products in page: ', len(page.object_list))
     products_cart = CartService.get_cart_data_from_request(request)
     context = {
         'user_authenticated': user_authenticated,
         'user_id': user_id,
         'user': user,
         'products': page,
+        'page_label': category,
         'products_cart': products_cart['products'],
         'products_cart_js': json.dumps(products_cart['products']),
         'total_price_cart': products_cart['total_price'],
@@ -63,16 +77,34 @@ def render_category_page(request, page_number, category, template):
     return render(request, template, context)
 
 @login_required
-def arduino(request, page):
-    return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=page)
+def arduino(request, page, fetch_articles=None):
+    return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=page, fetch_articles=fetch_articles)
 
 @login_required
-def installations(request, page):
-    return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=page)
+def installations(request, page, fetch_articles=None):
+    return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=page, fetch_articles=fetch_articles)
 
 @login_required
-def machine(request, page):
-    return render_category_page(request, category="Machines Numériques", template="Shop/machine/index.html", page_number=page)
+def machine(request, page, fetch_articles=None):
+    return render_category_page(request, category="Machines Numériques", template="Shop/machine/index.html", page_number=page, fetch_articles=fetch_articles)
+
+@login_required
+def fetch_articles(request):
+    print('method is ', request.method)
+    if request.method == 'POST':
+        filters = {'page':int(request.POST.get('page')), 
+                   'sort':request.POST.get('sort-choice'),
+                   'prices':[int(request.POST.get('min-price')), int(request.POST.get('max-price'))],
+                   'stocks': request.POST.getlist('disponib-checks'),
+                   'categories': request.POST.getlist('category-checks'),
+                   'page-label': request.POST.get('page-label')}
+        
+        if filters['page-label'] == 'Kits Arduino et IOT':
+            return arduino(request, page=filters['page'], fetch_articles=filters)
+        elif filters['page-label'] == 'Installations Fablab':
+            return installations(request, page=filters['page'], fetch_articles=filters)
+        else:
+            return machine(request, page=filters['page'], fetch_articles=filters)
 
 @csrf_exempt
 def init_payment(request):

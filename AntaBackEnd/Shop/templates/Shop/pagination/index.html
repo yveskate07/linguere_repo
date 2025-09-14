@@ -4,7 +4,13 @@
 
         {% if products.has_previous %}
             <li class="page-item">
-                <a class="page-link">&laquo;</a>
+                {% if page_label == 'Kits Arduino et IOT' %}
+                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-arduino' page=products.previous_page_number %}" >&laquo;</button>
+                {% elif page_label == 'Installations Fablab' %}
+                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-installations' page=products.previous_page_number %}" >&laquo;</button>
+                {% else %}
+                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-machine' page=products.previous_page_number %}" >&laquo;</button>
+                {% endif %}
             </li>
         {% else %}
             <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
@@ -12,14 +18,18 @@
 
         {% for num in page_range %}
             <li class="page-item {% if num == products.number %}active{% endif %}">
-                <a class="page-link">{{ num }}</a>
+                <button onclick="filter_sort_form_datas({{num}}, '{{page_label}}')" class="page-link">{{ num }}</button>
             </li>
         {% endfor %}
 
         {% if products.has_next %}
-            <li class="page-item">
-                <a class="page-link">&raquo;</a>
-            </li>
+            {% if page_label == 'arduino' %}
+                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-arduino' page=products.next_page_number %}" >&raquo;</button>
+            {% elif page_label == 'installations' %}
+                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-installations' page=products.next_page_number %}" >&raquo;</button>
+            {% else %}
+                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-machine' page=products.next_page_number %}" >&raquo;</button>
+            {% endif %}
         {% else %}
             <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
         {% endif %}

@@ -91,28 +91,6 @@ function collectFilterData(){
     return filters;
 }
 
-function getProductsPage(pageNumber) {
-
-
-    const filters = collectFilterData();
-
-    const pageRange = JSON.parse(document.getElementById('pagination-list').getAttribute('data-page-range'))
-
-    document.getElementById('pagination-list').setAttribute('data-page-number',pageNumber);
-    //document.getElementById('pagination-list').setAttribute('data-page-range',pageRange);
-
-    const selectedValue = document.getElementById('sort-select').value;
-    // Envoie une requête WebSocket pour obtenir les produits de la page demandée
-    const data = {
-        'type': 'product_page',
-        'page_number': pageNumber,
-        'list_page_range':pageRange,
-        'filters': filters,
-        'sort': selectedValue === 'none' ? null : selectedValue
-    };
-
-    socket.send(JSON.stringify(data));
-}
 
 function openPaymentModal() {
     if (cart.length === 0) { // utiliser sweet alert
