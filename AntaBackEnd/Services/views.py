@@ -65,7 +65,7 @@ def get_msg_for_admin_mail(request , **kwargs):
 
 # Create your views here.
 @login_required
-def broderie_numerique(request, errors_txt=None, errors=0, success=0, success_txt=None):
+def broderie_numerique(request, errors_txt=None, errors=0):
     service = Service.objects.get(name="Broderie Numérique")
     products_cart = CartService.get_cart_data_from_request(request)
     return render(request, "Services/broderie/index.html", {'broderie_form1': Broderie_num_customForm1(),
@@ -74,7 +74,7 @@ def broderie_numerique(request, errors_txt=None, errors=0, success=0, success_tx
                                                             'brod_serviceName': service.name,
                                                             'brod_serviceDesc': service.description,
                                                             
-                                                            'user_id': user_id,
+                                                            'user_id': request.user.id,
                                                             'img1': service.image1.url, 'img2': service.image2.url,
                                                             'img3': service.image3.url, 'img4': service.image4.url,
                                                             'img5': service.image5.url, 'img6': service.image6.url,
@@ -94,7 +94,7 @@ def fraiseuse_numerique(request, errors_txt=None, errors=0, success=0, success_t
                                                              'frais_serviceName': service.name,
                                                              'frais_serviceDesc': service.description,
                                                              
-                                                             'user_id': user_id,
+                                                             'user_id': request.user.id,
                                                              'img1': service.image1.url, 'img2': service.image2.url,
                                                              'img3': service.image3.url, 'img4': service.image4.url,
                                                              'img5': service.image5.url, 'img6': service.image6.url,
@@ -114,7 +114,7 @@ def decoupe_laser(request, errors_txt=None, errors=0, success=0, success_txt=Non
                                                          'laser_serviceName': service.name,
                                                          'laser_serviceDesc': service.description,
                                                          
-                                                         'user_id': user_id,
+                                                         'user_id': request.user.id,
                                                          'img1': service.image1.url, 'img2': service.image2.url,
                                                          'img3': service.image3.url, 'img4': service.image4.url,
                                                          'img5': service.image5.url, 'img6': service.image6.url,
@@ -134,7 +134,7 @@ def impression_3D(request, errors_txt=None, errors=0, success=0, success_txt=Non
                                                             'imp_3D_serviceName': service.name,
                                                             'imp_3D_serviceDesc': service.description,
                                                             
-                                                            'user_id': user_id,
+                                                            'user_id': request.user.id,
                                                             'img1': service.image1.url, 'img2': service.image2.url,
                                                             'img3': service.image3.url, 'img4': service.image4.url,
                                                             'img5': service.image5.url, 'img6': service.image6.url,
@@ -154,7 +154,7 @@ def impression_num_papiers(request, errors_txt=None, errors=0, success=0, succes
                    'paper_serviceName': service.name,
                    'paper_serviceDesc': service.description,
                    
-                   'user_id': user_id,
+                   'user_id': request.user.id,
                    'service_id': service.pk,
                    'img1': service.image1.url, 'img2': service.image2.url, 'img3': service.image3.url,
                    'img4': service.image4.url,
@@ -174,7 +174,7 @@ def impression_num_textile(request, errors_txt=None, errors=0, success=0, succes
                    'textile_serviceName': service.name,
                    'textile_serviceDesc': service.description,
                    
-                   'user_id': user_id,
+                   'user_id': request.user.id,
                    'service_id': service.pk,
                    'img1': service.image1.url, 'img2': service.image2.url, 'img3': service.image3.url,
                    'img4': service.image4.url,
@@ -193,7 +193,7 @@ def impression_num_objects(request, errors_txt=None, errors=0, success=0, succes
                                                                                  'object_serviceName': service.name,
                                                                                  'object_serviceDesc': service.description,
                                                                                  
-                                                                                 'user_id': user_id,
+                                                                                 'user_id': request.user.id,
                                                                                  'service_id': service.pk,
                                                                                  'img1': service.image1.url,
                                                                                  'img2': service.image2.url,
