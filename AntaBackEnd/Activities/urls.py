@@ -2,8 +2,6 @@ from django.urls import path
 
 from Activities.views import smart_coders, fab_elle, fab_tour
 
-app_name = "activities"
-
 urlpatterns = [
     path('smart_coders/', smart_coders, name='smart_coders'),
     path('fab_elle/', fab_elle, name='fab_elle'),

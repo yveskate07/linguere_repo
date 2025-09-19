@@ -7,6 +7,7 @@ from django.shortcuts import HttpResponseRedirect, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from Activities.models import Activity
 from Formations.models import Formations
 from Shop.services.cart_service import CartService
 from Users.auth_form import UserLoginForm, UserSignUpForm
@@ -63,6 +64,8 @@ def home(request):
     laser = Formations.objects.get(name="Découpe Laser")
     products_cart = CartService.get_cart_data_from_request(request)
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
+    # getting all activities to display them on the homepage
+    activities = Activity.objects.all()
 
     return render(request,'AntaBackEnd/accueil/index.html',
                   {'broderie_num_slug': broderie_num.slug,
@@ -71,6 +74,7 @@ def home(request):
                         'impression_num_slug': impression_num.slug,
                         'laser_slug': laser.slug,
                         'user_id': user_id,
+                        'activities': activities,
                         'products_cart': products_cart['products'],
                         'products_cart_js': json.dumps(products_cart['products']),
                         'total_price_cart': products_cart['total_price']

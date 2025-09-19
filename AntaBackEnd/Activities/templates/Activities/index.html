@@ -1,0 +1,267 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguère Fablab - Fab'Tour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'Activities/css/style.css' %}">
+    
+</head>
+<body data-user-id={{user_id}}>
+
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    {% include 'Shop/cart_and_payment_modals/index.html' %}
+    
+    <!-- Hero Section -->
+    <section class="pres animate__animated animate__fadeIn">
+        <h1>{{activity.name}}</h1>
+        <p>{{activity.description}}</p>
+    </section><br><br>
+
+    <!-- Project Introduction -->
+    <section class="project-intro animate-in">
+        <span class="project-tag">Projet Phare</span>
+        <h2>{{activity.motiv1}}</h2>
+        <p>{{activity.motiv2}}</p>
+    </section>
+
+    <!-- Réalisations Section -->
+    <section class="realisations">
+        <div class="realisations-header">
+            <h2 class="realisations-title">Nos Réalisations</h2>
+            <p class="realisations-subtitle">Découvrez les succès concrets de notre programme {{activity.name}} en chiffres et en actions</p>
+        </div>
+        
+        <div class="realisations-grid">
+            {% for realisation in realisations %}
+                <div class="realisation-card">
+                    {% if realisation.category == 'Ateliers Réguliers' %}
+                        <div class="realisation-icon">📅</div>
+                            <h3 class="realisation-title">{{realisation.category}}</h3>
+                            <p class="realisation-desc">{{realisation.description}}</p>
+                            <div class="realisation-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat1}}</span>
+                                    <span class="stat-label">Écoles partenaires</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat2}}+</span>
+                                    <span class="stat-label">Participants mensuels</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% elif realisation.category == 'Compétitions' %}
+                        <div class="realisation-icon">🏆</div>
+                            <h3 class="realisation-title">{{realisation.category}}</h3>
+                            <p class="realisation-desc">{{realisation.description}}</p>
+                            <div class="realisation-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat1}}</span>
+                                    <span class="stat-label">Projets présentés</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat2}}</span>
+                                    <span class="stat-label">Prix décernés</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <div class="realisation-icon">⚙️</div>
+                            <h3 class="realisation-title">{{realisation.category}}</h3>
+                            <p class="realisation-desc">{{realisation.description}}</p>
+                            <div class="realisation-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat1}}+</span>
+                                    <span class="stat-label">Équipements</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">{{realisation.stat2}}%</span>
+                                    <span class="stat-label">Accès gratuit</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}    
+        </div>
+    </section>
+
+
+    <!-- Results Section -->
+<!-- Results Section -->
+<section class="project-section results-section animate-in">
+    <div class="section-content results-content">
+        <h3 class="realisations-title">Résultats Concrets</h3>
+        <p class="section-text results-text">{{resultats.description}}</p>
+    </div>
+    <div class="section-image results-image">
+        <img src="{{resultats.get_image_url}}">
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section animate-in">
+    <div class="stats-container">
+        <div class="stats-box">
+            <div class="stat-number">{{resultats.stat1}}+</div>
+            <div class="stat-label">Jeunes formés</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">{{resultats.stat2}}</div>
+            <div class="stat-label">Ateliers mensuels</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">{{resultats.stat3}}</div>
+            <div class="stat-label">Projets aboutis</div>
+        </div>
+        <div class="stats-box">
+            <div class="stat-number">{{resultats.stat4}}%</div>
+            <div class="stat-label">Satisfaction</div>
+        </div>
+    </div>
+</section>
+    <!-- Impact Section -->
+    <section class="impact-section animate-in">
+        <h3 class="section-title" style="text-align: center;">Notre Impact</h3>
+        <p class="section-text" style="max-width: 800px; margin: 0 auto 3rem;">{{activity.name}} inspire les jeunes et les communautés à explorer les possibilités infinies de la fabrication numérique.</p>
+        
+        <div class="impact-grid">
+        {% for impact in impacts %}
+            
+            <div class="impact-card">
+                {% if impact.category == 'Éducation Numérique'%}
+                    <div class="impact-icon">👩‍💻</div>
+                {% elif impact.category == 'Projets Innovants'%}
+                    <div class="impact-icon">🚀</div>
+                {% elif impact.category == 'Impact Communautaire'%}
+                    <div class="impact-icon">🌍</div>
+                {% endif %}
+                <h4>{{impact.category}}</h4>
+                <p>{{impact.description}}</p>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section animate-in">
+        <div class="section-title">
+            <h3>Galerie {{activity.name}}</h3>
+            <p>Découvrez en images l'énergie et la créativité de nos jeunes participants</p>
+        </div>
+        
+        <div class="gallery-grid" id="animated-gallery">
+
+            {% if galerie_images %}
+                {% for image in galerie_images %}
+                    <a href="{{ image.image.url }}" class="gallery-item">
+                        <img src="{{ image.image.url }}" alt="{{image.name}}">
+                        <div class="gallery-caption">
+                            <h4>{{ image.name }}</h4>
+                            <p>{{ image.description }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-zoom/2.7.1/lg-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-fullscreen/2.7.1/lg-fullscreen.min.js"></script>
+    <script>
+        // Animation au défilement
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Animation des chiffres au scroll
+            document.addEventListener('DOMContentLoaded', function() {
+                const statsSection = document.querySelector('.stats-section');
+                
+                const animateNumbers = () => {
+                    const statNumbers = document.querySelectorAll('.stat-number');
+                    
+                    statNumbers.forEach(number => {
+                        const target = parseInt(number.getAttribute('data-target'));
+                        const suffix = number.textContent.includes('+') ? '+' :
+                                    number.textContent.includes('%') ? '%' : '';
+                        const duration = 2000;
+                        const start = 0;
+                        const increment = target / (duration / 16);
+                        
+                        let current = start;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                clearInterval(timer);
+                                number.textContent = target + suffix;
+                                number.classList.add('animated');
+                            } else {
+                                number.textContent = Math.floor(current) + suffix;
+                            }
+                        }, 16);
+                    });
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            animateNumbers();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                
+                if (statsSection) {
+                    observer.observe(statsSection);
+                }
+            });
+            
+            // Initialisation de la galerie lightgallery
+            lightGallery(document.getElementById('animated-gallery'), {
+                selector: '.gallery-item',
+                download: false,
+                zoom: true,
+                thumbnail: true,
+                animateThumb: true,
+                showThumbByDefault: true
+            });
+        });
+    </script>    
+    {% include 'Shop/min_js_scripts_for_temp/index.html' %}
+</body>
+</html>
