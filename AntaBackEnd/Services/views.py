@@ -75,6 +75,7 @@ def broderie_numerique(request, errors_txt=None, errors=0):
                                                             'brod_serviceDesc': service.description,
                                                             
                                                             'user_id': request.user.id,
+                                                            'img_urls': [image.url for image in service.galerie_images.all()] if service.galerie_images.all() else None,
                                                             'img1': service.image1.url, 'img2': service.image2.url,
                                                             'img3': service.image3.url, 'img4': service.image4.url,
                                                             'img5': service.image5.url, 'img6': service.image6.url,

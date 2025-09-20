@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from Activities.models import Activity
+from .models import Activity
 
 
 # Create your views here.

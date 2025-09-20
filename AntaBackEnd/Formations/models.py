@@ -1,5 +1,6 @@
 import spacy
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 from Users.models import Fab_User
 
@@ -14,13 +15,15 @@ class Formations(models.Model):
 
     name = models.CharField(max_length=30, verbose_name='Nom')
     duration = models.DurationField(verbose_name='Durée') # duree
-    motiv = models.TextField() # texte de motivation
+    description_accueil = models.TextField(blank=False, null=False, verbose_name="Description sur page accueil")
     price = models.IntegerField(default=0, null=True, verbose_name='Prix')
     hours_per_week = models.IntegerField(default=0,blank=True, null=True, verbose_name="Nombre d'heures par semaines")
     availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel',blank=True, null=True, verbose_name='Disponibilité')
     slug = models.SlugField(unique=True, blank=True, null=True)
-    determinant = models.CharField(max_length=8, default='')
     image = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image descriptive de la formation')
+    url_name = models.CharField(blank=False, null=False, verbose_name="Nom de l'url", max_length=120)
+    image_home = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image de la formation sur page accueil')
+    why_image = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image Pourquoi cette formation ?')
 
     class Meta:
         verbose_name = 'Formation'
@@ -29,23 +32,11 @@ class Formations(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_absolut_url(self):
+        return reverse(f'{self.url_name}')
+
     def save(self, *args, **kwargs):
-        if self.name:
-            if not self.determinant:
-                if not self.name[0].lower() in ['a','i','u','e','o','y']:
-                    nlp = spacy.load("fr_core_news_md")
-                    doc = nlp(self.name)
-                    for token in doc:
-                        genre = token.morph.get("Gender")
-                        if genre:
-                            if 'Fem' in genre:
-                                self.determinant = "la"
-                            elif 'Masc' in genre:
-                                self.determinant = "le"
-                            else:
-                                self.determinant=''
-                else:
-                    self.determinant = "l'"
 
         if not self.slug:
             self.slug = slugify(self.name)
@@ -64,6 +55,7 @@ class Formations(models.Model):
 
     description.short_description = "Description"
 
+    @property
     def imageURL(self):
         try:
             url = self.image.url
@@ -71,9 +63,25 @@ class Formations(models.Model):
             url = "inserer ici le path d'une image par defaut"
         return url
 
+    @property
+    def imageHomeUrl(self):
+        try:
+            url = self.image_home.url
+        except:
+            url = "inserer ici le path d'une image par defaut",
+        return url
+
+    @property
+    def why_img_url(self):
+        try:
+            url = self.why_image.url
+        except:
+            url = "inserer ici le path d'une image par defaut",
+        return url
+
 class Module(models.Model):
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30, verbose_name="Nom du module")
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Modules')
+    name = models.CharField(max_length=120, verbose_name="Nom du module")
 
     def description(self):
         return f"Module de la Formation {self.formation}"
@@ -81,7 +89,8 @@ class Module(models.Model):
     description.short_description = "Description"
 
     class Meta:
-        verbose_name = "Modules des formations"
+        verbose_name = "Module de formation"
+        verbose_name_plural = "Modules principaux"
         ordering = ["name"]
 
 class Prerequisites(models.Model): # prerequis pour une formation
@@ -92,7 +101,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
         ('Expert', 'Expert')
     ]
 
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Prerequisites')
     name = models.CharField(max_length=30)
     level = models.CharField(choices=LEVELS, max_length=15)
     image = models.ImageField(blank=True, null=True, upload_to='Formations/prerequis_image',
@@ -101,6 +110,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
 
     class Meta:
         verbose_name = "Préréquis par formation"
+        verbose_name_plural = "Maîtrise les Technologies & Compétences Essentielles"
         ordering = ["name"]
 
     def __str__(self):
@@ -112,12 +122,13 @@ class Prerequisites(models.Model): # prerequis pour une formation
     description.short_description = "Description"
 
 class SkillGained(models.Model):
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='SkillsGained')
     name = models.CharField(max_length=30)
     description_skill = models.TextField(blank=True, null=True, default='')
 
     class Meta:
         verbose_name = "Compétences acquise par formation"
+        verbose_name_plural = "Ce Que Vous Allez Acquérir"
         ordering = ["name"]
 
     def __str__(self):
@@ -129,35 +140,37 @@ class SkillGained(models.Model):
     description.short_description = "Description"
 
 class MotivPoints(models.Model):
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='MotivPoints')
     name = models.CharField(max_length=30)
     description = models.TextField()
 
     class Meta:
         verbose_name = "Motivation"
+        verbose_name_plural = "Pourquoi suivre cette formation ?"
         ordering = ["name"]
 
     def __str__(self):
-        return 'Pourquoi apprendre '+ self.formation.determinant + ' ' +self.formation.name
+        return 'Pourquoi se former en ' +self.formation.name
 
 class Advantages(models.Model):
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Advantages')
     name = models.CharField(max_length=30)
     description = models.TextField()
 
     class Meta:
-        verbose_name = "Avantages de nos formations"
+        verbose_name = "Avantage de notre formation"
+        verbose_name_plural = "Pourquoi Choisir Notre Formation ?"
         ordering = ["name"]
 
     def __str__(self):
         return "Avantages de la formation "+self.formation.name
 
-class Testimony(models.Model):
+"""class Testimony(models.Model):
 
     user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     status = models.CharField(max_length=30,verbose_name="Statut")
     comment = models.TextField(verbose_name="Commentaire")
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Testimonies')
 
     class Meta:
         verbose_name = "Témoignage"
@@ -169,7 +182,7 @@ class Testimony(models.Model):
     def description(self):
         return "Témoignages des Formations"
 
-    description.short_description = "Description"
+    description.short_description = "Description"""
 
 class SignedUpUser(models.Model):
 
@@ -189,7 +202,7 @@ class SignedUpUser(models.Model):
     availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel', verbose_name="Disponibilité")
     session = models.CharField(choices=SESSIONS, max_length=30, default='Matin (9h-12h)')
     message = models.TextField(blank=True)
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='SignedUpUsers')
 
     class Meta:
         verbose_name = "Personnes Inscrite"
@@ -214,7 +227,7 @@ class UserBrochure(models.Model):
     user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     message = models.TextField(blank=True, null=True)
     availability = models.CharField(max_length=22, choices=AVAILABILITY, default='En ligne', verbose_name='Méthode de formation')
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation', related_name='UserBrochures')
 
     class Meta:
         verbose_name = "Utilisateurs ayant demandé brochure"
@@ -232,7 +245,7 @@ class UserRequest(models.Model):
 
     user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     message = models.TextField(blank=True)
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation')
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation', related_name='UserRequest')
 
     class Meta:
         verbose_name = "Utilisateurs ayant prit renseignement"

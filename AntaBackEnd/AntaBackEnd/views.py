@@ -9,7 +9,6 @@ from django.views.generic import CreateView
 
 from Activities.models import Activity
 from Formations.models import Formations
-from Shop.services.cart_service import CartService
 from Users.auth_form import UserLoginForm, UserSignUpForm
 from Users.models import Fab_User
 
@@ -62,44 +61,31 @@ def home(request):
     impression_3d = Formations.objects.get(name="Impression 3D")
     impression_num = Formations.objects.get(name="Impression Numérique")
     laser = Formations.objects.get(name="Découpe Laser")
-    products_cart = CartService.get_cart_data_from_request(request)
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    # getting all activities to display them on the homepage
     activities = Activity.objects.all()
 
     return render(request,'AntaBackEnd/accueil/index.html',
-                  {'broderie_num_slug': broderie_num.slug,
-                        'fraiseuse_num_slug': fraiseuse_num.slug,
-                        'impression_3d_slug': impression_3d.slug,
-                        'impression_num_slug': impression_num.slug,
-                        'laser_slug': laser.slug,
+                  {'formation_broderie_num': broderie_num,
+                        'formation_fraiseuse_num': fraiseuse_num,
+                        'formation_impression_3d': impression_3d,
+                        'formation_impression_num': impression_num,
+                        'formation_laser': laser,
                         'user_id': user_id,
                         'activities': activities,
-                        'products_cart': products_cart['products'],
-                        'products_cart_js': json.dumps(products_cart['products']),
-                        'total_price_cart': products_cart['total_price']
                                    }
                   )
 
 @login_required
 def location(request):
-    products_cart = CartService.get_cart_data_from_request(request)
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, 'AntaBackEnd/location/index.html', context={
-        'products_cart': products_cart['products'],
-        'user_id': user_id,
-        'products_cart_js': json.dumps(products_cart['products']),
-        'total_price_cart': products_cart['total_price']})
+        'user_id': user_id,})
 
 @login_required
 def about(request):
-    products_cart = CartService.get_cart_data_from_request(request)
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, "AntaBackEnd/about/index.html", context={
-        'products_cart': products_cart['products'],
-        'user_id': user_id,
-        'products_cart_js': json.dumps(products_cart['products']),
-        'total_price_cart': products_cart['total_price']})
+        'user_id': user_id,})
 
 class FabPassResetView(PasswordResetView):
     subject_template_name = "registration/password_reset_subject.txt"

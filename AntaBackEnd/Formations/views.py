@@ -2,12 +2,10 @@ import os
 from pathlib import Path
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 import json
 from Formations.forms import SignedUpUserForm, BrochureForm, RequestForm
-from Formations.models import Formations, Module, Prerequisites, SkillGained, MotivPoints, Advantages
-from Shop.services.cart_service import CartService
+from Formations.models import Formations
 from mail_sender import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
 
 
@@ -20,51 +18,29 @@ from mail_sender import brochure_to_client_through_mail, mail_to_fablab, mail_to
 def formationView(request, formation_name):
 
     formation = Formations.objects.get(slug=formation_name)
-    modules = Module.objects.filter(formation=formation.pk)
-    prerequisites = Prerequisites.objects.filter(formation=formation.pk)
-    gainedskills = SkillGained.objects.filter(formation=formation.pk)
-    motiv_points = MotivPoints.objects.filter(formation=formation.pk)
-    advantages = Advantages.objects.filter(formation=formation.pk)
 
-
-    f_name = formation.name
-    motiv = formation.motiv
-    price = formation.price
     duration = int(formation.duration.total_seconds() // 3600)
-    nb_h_per_week = formation.hours_per_week
-    availability = formation.availability
 
-    det_plus_name = formation.determinant +' '+ formation.name
-    modules_ = [mod.name for mod in modules]
-    prerequisites_ = [(p.image.url,p.name, p.level) for p in prerequisites]
-    skillgained_ = [(s.name, s.description_skill) for s in gainedskills]
-    m_points = [(mp.name,mp.description) for mp in motiv_points]
-    advantages_ = [(a.name, a.description) for a in advantages]
+    modules = [mod.name for mod in formation.Modules.all()]
+    prerequisites = [(p.image.url,p.name, p.level) for p in formation.Prerequisites.all()]
+    skillgained = [(s.name, s.description_skill) for s in formation.SkillsGained.all()]
+    m_points = [(mp.name,mp.description) for mp in formation.MotivPoints.all()]
+    advantages = [(a.name, a.description) for a in formation.Advantages.all()]
 
     form1 = SignedUpUserForm()
     form2 = BrochureForm()
     form3 = RequestForm()
-    products_cart = CartService.get_cart_data_from_request(request)
 
     return render(request, 'Formations/index.html',
                       {'formSignedUpUser': form1, 'formBrochure': form2, 'formRequest': form3,
                        'formation_image_url':formation.image.url,
-                       'id_formation': formation.id,'slug':formation.slug,
-                       'f_name':f_name,
-                       'motiv':motiv,
-                        'products_cart': products_cart['products'],
-                        'products_cart_js': json.dumps(products_cart['products']),
-                        'total_price_cart': products_cart['total_price'],
-                       'price':price,
+                       'formation': formation,
                        'duration':duration,
-                       'nb_h_per_week':nb_h_per_week,
-                       'availability':availability,
-                       'det_plus_name':det_plus_name,
-                       'modules_':modules_,
-                       'prerequisites_':prerequisites_,
-                       'skillgained_':skillgained_,
-                       'm_points':m_points,
-                       'advantages_':advantages_})
+                       'modules_':modules if len(modules)>0 else None,
+                       'prerequisites_':prerequisites if len(prerequisites)>0 else None,
+                       'skillgained_':skillgained if len(skillgained)>0 else None,
+                       'm_points':m_points if len(m_points)>0 else None,
+                       'advantages_':advantages if len(advantages)>0 else None})
 
 
 def SigningUp(request, formation_name):

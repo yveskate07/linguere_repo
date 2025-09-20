@@ -268,24 +268,22 @@
             <div class="premiere-ligne">
                 <!-- Partie gauche -->
                 <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
-                    <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('impression-num.png'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
+                    <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">Broderie Numérique</h1>
-                            <div class="description fade-in-description">
-                                Personnalisation textile de haute précision pour vêtements, accessoires et objets promotionnels.
+                            <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
+                            <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formations:formationView' broderie_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('aa.png'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
+                    <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">Fraiseuse Numérique (CNC)</h1>
-                            <div class="description fade-in-description">
-                                Apprenez à concevoir et usiner des pièces avec nos machines CNC. De la modélisation à la production.
+                            <h1 class="titre slide-in-title">{{formation_fraiseuse_num.name}}</h1>
+                            <div class="description fade-in-description">{{formation_fraiseuse_num.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formations:formationView' fraiseuse_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation_fraiseuse_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -294,24 +292,23 @@
     
                 <!-- Partie droite -->
                 <div class="droite">
-                    <div class="droiteh" data-aos="fade-left" data-aos-delay="200">
+                    <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">Impression Numérique</h1>
-                            <div class="description fade-in-description">
-                                Découvrez les techniques d'impression grand format et haute résolution sur divers supports. Apprenez la gestion des couleurs et la finition professionnelle.
+                            <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
+                            <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formations:formationView' impression_num_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="droiteb" data-aos="fade-left" data-aos-delay="250">
+                    <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">Découpe Laser</h1>
+                            <h1 class="titre slide-in-title">{{formation_laser.name}}</h1>
                             <div class="description fade-in-description">
-                                Formation complète sur la découpe et gravure laser: logiciels, paramétrages et techniques avancées.
+                                {{formation_laser.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formations:formationView' laser_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation_laser.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -320,13 +317,12 @@
             </div>
             
             <!-- Formation en pleine largeur -->
-            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300">
+            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300" style="background-image: url('{{formation_impression_3d.imageHomeUrl}}'); background-size: cover; background-position: center;">
                 <div class="content-wrapper">
-                    <h1 class="titre slide-in-title">Impression 3D</h1>
-                    <div class="description fade-in-description">
-                        Maîtrisez toutes les étapes de l'impression 3D
+                    <h1 class="titre slide-in-title">{{formation_impression_3d.name}}</h1>
+                    <div class="description fade-in-description">{{formation_impression_3d.description_accueil}}
                         <div class="cta-button">
-                            <a href="{% url 'formations:formationView' impression_3d_slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                            <a href="{% url 'formationView' formation_name=formation_impression_3d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                         </div>
                     </div>
                 </div>

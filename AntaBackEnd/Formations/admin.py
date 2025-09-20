@@ -6,11 +6,45 @@ from Formations.models import *
 
 admin.site.unregister(Group)
 
+class ModuleInline(admin.TabularInline):
+    model = Module
+
+class PrerequisitesInline(admin.TabularInline):
+    model = Prerequisites
+
+class SkillGainedInline(admin.TabularInline):
+    model = SkillGained
+
+class MotivPointsInline(admin.TabularInline):
+    model = MotivPoints
+
+class AdvantagesInline(admin.TabularInline):
+    model = Advantages
+"""
+class TestimonyInline(admin.TabularInline):
+    model = Testimony"""
+
+@admin.register(SignedUpUser)
+class SignedUpAdmin(admin.ModelAdmin):
+    list_display = ('user','availability','session','formation',)
+    fields = ('user','availability','session','formation', 'message',)
+
+@admin.register(UserBrochure)
+class UserBrochureAdmin(admin.ModelAdmin):
+    list_display = ('user','availability','formation',)
+    fields = ('user','availability','formation', 'message',)
+
+@admin.register(UserRequest)
+class UserRequestAdmin(admin.ModelAdmin):
+    list_display = ('user', 'formation',)
+    fields = ('user', 'message', 'formation')
+
 # Register your models here.
 @admin.register(Formations)
 class FormationAdmin(admin.ModelAdmin):
-    fields = ('name','motiv','duration', 'description','image','determinant','availability','hours_per_week',)
-    readonly_fields = ('description',)
+    inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline]
+    fields = ('name','duration','image','availability','hours_per_week','image_home','why_image',)
+    #readonly_fields = ('description',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability',)
     search_fields = ('name',)
     list_filter = ('availability',)
@@ -29,7 +63,7 @@ class FormationAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(Module)
+'''@admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     fields = ('name','formation', 'description',)
     search_fields = ('name',)
@@ -134,4 +168,4 @@ class UserRequestAdmin(admin.ModelAdmin):
     readonly_fields = ('description',)
 
     """def has_add_permission(self, request):
-        return False"""
+        return False"""'''

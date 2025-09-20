@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation en {{f_name}} | Expertise Professionnelle</title>
+    <title>Formation en {{formation.name}} | Expertise Professionnelle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{% static 'Formations/css/broderie_num/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,15 +39,15 @@
                 <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                            Maîtrisez l'Art <br>de <span class="text-red">{{det_plus_name}}</span>
+                            Maîtrisez l'Art de notre <br>formation en <span class="text-red">{{formation.name}}</span>
                         </h1>
                         <p class="text-lg md:text-xl text-blue-100 mt-3">
-                            {{motiv}}
+                            {{formation.motiv}}
                         </p>
                     </div>
                     <div class="bg-white text-blue-600 px-6 py-3 rounded-lg shadow-md w-fit">
                         <div class="text-sm font-semibold">INVESTISSEMENT</div>
-                        <div class="text-3xl font-bold">{{price}}</div>
+                        <div class="text-3xl font-bold">{{formation.price}}</div>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                             </svg>
-                            <span><strong>Heures/semaine :</strong> {{nb_h_per_week}}H</span>
+                            <span><strong>Heures/semaine :</strong> {{formation.hours_per_week}}H</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor"
@@ -75,7 +75,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9-3-9m-9 9a9 9 0 019-9"></path>
                             </svg>
-                            <span><strong>Disponibilité :</strong> {{availability}}</span>
+                            <span><strong>Disponibilité :</strong> {{formation.availability}}</span>
                         </li>
                     </ul>
                 </div>
@@ -144,15 +144,15 @@
                     <h3 class="card-title">Durée de la formation</h3>
                 </div>
                 <p class="card-text">
-                    Un programme intensif de <span class="highlight-text">{{duration}} heures</span> réparties en sessions
-                    pratiques et théoriques pour une maîtrise complète de {{det_plus_name}}.
+                    Un programme intensif de <span class="highlight-text">{{duration}} heures</span> réparties par sessions
+                    pratiques et théoriques pour une maîtrise complète en {{formation.name}}.
                 </p>
                 <div class="card-highlight">
                     <svg class="arrow-icon" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
                     </svg>
-                    <span>Formation disponible {{availability}}</span>
+                    <span>Formation disponible {{formation.availability}}</span>
                 </div>
             </div>
 
@@ -168,15 +168,19 @@
                     <h3 class="card-title">Modules Principaux</h3>
                 </div>
                 <ul class="module-list">
-                    {% for mod in modules_ %}
-                        <li class="module-item">
-                            <svg class="check-icon" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>{{mod}}</span>
-                        </li>
-                    {% endfor %}
+                    {% if modules_ %}
+                        {% for mod in modules_ %}
+                            <li class="module-item">
+                                <svg class="check-icon" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>{{mod}}</span>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="module-item">Aucun module disponible pour cette formation.</li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -201,18 +205,22 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
             <!-- items -->
-            {% for pre in prerequisites_ %}
-                <div class="group text-center">
-                    <div class="relative inline-block mb-4 transform group-hover:-translate-y-2 transition duration-500">
-                        <div class="absolute inset-0 bg-indigo-100 rounded-full filter blur-md opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                        <img src="{{ pre.0 }}" alt="Wilcom"
-                             class="relative mx-auto w-24 h-24 md:w-28 md:h-28 object-contain p-2 rounded-full bg-white shadow-lg border-2 border-gray-100 group-hover:border-indigo-200 transition duration-300 z-10">
+            {% if prerequisites_ %}
+                {% for pre in prerequisites_ %}
+                    <div class="group text-center">
+                        <div class="relative inline-block mb-4 transform group-hover:-translate-y-2 transition duration-500">
+                            <div class="absolute inset-0 bg-indigo-100 rounded-full filter blur-md opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                            <img src="{{ pre.0 }}" alt="Wilcom"
+                                class="relative mx-auto w-24 h-24 md:w-28 md:h-28 object-contain p-2 rounded-full bg-white shadow-lg border-2 border-gray-100 group-hover:border-indigo-200 transition duration-300 z-10">
+                        </div>
+                        <p class="text-lg font-semibold text-gray-800 group-hover:text-indigo-600 transition duration-300">
+                            {{ pre.1 }}</p>
+                        <p class="text-sm text-gray-500 mt-1">{{ pre.2 }}</p>
                     </div>
-                    <p class="text-lg font-semibold text-gray-800 group-hover:text-indigo-600 transition duration-300">
-                        {{ pre.1 }}</p>
-                    <p class="text-sm text-gray-500 mt-1">{{ pre.2 }}</p>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500 col-span-4">Aucun prérequis pour cette formation.</p>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -228,23 +236,27 @@
         </div>
 
         <div class="grid md:grid-cols-4 gap-8">
-            {% for skill in skillgained_ %}
-                <div class="embroidery-card bg-white rounded-xl p-8 text-center border border-gray-100 max-w-xs mx-auto">
-                    <div class="bg-indigo-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
+            {% if skillgained_ %}
+                {% for skill in skillgained_ %}
+                    <div class="embroidery-card bg-white rounded-xl p-8 text-center border border-gray-100 max-w-xs mx-auto">
+                        <div class="bg-indigo-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="title-font text-xl font-bold text-gray-900 mb-3">{{skill.0}}</h3>
+                        <p class="text-gray-600">
+                            {{skill.1}}
+                        </p>
                     </div>
-                    <h3 class="title-font text-xl font-bold text-gray-900 mb-3">{{skill.0}}</h3>
-                    <p class="text-gray-600">
-                        {{skill.1}}
-                    </p>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500 col-span-4">Aucun gain de compétence pour cette formation.</p>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -254,29 +266,33 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="title-font text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Pourquoi Apprendre {{det_plus_name}} ?
+                Pourquoi suivre cette formation ?
             </h2>
             <p class="text-gray-600 text-lg">
-                Découvrez les avantages et opportunités qu'offre la maîtrise de {{det_plus_name}}.
+                Découvrez les avantages et opportunités qu'offre cette formation en {{formation.name}}.
             </p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-12 items-center">
             <!-- Image Section -->
             <div>
-                <img src="aaa.png" alt="Broderie Numérique" class="rounded-lg shadow-lg">
+                <img src="{{formation.why_img_url}}" alt="{{formation.name}}" class="rounded-lg shadow-lg">
             </div>
 
             <!-- Text Blocks Section -->
             <div class="space-y-6">
-                {% for mp in m_points %}
-                    <div class="bg-indigo-50 rounded-xl p-4 text-center border border-gray-100 shadow-md">
-                        <h3 class="title-font text-lg font-bold text-gray-900 mb-2">{{ mp.0 }}</h3>
-                        <p class="text-gray-600 text-sm">
-                            {{ mp.1 }}
-                        </p>
-                    </div>
-                {% endfor %}
+                {% if m_points %}
+                    {% for mp in m_points %}
+                        <div class="bg-indigo-50 rounded-xl p-4 text-center border border-gray-100 shadow-md">
+                            <h3 class="title-font text-lg font-bold text-gray-900 mb-2">{{ mp.0 }}</h3>
+                            <p class="text-gray-600 text-sm">
+                                {{ mp.1 }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-gray-500 col-span-4">Aucun point majeur pour cette formation.</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -290,7 +306,7 @@
                 Témoignages
             </h2>
             <p class="text-gray-600 text-lg">
-                Découvrez ce que nos anciens apprenants disent de notre formation en {{ f_name }}.
+                Découvrez ce que nos anciens apprenants disent de notre formation en {{ formation.name }}.
             </p>
             <div class="w-20 h-1 bg-indigo-600 mx-auto mt-4"></div>
         </div>
@@ -402,19 +418,23 @@
                 Pourquoi Choisir Notre Formation ?
             </h2>
             <p class="text-gray-600 text-lg">
-                Découvrez les avantages uniques que nous offrons pour vous aider à exceller dans {{ det_plus_name }}.
+                Découvrez les avantages uniques que nous offrons pour vous aider à exceller dans en {{ formation.name }}.
             </p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
-            {% for advantage in advantages_ %}
-                <div class="bg-indigo-50 rounded-xl p-6 text-center border border-gray-100 shadow-md">
-                    <h3 class="title-font text-xl font-bold text-gray-900 mb-3">{{ advantage.0 }}</h3>
-                    <p class="text-gray-600">
-                        {{ advantage.1 }}
-                    </p>
-                </div>
-            {% endfor %}
+            {% if advantages_%}
+                {% for advantage in advantages_ %}
+                    <div class="bg-indigo-50 rounded-xl p-6 text-center border border-gray-100 shadow-md">
+                        <h3 class="title-font text-xl font-bold text-gray-900 mb-3">{{ advantage.0 }}</h3>
+                        <p class="text-gray-600">
+                            {{ advantage.1 }}
+                        </p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500 col-span-4">Aucun avantage pour cette formation.</p>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -468,7 +488,7 @@
             Prêt à Transformer Votre Passion en Expertise ?
         </h2>
         <p class="text-xl mb-8 max-w-3xl mx-auto">
-            Rejoignez notre prochaine session et maîtrisez l'art de {{ det_plus_name }} en seulement {{ duration }} heures de
+            Rejoignez notre prochaine session et maîtrisez un nouvel art grâce à notre formation en {{ formation.name }} en seulement {{ duration }} heures de
             formation intensive.
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
@@ -504,10 +524,10 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:signup' formation_name=slug %}">  
+        <form id="inscription-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'signup' formation_name=formation.slug %}">  
             {% csrf_token %}
 
-            <input type="hidden" value="{{ id_formation }}" name="id_formation_inscription" id="id_formation_inscription">
+            <input type="hidden" value="{{ formation.id }}" name="id_formation_inscription" id="id_formation_inscription">
             <!-- Nom complet -->
             <div>
                 <label for="inscription-name" class="block text-sm font-medium text-gray-700">Nom complet</label>
@@ -576,10 +596,10 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:get-brochure' formation_name=slug %}">
+        <form id="brochure-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'get-brochure' formation_name=formation.slug %}">
 
             {% csrf_token %}
-            <input type="hidden" value="{{ id_formation }}" name="id_formation_brochure" id="id_formation_brochure">
+            <input type="hidden" value="{{ formation.id }}" name="id_formation_brochure" id="id_formation_brochure">
             <!-- Nom complet -->
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Nom complet</label>
@@ -639,10 +659,10 @@
         </p>
 
         <!-- Formulaire -->
-        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'formations:get-in-touch' formation_name=slug %}">
+        <form id="contact-form" class="space-y-4 max-h-[70vh] overflow-y-auto" method="post" action = "{% url 'get-in-touch' formation_name=formation.slug %}">
             {% csrf_token %}
 
-            <input type="hidden" value="{{ id_formation }}" name="id_formation_contact" id="id_formation_contact">
+            <input type="hidden" value="{{ formation.id }}" name="id_formation_contact" id="id_formation_contact">
 
             <!-- Nom complet -->
             <div>
@@ -689,7 +709,6 @@
     </div>
 </div>
 
-
 {% include 'AntaBackEnd/header_footer/footer.html' %}
 
 <!-- Scripts -->
@@ -712,92 +731,7 @@
         });
     });
 
-/* Redirection Django
-    $(document).on('submit', '#inscription-form', function(e){
-    e.preventDefault();
-    $.ajax({
-        type:'POST',
-        url: "{% url 'formations:signup' formation_name=slug %}",
-        data:{
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-            'id_formation_inscription': $('#id_formation_inscription').val(),
-            'name': $('#inscription-name').val(),
-            'email': $('#inscription-email').val(),
-            'tel_number': $('#inscription-phone').val(),
-            'availability': $('#inscription-method').val(),
-            'session': $('#inscription-session').val(),
-            'message': $('#inscription-message').val()
-        },
-        success: function(){
-            // fermeture du pop-up
-            $('#inscription-modal').hide();
-            // creation d'un pop-up de notification
-            $('#successToast').text('Vous êtes inscrit(e) à la formation !');
-
-            $('#successToast').toast('show');
-        },
-        error: function(){
-            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
-        }
-    })
-    })
-
-    $(document).on('submit', '#brochure-form', function(e){
-    e.preventDefault();
-    $.ajax({
-        type:'POST',
-        url: "{% url 'formations:get-brochure' formation_name=slug %}",
-        data:{
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-            'id_formation_brochure': $('#id_formation_brochure').val(),
-            'name': $('#name').val(),
-            'email': $('#email').val(),
-            'tel_number': $('#phone').val(),
-            'availability': $('#method').val(),
-            'message': $('#message').val()
-        },
-        success: function(){
-            // fermeture du pop-up
-            $('#modal-form').hide();
-            // creation d'un pop-up de notification
-            $('#successToast').text('La brochure a été envoyée à votre adresse e-mail !');
-
-            $('#successToast').toast('show');
-        },
-        error: function(){
-            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
-        }
-    })
-    })
-
-    $(document).on('submit', '#contact-form', function(e){
-    e.preventDefault();
-    $.ajax({
-        type:'POST',
-        url: "{% url 'formations:get-in-touch' formation_name=slug %}",
-        data:{
-            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-            'id_formation_contact': $('#id_formation_contact').val(),
-            'name': $('#contact-name').val(),
-            'email': $('#contact-email').val(),
-            'tel_number': $('#contact-phone').val(),
-            'message': $('#contact-message').val()
-        },
-        success: function(){
-            // fermeture du pop-up
-            $('#contact-modal').hide();
-            // creation d'un pop-up de notification
-            $('#successToast').text('Votre message a été envoyé avec succès !');
-
-            $('#successToast').toast('show');
-        },
-        error: function(){
-            console.log('Erreur lors de l\'envoi du formulaire. Veuillez réessayer.');
-        }
-    })
-    })*/
 </script>
-
 
 <!-- inscription -->
 <script>
@@ -874,7 +808,6 @@
     })
 </script>
 
-
 <script>
     // Animation au scroll
     document.addEventListener('DOMContentLoaded', function() {
@@ -892,8 +825,6 @@
         });
     })
 </script>
-
-<!-- contact -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

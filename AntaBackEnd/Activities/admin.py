@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Activities.models import *
+from .models import *
 
 class ActivityGalerieImageInline(admin.TabularInline):
     model = ActivityGalerieImage

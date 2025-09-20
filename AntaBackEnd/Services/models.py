@@ -7,6 +7,7 @@ from .validators import validate_file_size, validate_file_extension1, validate_f
 # Create your models here.
 class Service(models.Model):
     name = models.CharField(max_length=60, verbose_name='Nom', blank=False, null=False)
+    description_accueil = models.TextField(verbose_name='Description accueil')
     description = models.TextField(verbose_name='Description')
     image1 = models.ImageField(upload_to='Services/service_image', default='Services/service_image/default3.png',
                                verbose_name='Image 1')
@@ -28,6 +29,11 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+
+class GalerieImageForService(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Service', related_name='galerie_images')
+    image = models.ImageField(upload_to='Services/galerie_image', default='Services/galerie_image/default3.png',
+                              verbose_name='Image')
 
 class ClientCustomizationForBroderieNumerique(models.Model):
     SUPPORTS = [("T-shirt", "T-shirt"),
