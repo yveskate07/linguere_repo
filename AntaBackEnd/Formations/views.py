@@ -42,55 +42,60 @@ def formationView(request, formation_name):
                        'm_points':m_points if len(m_points)>0 else None,
                        'advantages_':advantages if len(advantages)>0 else None})
 
-
+@login_required
 def SigningUp(request, formation_name):
     if request.method == "POST":
         form = SignedUpUserForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.formation = Formations.objects.get(id=request.POST.get('id_formation_inscription'))
-            user.save()
+            data = form.save(commit=False)
+            data.formation = Formations.objects.get(id=request.POST.get('id_formation_inscription'))
+            data.user = request.user
+            data.save()
 
             # envoi d'un mail au client puis notification a linguere
-            mail_to_the_client(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, 'message':request.POST.get('message')})
+            mail_to_the_client(formation_name=formation_name, user={'name':data.name, 'e-mail':data.email, 'formation':data.formation.name, 'message':request.POST.get('message')})
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
 
     return formationView(request, formation_name)
 
-
+@login_required
 def returnBrochure(request, formation_name):
     if request.method == "POST":
-        form = BrochureForm({'name':request.POST.get('name'), 'email':request.POST.get('email'),
-                             'tel_number':request.POST.get('tel_number'), 'availability':request.POST.get('availability'),
-                             'message':request.POST.get('message')})
+        form = BrochureForm({'availability':request.POST.get('availability'), 'message':request.POST.get('message')})
         if form.is_valid():
-            user = form.save(commit=False)
-            user.formation = Formations.objects.get(id=request.POST.get('id_formation_brochure'))
-            user.save()
+            data = form.save(commit=False)
+            data.formation = Formations.objects.get(id=request.POST.get('id_formation_brochure'))
+            data.user = request.user
+            data.save()
 
             # envoi de la brochure par mail puis notification a linguere
-            brochure_to_client_through_mail(receiver_email=user.email, formation_name=formation_name, msg_=request.POST.get('message'), user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message":request.POST.get('message')})
+            brochure_to_client_through_mail(receiver_email=data.user.email, formation_name=formation_name, msg_=request.POST.get('message'), 
+                                            user={'name':data.user.name, 
+                                            'e-mail':data.user.email, 
+                                            'formation':data.formation.name, 
+                                            "message":request.POST.get('message')
+                                            })
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite !!!"})
 
     return formationView(request, formation_name)
 
-
+@login_required
 def userGetInTouch(request, formation_name):
     if request.method == "POST":
-        form = RequestForm({'name': request.POST.get('name'), 'email': request.POST.get('email'),
-                            'tel_number': request.POST.get('tel_number'), 'message': request.POST.get('message')})
+        form = RequestForm({'message': request.POST.get('message')})
 
         if form.is_valid():
-            user = form.save(commit=False)
-            user.formation = Formations.objects.get(id=request.POST.get('id_formation_contact'))
-            user.save()
+            data = form.save(commit=False)
+            data.formation = Formations.objects.get(id=request.POST.get('id_formation_contact'))
+            data.user = request.user
+            data.save()
 
             # envoi d'alerte a linguere
-            mail_to_fablab(formation_name=formation_name, user={'name':user.name, 'e-mail':user.email, 'formation':user.formation.name, "message": request.POST.get('message')}, msg_=request.POST.get('message'))
+            mail_to_fablab(formation_name=formation_name, user={'name':data.user.name, 'e-mail':data.user.email, 'formation':data.formation.name, "message": request.POST.get('message')}, msg_=request.POST.get('message'))
 
 
         else:

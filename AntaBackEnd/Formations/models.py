@@ -234,7 +234,7 @@ class UserBrochure(models.Model):
         #ordering = ["name"]
 
     def __str__(self):
-        return self.name
+        return self.user.name
 
     def description(self):
         return f"Utilisateurs ayant telechargé brochures pour la formation {self.formation}"
