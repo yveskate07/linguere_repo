@@ -9,7 +9,7 @@ const selectImageBtn = document.getElementById('select-image-btn');
 
 let currentImageIndex = 0;
 const images = Array.from(document.querySelectorAll('.gallery-item')).map(item => item.querySelector('img').src);
-const previewImage = document.getElementById('preview-image1');
+const previewImage = document.getElementById('preview-image');
 const galleryItems = document.querySelectorAll('.gallery-item');
 
 // Lightbox navigation
@@ -50,7 +50,6 @@ lightboxClose.addEventListener('click', () => {
 // Sélectionner l'image et fermer la lightbox
 selectImageBtn.addEventListener('click', () => {
     previewImage.src = images[currentImageIndex];
-    document.getElementById('selected-design').value = images[currentImageIndex];
     galleryItems.forEach(item => item.classList.remove('selected'));
     galleryItems[currentImageIndex].classList.add('selected');
     lightbox.classList.remove('active');

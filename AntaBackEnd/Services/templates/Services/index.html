@@ -1,0 +1,544 @@
+<!-- formation name et description name -->
+
+<!-- galerie et import photo section -->
+
+<!-- Personnalisation avancée section -->
+
+<!-- apercu general -->
+
+<!-- formulaire de commande -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnalisation {{ serviceName }} - Linguère Fablab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'Services/Service/style.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+</head>
+
+<body data-user-id={{user_id}} data-field-names-js='{{fields_names_js|safe}}' data-slug = "{{ service.slug }}">
+
+    {% include 'AntaBackEnd/header_footer/header.html' %}
+    {% include 'Shop/cart_and_payment_modals/index.html' %}
+
+    <div class="service-header animate__animated animate__fadeInUp">
+        <h2 class="service-title">
+            <i class="fas fa-tshirt service-icon"></i>
+            {{ serviceName }}
+        </h2>
+        <p class="service-subtitle">{{ serviceDesc }}</p>
+    </div>
+
+    <div class="tab-container" data-active-tab="gallery">
+        <div class="tab active" data-tab="gallery">
+            <i class="fas fa-images"></i> Notre Galerie
+        </div>
+        <div class="tab" data-tab="upload">
+            <i class="fas fa-upload"></i> Importer mon design
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="tab-content active" id="gallery-tab">
+        <section class="gallery-section">
+            <h3 class="section-title">
+                <i class="fas fa-photo-video"></i> Notre Galerie Exclusive
+            </h3>
+            <p class="section-description">
+                Découvrez nos créations uniques et personnalisez-les selon vos goûts. 
+                Chaque motif est conçu avec soin par nos artistes pour un rendu exceptionnel.
+            </p>
+            
+            <div class="gallery-grid">
+                {% if img_urls %}
+                    {% for img_url in img_urls %}
+                        <div class="gallery-item" data-img="{{ img_url }}">
+                            <img src="{{ img_url }}" alt="Motif broderie">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="justify-content-center">Aucune image disponible dans la galerie pour le moment.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="tab-content" id="upload-tab">
+        <section class="upload-section">
+            <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Importer votre propre design</h3>
+            <p class="section-description">Téléchargez votre image, logo ou fichier de broderie pour créer une pièce véritablement unique.</p>
+
+            <div class="upload-area" id="drop-area">
+                <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h4>Glissez-déposez votre fichier ici</h4>
+                <p>ou</p>
+                <button class="cta-button"><i class="fas fa-folder-open"></i> Parcourir vos fichiers</button>
+                <input type="file" id="file-input" name='imported_picture' accept="image/*,.svg,.dst" style="display: none;">
+                <p class="small">Formats acceptés : PNG, JPG, SVG, DST (max. 10MB)</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- HTML pour la section de personnalisation -->
+    <section class="customization-section">
+        <div class="customization-intro animate__animated animate__fadeIn">
+            <h3><i class="fas fa-magic"></i> Personnalisation Avancée</h3>
+            <p>Créez un design unique avec nos outils de personnalisation</p>
+        </div>
+
+        {% for field in html_fields %}
+            {{field.html_field|safe}}
+        {% endfor %}
+        <input type="hidden" id="selected-colors" name="colors">
+    </section>
+
+    <!-- Lightbox Structure -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-img" id="lightbox-img">
+            <div class="lightbox-counter" id="lightbox-counter"></div>
+            <!-- Ajoutez ce bouton -->
+            <button class="select-btn" id="select-image-btn">
+                <i class="fas fa-check"></i> Sélectionner ce motif
+            </button>
+            <button class="close-btn" id="close-lightbox-btn">
+                <i class="fas fa-times"></i> Fermer
+            </button>
+        </div>
+        <span class="lightbox-nav lightbox-prev">&#10094;</span>
+        <span class="lightbox-nav lightbox-next">&#10095;</span>
+    </div>
+
+    <!-- Section Aperçu Général ! -->
+    <section class="summary-section">
+        <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+        <div class="summary-container" id="summary-container">
+            <!-- Le contenu sera généré dynamiquement par JavaScript -->
+        </div>
+
+        <!-- Aperçu de votre galerie déplacé ici -->
+        <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+            <div class="preview-box">
+                <div class="preview-loading"></div>
+                <img src=""
+                    alt="Aperçu de la broderie"
+                    class="preview-image"
+                    id="preview-image"
+                    style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Bouton pour afficher le formulaire ! -->
+    <div class="show-form-container animate__animated animate__fadeInUp">
+        <button id="show-form-btn" class="btn btn-primary btn-lg">
+            <i class="fas fa-edit"></i> Remplir le formulaire de commande
+        </button>
+    </div>
+
+    <!-- Formulaire (caché initialement) ! -->
+    <section class="contact-form-section" id="contact-form" style="display: none;">
+        <div class="container">
+            <div class="form-container animate__animated animate__fadeInUp">
+                <h3 class="form-title">
+                    <i class="fas fa-user-edit"></i> Informations additionnelles
+                </h3>
+                <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande de broderie personnalisée</p>
+                
+                
+                <!-- Section Informations Client -->
+                <div class="form-group">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="delivery_mode"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                            <input type="text" id="address" name="adress_delivery" required class="form-control">
+                        </div>
+
+                        <!-- Mode de Livraison -->
+                        <div class="col-md-6">
+                            <label for="delivery"><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                            <select id="delivery" name="delivery_mode" required class="form-control">
+                                <option value="">Sélectionnez une option</option>
+                                <option value="Retrait sur place (Dakar) ">Retrait sur place (Dakar)</option>
+                                <option value="Livraison à domicile (Dakar)">Livraison à domicile (Dakar)</option>
+                                <option value="Livraison à domicile (Autres régions)">Livraison à domicile (Autres régions)</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Conditions Générales -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="terms" name="cgu_accept" required class="form-check-input">
+                            <label for="cgu_accept" class="form-check-label">
+                                J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton de Soumission -->
+                    <div class="form-actions">
+                        <button id="submit-btn" class="btn btn-primary submit-btn">
+                            <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal pour les conditions générales (conservez cette partie inchangée) -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Conditions Générales</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Processus de commande</h6>
+                    <p>Après soumission de votre demande, notre équipe vous contactera dans les 24 heures pour confirmer les détails et vous fournir un devis final.</p>
+                    
+                    <h6>2. Paiement</h6>
+                    <p>Un acompte de 50% sera requis avant le début de la production. Le solde devra être réglé avant la livraison.</p>
+                    
+                    <h6>3. Délais de production</h6>
+                    <p>Les délais standard sont de 3 à 5 jours ouvrés selon la complexité du design. Des délais plus courts peuvent être arrangés avec un supplément.</p>
+                    
+                    <h6>4. Livraison</h6>
+                    <p>Les frais de livraison varient selon la destination. Les retraits se font à notre atelier à Dakar.</p>
+                    
+                    <h6>5. Retours et échanges</h6>
+                    <p>En raison de la nature personnalisée de nos produits, les retours ne sont pas acceptés sauf en cas d'erreur de notre part.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">J'ai compris</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" aria-hidden="true" aria-labelledby="errorModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Erreur(s)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Veuillez renseigner correctement les champs du formulaire et/ou de choisir/importer l'image d'un modèle. Détails:
+                    <br>
+                    {% for error in errors_txt %}
+                        <strong>{{error}}</strong><br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" aria-hidden="true" aria-labelledby="successModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Succès</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ success_txt }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'AntaBackEnd/header_footer/footer.html' %}
+    <!-- Back to Top Button 
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>-->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script src="{% static 'Services/js/aos_init.js' %}"></script>
+    <script src="{% static 'Services/js/tab_system.js' %}"></script>
+    <script src="{% static 'Services/js/lightbox.js' %}"></script>
+    <script src="{% static 'Services/js/select_colors.js' %}"></script>
+    <script src="{% static 'Services/js/keybrowse.js' %}"></script>
+    <script>
+
+        function updateSummary() {
+            const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
+            const previewImage = document.getElementById('preview-image').src;
+            let html_resume_codes = new Array();
+
+            let html_code = ''
+
+            fields_names.forEach(field => {
+                if(field.field_name != 'selected-colors'){
+                    if(field.is_grouped){
+                        const input1 = document.getElementById(field.field_name[0]);
+                        const input2 = document.getElementById(field.field_name[1]);
+
+                        let group_field_text = input1.options[input1.selectedIndex].text;
+                        if (input1.value === 'Autre (précisez)' && input2.value) {
+                            group_field_text = input2.value;
+                        }
+                        html_code = `<div class="summary-item">
+                                        <h4><i class="${field.header_class}"></i> ${field.header_txt}</h4>
+                                        <p>${group_field_text}</p>
+                                    </div>`;
+                    }else{
+                        if(Array.isArray(field.field_name)){
+                            const input1 = document.getElementById(field.field_name[0]);
+                            const input2 = document.getElementById(field.field_name[1]);
+
+                            html_code = `<div class="summary-item">
+                                        <h4><i class="${field.header_class}"></i> ${field.header_txt}</h4>
+                                        <p>${input1.value} cm x ${input2.value} cm</p>
+                                    </div>`;
+                        }else{
+                            const input = document.getElementById(field.field_name)
+
+                            html_code = `<div class="summary-item">
+                                            <h4><i class="${field.header_class}"></i> ${field.header_txt}</h4>
+                                            <p>${input.value}</p>
+                                        </div>`;
+                        }
+                    }
+                    html_resume_codes.push(html_code);
+                }
+            });
+
+            const selectedColors = document.getElementById('selected-colors');
+            if(selectedColors){
+                let colorsHtml = '';
+                if (selectedColors.value) {
+                    colorsHtml = selectedColors.value.split(',').map(color => {
+                        return `<span class="color-swatch" style="background: ${color}"></span>`;
+                    }).join('');
+                }
+
+                html_code = `<div class="summary-item">
+                    <h4><i class="fas fa-palette"></i> Couleurs</h4>
+                    <p>${colorsHtml || 'Aucune couleur sélectionnée'}</p>
+                </div>`
+
+                html_resume_codes.push(html_code)
+            }
+            
+            document.getElementById('summary-container').innerHTML = html_resume_codes.join('');
+        }
+            
+        const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
+
+        fields_names.forEach(field => {
+
+            if(field.is_grouped){
+                document.getElementById(field.field_name[0]).addEventListener('change', updateSummary);
+                document.getElementById(field.field_name[1]).addEventListener('change', updateSummary);
+            }else{
+                if(Array.isArray(field.field_name)){
+                    document.getElementById(field.field_name[0]).addEventListener('change', updateSummary);
+                    document.getElementById(field.field_name[1]).addEventListener('change', updateSummary);
+                }else{
+                    document.getElementById(field.field_name).addEventListener('change', updateSummary);
+                    }
+            }
+        })
+        
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const summaryContainer = document.getElementById('summary-container');
+
+            const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
+
+            console.log('fields_names ', fields_names);
+
+            fields_names.forEach(field => {
+            
+                let resume_div = document.createElement('div');
+                resume_div.className = 'summary-item';
+
+                if(field.is_grouped){
+                    const input1 = document.getElementById(field.field_name[0]);
+                    const input2 = document.getElementById(field.field_name[1]);
+
+                    const regex = /^first/;
+
+                    if(regex.test(field.field_name[0])){
+                        var first_input = input1;
+                    }else{
+                        var first_input = input2;
+                    }
+
+                    first_input.addEventListener('change', function(){
+                        if(first_input.value == 'Autre (précisez)'){
+                            input2.style.display = 'block';
+                        }else{
+                            input2.style.display = 'none';
+                            input2.value = '';
+                            //console.log('field.field_name[0]_and_field.field_name[1] ', field.field_name[0] + '_and_' + field.field_name[1]);
+                            document.getElementById(field.field_name[0] + '_and_' + field.field_name[1]).textContent = first_input.value;
+                        }
+                    
+                    })
+
+                    const html = `<h4><i class="fas ${field.header_class}"></i> ${field.header_txt}</h4><p id='${field.field_name[0] + '_and_' + field.field_name[1]}'></p>`;
+                    resume_div.innerHTML = html;
+
+                    summaryContainer.appendChild(resume_div);
+
+                    
+
+                }else{
+
+                    if(Array.isArray(field.field_name)){
+                        const input1 = document.getElementById(field.field_name[0]);
+                        const input2 = document.getElementById(field.field_name[1]);
+
+                        const html = `<h4><i class="fas ${field.header_class}"></i> ${field.header_txt}</h4><p id='${field.field_name[0] + '_and_' + field.field_name[1]}'></p>`;
+                        resume_div.innerHTML = html;
+                        summaryContainer.appendChild(resume_div);
+                        
+                    }else{
+
+                        const input = document.getElementById(field.field_name);
+
+                        const html = `<h4><i class="fas ${field.header_class}"></i> ${field.header_txt}</h4><p id='${field.field_name}'></p>`;
+                        resume_div.innerHTML = html;
+                        summaryContainer.appendChild(resume_div);
+
+                        input.addEventListener('change', function(){
+                            document.getElementById(field.field_name).textContent = input.value;
+                        })
+
+                    }
+                    
+                }
+
+            })
+        });
+
+    </script>
+
+    <script src="{% static 'Services/js/unveilling_forms.js' %}"></script>
+    <script src="{% static 'Services/js/select_image.js' %}"></script>
+    <script src="{% static 'Services/js/upload_gestion.js' %}"></script>
+
+<script>
+    function sendCustomForm(){
+        // this function fetch all values of the inputs, creates a form an send these datas to the create_custom_order view
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{% url 'create_custom_order' %}";
+
+        const csrftoken = getCookie('csrftoken');
+
+        // Créer le champ hidden pour le CSRF
+        let csrfInput = document.createElement('input');
+        csrfInput.type = "hidden";
+        csrfInput.name = "csrfmiddlewaretoken";  
+        csrfInput.value = csrftoken;
+
+        let slug = document.createElement('input');
+        slug.name = "slug";
+        slug.type = "hidden";
+        slug.value = document.body.getAttribute('data-slug');
+        form.appendChild(slug);
+
+        let chosen_picture = document.getElementById("file-input");
+        if (chosen_picture.files.length > 0 ) {
+            // si une image a été importée
+            form.enctype = "multipart/form-data";
+            chosen_picture.name = "imported_picture";
+            form.appendChild(chosen_picture);
+        }else{
+            const image = document.getElementById("preview-image");
+
+            if (image.src == '') {
+                alert("Aucun image sélectionnée.");
+                return; // Ne pas soumettre le formulaire si aucune image n'est sélectionnée
+            } else {
+                let imageInput = document.createElement('input');
+                imageInput.type = "hidden";
+                imageInput.name = "chosen_picture";
+                imageInput.value = image.src;
+                form.appendChild(imageInput);
+            }
+        }
+
+        input_names = document.body.getAttribute('data-field-names');
+
+        if(input_names){
+            input_names = input_names.split(',');
+            input_names.forEach(name => {
+                const element = document.getElementById(name);
+                if(element){
+                    let input = document.createElement('input');
+                    input.name = name;
+                    input.value = element.value;
+                    form.appendChild(input);
+                }
+            });
+            let colorInput = document.createElement('input');
+            colorInput.name = "selected-colors";
+            colorInput.value = document.getElementById('selected-colors').value;
+            form.appendChild(colorInput);
+        }
+
+        let delivery = document.createElement('input');
+        delivery.name = "delivery_mode";
+        delivery.value = document.getElementById('delivery').value;
+        form.appendChild(delivery);
+
+        let address = document.createElement('input');
+        address.name = "adress_delivery";
+        address.value = document.getElementById('address').value;
+        form.appendChild(address);
+
+        let cgu = document.createElement('input');
+        cgu.name = "cgu_accept";
+        cgu.value = document.getElementById('cgu_accept').checked ? "on" : "off";
+        if (cgu.value === "off") {
+            alert("Vous devez accepter les conditions générales pour continuer.");
+            return; // Ne pas soumettre le formulaire si les CGU ne sont pas acceptées
+        }
+        form.appendChild(cgu);
+
+        form.appendChild(csrfInput);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+</script>
+
+</body>
+
+</html>

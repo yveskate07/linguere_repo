@@ -1,18 +1,24 @@
 from django.contrib import admin
 
-from Services.models import Service, ClientCustomizationForBroderieNumerique, ClientCustomizationForFraiseuseNumerique, \
-    ClientCustomizationForDecoupeLaser, ClientCustomizationForImpression3D, ClientCustomizationForPaper, \
-    ClientCustomizationForTextile, ClientCustomizationForObjects, GalerieImageForService
+from Services.models import *
 
 
 class GalerieImageForServiceInline(admin.TabularInline):
     model = GalerieImageForService
 
+@admin.register(CustomizedService)
+class CustomizedServiceAdmin(admin.ModelAdmin):
+    list_display = ('user','service','adress_delivery','delivery_mode')
+
+class FieldForServiceInline(admin.TabularInline):
+    model = FieldForService
+
 # Register your models here.
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    fields = ('name','description',)
-    inlines = [GalerieImageForServiceInline]
+    fields = ('name','description', 'description_accueil','slug',)
+    readonly_fields = ('slug',)
+    inlines = [GalerieImageForServiceInline, FieldForServiceInline]
     list_display = ('name','description',)
 
 @admin.register(ClientCustomizationForBroderieNumerique)

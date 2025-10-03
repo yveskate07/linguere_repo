@@ -168,81 +168,40 @@
         </div>
         
         <div class="grid">
-            <div class="card" data-aos="fade-up">
-                <a href="service.html"></a>
-                <div class="overlay">
-                    <div class="card-title">Broderie Numérique</div>
-                    <div class="card-description">Personnalisation textile de haute précision pour vêtements, accessoires et objets promotionnels.<br><br><a href="{% url 'services-broderie' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+            {% for service in other_services %}
+                <div class="card" data-aos="fade-up">
+                    <a href="{{service.get_absolute_url}}"></a>
+                    <div class="overlay">
+                        <div class="card-title">{{service.name}}</div>
+                        <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                    </div>
+                    <h2 class="card-image-title">{{service.name}}</h2>
                 </div>
-                <h2 class="card-image-title">Broderie Numérique</h2>
-            </div>
-            
-            <div class="card" data-aos="fade-up" data-aos-delay="100">
-                <a href="CNC.html"></a>
-                <div class="overlay">
-                    <div class="card-title">Fraiseuses Numérique</div>
-                    <div class="card-description">Usinage de précision pour prototypes, pièces techniques et créations artistiques sur divers matériaux.<br><br><a href="{% url 'services-fraiseuse' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
-                </div>
-                <h2 class="card-image-title">Fraiseuses Numérique</h2>
-            </div>
-            
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
-                <a href="laser.html"></a>
-                <div class="overlay">
-                    <div class="card-title">Découpe Laser</div>
-                    <div class="card-description">Découpe et gravure laser haute précision sur bois, acrylique, cuir et autres matériaux.<br><br><a href="{% url 'services-laser' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
-                </div>
-                <h2 class="card-image-title">Découpe Laser</h2>
-            </div>
-            
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
-                <a href="#"></a>
-                <div class="overlay">
-                    <div class="card-title">Impression 3D</div>
-                    <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-3d' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
-                </div>
-                <h2 class="card-image-title">Impression 3D</h2>
-            </div>
+            {% endfor %}
 
-            <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
                 <a href="#"></a>
                 <div class="overlay">
-                    <div class="card-title">Impressions Numériques Proposées</div>
-                    <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding .<br><br><a class="modal-trigger" href="#">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                    <div class="card-title">Impressions Numériques</div>
+                    <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
                 </div>
                 <h2 class="card-image-title">Impressions Numériques Proposées</h2>
             </div>
         </div>
     </div>
 
-    <!-- Modal pour les elements du service 5 -->
     <div id="modal-service5" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close">×</span>
             <div class="grid">
-                <div class="card">
-                    <!-- <a href="impress_sur_papier.html"><img src="mini kits.png" alt="Impressions"></a> -->
-                    <div class="overlay">
-                        <div class="card-title">Impression sur Papier et Supports Rigides</div>
-                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-papiers' %}">en savoir plus </a></div>
+                {% for service in serv_imp_num_prop %}
+                    <div class="card">
+                        <div class="overlay">
+                            <div class="card-title">{{service.name}}</div>
+                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus </a></div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="card">
-                    <!-- <a href="impress_sur_textil.html"><img src="mini kits.png" alt="Impressions"></a> -->
-                    <div class="overlay">
-                        <div class="card-title">Impression sur Textiles et Vêtements</div>
-                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-textile' %}">en savoir plus</a></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <!-- <a href="impress_sur_objet.html"><img src="mini kits.png" alt="Impressions"></a> -->
-                    <div class="overlay">
-                        <div class="card-title">Impression sur Objets Personnalisés</div>
-                        <div class="card-description">Prototypage rapide et production de pièces en PLA, ABS, résine et autres matériaux techniques.<br><br><a href="{% url 'service-impression-numerique-objets' %}">en savoir plus</a></div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

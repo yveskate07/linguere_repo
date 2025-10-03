@@ -57,31 +57,15 @@
             </p>
 
             <div class="gallery-grid">
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img1 }}" alt="Motif broderie floral">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img2 }}" alt="Motif broderie géométrique">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img3 }}" alt="Motif broderie animal">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img4 }}" alt="Motif broderie lettrage">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img5 }}" alt="Motif broderie tribal">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img6 }}" alt="Motif broderie floral">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img7 }}" alt="Motif broderie minimaliste">
-                </div>
-                <div class="gallery-item" data-img="design1.jpg">
-                    <img src="{{ img8 }}" alt="Motif broderie floral">
-                </div>
-                <!-- Ajoutez les autres items de la galerie de la même manière -->
+                {% if img_urls %}
+                    {% for img_url in img_urls %}
+                        <div class="gallery-item" data-img="{{ img_url }}">
+                            <img src="{{ img_url }}" alt="Motif broderie">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="justify-content-center">Aucune image disponible dans la galerie pour le moment.</p>
+                {% endif %}
             </div>
         </section>
         <!--form section-->

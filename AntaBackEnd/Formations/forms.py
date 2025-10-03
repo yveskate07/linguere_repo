@@ -2,6 +2,7 @@ from django import forms
 from .models import SignedUpUser, UserBrochure, UserRequest
 
 
+
 class SignedUpUserForm(forms.ModelForm):
     class Meta:
         model = SignedUpUser
