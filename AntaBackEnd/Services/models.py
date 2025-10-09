@@ -28,6 +28,13 @@ class Service(models.Model):
     def get_absolute_url(self):
         return reverse('service', kwargs={'slug':self.slug})
 
+    @property
+    def get_support_field_name(self):
+        for field in self.html_fields.all():
+            if field.is_support_field:
+                return field.get_input_name
+
+
 class GalerieImageForService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, verbose_name='Service', related_name='galerie_images', null=True)
     image = models.ImageField(upload_to='Services/galerie_image', default='Services/galerie_image/default3.png',
@@ -68,6 +75,7 @@ class FieldForService(models.Model):
     grouped = models.BooleanField(verbose_name='Champs groupé ?', default=False, help_text="Le champ est-il groupé ? (plusieurs inputs pour un même champ)")
     header_icon_class = models.CharField(max_length=64, null=False, blank=False, verbose_name='class du header', help_text="Classe de l'icône du header (ex: fa-solid fa-user)")
     header_icon_txt = models.CharField(max_length=64, default='', null=False, blank=False, verbose_name='Texte du header', help_text="Texte du header (ex: Instructions spéciales)")
+    is_support_field = models.BooleanField(default=False, verbose_name='Champs de support ?')
 
     def __str__(self):
         return f'Champ No {self.pk} du service {self.service}'

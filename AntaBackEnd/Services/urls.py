@@ -18,6 +18,6 @@ from django.urls import path
 from .views import serviceView, custom_view
 
 urlpatterns = [
-    path('<str:slug>/',serviceView , name='service'),
     path('create_custom_order/', custom_view, name='create_custom_order'),
+    path('<str:slug>/',serviceView , name='service'),
 ]

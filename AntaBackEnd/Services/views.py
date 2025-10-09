@@ -90,9 +90,8 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
 
 @login_required
 def custom_view(request):
-    print(f'request.POST : {request.POST}')
+    print(f'request.POST is {request.POST}')
     # redirecting to facebook.com
-    return redirect('https://www.facebook.com')
     if request.method == 'POST':
         form = CustomizedServiceForm(adress_delivery=request.POST.get('adress_delivery'), delivery_mode=request.POST.get('delivery_mode'), cgu_accept=request.POST.get('cgu_accept'))
         service = Service.objects.get(slug=request.POST.get("slug"))
@@ -110,7 +109,7 @@ def custom_view(request):
 
             fields_dict = {}
             for field in service.html_fields.all():
-                fields_dict[field.get_input_name] = request.POST.get(field.get_input_name, '')
+                fields_dict[field.get_input_name] = request.POST.get(field.get_input_name, None)
 
             subs_user.fields_value = fields_dict
             
@@ -130,8 +129,17 @@ def custom_view(request):
             if colors:
                 colors = colors.split(',')
 
+            support_field = service.get_support_field_name
+            if isinstance(support_field, list):
+                for name in support_field:
+                    if request.POST.get(name, False):
+                        support = request.POST.get(name)
+                        break
+            else:
+                support = request.POST.get(support_field)
+
             msg_body1 = get_msg_for_client_mail(request = request, Service_name=service.name,
-                                                obj=request.POST.get('support_type'),
+                                                obj=support, 
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
                                                 quantite=request.POST.get('quantity'),
@@ -140,7 +148,7 @@ def custom_view(request):
                                                 img_path=design_path,
                                                 msg_deliver=msg_deliver)
 
-            msg_body2 = get_msg_for_admin_mail(request=request, service=service.name, obj=request.POST.get('support_type'),
+            msg_body2 = get_msg_for_admin_mail(request=request, service=service.name, obj=support,
                                                width=request.POST.get('dim_1'),
                                                height=request.POST.get('dim_2'),
                                                quantity=request.POST.get('quantity'),
