@@ -46,9 +46,6 @@ class SignUpView(CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # print("********************* le formulaire est invalide *********************")
-        # from pprint import pprint
-        # pprint(form.errors.as_data())
         return self.render_to_response(self.get_context_data(form=form))
 
 def redirect_404(request, exception):
@@ -71,8 +68,6 @@ def home(request):
                                                         'Découpe et Gravure Laser',
                                                         "Service d'Impression 3D"])
     activities = Activity.objects.all()
-
-    print(f'serv_imp_num_prop are : {serv_imp_num_prop}')
 
     return render(request,'AntaBackEnd/accueil/index.html',
                   {'formation_broderie_num': broderie_num,

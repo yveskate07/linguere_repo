@@ -13,7 +13,7 @@ class Service(models.Model):
     name = models.CharField(max_length=60, verbose_name='Nom', blank=False, null=False)
     description_accueil = models.TextField(verbose_name='Description accueil', default='Pas de description sur accueil', help_text="Cette description s'affichera sur la page d'acueil")
     description = models.TextField(verbose_name='Description', default='Pas de description')
-    slug = models.SlugField(default='', blank=False, null=False, max_length=128, verbose_name='Slug')
+    slug = models.SlugField(default='', blank=True, null=False, max_length=128, verbose_name='Slug')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -29,7 +29,7 @@ class Service(models.Model):
         return reverse('service', kwargs={'slug':self.slug})
 
 class GalerieImageForService(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Service', related_name='galerie_images')
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, verbose_name='Service', related_name='galerie_images', null=True)
     image = models.ImageField(upload_to='Services/galerie_image', default='Services/galerie_image/default3.png',
                               verbose_name='Image')
 
@@ -46,7 +46,7 @@ class CustomizedService(models.Model):
                   ('Livraison à domicile (Dakar)','Livraison à domicile (Dakar)'),
                   ('Livraison à domicile (Autres régions)','Livraison à domicile (Autres régions)')]
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True, related_name='custom_services')
     imported_picture = models.ImageField(upload_to='Services/user_imported_imgs', blank=True, null=True ,verbose_name='Image importée')
     chosen_picture = models.URLField(verbose_name='Image choisie', blank=True, null=True)
@@ -98,8 +98,20 @@ class FieldForService(models.Model):
             pattern = r'name=["\'](.*?)["\']'
             matches = re.findall(pattern, self.html_field)
             return matches
-
         
+    def is_color_field(self):
+        '''
+        returns True if in self.html_field there is an input with name="selected-colors", False otherwise.
+        '''
+
+        import re
+        pattern = r'name=["\']selected-colors["\']'
+        matches = re.findall(pattern, self.html_field)
+        if matches:
+            return True
+        return False
+
+"""        
 class ClientCustomizationForBroderieNumerique(models.Model):
     SUPPORTS = [("T-shirt", "T-shirt"),
                 ("Casquette", "Casquette"),
@@ -114,7 +126,7 @@ class ClientCustomizationForBroderieNumerique(models.Model):
                  ("Livraison à domicile (Dakar)", "Livraison à domicile (Dakar)"),
                  ("Livraison à domicile (Autres régions)", "Livraison à domicile (Autres régions)")]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Service')
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL, verbose_name='Service')
 
     support_type = models.CharField(choices=SUPPORTS, verbose_name='Type de support', max_length=30, default='T-shirt', blank=False, null=False)
     other_support = models.TextField(blank=True, null=True, verbose_name='Support personnalisé')
@@ -129,7 +141,7 @@ class ClientCustomizationForBroderieNumerique(models.Model):
                                               validators=[validate_file_size, validate_file_extension1])
     codeCouleur = models.CharField(max_length=80, verbose_name='Code couleur', blank=True, null=True)
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON, verbose_name="Mode de livraison", blank=False, null=False, default="Retrait sur place Dakar")
@@ -154,7 +166,7 @@ class ClientCustomizationForFraiseuseNumerique(models.Model):
                  ("Aluminium", "Aluminium"),
                  ("PVC", "PVC"), ]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     service_type = models.CharField(choices=SERVICES, verbose_name='Type de service', max_length=30, default="Découpe", blank=False, null=False)
     date = models.DateTimeField(auto_now_add=True)
@@ -168,7 +180,7 @@ class ClientCustomizationForFraiseuseNumerique(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension1])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)")
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISONS, verbose_name="Mode de livraison", default="Retrait sur place Dakar")
@@ -188,7 +200,7 @@ class ClientCustomizationForDecoupeLaser(models.Model):
                  ("Livraison à domicile (Dakar)", "Livraison à domicile (Dakar)"),
                  ("Livraison à domicile (Autres régions)", "Livraison à domicile (Autres régions)")]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     service_type = models.CharField(blank=False, null=False, choices=SERVICES, verbose_name='Type de service',
                                     max_length=30, default="Découpe")
@@ -204,7 +216,7 @@ class ClientCustomizationForDecoupeLaser(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension3])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -226,7 +238,7 @@ class ClientCustomizationForImpression3D(models.Model):
                    ("SLA(Résine)", "SLA(Résine)"),
                    ("SLS(Poudre)", "SLS(Poudre)"), ]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     impression_type = models.CharField(choices=IMPRESSIONS, verbose_name="Type d'impression",
                                        max_length=30, default="FDM(Plastique)", blank=False, null=False)
@@ -243,7 +255,7 @@ class ClientCustomizationForImpression3D(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(blank=False, null=False, max_length=60, verbose_name="Adresse (ville)")
     delivery_mode = models.CharField(blank=False, null=False, max_length=50, choices=LIVRAISON,
@@ -281,7 +293,7 @@ class ClientCustomizationForPaper(models.Model):
 
     other_design_file = models.CharField(max_length=60, blank=True, null=True, verbose_name='Autre fichier de design')
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     date = models.DateTimeField(auto_now_add=True)
     dim_1 = models.CharField(blank=False, null=False, max_length=30, verbose_name='Dimension 1')
@@ -294,7 +306,7 @@ class ClientCustomizationForPaper(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -321,7 +333,7 @@ class ClientCustomizationForTextile(models.Model):
                     ("PSD", "PSD"),
                     ("Autre (précisez)", "Autre (précisez)")]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     textile_type = models.CharField(choices=TEXTILES, verbose_name='Type de textile', max_length=30, default="Coton", blank=False, null=False)
     other_textile = models.CharField(max_length=60, blank=True, null=True, verbose_name='Autre textile')
@@ -342,7 +354,7 @@ class ClientCustomizationForTextile(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
@@ -369,7 +381,7 @@ class ClientCustomizationForObjects(models.Model):
                     ("PSD", "PSD"),
                     ("Autre (précisez)", "Autre (précisez)")]
 
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL)
 
     object = models.CharField(choices=OBJECTS, verbose_name="Type de d'objet", max_length=30, default="T-shirt", blank=False, null=False)
 
@@ -390,9 +402,10 @@ class ClientCustomizationForObjects(models.Model):
                                               blank=True, null=True,
                                               validators=[validate_file_size, validate_file_extension4])
 
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL)
 
     town = models.CharField(max_length=60, verbose_name="Adresse (ville)", blank=False, null=False)
     delivery_mode = models.CharField(max_length=50, choices=LIVRAISON,
                                      verbose_name="Mode de livraison", blank=False, null=False, default="Retrait sur place Dakar")
     cgu_accept = models.BooleanField(default=False, verbose_name="Accepter les conditions de confidentialité", blank=False, null=False)
+"""

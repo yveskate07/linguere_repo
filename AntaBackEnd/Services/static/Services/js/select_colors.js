@@ -23,7 +23,6 @@ colorOptions.forEach(option => {
         
         // Mettre à jour le champ caché
         selectedColorsInput.value = selectedColors.join(',');
-        console.log('Couleur sélectionnée : ' + color);
         
         // Mettre à jour l'affichage
         updateSelectedColorsDisplay();
@@ -34,7 +33,7 @@ function updateSelectedColorsDisplay() {
     selectedColorsDisplay.innerHTML = '';
     
     selectedColors.forEach(color => {
-        const colorElement = document.createElement('div');
+        let colorElement = document.createElement('div');
         colorElement.className = 'selected-color';
         colorElement.style.background = color;
         colorElement.setAttribute('data-color', color);
@@ -58,6 +57,7 @@ function updateSelectedColorsDisplay() {
         
         selectedColorsDisplay.appendChild(colorElement);
     });
+    updateSummary();
 }
 
 

@@ -5,10 +5,7 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from Services.forms import Broderie_num_customForm1, Fraiseuse_customForm1, Laser_customForm1, Imp_3D_customForm1, \
-    Broderie_num_customForm2, Fraiseuse_customForm2, Laser_customForm2, Imp_3D_customForm2, Paper_customForm1, \
-    Paper_customForm2, Textile_customForm1, Textile_customForm2, Objects_customForm1, Objects_customForm2, \
-    CustomizedServiceForm
+from Services.forms import CustomizedServiceForm
 from Services.models import Service
 from Shop.services.cart_service import CartService
 from mail_sender import mail_to_the_client, mail_to_fablab
@@ -73,11 +70,14 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
     service = Service.objects.get(slug=slug)
     customized_service_form = CustomizedServiceForm()
     fields_names = [{'is_grouped':field.grouped, 'field_name': field.get_input_name, 'header_class':field.header_icon_class, 'header_txt':field.header_icon_txt} for field in service.html_fields.all()]
-    #print(f'fields_names_js {json.dumps(fields_names)}')
+
+    is_colored_customization = any([field.is_color_field() for field in service.html_fields.all()])
 
     context = {'html_fields':service.html_fields.all(),
                'customization_form': customized_service_form,
-               'fields_names_js': json.dumps(fields_names),
+               'fields_names_js': fields_names,
+               'slug': slug,
+               'is_colored_customization': is_colored_customization,
                'serviceId': service.pk,
                'serviceName': service.name,
                'serviceDesc': service.description,
@@ -91,6 +91,8 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
 @login_required
 def custom_view(request):
     print(f'request.POST : {request.POST}')
+    # redirecting to facebook.com
+    return redirect('https://www.facebook.com')
     if request.method == 'POST':
         form = CustomizedServiceForm(adress_delivery=request.POST.get('adress_delivery'), delivery_mode=request.POST.get('delivery_mode'), cgu_accept=request.POST.get('cgu_accept'))
         service = Service.objects.get(slug=request.POST.get("slug"))

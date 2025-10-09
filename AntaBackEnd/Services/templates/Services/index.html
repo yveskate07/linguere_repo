@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
 </head>
 
-<body data-user-id={{user_id}} data-field-names-js='{{fields_names_js|safe}}' data-slug = "{{ service.slug }}">
+<body data-user-id={{user_id}} data-slug = "{{ slug }}">
 
     {% include 'AntaBackEnd/header_footer/header.html' %}
     {% include 'Shop/cart_and_payment_modals/index.html' %}
@@ -107,7 +107,10 @@
         {% for field in html_fields %}
             {{field.html_field|safe}}
         {% endfor %}
-        <input type="hidden" id="selected-colors" name="colors">
+
+        {% if is_colored_customization %}
+            <input type="hidden" id="selected-colors" name="colors">
+        {% endif %}
     </section>
 
     <!-- Lightbox Structure -->
@@ -170,8 +173,8 @@
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="delivery_mode"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
-                            <input type="text" id="address" name="adress_delivery" required class="form-control">
+                            <label for="address"><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                            <input type="text" id="address__" name="adress_delivery" required class="form-control">
                         </div>
 
                         <!-- Mode de Livraison -->
@@ -184,13 +187,12 @@
                                 <option value="Livraison à domicile (Autres régions)">Livraison à domicile (Autres régions)</option>
                             </select>
                         </div>
-                        
                     </div>
 
                     <!-- Conditions Générales -->
                     <div class="form-group">
                         <div class="form-check">
-                            <input type="checkbox" id="terms" name="cgu_accept" required class="form-check-input">
+                            <input type="checkbox" id="cgu_accept" name="cgu_accept" required class="form-check-input">
                             <label for="cgu_accept" class="form-check-label">
                                 J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
                             </label>
@@ -199,7 +201,7 @@
                     
                     <!-- Bouton de Soumission -->
                     <div class="form-actions">
-                        <button id="submit-btn" class="btn btn-primary submit-btn">
+                        <button id="submit-btn" onclick=sendCustomForm() class="btn btn-primary submit-btn">
                             <i class="fas fa-paper-plane"></i> Envoyer ma demande
                         </button>
                     </div>
@@ -285,16 +287,20 @@
 
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static 'Services/js/aos_init.js' %}"></script>
     <script src="{% static 'Services/js/tab_system.js' %}"></script>
     <script src="{% static 'Services/js/lightbox.js' %}"></script>
     <script src="{% static 'Services/js/select_colors.js' %}"></script>
     <script src="{% static 'Services/js/keybrowse.js' %}"></script>
+    <script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>
+    {{ fields_names_js|json_script:"fields-data" }}
     <script>
 
         function updateSummary() {
-            const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
+            const fields_names = JSON.parse(document.getElementById("fields-data").textContent);
+            
             const previewImage = document.getElementById('preview-image').src;
             let html_resume_codes = new Array();
 
@@ -312,7 +318,7 @@
                         }
                         html_code = `<div class="summary-item">
                                         <h4><i class="${field.header_class}"></i> ${field.header_txt}</h4>
-                                        <p>${group_field_text}</p>
+                                        <p id='${field.field_name[0] + '_and_' + field.field_name[1]}'>${group_field_text}</p>
                                     </div>`;
                     }else{
                         if(Array.isArray(field.field_name)){
@@ -356,7 +362,7 @@
             document.getElementById('summary-container').innerHTML = html_resume_codes.join('');
         }
             
-        const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
+        const fields_names = JSON.parse(document.getElementById("fields-data").textContent);
 
         fields_names.forEach(field => {
 
@@ -375,11 +381,20 @@
         
         document.addEventListener('DOMContentLoaded', function () {
 
+            {% if errors_txt %}
+                var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            {% endif %}
+
+            {% if success_txt %}
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            {% endif %}
             const summaryContainer = document.getElementById('summary-container');
 
-            const fields_names = JSON.parse(document.body.dataset.fieldNamesJs);
-
-            console.log('fields_names ', fields_names);
+            const fields_names = JSON.parse(
+                document.getElementById("fields-data").textContent
+                );
 
             fields_names.forEach(field => {
             
@@ -404,7 +419,6 @@
                         }else{
                             input2.style.display = 'none';
                             input2.value = '';
-                            //console.log('field.field_name[0]_and_field.field_name[1] ', field.field_name[0] + '_and_' + field.field_name[1]);
                             document.getElementById(field.field_name[0] + '_and_' + field.field_name[1]).textContent = first_input.value;
                         }
                     
@@ -414,8 +428,6 @@
                     resume_div.innerHTML = html;
 
                     summaryContainer.appendChild(resume_div);
-
-                    
 
                 }else{
 
@@ -428,16 +440,12 @@
                         summaryContainer.appendChild(resume_div);
                         
                     }else{
-
+                        //if(field.field_name == 'selected-colors'){}else{}
                         const input = document.getElementById(field.field_name);
 
-                        const html = `<h4><i class="fas ${field.header_class}"></i> ${field.header_txt}</h4><p id='${field.field_name}'></p>`;
+                        const html = `<h4><i class="fas ${field.header_class}"></i> ${field.header_txt}</h4><p id='${field.field_name}_p'></p>`;
                         resume_div.innerHTML = html;
                         summaryContainer.appendChild(resume_div);
-
-                        input.addEventListener('change', function(){
-                            document.getElementById(field.field_name).textContent = input.value;
-                        })
 
                     }
                     
@@ -453,6 +461,23 @@
     <script src="{% static 'Services/js/upload_gestion.js' %}"></script>
 
 <script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Est-ce que ce cookie commence par le nom qu'on cherche ?
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     function sendCustomForm(){
         // this function fetch all values of the inputs, creates a form an send these datas to the create_custom_order view
         let form = document.createElement('form');
@@ -461,18 +486,20 @@
 
         const csrftoken = getCookie('csrftoken');
 
-        // Créer le champ hidden pour le CSRF
+        // champ hidden pour le CSRF
         let csrfInput = document.createElement('input');
         csrfInput.type = "hidden";
         csrfInput.name = "csrfmiddlewaretoken";  
         csrfInput.value = csrftoken;
 
+        // champ hidden pour le slug du service
         let slug = document.createElement('input');
         slug.name = "slug";
         slug.type = "hidden";
-        slug.value = document.body.getAttribute('data-slug');
+        slug.value = document.body.dataset.slug;
         form.appendChild(slug);
 
+        // champ hidden pour l'image de l'utilisateur
         let chosen_picture = document.getElementById("file-input");
         if (chosen_picture.files.length > 0 ) {
             // si une image a été importée
@@ -494,37 +521,106 @@
             }
         }
 
-        input_names = document.body.getAttribute('data-field-names');
+        const input_names = JSON.parse(document.getElementById("fields-data").textContent);
 
+        // champ hidden pour les inputs de personnalisation
         if(input_names){
-            input_names = input_names.split(',');
-            input_names.forEach(name => {
-                const element = document.getElementById(name);
-                if(element){
-                    let input = document.createElement('input');
-                    input.name = name;
-                    input.value = element.value;
-                    form.appendChild(input);
-                }
-            });
-            let colorInput = document.createElement('input');
-            colorInput.name = "selected-colors";
-            colorInput.value = document.getElementById('selected-colors').value;
-            form.appendChild(colorInput);
+            input_names.forEach(input => {
+                if(input.is_grouped){
+                    const input1 = document.getElementById(input.field_name[0]);
+                    const input2 = document.getElementById(input.field_name[1]);
+
+                    if(input1.value === "" || (input1.value === "Autre (précisez)" && input2.value === "")){
+                        alert("Veuillez remplir tous les champs du formulaire de personnalisation.");
+                        return; // Ne pas soumettre le formulaire si un champ est vide
+                    }else{
+                        if(input1.value === "Autre (précisez)" && input2.value !== ""){
+                            let groupInput = document.createElement('input');
+                            groupInput.name = input.field_name[1];
+                            groupInput.type = "hidden";
+                            groupInput.value = input2.value;
+                            form.appendChild(groupInput);
+                        }else{
+                            let groupInput = document.createElement('input');
+                            groupInput.name = input.field_name[0];
+                            groupInput.type = "hidden";
+                            groupInput.value = input1.value;
+                            form.appendChild(groupInput);
+                        }
+                    }
+                }else{
+                    if(Array.isArray(input.field_name)){
+                        const input1 = document.getElementById(input.field_name[0]);
+                        const input2 = document.getElementById(input.field_name[1]);
+
+                        // both inputs are to contain only positives values
+                        if(input1.value === "" || input2.value === ""){
+                            alert("Veuillez remplir tous les champs du formulaire de personnalisation.");
+                            return; // Ne pas soumettre le formulaire si un champ est vide
+                        }else{
+                            if(isNaN(input1.value) || isNaN(input2.value) || input1.value < 0 || input2.value < 0){
+                                alert("Veuillez entrer des valeurs numériques positives pour les dimensions.");
+                                return; // Ne pas soumettre le formulaire si un champ n'est pas un nombre positif
+                            }else{
+                                let groupInput1 = document.createElement('input');
+                                groupInput1.name = input.field_name[0];
+                                groupInput1.type = "hidden";
+                                groupInput1.value = input1.value;
+                                form.appendChild(groupInput1);
+
+                                let groupInput2 = document.createElement('input');
+                                groupInput2.name = input.field_name[1];
+                                groupInput2.type = "hidden";
+                                groupInput2.value = input2.value;
+                                form.appendChild(groupInput2);
+                            }
+                        }
+                    }else{
+                        const Input = document.getElementById(input.field_name);
+
+                        if(Input.value === ""){
+                            alert("Veuillez remplir tous les champs du formulaire de personnalisation.");
+                            return; // Ne pas soumettre le formulaire si un champ est vide
+                        }else{
+                            let singleInput = document.createElement('input');
+                            singleInput.name = input.field_name;
+                            singleInput.type = "hidden";
+                            singleInput.value = Input.value;
+                            form.appendChild(singleInput);
+                        }
+                    }
+
+                }})
+
+            /*if(document.getElementById('selected-colors')){
+                // champ hidden pour les couleurs
+                let colorInput = document.createElement('input');
+                colorInput.name = "selected-colors";
+                colorInput.type = "hidden";
+                colorInput.value = document.getElementById('selected-colors').value;
+                form.appendChild(colorInput);
+        }*/
         }
 
         let delivery = document.createElement('input');
         delivery.name = "delivery_mode";
+        delivery.type = "hidden";
         delivery.value = document.getElementById('delivery').value;
+        if(delivery.value === ""){
+            alert("Veuillez choisir un mode de livraison.");
+            return // Ne pas soumettre le formulaire si le mode de livraison n'est pas choisi
+        }
         form.appendChild(delivery);
 
-        let address = document.createElement('input');
+        const addresscopy = document.getElementById('address__');
+        const address = addresscopy.cloneNode(true);
         address.name = "adress_delivery";
-        address.value = document.getElementById('address').value;
+        address.type = "hidden";
         form.appendChild(address);
 
         let cgu = document.createElement('input');
         cgu.name = "cgu_accept";
+        cgu.type = "hidden";
         cgu.value = document.getElementById('cgu_accept').checked ? "on" : "off";
         if (cgu.value === "off") {
             alert("Vous devez accepter les conditions générales pour continuer.");
@@ -536,9 +632,9 @@
         document.body.appendChild(form);
         form.submit();
         document.body.removeChild(form);
-    }
+        sweetMSG('Succès', 'Votre demande est en cours de traitement.', 'success');
+    };
 </script>
-
 </body>
 
 </html>

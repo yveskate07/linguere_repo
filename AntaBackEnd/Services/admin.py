@@ -21,7 +21,7 @@ class ServiceAdmin(admin.ModelAdmin):
     inlines = [GalerieImageForServiceInline, FieldForServiceInline]
     list_display = ('name','description',)
 
-@admin.register(ClientCustomizationForBroderieNumerique)
+"""@admin.register(ClientCustomizationForBroderieNumerique)
 class BroderieOrderAdmin(admin.ModelAdmin):
     fields = ('support_type', 'other_support', 'dim_1', 'dim_2', 'quantity',
                   'special_instructions', 'codeCouleur',
@@ -115,4 +115,4 @@ class ObjectsOrderAdmin(admin.ModelAdmin):
         'cgu_accept',
     )
     
-    list_display = ('town','service', 'date',)
+    list_display = ('town','service', 'date',)"""
