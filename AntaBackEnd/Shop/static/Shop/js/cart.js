@@ -206,8 +206,14 @@ function updateCartDisplay() {
 
 // Modal de paiement
 function proceedToCheckout() {
-    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-    paymentModal.show();
+    // cette fonction doit sauvegarder la commande ou la creer
+    /*const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    paymentModal.show();*/
+    socket.send(
+        JSON.stringify({
+            'type':'create_new_order',
+    }));
+
 }
 
 function selectPaymentMethod(method) {

@@ -136,8 +136,7 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
         }
 
         return query_dict
-    
-    
+        
     @sync_to_async
     def get_order_datas(self, text_data=None):
         # Assuming the user is authenticated and has a cart
@@ -166,11 +165,17 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
         
         total_price = CartService.get_total_price(cart)
 
-        # creating a new order
-        order = Order.objects.create(user=user, total_amount=total_price, complete=False)
+        #if cart.total_items == 0:
+            # creating a new order only if the cart is empty, otherwise there should be a pending order. We do not want to create multiple order for the same cart
+        order = Order.objects.create(user=user, complete=False)
+        """elif cart.total_items > 0:
+            # finding the only pending order related to the user
+            order = Order.objects.filter(user=user, status='En cours')
 
-        return {'total_price': total_price, 'transaction_id': order.transaction_id,
-                'ref_commande': f'Commande No: {order.id}', 'client_name': user.first_name + ' ' + user.last_name}
+        if isinstance(order, QuerySet):
+            order = order.first()"""
+
+        return {'total_price': total_price, 'ref_commande': f'Commande No: {order.id}', 'client_name': user.first_name + ' ' + user.last_name}
 
 
     @sync_to_async
@@ -296,7 +301,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps(
                 {'type': 'remove_item_result', "status": "success", 'total_price': msg, 'html_id': data.get('html_id')}))
             return
-        
         elif message_type == "get_order_datas": # get order total price, transaction_id, ref_commande, client_name before payment then display payment modal in front end
             datas = await self.get_order_datas()
             if datas == 'user not authenticated':
@@ -306,18 +310,15 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                                                   'transaction_id': datas['transaction_id'],
                                                   'ref_commande':datas['ref_commande'],
                                                   'client_name': datas['client_name']}))
-            return
-        
+            return        
         elif message_type == "create_new_order": # create a new order when the user clicks on the payment button
             datas = await self.create_new_order()
             if datas == 'user not authenticated':
                 await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
                 return
             await self.send(text_data=json.dumps({'type': 'order_created', 'total_price': datas['total_price'],
-                                                    'transaction_id': datas['transaction_id'],
                                                     'ref_commande':datas['ref_commande'],
                                                     'client_name': datas['client_name']}))
-
         elif message_type == "prepayment_datas": # receive prepayment datas from front end and save them in the order
             response = await self.saving_pre_payment_data(data)
             if response == 'user not authenticated':
@@ -325,7 +326,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 return
             await self.send(text_data=json.dumps({'type': 'process_payment', 'paymentMethod': data.get('datas', {}).get('paymentMethod', 'WAVE')}))
             return
-        
         elif message_type == "payment_achieved":
             response = await self.confirm_payment_order(data)
             await self.send(text_data=json.dumps({'type': 'payment_confirmed'}))

@@ -1,12 +1,16 @@
 import django.utils.timezone
 import shortuuid
+from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from decimal import Decimal
 from AntaBackEnd import settings
-from Users.models import Fab_User, Client
+from Shop.managers import OrderManager
+from Users.models import Fab_User
 import pdfkit
 import os
 from django.template.loader import render_to_string, get_template
@@ -135,13 +139,11 @@ class CartItem(models.Model):
 class Order(models.Model):
     STATUS_CHOICES = [
         ('En cours', 'En cours'),
-        ('Expédiée', 'Expédiée'),
-        ('Livrée', 'Livrée'),
-        ('Annulée', 'Annulée'),
+        ('Payée', 'Payée'),
         ('Remboursée', 'Remboursée'),
     ]
 
-    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
+    user = models.ForeignKey(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders', verbose_name='Client')
     date = models.DateTimeField(auto_now_add=True, verbose_name="Date de la commande")
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Dernière mise à jour')
     complete = models.BooleanField(default=False, null=True, blank=True, verbose_name='Finalisée')
@@ -151,14 +153,35 @@ class Order(models.Model):
                               verbose_name="État de la commande")
     delivery_price = models.IntegerField(default=0, verbose_name="Frais de livraison")
 
+    objects = OrderManager()
+
+    class Meta:
+        verbose_name = "Commande"
+        verbose_name_plural = "Commandes"
+        ordering = ["-date"]
+
+    @property
+    @admin.display(description="Numero de Commande")
+    def get_id(self):
+        return self.id
+
     def __str__(self):
         return f"Commande N° {self.id}"
+    
+    @property
+    def total_price(self):
+        try:
+            total = sum(item.total for item in self.order_item.all())
+        except:
+            total = 0
+        return total + self.delivery_price
+
 
     def save(self, *args, **kwargs):
 
         if self.complete:
             #print("Order is marked as complete. Processing order items and updating status.")
-            self.status = 'Expédiée'
+            self.status = 'Payée'
 
             #print('changing order status to Expédiée')
 
@@ -185,6 +208,8 @@ class Order(models.Model):
 
         else:
             print("Order is not complete. No further processing needed.")
+
+            super().save(*args, **kwargs)
 
 
     def send_confirmation(self, text_content, template_name, context, subject, to_email):
@@ -220,7 +245,6 @@ class Order(models.Model):
 
         return absolute_url
 
-
 class Invoice(models.Model):
 
     """
@@ -246,19 +270,19 @@ class Invoice(models.Model):
     tax_amount = models.DecimalField(max_digits=12,decimal_places=2,default=0,verbose_name="TVA en pourcentage (%)")  # TVA calculée
     discount = models.DecimalField(max_digits=12,decimal_places=2,default=0,verbose_name="Remise")
     total = models.DecimalField(max_digits=12,decimal_places=2,verbose_name='Total TTC',default=0)
-    paid = models.BooleanField(default=False, verbose_name='Payé')
+    paid = models.BooleanField(default=False, verbose_name='Payée')
     invoice_type = models.CharField(max_length=60, choices=INVOICE_TYPES, verbose_name='Type de facture', default='PROFORMA INVOICE')
     comment = models.TextField(null=True, max_length=1000, blank=True, verbose_name='Merci pour votre confiance.')
     invoice_pdf = models.FileField(upload_to='invoices/', null=True, blank=True, verbose_name="Facture PDF")
     order = models.ForeignKey(Order, verbose_name='Order', on_delete=models.SET_NULL, null=True)
 
     class Meta:
-        verbose_name = 'Invoice'
-        verbose_name_plural = 'Invoices'
+        verbose_name = 'Facture'
+        verbose_name_plural = 'factures'
         ordering = ['-invoice_date_time']
 
     def __str__(self):
-        return f'Invoice No {self.id} / {self.user.name}_{self.invoice_date_time}'
+        return f'Invoice No {self.id} / {self.user.first_name}_{self.user.last_name}_{self.invoice_date_time}'
 
     @property
     def tax_value(self):
@@ -284,7 +308,7 @@ class Invoice(models.Model):
         # Met à jour la date de modification
         self.last_updated_date = timezone.now()
 
-        self.paid = self.order.paid
+        self.paid = self.order.status == 'Payée'
 
         super().save(*args, **kwargs)
 
@@ -311,7 +335,6 @@ class Invoice(models.Model):
         # Générer PDF avec pdfkit
         pdfkit.from_string(html, pdf_path, options=option, configuration=config)
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='order_item')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -332,15 +355,22 @@ class Payment(models.Model):
         ('wave', 'wave')
     ]
 
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, verbose_name="Commande", null=True)
+    order = models.OneToOneField(Order, on_delete=models.SET_NULL, verbose_name="No commande", null=True)
     transaction_id = models.CharField(max_length=200, unique=True, null=True)
     payment_date = models.DateTimeField(auto_now_add=True, verbose_name='Date de paiement')
     done = models.BooleanField(default=False, verbose_name='Payé')
     payment_token = models.CharField(max_length=500, unique=True, verbose_name='Token de payment CINETPAY', default='')
     api_response_id = models.CharField(max_length=500, unique=True, verbose_name='id reponse CINETPAY', default='')
-    payment_method = models.CharField(max_length=50, verbose_name="Méthode de paiement",choices=PAYMENT_METHOD)
+    payment_method = models.CharField(max_length=50, verbose_name="Méthode de paiement",choices=PAYMENT_METHOD, default='orange')
     total_amount = models.IntegerField(verbose_name="Montant total")
 
+    class Meta:
+        verbose_name = 'Paiement'
+        verbose_name_plural = 'Paiements'
+        ordering = ['-payment_date']
+
+    def __str__(self):
+        return f"Paiement de la commande {self.order.id if self.order else 'N/A'}"
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -373,3 +403,10 @@ class AddressChipping(models.Model):
 
     def __str__(self):
         return self.adress
+
+@receiver(post_delete, sender=Invoice)
+def delete_invoice_file(sender, instance, **kwargs):
+    if instance.invoice_pdf:
+        if os.path.isfile(instance.invoice_pdf.path):
+            print('deleting old invoice file...')
+            os.remove(instance.invoice_pdf.path)

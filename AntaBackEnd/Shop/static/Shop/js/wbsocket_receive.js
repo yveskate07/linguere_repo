@@ -31,12 +31,19 @@ socket.onmessage = function (e) {
                             if (type === "order_datas" || type === "order_created"){
                                 // Mettre à jour le montant total dans le modal de paiement
                                 //document.getElementById('total-amount').textContent = data.total_price;
-                                document.getElementById('payment-modal').dataset.totalPrice = data.total_price.toLocaleString();
+                                /*document.getElementById('payment-modal').dataset.totalPrice = data.total_price.toLocaleString();
                                 document.getElementById('payment-modal').dataset.refCommande = data.ref_commande;
                                 document.getElementById('payment-modal').dataset.transactionId = data.transaction_id;
                                 document.getElementById('payment-modal').dataset.clientName = data.client_name;
 
-                                openPaymentModal();
+                                openPaymentModal();*/
+                                // generer un lien whatsapp vers une discussion avec le numero +221773146662
+                                const refOrder = data.ref_commande;
+                                const phone = "221773146662";
+                                const message = `Bonjour, je souhaite passer au paiement de la ${refOrder}`;
+                                const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+                                window.location.href = whatsappUrl;
+
                             }else{
                                 if(type === "payment_confirmed" ){
                                     sweetMSG('Commande effectuée', 'Votre commande a été enregistrée avec succès.', 'success');
