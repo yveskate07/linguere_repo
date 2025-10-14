@@ -43,11 +43,21 @@ class OrderAdmin(admin.ModelAdmin):
             obj.save()
             try:
                 # create a payment record here
-                payment = Payment.objects.create(order=obj, total_amount=obj.total_price, payment_method='Admin', done=True)
+                payment = Payment.objects.create(order=obj, total_amount=obj.total_price, payment_method='orange', done=True)
             except IntegrityError: # there is already a payment for this order
                 payment = Payment.objects.get(order=obj)
             finally:
                 self._redirect_payment_id = payment.id
+
+        else:
+            obj.complete = False
+            obj.save()
+
+            try:
+                payment = Payment.objects.get(order=obj)
+                payment.delete()
+            except Payment.DoesNotExist:
+                pass
 
 
         super().save_model(request, obj, form, change)
