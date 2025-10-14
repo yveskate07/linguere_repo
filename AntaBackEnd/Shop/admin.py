@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -32,7 +33,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("get_id","date", "status", "total_price", "user")
     fields = ('delivery_price', "status", 'complete')
 
-    search_fields = ("id", "user__username", "user__email")
+    search_fields = ("id", )
     list_filter = ("status",  "date", 'complete')
 
     def save_model(self, request, obj, form, change):
@@ -40,9 +41,13 @@ class OrderAdmin(admin.ModelAdmin):
 
             obj.complete = True
             obj.save()
-            # create a payment record here
-            payment = Payment.objects.create(order=obj, total_amount=obj.total_price, payment_method='Admin', done=True)
-            self._redirect_payment_id = payment.id
+            try:
+                # create a payment record here
+                payment = Payment.objects.create(order=obj, total_amount=obj.total_price, payment_method='Admin', done=True)
+            except IntegrityError: # there is already a payment for this order
+                payment = Payment.objects.get(order=obj)
+            finally:
+                self._redirect_payment_id = payment.id
 
 
         super().save_model(request, obj, form, change)

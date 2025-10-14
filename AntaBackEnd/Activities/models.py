@@ -64,7 +64,6 @@ class Resultat(models.Model):
     def __str__(self):
         return self.activity.name + ' : Resultats'
 
-
 class Impact(models.Model):
     categories = [
         ('Éducation Numérique', 'Éducation Numérique'),
@@ -77,7 +76,6 @@ class Impact(models.Model):
 
     def __str__(self):
         return self.activity.name + ' / ' +self.categorie
-
 
 class ActivityGalerieImage(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='galerie_images', verbose_name="Activité")

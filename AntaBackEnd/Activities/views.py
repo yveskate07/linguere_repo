@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from .models import Activity
@@ -10,14 +11,18 @@ from .models import Activity
 
 def get_context_for_activities(request, activity_name):
     user_id = request.user
-    activity = Activity.objects.get(name=activity_name)
-    return {
-        'activity': activity,
-        'realisations': activity.realisations.all(),
-        'resultats': activity.resultats.all(),
-        'impacts': activity.impacts.all(),
-        'galerie_images': activity.galerie_images.all()
-    }
+    try:
+        activity = Activity.objects.get(name=activity_name)
+    except Exception as e:
+        return HttpResponse("Cette activité n'existe pas !")
+    else:
+        return {
+            'activity': activity,
+            'realisations': activity.realisations.all(),
+            'resultats': activity.resultats.all(),
+            'impacts': activity.impacts.all(),
+            'galerie_images': activity.galerie_images.all()
+        }
 
 @login_required
 def smart_coders(request):

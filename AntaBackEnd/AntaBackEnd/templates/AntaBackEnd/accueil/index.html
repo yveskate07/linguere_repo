@@ -168,16 +168,18 @@
         </div>
         
         <div class="grid">
-            {% for service in other_services %}
-                <div class="card" data-aos="fade-up">
-                    <a href="{{service.get_absolute_url}}"></a>
-                    <div class="overlay">
-                        <div class="card-title">{{service.name}}</div>
-                        <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+            {% if other_services %}
+                {% for service in other_services %}
+                    <div class="card" data-aos="fade-up">
+                        <a href="{{service.get_absolute_url}}"></a>
+                        <div class="overlay">
+                            <div class="card-title">{{service.name}}</div>
+                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                        </div>
+                        <h2 class="card-image-title">{{service.name}}</h2>
                     </div>
-                    <h2 class="card-image-title">{{service.name}}</h2>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
 
             <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
                 <a href="#"></a>
@@ -190,6 +192,7 @@
         </div>
     </div>
 
+    {% if serv_imp_num_prop %}
     <div id="modal-service5" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close">×</span>
@@ -205,6 +208,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <!-- Video Section 2 -->
     <section class="video-section">
@@ -227,17 +231,20 @@
             <div class="premiere-ligne">
                 <!-- Partie gauche -->
                 <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
-                    <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
-                        <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
-                            <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
-                                <div class="cta-button">
-                                    <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                    {% if formation_broderie_num %}
+                        <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
+                            <div class="content-wrapper">
+                                <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
+                                <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
+                                    <div class="cta-button">
+                                        <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
+                    {% endif %}
+                    {% if formation_fraiseuse_num %}
+                        <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
                         <div class="content-wrapper">
                             <h1 class="titre slide-in-title">{{formation_fraiseuse_num.name}}</h1>
                             <div class="description fade-in-description">{{formation_fraiseuse_num.description_accueil}}
@@ -247,21 +254,25 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
-    
+
                 <!-- Partie droite -->
                 <div class="droite">
-                    <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                        <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
-                            <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
-                                <div class="cta-button">
-                                    <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                    {% if formation_impression_num %}
+                        <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                            <div class="content-wrapper">
+                                <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
+                                <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
+                                    <div class="cta-button">
+                                        <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                    {% endif %}
+                    {% if formation_laser %}
+                        <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
                         <div class="content-wrapper">
                             <h1 class="titre slide-in-title">{{formation_laser.name}}</h1>
                             <div class="description fade-in-description">
@@ -272,10 +283,12 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
-            
+
             <!-- Formation en pleine largeur -->
+            {% if formation_impression_3d %}
             <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300" style="background-image: url('{{formation_impression_3d.imageHomeUrl}}'); background-size: cover; background-position: center;">
                 <div class="content-wrapper">
                     <h1 class="titre slide-in-title">{{formation_impression_3d.name}}</h1>
@@ -286,6 +299,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 

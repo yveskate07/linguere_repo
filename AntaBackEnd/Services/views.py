@@ -1,13 +1,10 @@
-import json
 import re
-
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from Services.forms import CustomizedServiceForm
 from Services.models import Service
-from Shop.services.cart_service import CartService
 from mail_sender import mail_to_the_client, mail_to_fablab
 
 
@@ -65,111 +62,118 @@ def get_msg_for_admin_mail(request , **kwargs):
 # Create your views here.
 @login_required
 def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, success_txt=None):
+
     if not slug:
         return redirect('home')
-    service = Service.objects.get(slug=slug)
-    customized_service_form = CustomizedServiceForm()
-    fields_names = [{'is_grouped':field.grouped, 'field_name': field.get_input_name, 'header_class':field.header_icon_class, 'header_txt':field.header_icon_txt} for field in service.html_fields.all()]
+    try:
+        service = Service.objects.get(slug=slug)
+    except Service.DoesNotExist:
+        return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
+    else:
+        customized_service_form = CustomizedServiceForm()
+        fields_names = [{'is_grouped':field.grouped, 'field_name': field.get_input_name, 'header_class':field.header_icon_class, 'header_txt':field.header_icon_txt} for field in service.html_fields.all()]
 
-    is_colored_customization = any([field.is_color_field() for field in service.html_fields.all()])
+        is_colored_customization = any([field.is_color_field() for field in service.html_fields.all()])
 
-    context = {'html_fields':service.html_fields.all(),
-               'customization_form': customized_service_form,
-               'fields_names_js': fields_names,
-               'slug': slug,
-               'is_colored_customization': is_colored_customization,
-               'serviceId': service.pk,
-               'serviceName': service.name,
-               'serviceDesc': service.description,
-               'user_id': request.user.id,
-               'img_urls': [image.image.url for image in
-                            service.galerie_images.all()] if service.galerie_images.all() else None,
-               'errors': errors, 'errors_txt': errors_txt, 'success': success, 'success_txt': success_txt}
-    
-    return render(request, "Services/index.html", context=context)
+        context = {'html_fields':service.html_fields.all(),
+                'customization_form': customized_service_form,
+                'fields_names_js': fields_names,
+                'slug': slug,
+                'is_colored_customization': is_colored_customization,
+                'serviceId': service.pk,
+                'serviceName': service.name,
+                'serviceDesc': service.description,
+                'user_id': request.user.id,
+                'img_urls': [image.image.url for image in
+                                service.galerie_images.all()] if service.galerie_images.all() else None,
+                'errors': errors, 'errors_txt': errors_txt, 'success': success, 'success_txt': success_txt}
+        
+        return render(request, "Services/index.html", context=context)
 
 @login_required
 def custom_view(request):
-    print(f'request.POST is {request.POST}')
     # redirecting to facebook.com
     if request.method == 'POST':
         form = CustomizedServiceForm(adress_delivery=request.POST.get('adress_delivery'), delivery_mode=request.POST.get('delivery_mode'), cgu_accept=request.POST.get('cgu_accept'))
-        service = Service.objects.get(slug=request.POST.get("slug"))
+        try:
+            service = Service.objects.get(slug=request.POST.get("slug"))
+        except Service.DoesNotExist:
+            return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
+        else:
+            if form.is_valid():
+                subs_user = form.save(commit=False)
+                if request.POST.get('imported_picture', False):
+                    subs_user.imported_picture = request.FILES.get('imported_picture')
+                    subs_user.save()
+                    design_path = request.build_absolute_uri(subs_user.imported_picture.url)
+                else:
+                    subs_user.chosen_picture = request.POST.get('chosen_picture','')
+                    subs_user.save()
+                    design_path = subs_user.chosen_picture
 
-        if form.is_valid():
-            subs_user = form.save(commit=False)
-            if request.POST.get('imported_picture', False):
-                subs_user.imported_picture = request.FILES.get('imported_picture')
+                fields_dict = {}
+                for field in service.html_fields.all():
+                    fields_dict[field.get_input_name] = request.POST.get(field.get_input_name, None)
+
+                subs_user.fields_value = fields_dict
+                
+                subs_user.user = request.user
+                subs_user.service = service
                 subs_user.save()
-                design_path = request.build_absolute_uri(subs_user.imported_picture.url)
-            else:
-                subs_user.chosen_picture = request.POST.get('chosen_picture','')
-                subs_user.save()
-                design_path = subs_user.chosen_picture
 
-            fields_dict = {}
-            for field in service.html_fields.all():
-                fields_dict[field.get_input_name] = request.POST.get(field.get_input_name, None)
+                if request.POST.get('delivery_mode') == "Retrait sur place (Dakar)":
+                    msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
 
-            subs_user.fields_value = fields_dict
-            
-            subs_user.user = request.user
-            subs_user.service = service
-            subs_user.save()
+                else:
+                    msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('adress_delivery')}</span>, via notre service de livraison.
+                    Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
 
-            if request.POST.get('delivery_mode') == "Retrait sur place (Dakar)":
-                msg_deliver = """Nous vous tiendrons informé dès que la commande sera prête pour que vous passiez la retirer."""
+                # ces names devront etre respectés lorsque les html_fields seront créés
+                colors=request.POST.get('codeCouleur',None)
+                if colors:
+                    colors = colors.split(',')
 
-            else:
-                msg_deliver = f"""La livraison s’effectuera à l’adresse suivante : <span class="highlight">{request.POST.get('adress_delivery')}</span>, via notre service de livraison.
-                Nous vous tiendrons informé dès que la commande sera expédiée, accompagnée des détails de suivi."""
+                support_field = service.get_support_field_name
+                if isinstance(support_field, list):
+                    for name in support_field:
+                        if request.POST.get(name, False):
+                            support = request.POST.get(name)
+                            break
+                else:
+                    support = request.POST.get(support_field)
 
-            # ces names devront etre respectés lorsque les html_fields seront créés
-            colors=request.POST.get('codeCouleur',None)
-            if colors:
-                colors = colors.split(',')
+                msg_body1 = get_msg_for_client_mail(request = request, Service_name=service.name,
+                                                    obj=support, 
+                                                    width=request.POST.get('dim_1'),
+                                                    height=request.POST.get('dim_2'),
+                                                    quantite=request.POST.get('quantity'),
+                                                    colors=colors,
+                                                    comment = request.POST.get('special_instructions'),
+                                                    img_path=design_path,
+                                                    msg_deliver=msg_deliver)
 
-            support_field = service.get_support_field_name
-            if isinstance(support_field, list):
-                for name in support_field:
-                    if request.POST.get(name, False):
-                        support = request.POST.get(name)
-                        break
-            else:
-                support = request.POST.get(support_field)
-
-            msg_body1 = get_msg_for_client_mail(request = request, Service_name=service.name,
-                                                obj=support, 
+                msg_body2 = get_msg_for_admin_mail(request=request, service=service.name, obj=support,
                                                 width=request.POST.get('dim_1'),
                                                 height=request.POST.get('dim_2'),
-                                                quantite=request.POST.get('quantity'),
-                                                colors=colors,
-                                                comment = request.POST.get('special_instructions'),
+                                                quantity=request.POST.get('quantity'),
+                                                comment=request.POST.get('special_instructions'),
+                                                delivery=request.POST.get('delivery_mode'),
                                                 img_path=design_path,
-                                                msg_deliver=msg_deliver)
+                                                colors=colors,
+                                                name=request.user.name,
+                                                email=request.user.email,
+                                                tel_number=request.user.tel_num,
+                                                town=request.POST.get('adress_delivery'))
+                
+                mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body1,
+                                subject="Confirmation de réception de votre commande")
 
-            msg_body2 = get_msg_for_admin_mail(request=request, service=service.name, obj=support,
-                                               width=request.POST.get('dim_1'),
-                                               height=request.POST.get('dim_2'),
-                                               quantity=request.POST.get('quantity'),
-                                               comment=request.POST.get('special_instructions'),
-                                               delivery=request.POST.get('delivery_mode'),
-                                               img_path=design_path,
-                                               colors=colors,
-                                               name=request.user.name,
-                                               email=request.user.email,
-                                               tel_number=request.user.tel_num,
-                                               town=request.POST.get('adress_delivery'))
+                mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body2,
+                            subject="Nouvelle commande enregistrée pour Broderie Numérique")
+
+                return serviceView(request, slug=request.POST.get('slug'), errors=0, success=1, success_txt="Felicitations votre commande a été enregistrée ")
             
-            mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body1,
-                               subject="Confirmation de réception de votre commande")
-
-            mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body2,
-                           subject="Nouvelle commande enregistrée pour Broderie Numérique")
-
-            return serviceView(request, slug=request.POST.get('slug'), errors=0, success=1, success_txt="Felicitations votre commande a été enregistrée ")
-        
-        else:
-            errors = list(form.errors.values())
-            errors = [error[0] for error in errors]
-            return serviceView(request, slug=request.POST.get('slug'), errors=1, errors_txt=errors)
+            else:
+                errors = list(form.errors.values())
+                errors = [error[0] for error in errors]
+                return serviceView(request, slug=request.POST.get('slug'), errors=1, errors_txt=errors)

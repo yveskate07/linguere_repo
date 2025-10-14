@@ -54,33 +54,50 @@ def redirect_404(request, exception):
 @login_required
 def home(request):
 
-    broderie_num = Formations.objects.get(name="Broderie Numérique")
-    fraiseuse_num = Formations.objects.get(name="Fraiseuse Numérique (CNC)")
-    impression_3d = Formations.objects.get(name="Impression 3D")
-    impression_num = Formations.objects.get(name="Impression Numérique")
-    laser = Formations.objects.get(name="Découpe Laser")
-    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    serv_imp_num_prop = Service.objects.filter(name__in = ['Impression sur Papier et Supports Rigides',
+    context = dict()
+
+    try:
+        broderie_num = Formations.objects.get(name="Broderie Numérique")
+        context['formation_broderie_num'] = broderie_num
+    except Exception:
+        context['formation_broderie_num'] = None
+
+    try:
+        fraiseuse_num = Formations.objects.get(name="Fraiseuse Numérique (CNC)")
+        context['formation_fraiseuse_num'] = fraiseuse_num
+    except Exception:
+        context['formation_fraiseuse_num'] = None
+
+    try:
+        impression_3d = Formations.objects.get(name="Impression 3D")
+        context['formation_impression_3d'] = impression_3d
+    except Exception:
+        context['formation_impression_3d'] = None
+
+    try:
+        impression_num = Formations.objects.get(name="Impression Numérique")
+        context['formation_impression_num'] = impression_num
+    except Exception:
+        context['formation_impression_num'] = None
+
+    try:
+        laser = Formations.objects.get(name="Découpe Laser")
+        context['formation_laser'] = laser
+    except Exception:
+        context['formation_laser'] = None
+
+    context['user_id'] = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
+    context['serv_imp_num_prop'] = Service.objects.filter(name__in = ['Impression sur Papier et Supports Rigides',
                                                     'Impression sur Textiles et Vêtements',
                                                     'Impression sur Objets Personnalisés'])
-    other_services = Service.objects.filter(name__in = ['Broderie Numérique',
+
+    context['other_services'] = Service.objects.filter(name__in = ['Broderie Numérique',
                                                         'Service de Fraiseuse Numérique (CNC)',
                                                         'Découpe et Gravure Laser',
                                                         "Service d'Impression 3D"])
-    activities = Activity.objects.all()
+    context['activities'] = Activity.objects.all()
 
-    return render(request,'AntaBackEnd/accueil/index.html',
-                  {'formation_broderie_num': broderie_num,
-                        'formation_fraiseuse_num': fraiseuse_num,
-                        'formation_impression_3d': impression_3d,
-                        'formation_impression_num': impression_num,
-                        'formation_laser': laser,
-                        'other_services':other_services,
-                        'serv_imp_num_prop': serv_imp_num_prop,
-                        'user_id': user_id,
-                        'activities': activities,
-                                   }
-                  )
+    return render(request,'AntaBackEnd/accueil/index.html',context=context)
 
 @login_required
 def location(request):

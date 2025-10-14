@@ -1,3 +1,4 @@
+from re import S
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
@@ -29,15 +30,24 @@ class SignedUpAdmin(admin.ModelAdmin):
     list_display = ('user','availability','session','formation',)
     fields = ('user','availability','session','formation', 'message',)
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 @admin.register(UserBrochure)
 class UserBrochureAdmin(admin.ModelAdmin):
     list_display = ('user','availability','formation',)
     fields = ('user','availability','formation', 'message',)
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 @admin.register(UserRequest)
 class UserRequestAdmin(admin.ModelAdmin):
     list_display = ('user', 'formation',)
     fields = ('user', 'message', 'formation')
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 # Register your models here.
 @admin.register(Formations)

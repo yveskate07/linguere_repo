@@ -229,7 +229,7 @@ class UserBrochure(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation', related_name='UserBrochures')
 
     class Meta:
-        verbose_name = "Utilisateurs ayant demandé brochure"
+        verbose_name = "Demandes de brochures"
         #ordering = ["name"]
 
     def __str__(self):
@@ -247,7 +247,7 @@ class UserRequest(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation', related_name='UserRequest')
 
     class Meta:
-        verbose_name = "Utilisateurs ayant prit renseignement"
+        verbose_name = "Demandes de renseignements"
         #ordering = ["name"]
 
     def __str__(self):
