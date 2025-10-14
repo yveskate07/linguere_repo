@@ -16,7 +16,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{% static 'Shop/css/arduino/style.css' %}">
-    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
 
     <script type='text/javascript'>
         var user = '{{request.user}}';
@@ -24,7 +24,7 @@
 </head>
 <body data-user-id={{user_id}} data-url="{% url 'fetch-articles' %}" data-page-label="{{page_label}}" data-page-number="{{products.number}}">
     
-{% include 'AntaBackEnd/header_footer/header.html' %}
+{% include 'header_footer/header.html' %}
 
 <!-- Confirmation Message -->
 <div id="confirmation-message" class="confirmation-message">
@@ -255,7 +255,7 @@
     </div>
 </div>
 
-{% include 'AntaBackEnd/header_footer/footer.html' %}
+{% include 'header_footer/footer.html' %}
 
 {% endblock %}
 

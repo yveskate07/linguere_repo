@@ -17,12 +17,11 @@
     <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'AntaBackEnd/about/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
 </head>
 <body data-user-id={{user_id}}>
 
-{% include 'AntaBackEnd/header_footer/header.html' %}
-    {% include 'Shop/cart_and_payment_modals/index.html' %}
+{% include 'header_footer/header.html' %}
 
 <section class="hero">
     <div class="hero-content">
@@ -168,7 +167,7 @@
 </section>
 
 
-{% include 'AntaBackEnd/header_footer/footer.html' %}
+{% include 'header_footer/footer.html' %}
 
 <!-- Scripts -->
 

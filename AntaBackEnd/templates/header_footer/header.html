@@ -45,15 +45,30 @@
     <div class="container d-flex flex-wrap justify-content-center">
         <a href="{% url 'home' %}"><i class="fas fa-home me-2"></i> ACCUEIL</a>
         <div class="dropdown">
-            <a href="#"><i class="fas fa-list me-2"></i> CATALOGUE <i class="fas fa-chevron-down ms-1"></i></a>
-            <div class="dropdown-menu">
-                <a href="{% url 'shop-arduino' page=1 %}"><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</a>
-                <a href="{% url 'shop-machine' page=1 %}"><i class="fas fa-robot me-2"></i> Machines Numériques</a>
-                <a href="{% url 'shop-installations' page=1 %}"><i class="fas fa-tools me-2"></i> Installations Fablab</a>
-                <a href="/broderie-numerique/"><i class="fas fa-tshirt me-2"></i> Broderie numérique</a>
-                <a href="/service-de-fraiseuse-numerique-cnc/"><i class="fas fa-cogs me-2"></i>Fraiseuse numérique</a>
-                <a href="/decoupe-et-gravure-laser/"><i class="fas fa-cut me-2"></i> Découpe laser</a>
+            <div class="dropdown">
+                <a href="#"><i class="fas fa-list me-2"></i> CATALOGUE <i class="fas fa-chevron-down ms-1"></i></a>
+                <div class="dropdown-menu">
+
+                    <!-- Section Boutique -->
+                    <div class="dropdown-section">
+                        <h6 class="dropdown-header">Boutique</h6>
+                        <a href="{% url 'shop-arduino' page=1 %}"><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</a>
+                        <a href="{% url 'shop-machine' page=1 %}"><i class="fas fa-robot me-2"></i> Machines Numériques</a>
+                        <a href="{% url 'shop-installations' page=1 %}"><i class="fas fa-tools me-2"></i> Installations Fablab</a>
+                    </div>
+
+                    <hr class="dropdown-divider">
+
+                    <!-- Section Services -->
+                    <div class="dropdown-section">
+                        <h6 class="dropdown-header">Services</h6>
+                        <a href="/broderie-numerique/"><i class="fas fa-tshirt me-2"></i> Broderie numérique</a>
+                        <a href="/service-de-fraiseuse-numerique-cnc/"><i class="fas fa-cogs me-2"></i> Fraiseuse numérique</a>
+                        <a href="/decoupe-et-gravure-laser/"><i class="fas fa-cut me-2"></i> Découpe laser</a>
+                    </div>
+                </div>
             </div>
+
         </div>
         <a href="#"><i class="fas fa-certificate me-2"></i> NOUVEAUTÉS</a>
         <a href="{% url 'about' %}" style="color: rgb(255, 68, 0);"><i class="fas fa-info-circle me-2"></i> À PROPOS</a>

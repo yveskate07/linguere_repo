@@ -24,11 +24,10 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
 </head>
 <body data-user-id={{user_id}}>
-    {% include 'AntaBackEnd/header_footer/header.html' %}
-    {% include 'Shop/cart_and_payment_modals/index.html' %}
+    {% include 'header_footer/header.html' %}
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -493,7 +492,7 @@
     </section>-->
 
     <!-- Footer -->
-    {% include 'AntaBackEnd/header_footer/footer.html' %}
+    {% include 'header_footer/footer.html' %}
 
     <!-- Back to Top Button -->
     <div class="back-to-top">

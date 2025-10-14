@@ -176,7 +176,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "AntaBackEnd" / "static", BASE_DIR / "Activities" / "static", BASE_DIR / "Shop" / "static",
-    BASE_DIR / "Users" / "static", BASE_DIR / "Services" / "static", BASE_DIR / "Formations" / "static",
+    BASE_DIR / "Users" / "static", BASE_DIR / "Services" / "static", BASE_DIR / "Formations" / "static", BASE_DIR / "static",
 ]
 
 LOGIN_REDIRECT_URL = "home"

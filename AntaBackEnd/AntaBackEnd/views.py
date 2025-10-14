@@ -17,7 +17,6 @@ from Users.models import Fab_User
 class FabLabLogoutView(LogoutView):
     next_page = '/login'
 
-
 class FabLabLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'registration/login.html'
@@ -26,7 +25,6 @@ class FabLabLoginView(LoginView):
         if request.user.is_authenticated:
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
-
 
 class SignUpView(CreateView):
     model = Fab_User
@@ -51,7 +49,7 @@ class SignUpView(CreateView):
 def redirect_404(request, exception):
     return redirect('home')
 
-@login_required
+
 def home(request):
 
     context = dict()
@@ -99,13 +97,13 @@ def home(request):
 
     return render(request,'AntaBackEnd/accueil/index.html',context=context)
 
-@login_required
+
 def location(request):
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, 'AntaBackEnd/location/index.html', context={
         'user_id': user_id,})
 
-@login_required
+
 def about(request):
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, "AntaBackEnd/about/index.html", context={

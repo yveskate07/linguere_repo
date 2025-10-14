@@ -19,14 +19,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
-    <link rel="stylesheet" href="{% static 'AntaBackEnd/header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'Activities/css/fab_elle/style.css' %}">
     
 </head>
 <body data-user-id={{user_id}}>
 
-    {% include 'AntaBackEnd/header_footer/header.html' %}
-    {% include 'Shop/cart_and_payment_modals/index.html' %}
+    {% include 'header_footer/header.html' %}
     
     <!-- Hero Section -->
     <section class="pres animate__animated animate__fadeIn">
@@ -217,7 +216,7 @@
         </div>
     </section>
 
-    {% include 'AntaBackEnd/header_footer/footer.html' %}
+    {% include 'header_footer/footer.html' %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-zoom/2.7.1/lg-zoom.min.js"></script>
