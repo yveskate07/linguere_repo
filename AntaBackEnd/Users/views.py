@@ -9,7 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
 from .auth_form import UserLoginForm, UserSignUpForm
-from .utils import send_verification_email
+from .tasks import send_verification_email
 from Shop.services.cart_service import CartService
 from .models import Fab_User
 
