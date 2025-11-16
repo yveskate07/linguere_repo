@@ -1,6 +1,7 @@
 from django import forms
 from .models import Fab_User
 
+
 class UserEditForm(forms.ModelForm):
     tel_num = forms.CharField(
         label="Numéro de téléphone",

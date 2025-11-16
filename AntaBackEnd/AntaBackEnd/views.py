@@ -1,12 +1,11 @@
 import json
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView
-from django.shortcuts import HttpResponseRedirect, render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-
+from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
 from Services.models import Service
@@ -17,34 +16,24 @@ from Users.models import Fab_User
 class FabLabLogoutView(LogoutView):
     next_page = '/login'
 
-class FabLabLoginView(LoginView):
-    form_class = UserLoginForm
-    template_name = 'registration/login.html'
+    
+def FabLabLoginView(request):
+    messages.info(request, "Connectez-vous à votre compte en remplissant le formulaire ci-dessous.")
+    return render(request, 'Users/auths/login.html', context={'form': UserLoginForm()})
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
+def signUpView(request):
+    '''if request.user.is_authenticated:
+        if request.user.is_admin:
+            return redirect('admin:index')
+        return redirect('home')
+    return render(request, 'Users/registration/signup.html', context={'form': UserSignUpForm()})'''
 
-class SignUpView(CreateView):
-    model = Fab_User
-    form_class = UserSignUpForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('login')  # Redirige vers la page de login après inscription
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    messages.info(request, "Créez votre compte en remplissant le formulaire ci-dessous.")
+    return render(request, 'Users/auths/signup.html', context={'form': UserSignUpForm()})
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password'])
-        user.save()
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
 
 def redirect_404(request, exception):
     return redirect('home')

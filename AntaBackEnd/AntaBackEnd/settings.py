@@ -14,6 +14,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -191,3 +192,26 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "Users.Fab_User"
+
+# configuring Django messages framework
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+
+# Email configuration
+EMAIL_HOST = config('SMTP_SERVER')
+EMAIL_PORT = config('SMTP_PORT', cast=int)
+EMAIL_HOST_USER = config('SENDER')
+EMAIL_HOST_PASSWORD = config('PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'Linguere FabLab <linguerefablab.net@gmail.com>'
+
+# Celery
+CELERY_BROKER_URL = 'redis://localhost:6379' # car en local
+CELERY_RESULT_BACKEND = 'redis://localhost:6379' # car en local

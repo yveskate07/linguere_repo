@@ -1,8 +1,47 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 import shortuuid
 
 # Create your models here.
+
+class UserManager(BaseUserManager):
+    def create_user(self, first_name, last_name, username, email, tel_num, adress, password=None):
+        if not email:
+            raise ValueError('User must have an email address')
+
+        if not username:
+            raise ValueError('User must have an username')
+
+        user = self.model(
+            email = self.normalize_email(email),
+            username = username,
+            first_name = first_name,
+            last_name = last_name,
+            tel_num = tel_num,
+            adress = adress,
+        )
+        user.is_active = False
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, first_name, last_name, username, tel_num, adress, password=None):
+        user = self.create_user(
+            email = self.normalize_email(email),
+            username = username,
+            password = password,
+            first_name = first_name,
+            last_name = last_name,
+            tel_num = tel_num,
+            adress = adress,
+        )
+        user.is_admin = True
+        user.is_active = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
 
 class Fab_User(AbstractUser):
 
@@ -16,6 +55,16 @@ class Fab_User(AbstractUser):
     uuid = models.CharField(unique=True, blank=True, null=True, max_length=50)
     phone_number = models.CharField(max_length=100, null=True, blank=True)
     first_time = models.BooleanField(default=True)
+    email = models.EmailField(verbose_name="Adresse e-mail", max_length=255, unique=True, error_messages={
+        'unique': "Un utilisateur avec cet email existe déjà.",'invalid': "Veuillez entrer une adresse e-mail valide"})
+
+    is_banned = False
+
+    USERNAME_FIELD = "username"
+
+    REQUIRED_FIELDS = ["first_name", "last_name", "email", "tel_num", "adress"]
+
+    objects = UserManager()
 
     def __str__(self):
         return self.first_name + " " + self.last_name

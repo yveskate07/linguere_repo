@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from AntaBackEnd import views, settings
+from . import views, settings
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -26,8 +26,8 @@ urlpatterns = [
     path('logout/', views.FabLabLogoutView.as_view(), name='logout'),
     path('location/', views.location, name='location'),
     path('about/', views.about, name="about"),
-    path('sign-up/', views.SignUpView.as_view(), name="sign-up"),
-    path('login/', views.FabLabLoginView.as_view(), name='login'),
+    path('sign-up/', views.signUpView, name="sign-up"), 
+    path('login/', views.FabLabLoginView, name='login'),
     path('shop/', include("Shop.urls")),
     path('services/', include("Services.urls")),
     path('activities/', include("Activities.urls")),

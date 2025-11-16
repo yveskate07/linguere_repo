@@ -1,6 +1,0 @@
-Dans un autre terminal, execute:
-
-Pour te connecter:
-Username: alphonse2004
-pwd: alphonsedesire
-

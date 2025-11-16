@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
-from Users.models import Fab_User
+from .models import Fab_User
 
 
 class UserLoginForm(AuthenticationForm):
@@ -9,11 +10,11 @@ class UserLoginForm(AuthenticationForm):
     password = forms.CharField(strip=False, widget=forms.PasswordInput(attrs={'name':'password','id':'password','placeholder': "Entrez votre mot de passe", "autocomplete": "current-password"}))
 
 class UserSignUpForm(forms.ModelForm):
-    password2 = forms.CharField(
+    confirm_password = forms.CharField(
         label="Confirmation du mot de passe",
         strip=False,
         widget=forms.PasswordInput(attrs={
-            'id': 'password2',
+            'id': 'confirm_password',
             'placeholder': 'Confirmez le mot de passe'
         })
     )
@@ -61,11 +62,19 @@ class UserSignUpForm(forms.ModelForm):
         }
 
     def clean(self):
-        cleaned_data = super().clean()
-        password1 = cleaned_data.get("password")
-        password2 = cleaned_data.get("password2")
+        cleaned_data = super(UserSignUpForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
 
-        if password1 and password2 and password1 != password2:
+        if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Les mots de passe ne correspondent pas.")
-
+        
         return cleaned_data
+    
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+
+        if Fab_User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Cet nom d'utilisateur est déjà utilisé.")
+
+        return username
