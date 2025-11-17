@@ -1,1 +1,0 @@
-cmd /c launching_server.bat

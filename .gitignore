@@ -1,14 +1,14 @@
 # Default ignored files
 __pycache__/
-AntaBackEnd/deploy.sh
-AntaBackEnd/launching_server.bat
-AntaBackEnd/mail_sender.py
-AntaBackEnd/README.md
-AntaBackEnd/test.py
-AntaBackEnd/script.sh
-AntaBackEnd/.env
-AntaBackEnd/django_server.sh
-AntaBackEnd/import_and_copy.sh
-AntaBackEnd/migrations.sh
-AntaBackEnd/note.txt
-AntaBackEnd/db.sqlite3
+deploy.sh
+launching_server.bat
+mail_sender.py
+README.md
+test.py
+script.sh
+.env
+django_server.sh
+import_and_copy.sh
+migrations.sh
+note.txt
+db.sqlite3
