@@ -11,26 +11,21 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
-from django import conf
-
-from dotenv import load_dotenv
+import dj_database_url
 import os
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q#nq!+7r74hvtt3(hqfv_=!xm=ns%x*-=1fc#di&311&u+c*nx'
-CINETPAY_API_KEY = os.getenv("CINETPAY_API_KEY")
-CINETPAY_SITE_ID = os.getenv("CINETPAY_SITE_ID")
-CINETPAY_SECRET_KEY = os.getenv("CINETPAY_SECRET_KEY")
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+CINETPAY_API_KEY = config("CINETPAY_API_KEY")
+CINETPAY_SITE_ID = config("CINETPAY_SITE_ID")
+CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 try:
     from django.contrib.messages import constants as messages
@@ -58,10 +53,10 @@ ALLOWED_HOSTS = [
     "127.0.0.1",]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ['SMTP_SERVER']
-EMAIL_PORT = os.environ['SMTP_PORT']
-EMAIL_HOST_USER = os.environ['SENDER']
-EMAIL_HOST_PASSWORD = os.environ['PASSWORD']  # ne pas utiliser ton mot de passe Gmail directement
+EMAIL_HOST = config('SMTP_SERVER')
+EMAIL_PORT = config('SMTP_PORT')
+EMAIL_HOST_USER = config('SENDER')
+EMAIL_HOST_PASSWORD = config('PASSWORD')  # ne pas utiliser ton mot de passe Gmail directement
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -136,7 +131,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        default=config('DATABASE_URL'),
         conn_max_age=600
     )
 }
