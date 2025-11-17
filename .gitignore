@@ -12,3 +12,4 @@ import_and_copy.sh
 migrations.sh
 note.txt
 db.sqlite3
+useless.txt
