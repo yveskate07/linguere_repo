@@ -1,13 +1,10 @@
 # Default ignored files
-/.env/
-/.idea/
-/.vscode/
-/__pycache__/
+__pycache__/
 AntaBackEnd/deploy.sh
 AntaBackEnd/launching_server.bat
 AntaBackEnd/mail_sender.py
 AntaBackEnd/README.md
-AntaBackEnd/tests.py
+AntaBackEnd/test.py
 AntaBackEnd/script.sh
 AntaBackEnd/.env
 AntaBackEnd/django_server.sh
@@ -15,29 +12,3 @@ AntaBackEnd/import_and_copy.sh
 AntaBackEnd/migrations.sh
 AntaBackEnd/note.txt
 AntaBackEnd/db.sqlite3
-Backlog Anta.pdf
-Boiiis.webp
-Cahier de charge Site Web Linguere Fablab.pdf
-channels.sh
-Checklist-Heroku.pdf
-cinetpay-cinetpayJsButton-7a6c94e.zip
-db_sqlite.csv
-db.sqlite3
-formation.webp
-Formations.sql
-Fraisage+CNC+de+bois.webp
-generated_products.sql
-Installer Redis sur Windows.pdf
-LoopingImage.jpg
-modele EA.lo1
-modele EA.loo
-Notes.md
-notes.txt
-prodcuts_table_sch.json
-products.sql
-Projet ANTA.code-workspace
-pull_and_move.sh
-runserver.sh
-script_1.sql
-script_2.sql
-test.py
