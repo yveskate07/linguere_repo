@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from django import conf
+
 from dotenv import load_dotenv
 import os
 from decouple import config
@@ -50,7 +52,10 @@ if DEBUG:
 else:
     DOMAIN_NAME = 'put here domain name on production'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    ".onrender.com",
+    "localhost",
+    "127.0.0.1",]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ['SMTP_SERVER']
@@ -84,6 +89,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -119,7 +125,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
         },
     },
 }
@@ -128,10 +134,11 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        conn_max_age=600
+    )
 }
 
 
@@ -180,6 +187,15 @@ STATICFILES_DIRS = [
     BASE_DIR / "Users" / "static", BASE_DIR / "Services" / "static", BASE_DIR / "Formations" / "static", BASE_DIR / "static",
 ]
 
+# This production code might break development mode, so we check whether we're in DEBUG mode
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 LOGIN_REDIRECT_URL = "home"
 
 LOGIN_URL = 'login'
@@ -213,5 +229,5 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'Linguere FabLab <linguerefablab.net@gmail.com>'
 
 # Celery
-CELERY_BROKER_URL = 'redis://localhost:6379' # car en local
-CELERY_RESULT_BACKEND = 'redis://localhost:6379' # car en local
+CELERY_BROKER_URL = config('CELERY_BROKER_URL') 
+CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL')
