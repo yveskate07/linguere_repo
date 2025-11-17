@@ -6,3 +6,5 @@ pwd: alphonsedesire
 
 mail anta : linguerefablab@gmail.com
 m2p: uzeyijtmanuoxmxr
+running my app locally with gunicorn and unicorn
+python -m gunicorn mysite.asgi:AntaBackEnd -k uvicorn.workers.UvicornWorker

@@ -51,6 +51,7 @@ fastjsonschema==2.21.2
 filetype==1.2.0
 fpdf==1.7.2
 fqdn==1.5.1
+gunicorn==23.0.0
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
@@ -162,6 +163,7 @@ typing_extensions==4.14.1
 tzdata==2025.2
 uri-template==1.3.0
 urllib3==2.5.0
+uvicorn==0.38.0
 vine==5.1.0
 wasabi==1.1.3
 wcwidth==0.2.13
