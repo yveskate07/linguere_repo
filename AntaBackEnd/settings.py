@@ -114,7 +114,7 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = 'AntaBackEnd.asgi.application'
-#WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
+WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
