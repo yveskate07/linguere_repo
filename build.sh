@@ -11,7 +11,6 @@ echo "collecting static files..."
 python manage.py collectstatic --no-input
 
 echo "applying database migrations..."
-python manage.py makemigrations
 
 python manage.py migrate
 
