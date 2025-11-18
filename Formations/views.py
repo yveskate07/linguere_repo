@@ -59,7 +59,7 @@ def SigningUp(request, formation_name):
                 
                 mail_to_fablab(formation_name=formation_name, 
                                reason='new inscription', 
-                               admin_edit_view = f"/admin/Formations/signedupuser/{data.pk}/change/"
+                               admin_edit_view = f"/admin/Formations/signedupuser/{data.pk}/change/",
                                user={'name':data.name, 
                                      'e-mail':data.email, 
                                      'message':request.POST.get('message')})
