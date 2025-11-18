@@ -48,7 +48,7 @@ else:
     DOMAIN_NAME = 'put here domain name on production'
 
 ALLOWED_HOSTS = [
-    "https://linguere-fablab.onrender.com",
+    "linguere-web.onrender.com",
     "localhost",
     "127.0.0.1",]
 
