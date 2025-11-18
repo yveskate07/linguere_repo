@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brochure de la formation {formation_name}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            font-size: 0.9em;
+            color: #777777;
+        }
+        .content-box {
+            background-color: #f9f9f9;
+            padding: 18px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .highlight {
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h2>Brochure – Formation {formation_name}</h2>
+    </div>
+
+    <p>Bonjour,</p>
+
+    <div class="content-box">
+        <p>
+            Veuillez trouver ci-joint la brochure pour la formation {formation_name}.
+        </p>
+
+        <p>
+            N'hésitez pas à revenir vers nous pour toute information complémentaire.
+        </p>
+    </div>
+
+    <p>Merci pour l'intérêt que vous portez à nos programmes.</p>
+
+    <div class="footer">
+        <p>Cordialement,</p>
+        <p><strong>Linguere FabLab</strong></p>
+        <p>linguerefablab@gmail.com | +221 77 314 66 62</p>
+    </div>
+
+</body>
+</html>

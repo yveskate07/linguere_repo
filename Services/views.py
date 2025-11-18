@@ -8,26 +8,14 @@ from Services.models import Service
 from mail_sender import mail_to_the_client, mail_to_fablab
 
 
-def get_msg_for_client_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None, request=None):
+def get_context_for_user_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None, request=None):
 
     if colors:
         colors = [i.lstrip('#') for i in colors]
 
-    msg_body = render_to_string(request=request, template_name="Services/mail_for_users/index.html", context={'Service_name':Service_name,
-                                                                                                              'obj':obj,
-                                                                                                              'width':width,
-                                                                                                              'height':height,
-                                                                                                              'quantite':quantite,
-                                                                                                              'comment':comment,
-                                                                                                              'img_path':img_path,
-                                                                                                              'msg_deliver':msg_deliver,
-                                                                                                              'colors_list':colors
-                                                                                                              }
-                                                                                                             )
-    with open("code1.html",'w') as f:
-        f.write(msg_body)
+    context={'Service_name':Service_name,'obj':obj,'width':width,'height':height,'quantite':quantite,'comment':comment,'img_path':img_path,'msg_deliver':msg_deliver,'colors_list':colors}
 
-    return msg_body
+    return context
 
 def get_msg_for_admin_mail(request , **kwargs):
     admin_url = reverse('admin:index')
@@ -142,7 +130,7 @@ def custom_view(request):
                 else:
                     support = request.POST.get(support_field)
 
-                msg_body1 = get_msg_for_client_mail(request = request, Service_name=service.name,
+                ctx = get_context_for_user_mail(request = request, Service_name=service.name,
                                                     obj=support, 
                                                     width=request.POST.get('dim_1'),
                                                     height=request.POST.get('dim_2'),
@@ -151,25 +139,15 @@ def custom_view(request):
                                                     comment = request.POST.get('special_instructions'),
                                                     img_path=design_path,
                                                     msg_deliver=msg_deliver)
-
-                msg_body2 = get_msg_for_admin_mail(request=request, service=service.name, obj=support,
-                                                width=request.POST.get('dim_1'),
-                                                height=request.POST.get('dim_2'),
-                                                quantity=request.POST.get('quantity'),
-                                                comment=request.POST.get('special_instructions'),
-                                                delivery=request.POST.get('delivery_mode'),
-                                                img_path=design_path,
-                                                colors=colors,
-                                                name=request.user.name,
-                                                email=request.user.email,
-                                                tel_number=request.user.tel_num,
-                                                town=request.POST.get('adress_delivery'))
                 
-                mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body1,
-                                subject="Confirmation de réception de votre commande")
+                mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}
+                                   , context=ctx, is_formation=False, formation_name=service.name)
 
-                mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name}, html_msg=msg_body2,
-                            subject="Nouvelle commande enregistrée pour Broderie Numérique")
+                mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name},
+                               admin_edit_view = f"/admin/Services/customizedservice/{subs_user.pk}/change/", 
+                               is_formation=False, 
+                               formation_name=service.name, 
+                               reason="new service order")
 
                 return serviceView(request, slug=request.POST.get('slug'), errors=0, success=1, success_txt="Felicitations votre commande a été enregistrée ")
             

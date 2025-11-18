@@ -2,7 +2,6 @@
 __pycache__/
 deploy.sh
 launching_server.bat
-mail_sender.py
 README.md
 test.py
 script.sh
