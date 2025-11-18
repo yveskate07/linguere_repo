@@ -20,7 +20,7 @@ import platform
 if platform.system() == "Linux":
     path_wkhtmltopdf = "/usr/bin/wkhtmltopdf"
 else:
-    path_wkhtmltopdf = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+    path_wkhtmltopdf = r"C:\Program Files\wkhtlmtopdf\wkhtmltox\bin\wkhtmltopdf.exe"
 
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
