@@ -95,7 +95,7 @@ def register_user(request):
             mail_subject = 'Veuillez activer votre compte.'
             email_template = 'Users/emails/account_verification.html'
 
-            sent_mail = send_verification_email.delay(request, user, mail_subject, email_template)
+            send_verification_email.delay(request, user, mail_subject, email_template)
 
             messages.success(request, "Votre compte a été créé avec succès! Veuillez vérifier votre e-mail pour activer votre compte.")
             return redirect('login')

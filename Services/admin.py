@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from Services.models import *
+from .models import *
 
 
 class GalerieImageForServiceInline(admin.TabularInline):
@@ -80,7 +80,7 @@ class FieldForServiceInline(admin.TabularInline):
 # Register your models here.
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    fields = ('name','description', 'description_accueil','slug',)
+    fields = ('description', 'description_accueil','slug',)
     readonly_fields = ('slug',)
     inlines = [GalerieImageForServiceInline, FieldForServiceInline]
     list_display = ('name','description',)

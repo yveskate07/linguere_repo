@@ -12,6 +12,8 @@ python manage.py collectstatic --no-input
 
 echo "applying database migrations..."
 
+python manage.py makemigrations
+
 python manage.py migrate
 
 # Make sure the script is executable before adding it to version control:

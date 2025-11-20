@@ -166,8 +166,8 @@
             <h1>NOS SERVICES</h1>
         </div>
         
-        <div class="grid">
-            {% if other_services %}
+        {% if other_services %}
+            <div class="grid">
                 {% for service in other_services %}
                     <div class="card" data-aos="fade-up">
                         <a href="{{service.get_absolute_url}}"></a>
@@ -178,17 +178,21 @@
                         <h2 class="card-image-title">{{service.name}}</h2>
                     </div>
                 {% endfor %}
-            {% endif %}
 
-            <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                <a href="#"></a>
-                <div class="overlay">
-                    <div class="card-title">Impressions Numériques</div>
-                    <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
+                <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <a href="#"></a>
+                    <div class="overlay">
+                        <div class="card-title">Impressions Numériques</div>
+                        <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
+                    </div>
+                    <h2 class="card-image-title">Impressions Numériques Proposées</h2>
                 </div>
-                <h2 class="card-image-title">Impressions Numériques Proposées</h2>
             </div>
-        </div>
+        {% else %}
+
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun service disponible pour le moment.</p>
+        
+        {% endif %}
     </div>
 
     {% if serv_imp_num_prop %}
@@ -226,6 +230,7 @@
         <div class="section-title" data-aos="fade-up">
             <h1>NOS FORMATIONS</h1>
         </div>
+        {% if formation_available %}
         <div class="formations-container">
             <div class="premiere-ligne">
                 <!-- Partie gauche -->
@@ -300,6 +305,9 @@
             </div>
             {% endif %}
         </div>
+        {% else %}
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucune formation disponible pour le moment.</p>
+        {% endif %}
     </div>
 
     <!-- Testimonials Section -->
@@ -353,128 +361,131 @@
     </section>
 
     <!-- Projects Section -->
-    {% if activities%}
     <div class="container py-5" id="projects-section">
         <div class="section-title" data-aos="fade-up">
             <h1>PROJETS & INITIATIVES</h1>
         </div>
 
-        <div class="grid">
-            {% for activity in activities %}
-                <div class="card" data-aos="fade-up">
-                    <img src="{{activity.get_image_url|safe}}" alt="{{activity.name}}">
-                    <div class="overlay">
-                        <div class="card-title">{{activity.name}}</div>
-                        <div class="card-description">
-                        {{activity.description|safe}}<br><br>
-                            <a href="{{ activity.get_absolute_url }}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+        {% if activities%}
+
+            <div class="grid">
+                {% for activity in activities %}
+                    <div class="card" data-aos="fade-up">
+                        <img src="{{activity.get_image_url|safe}}" alt="{{activity.name}}">
+                        <div class="overlay">
+                            <div class="card-title">{{activity.name}}</div>
+                            <div class="card-description">
+                            {{activity.description|safe}}<br><br>
+                                <a href="{{ activity.get_absolute_url }}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                        </div>
+                        <h2 class="card-image-title">{{activity.name}}</h2>
                     </div>
-                    <h2 class="card-image-title">{{activity.name}}</h2>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun projet disponible pour le moment.</p>
+        {% endif %}
     </div>
-    {% endif %}
 
     <style>
-    /* ---pour la partie service 5--- */
-    .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
+        /* ---pour la partie service 5--- */
+        .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.modal-content .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 900px;
-}
-.close {
-    color: #0a0000;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .close {
+            color: #0a0000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-.card {
-    position: relative;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-}
+        .card {
+            position: relative;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+        }
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* background: linear-gradient(135deg, rgba(102, 175, 248, 0.9) 0%, rgba(79, 226, 245, 0.8) 100%); */
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* background: linear-gradient(135deg, rgba(102, 175, 248, 0.9) 0%, rgba(79, 226, 245, 0.8) 100%); */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-.card:hover .overlay {
-    opacity: 1;
-}
+        .card:hover .overlay {
+            opacity: 1;
+        }
 
-.card-title {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
 
-.card-description {
-    text-align: center;
-    padding: 10px;
-}
-
-
+        .card-description {
+            text-align: center;
+            padding: 10px;
+        }
 
 
-/* ------pour la corrrection du modale pour les conditions generales-------- */
-    .modal {
-        z-index: 1050;
-    }
 
-    .modal-backdrop {
-        z-index: 1040;
-    }
 
-    .modal-body {
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
-    }
-</style>
+        /* ------pour la corrrection du modale pour les conditions generales-------- */
+        .modal {
+            z-index: 1050;
+        }
+
+        .modal-backdrop {
+            z-index: 1040;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+    </style>
 
     <!-- Newsletter Section 
     <section class="newsletter">

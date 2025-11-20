@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from Shop.models import Product, Order, Invoice, Payment
+from .models import Product, Order, Invoice, Payment
 from django.utils.translation import gettext_lazy as _
 
 

@@ -27,20 +27,10 @@ CINETPAY_API_KEY = config("CINETPAY_API_KEY")
 CINETPAY_SITE_ID = config("CINETPAY_SITE_ID")
 CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
-try:
-    from django.contrib.messages import constants as messages
-    MESSAGE_TAGS = {
-        messages.DEBUG: 'alert-info',
-        messages.INFO: 'alert-info',
-        messages.SUCCESS: 'alert-success',
-        messages.WARNING: 'alert-warning',
-        messages.ERROR: 'alert-error'
-    }
-except Exception as e:
-    pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOCAL = True
 
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
@@ -56,7 +46,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('SMTP_SERVER')
 EMAIL_PORT = config('SMTP_PORT')
 EMAIL_HOST_USER = config('SENDER')
-EMAIL_HOST_PASSWORD = config('PASSWORD')  # ne pas utiliser ton mot de passe Gmail directement
+EMAIL_HOST_PASSWORD = config('PASSWORD') 
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -116,19 +106,43 @@ TEMPLATES = [
 ASGI_APPLICATION = 'AntaBackEnd.asgi.application'
 WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
+if not DEBUG and not LOCAL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
+            },
         },
-    },
-}
+    }
+elif LOCAL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
+            },
+        },
+    }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+if LOCAL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
         default=config('DATABASE_URL'),
@@ -183,9 +197,7 @@ STATICFILES_DIRS = [
 ]
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if not DEBUG and not LOCAL:
 
     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
     # and renames the files with unique names for each version to support long-term caching
@@ -224,5 +236,9 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'Linguere FabLab <linguerefablab.net@gmail.com>'
 
 # Celery
-CELERY_BROKER_URL = config('CELERY_BROKER_URL') 
-CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL')
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379')
+CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL', default='redis://localhost:6379')
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

@@ -1,8 +1,8 @@
-from celery import shared_task
+from email.message import EmailMessage
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
-
+from celery import shared_task
 
 # une fonction qui envoie un mail a Linguere Fablab
 @shared_task
@@ -56,9 +56,37 @@ def mail_to_fablab(user:dict, is_formation=True , admin_edit_view='' ,formation_
     mail.send()
 
 
+# une fonction qui envoie un mail a l'utilisateur qui a demandé la brochure
+@shared_task
+def brochure_to_client_through_mail(receiver_email, admin_edit_view, formation_name, user:dict, reason='new pdf downloaded', msg_=None):
+    
+    """
+    fonction qui envoie un mail a l'utilisateur avec la brochure en pièce jointe
+    et qui notifie Linguere Fablab du téléchargement de la brochure.
+    """
+
+    sender_email = settings.EMAIL_HOST_USERsender_email = settings.EMAIL_HOST_USER
+    message = render_to_string('Services/mail_with_pdfs/index.html', {
+        'formation_name': formation_name,
+    })
+
+    mail = EmailMessage(f"Brochure {formation_name}", message, sender_email, to=[receiver_email])
+    mail.content_subtype = "html"
+    mail.reply_to = [settings.DEFAULT_FROM_EMAIL]
+
+    chemin_pdf = settings.BASE_DIR / 'Formations' / 'static' / 'Formations' / 'brochures' / formation_name / 'brochure.pdf'
+    
+    with open(chemin_pdf, 'rb') as f:
+        mail.attach('document.pdf', f.read(), 'application/pdf')
+
+    mail.send()
+
+    mail_to_fablab(formation_name=formation_name, admin_edit_view=admin_edit_view, user=user, reason=reason)
+
+
 # une fonction qui envoie un mail a Linguere fablab indiquant qu'un utilisateur s'est inscrit à tel formation.
 @shared_task
-def mail_to_the_client(user:dict, is_formation, formation_name=None, context = None):
+def mail_to_the_client(user:dict, is_formation=True, formation_name=None, context = None):
 
     """
     fonction qui envoie un mail a l'utilisateur lorsque:

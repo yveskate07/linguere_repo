@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 
-from AntaBackEnd import settings
+from django.conf import settings
 from Users.models import Fab_User
 from .models import Payment, Product, Order
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse

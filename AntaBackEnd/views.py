@@ -73,6 +73,8 @@ def home(request):
     except Exception:
         context['formation_laser'] = None
 
+    context['formation_available'] = context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser']
+
     context['user_id'] = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     context['serv_imp_num_prop'] = Service.objects.filter(name__in = ['Impression sur Papier et Supports Rigides',
                                                     'Impression sur Textiles et Vêtements',

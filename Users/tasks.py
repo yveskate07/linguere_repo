@@ -5,9 +5,9 @@ from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
-from AntaBackEnd.celery import app
+from celery import shared_task
 
-@app.task
+@shared_task
 def send_verification_email(request, user, mail_subject, email_template):
     from_email = settings.EMAIL_HOST_USER
     protocol = 'https' if request.is_secure() else 'http'
@@ -29,6 +29,8 @@ def send_verification_email(request, user, mail_subject, email_template):
         # Logger l’erreur
         print("Erreur envoi mail:", e)
 
+
+@shared_task
 def send_notification(mail_subject, mail_template, context):
     from_email = settings.EMAIL_HOST_USER
     message = render_to_string(mail_template, context)
