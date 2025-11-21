@@ -7,12 +7,15 @@ from django.contrib.auth.tokens import default_token_generator
 from celery import shared_task
 
 @shared_task
-def send_verification_email(protocol, current_site, user, mail_subject, email_template):
+def send_verification_email(protocol, domain, user, mail_subject, email_template):
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    user = User.objects.get(pk=user_id)
     from_email = settings.EMAIL_HOST_USER
     message = render_to_string(email_template, {
         'user': user,
         'protocol': protocol,
-        'domain': current_site,
+        'domain': domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': default_token_generator.make_token(user),
     })
