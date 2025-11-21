@@ -80,3 +80,8 @@ socket.onmessage = function (e) {
                 }
             }
         }
+
+// quand la connexion ws est etablie
+socket.onopen = function (e) {
+    console.log("WebSocket connection established.");
+}

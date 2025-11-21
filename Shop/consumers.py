@@ -12,6 +12,7 @@ from .services.cart_service import CartService
 
 class ProductConsumerAuth(AsyncWebsocketConsumer):
     async def connect(self):
+        print("WebSocket connected")
         await self.accept()
         await self.send(text_data=json.dumps({'msg': 'success'}))
 
