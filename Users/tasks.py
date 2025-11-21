@@ -1,4 +1,3 @@
-from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -8,10 +7,8 @@ from django.contrib.auth.tokens import default_token_generator
 from celery import shared_task
 
 @shared_task
-def send_verification_email(request, user, mail_subject, email_template):
+def send_verification_email(protocol, current_site, user, mail_subject, email_template):
     from_email = settings.EMAIL_HOST_USER
-    protocol = 'https' if request.is_secure() else 'http'
-    current_site = get_current_site(request)
     message = render_to_string(email_template, {
         'user': user,
         'protocol': protocol,

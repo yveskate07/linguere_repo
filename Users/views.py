@@ -1,11 +1,9 @@
 import json
-import re
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, JsonResponse
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
 from .auth_form import UserLoginForm, UserSignUpForm
@@ -95,8 +93,10 @@ def register_user(request):
             # Send verification email
             mail_subject = 'Veuillez activer votre compte.'
             email_template = 'Users/emails/account_verification.html'
+            protocol = 'https' if request.is_secure() else 'http'
+            current_site = get_current_site(request)
 
-            send_verification_email.delay(request, user, mail_subject, email_template)
+            send_verification_email.delay(protocol, current_site, user, mail_subject, email_template)
             print("APRES ENVOI DU MAIL !")
 
 

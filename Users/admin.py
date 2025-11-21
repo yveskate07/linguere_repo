@@ -9,4 +9,4 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("first_name", "last_name", "email",)
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
