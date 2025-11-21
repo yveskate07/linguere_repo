@@ -90,12 +90,15 @@ def register_user(request):
             )
 
             user.save()
+            print('RECEPTION DES DONNEES OK ! ENVOI DE MAIL...')
 
             # Send verification email
             mail_subject = 'Veuillez activer votre compte.'
             email_template = 'Users/emails/account_verification.html'
 
             send_verification_email.delay(request, user, mail_subject, email_template)
+            print("APRES ENVOI DU MAIL !")
+
 
             messages.success(request, "Votre compte a été créé avec succès! Veuillez vérifier votre e-mail pour activer votre compte.")
             return redirect('login')

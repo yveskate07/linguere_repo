@@ -24,10 +24,13 @@ def send_verification_email(request, user, mail_subject, email_template):
     mail.content_subtype = "html"
     mail.reply_to = [settings.DEFAULT_FROM_EMAIL]
     try:
+        print("ENVOI DU MAIL...")
         mail.send()
     except Exception as e:
         # Logger l’erreur
-        print("Erreur envoi mail:", e)
+        print("Erreur envoi mail : ", e)
+    else:
+        print("MAIL ENVOYÉ AVEC SUCCES !")
 
 
 @shared_task
