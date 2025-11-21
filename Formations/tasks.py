@@ -3,6 +3,13 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from celery import shared_task
+import time
+
+@shared_task
+def double_nombre(x):
+    time.sleep(5)     # On simule une petite tâche
+    return x * 2
+
 
 # une fonction qui envoie un mail a Linguere Fablab
 @shared_task

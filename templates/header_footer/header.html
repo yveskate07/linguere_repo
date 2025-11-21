@@ -1,6 +1,5 @@
 {% load static %}
 
-{% block header %}
 <!-- Top Bar -->
 <div class="top-bar">
     <div class="container d-flex flex-wrap justify-content-center justify-content-md-between">
@@ -16,7 +15,7 @@
 <nav>
     <div class="container d-flex flex-wrap justify-content-between align-items-center">
         <div class="logo animate__animated animate__fadeInLeft d-flex align-items-center">
-            <a href="{% url 'home' %}"><img src="{% static 'AntaBackend/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3"></a>
+            <a href="{% url 'home' %}"><img src="{% static 'AntaBackEnd/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3"></a>
             <span class="nav-brand">LINGUERE FABLAB</span>
         </div>
 
@@ -75,5 +74,3 @@
         <a href="#contact"><i class="fas fa-envelope me-2"></i> CONTACT</a>
     </div>
 </div>
-
-{% endblock %}

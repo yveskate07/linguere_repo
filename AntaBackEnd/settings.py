@@ -40,6 +40,7 @@ else:
 ALLOWED_HOSTS = [
     "linguere-web.onrender.com",
     "localhost",
+    "172.31.124.218",
     "127.0.0.1",]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -107,29 +108,35 @@ ASGI_APPLICATION = 'AntaBackEnd.asgi.application'
 WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
 
 if not DEBUG and not LOCAL:
+    # Mode production
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
             },
         },
     }
+
 elif LOCAL:
+    # Mode local (sans redis)
     CHANNEL_LAYERS = {
         "default": {
-            "BACKEND": "channels.layers.InMemoryChannelLayer"
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
         }
     }
+
 else:
+    # Mode debug, mais avec Redis
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379')],
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
             },
         },
     }
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -236,8 +243,14 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'Linguere FabLab <linguerefablab.net@gmail.com>'
 
 # Celery
-CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379')
-CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL', default='redis://localhost:6379')
+
+if LOCAL:
+    CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+else:
+    CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379')
+    CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL', default='redis://localhost:6379')
+
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

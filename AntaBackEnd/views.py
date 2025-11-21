@@ -1,8 +1,8 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.auth.views import LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView
-from django.http import HttpResponse
+from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetConfirmView
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -10,8 +10,20 @@ from Activities.models import Activity
 from Formations.models import Formations
 from Services.models import Service
 from Users.auth_form import UserLoginForm, UserSignUpForm
-from Users.models import Fab_User
 
+
+def test_celery(request):
+    from Formations.tasks import double_nombre
+    task = double_nombre.delay(10)
+    return JsonResponse({'task_id': task.id})
+
+def status_celery(request, task_id):
+    from celery.result import AsyncResult
+    result = AsyncResult(task_id)
+    return JsonResponse({
+        "state": result.state,
+        "result": result.result
+    })
 
 class FabLabLogoutView(LogoutView):
     next_page = '/login'
