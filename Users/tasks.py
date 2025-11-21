@@ -10,7 +10,7 @@ from celery import shared_task
 def send_verification_email(protocol, domain, user, mail_subject, email_template):
     from django.contrib.auth import get_user_model
     User = get_user_model()
-    user = User.objects.get(pk=user_id)
+    user = User.objects.get(pk=user)
     from_email = settings.EMAIL_HOST_USER
     message = render_to_string(email_template, {
         'user': user,
