@@ -94,7 +94,7 @@ def register_user(request):
             mail_subject = 'Veuillez activer votre compte.'
             email_template = 'Users/emails/account_verification.html'
             protocol = 'https' if request.is_secure() else 'http'
-            current_site = get_current_site(request).domain
+            domain = get_current_site(request).domain
 
             send_verification_email.delay(protocol, domain, user.pk, mail_subject, email_template)
             print("APRES ENVOI DU MAIL !")
