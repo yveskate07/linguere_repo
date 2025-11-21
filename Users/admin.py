@@ -6,7 +6,7 @@ from Users.models import Fab_User
 
 @admin.register(Fab_User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "email",)
+    list_display = ("first_name", "last_name", "email", "is_staff", "is_active")
 
     def has_delete_permission(self, request, obj=None):
         return True
