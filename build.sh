@@ -15,5 +15,7 @@ python manage.py makemigrations
 
 python manage.py migrate
 
+python create_superuser.py
+
 # Make sure the script is executable before adding it to version control:
 # chmod a+x build.sh

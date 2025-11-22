@@ -13,3 +13,4 @@ migrations.sh
 note.txt
 db.sqlite3
 useless.txt
+render_psql.md
