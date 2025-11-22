@@ -1,63 +1,86 @@
 {% load static %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 
 <head>
-    <link rel="stylesheet" type="text/css" hs-webfonts="true" href="https://fonts.googleapis.com/css?family=Lato|Lato:i,b,bi">
-    <meta property="og:title" content="Email template">  
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style type="text/css">
-      #email {
-        margin: auto;
-        width: 600px;
-        background-color: white;
-      }  
-      .activate-btn{
-        font: inherit;
-        background-color: #C33332;
-        border: none;
-        padding: 10px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: 900;
-        border-radius: 5px; 
-        text-decoration: none;
-      }      
-    </style>    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Police (généralement bien supportée) -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+
+    <title>Email</title>
 </head>
-<body bgcolor="#F5F8FA" style="width: 100%; margin: auto 0; padding:0; font-family:Lato, sans-serif; font-size:16px; color:#33475B; word-break:break-word">
-  
-<div id="email">
-  <table role="presentation" width="100%">
-    <tr>
-    <td  align="center" style="color: white;">
-     <img alt="Logo" src="{% static 'AntaBackEnd/images/logos.jpeg' %}" width="400px" align="middle">
-      </td>
-  </table>
 
-  <table bgcolor="#EAF0F6" width="100%" role="presentation" border="0" cellpadding="0" cellspacing="10px" style="padding: 30px 30px 60px 60px;">
-    <tr>
-      <td>
-        <h2 style="text-align: center;">Activez votre compte</h2>
-        <p style="text-align: center;">Veuillez verifier votre adresse email pour activer votre compte.</p>
-        <div style="text-align: center;">
-          <a href="{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}" class="activate-btn" style="color: #fff;">Activez votre compte</a>
-        </div>
-      </td> 
-    </tr>
-  </table>
+<body style="margin:0; padding:0; background-color:#F5F8FA; font-family:Lato, sans-serif; color:#33475B;">
 
-  <table role="presentation" bgcolor="#C33332" width="100%">
-      <tr>
-        <td align="center" style="padding: 15px 15px; color: #fff;">
-          <p>© {% now "Y" %} Linguere FabLab, All Rights Reserved.</p>
-          <a href="{{ protocol }}://{{ domain }}" style="color:#fff;">Visitez notre site</a>      
-        </td>
-      </tr>
-  </table> 
-</div>
+<!-- Table parent responsive -->
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#F5F8FA; padding:0; margin:0;">
+  <tr>
+    <td align="center">
+
+      <!-- Container principal -->
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+             style="max-width:600px; width:100%; background-color:#FFFFFF;">
+
+        <!-- LOGO -->
+        <tr>
+          <td align="center" style="padding:20px;">
+            <img src="{{ protocol }}://{{ domain }}{% static 'AntaBackEnd/images/logos.jpeg' %}"
+                 alt="Logo"
+                 width="300"
+                 style="display:block; max-width:100%; height:auto;">
+          </td>
+        </tr>
+
+        <!-- CONTENU PRINCIPAL -->
+        <tr>
+          <td bgcolor="#EAF0F6" style="padding:40px 20px;">
+
+            <h2 style="text-align:center; margin:0 0 15px 0; font-size:22px;">Activez votre compte</h2>
+
+            <p style="text-align:center; margin:0 0 25px 0; font-size:16px;">
+              Veuillez vérifier votre adresse email pour activer votre compte.
+            </p>
+
+            <!-- BOUTON -->
+            <div style="text-align:center;">
+              <a href="{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}"
+                 style="
+                    background-color:#C33332;
+                    color:#FFFFFF;
+                    padding:12px 22px;
+                    text-decoration:none;
+                    font-weight:bold;
+                    border-radius:5px;
+                    display:inline-block;
+                 ">
+                Activez votre compte
+              </a>
+            </div>
+
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td bgcolor="#C33332" align="center" style="padding:20px; color:#FFFFFF;">
+            <p style="margin:0; font-size:14px;">
+              © {% now "Y" %} Linguere FabLab, All Rights Reserved.
+            </p>
+            <a href="{{ protocol }}://{{ domain }}" style="color:#FFFFFF; text-decoration:none; font-size:14px;">
+              Visitez notre site
+            </a>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
+
 </body>
 </html>

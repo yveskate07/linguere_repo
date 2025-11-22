@@ -111,11 +111,3 @@ def about(request):
     user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     return render(request, "AntaBackEnd/about/index.html", context={
         'user_id': user_id,})
-
-class FabPassResetView(PasswordResetView):
-    subject_template_name = "registration/password_reset_subject.txt"
-
-class FabPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'registration/password_reset_confirm.html'
-    form_class = SetPasswordForm
-    success_url = reverse_lazy('login')

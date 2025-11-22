@@ -1,15 +1,69 @@
 import json
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
+from Users.forms import UserResetPasswordForm
 from .auth_form import UserLoginForm, UserSignUpForm
 from .tasks import send_verification_email
 from Shop.services.cart_service import CartService
 from .models import Fab_User
+
+
+def reset_password_validate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Fab_User._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Fab_User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid'] = uid
+        messages.info(request, 'Veuillez réinitialiser votre mot de passe.')
+        return redirect('reset_password')
+    else:
+        messages.error(request, 'Le lien de réinitialisation du mot de passe est invalide, veuillez en demander un nouveau.')
+        return redirect('login')
+
+def reset_password(request):
+    if request.method == 'POST':
+        form = UserResetPasswordForm(request.POST)
+        if form.is_valid():
+            pk = request.session.get('uid')
+            user = Fab_User.objects.get(pk=pk)
+            user.set_password(form.cleaned_data['new_password1'])
+            user.save()
+            messages.success(request, 'Votre mot de passe a été réinitialisé avec succès.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Erreur lors de la réinitialisation du mot de passe.')
+            return render(request, 'Users/reset_password/index.html', {'form': UserResetPasswordForm(), 'errors': form.errors})
+
+    return render(request, 'Users/reset_password/index.html', {'form': UserResetPasswordForm()})
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+
+        if Fab_User.objects.filter(email=email).exists():
+            user = Fab_User.objects.get(email__exact=email)
+
+            # send reset password email
+            mail_subject = 'Modification de votre mot de passe.'
+            email_template = 'Users/emails/reset_password_email.html'
+            protocol = 'https' if request.is_secure() else 'http'
+            domain = get_current_site(request).domain
+            send_verification_email.delay(protocol, domain, user.pk, mail_subject, email_template, user_name=user.first_name)
+
+            messages.success(request, 'Le lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Account does not exist')
+            return redirect('forgot_password')
+    return render(request, 'Users/forgot_password/index.html')
 
 def check_user_activated(request):
     if not request.user.is_active:

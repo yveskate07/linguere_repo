@@ -1,9 +1,10 @@
 {% if messages %}
+<div class="toast-container-custom">
     {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible show-notification" role="alert">            
-           <strong>{{message}}</strong>
-           <button type="button" class="close btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
+           <strong>{{ message }}</strong>
+           <button type="button" class="close btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
+</div>
 {% endif %}

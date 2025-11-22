@@ -2,6 +2,7 @@
 __pycache__/
 deploy.sh
 launching_server.bat
+Notes.md
 README.md
 test.py
 script.sh

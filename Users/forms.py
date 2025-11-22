@@ -42,4 +42,22 @@ class UserEditForm(forms.ModelForm):
         }
 
 
+class UserResetPasswordForm(forms.Form):
+    new_password1 = forms.CharField(
+        label="Nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={"placeholder": "Entrez le nouveau mot de passe"})
+    )
+    new_password2 = forms.CharField(
+        label="Confirmer le nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={"placeholder": "Confirmez le nouveau mot de passe"})
+    )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("new_password1")
+        password2 = cleaned_data.get("new_password2")
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Les mots de passe ne correspondent pas.")
+
+        return cleaned_data

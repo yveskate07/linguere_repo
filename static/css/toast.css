@@ -1,19 +1,31 @@
+.toast-container-custom {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    z-index: 9999;
+    flex-direction: column-reverse;
+}
+
+
+/* Animation identique */
 @keyframes show-toast {
     0% {
         transform: translateY(100px);
         opacity: 0;
     }
-
     15% {
         transform: translateY(0);
         opacity: 1;
     }
-
     85% {
         transform: translateY(0);
         opacity: 1;
     }
-
     100% {
         transform: translateY(100px);
         opacity: 0;
@@ -21,13 +33,10 @@
 }
 
 .show-notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
     animation-name: show-toast;
     animation-duration: 5s;
     animation-fill-mode: both;
-    z-index: 9999;
+
     max-width: 400px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
