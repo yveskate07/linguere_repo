@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 set -o errexit
 
 echo "updating system packages and installing wkhtmltopdf..."
