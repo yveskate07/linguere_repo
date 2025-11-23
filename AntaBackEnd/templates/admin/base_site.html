@@ -6,39 +6,39 @@
 <style>
   :root {
     /* Barre de titre */
-#header {
-    background-color: #e74c3c !important;
-    color: white !important;
-}
+    #header {
+        background-color: #e74c3c !important;
+        color: white !important;
+    }
 
-/* Lien du titre */
-#header h1 a {
-    color: white !important;
-}
+    /* Lien du titre */
+    #header h1 a {
+        color: white !important;
+    }
 
-/* Menu de gauche */
-#nav-sidebar {
-    background-color: #2178d0 !important;
-}
+    /* Menu de gauche */
+    #nav-sidebar {
+        background-color: #2178d0 !important;
+    }
 
-/* Boutons */
-button, input[type=submit], .button {
-    background: #e74c3c !important;
-    color: white !important;
-}
+    /* Boutons */
+    button, input[type=submit], .button {
+        background: #e74c3c !important;
+        color: white !important;
+    }
 
-  }
+    }
 
   img {
   max-width: 60px; /* Example: set equal width and height */
   height: auto; /* Maintain aspect ratio */
   border-radius: 50%;
-}
+    }
 </style>
 {% endblock %}
 
 {% block branding %}
-<img src="{% static 'AntaBackend/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3">
+<img src="{% static 'AntaBackEnd/images/logos.jpeg' %}" alt="Logo" class="logo-img me-3">
 <h1 id="site-name"><a href="{% url 'admin:index' %}">LINGUERE FABLAB ADMINISTRATION</a></h1>
 {% endblock %}
 
