@@ -173,7 +173,7 @@ def user_home(request):
         return redirect('/admin')
     return render(request ,'Users/home/index.html', {'user':user,
         
-        'user_id': user_id,
+        'user_id': user.pk,
         'products_cart': products_cart['products'],
         'products_cart_js': json.dumps(products_cart['products']),
         'total_price_cart': products_cart['total_price'],})
