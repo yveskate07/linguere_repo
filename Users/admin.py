@@ -1,12 +1,34 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from Users.models import Fab_User
 
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = Fab_User
+        fields = ("username", "email", "first_name", "last_name", "tel_num", "adress")
 
-# Register your models here.
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = Fab_User
+        fields = "__all__"
+
 
 @admin.register(Fab_User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "email", "is_staff", "is_active")
+class UserAdmin(BaseUserAdmin):
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
 
-    def has_delete_permission(self, request, obj=None):
-        return True
+    list_display = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        ("Informations personnelles", {"fields": ("first_name", "last_name", "email", "tel_num", "adress")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+    )
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": ("username", "email", "first_name", "last_name", "tel_num", "adress", "password1", "password2"),
+        }),
+    )
