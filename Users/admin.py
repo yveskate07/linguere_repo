@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from Users.models import Fab_User
+from .models import Fab_User
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
