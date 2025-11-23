@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.http import HttpResponseRedirect
 from .models import Fab_User
 
 class CustomUserCreationForm(UserCreationForm):
@@ -32,3 +33,9 @@ class UserAdmin(BaseUserAdmin):
             "fields": ("username", "email", "first_name", "last_name", "tel_num", "adress", "password1", "password2"),
         }),
     )
+
+    def response_add(self, request, obj, post_url_continue=None):
+        """
+        Après ajout, on revient toujours à la liste des utilisateurs.
+        """
+        return HttpResponseRedirect("../")

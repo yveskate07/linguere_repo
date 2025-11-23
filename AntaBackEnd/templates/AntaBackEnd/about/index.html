@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'AntaBackEnd/about/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
 </head>
 <body data-user-id={{user_id}}>
 
@@ -165,6 +166,13 @@
         <a href="#contact" class="btn" data-aos="zoom-in" data-aos-delay="400">Contactez-nous</a>
     </div>
 </section>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- load messages -->
+        {% include 'alerts.html' %}
+    </div>
+</div>
 
 
 {% include 'header_footer/footer.html' %}
