@@ -15,3 +15,6 @@ db.sqlite3
 useless.txt
 render_psql.md
 tasks.md
+commit_and_push.sh
+dj_superuser_render.md
+cmds_bash.md
