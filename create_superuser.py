@@ -1,5 +1,6 @@
 import os
 import django
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "AntaBackEnd.settings")
@@ -12,3 +13,6 @@ if not User.objects.filter(is_superuser=True).exists():
     print("Superuser créé !")
 else:
     print("Superuser existe déjà.")
+
+# displaying if wether we are using a sqlite3 database or postgresql database
+print(f"database used is {settings.DATABASES}")
