@@ -20,7 +20,7 @@ for user in User.objects.all():
 
 
 
-if not User.objects.filter(is_superuser=True).exists():
+if not User.objects.filter(username="linguerefablab", is_superuser=True).exists():
     User.objects.create_superuser(first_name="linguere", last_name="fablab",username="linguerefablab" ,tel_num="+221773146662" ,adress="Senegal" , email="linguerefablab@gmail.com", password="azerty12345")
     print("Superuser créé !")
 else:
