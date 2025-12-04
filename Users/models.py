@@ -83,7 +83,6 @@ class Fab_User(AbstractUser):
         super().save(*args, **kwargs)  # d'abord on sauvegarde l'utilisateur
 
         if is_new and self.first_time:
-            Cart.objects.create(user=self)
             self.first_time = False
             super().save(update_fields=["first_time"])
 

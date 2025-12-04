@@ -6,5 +6,5 @@ class UsersConfig(AppConfig):
     name = 'Users'
     verbose_name = 'Utilisateurs'
 
-"""def ready(self):
-    from Users import signals"""
+def ready(self):
+    from Users import signals
