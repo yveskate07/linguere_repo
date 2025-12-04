@@ -26,6 +26,7 @@ class Formations(models.Model):
 
     class Meta:
         verbose_name = 'Formation'
+        verbose_name_plural = 'Formations'
         ordering = ["name"]
 
     def __str__(self):
@@ -101,11 +102,10 @@ class Prerequisites(models.Model): # prerequis pour une formation
     ]
 
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Prerequisites')
-    name = models.CharField(max_length=30)
-    level = models.CharField(choices=LEVELS, max_length=15)
+    name = models.CharField(max_length=30, verbose_name='Nom')
+    level = models.CharField(choices=LEVELS, max_length=15, verbose_name='Niveau')
     image = models.ImageField(blank=True, null=True, upload_to='Formations/prerequis_image',
                               verbose_name='Image')
-
 
     class Meta:
         verbose_name = "Préréquis par formation"
@@ -122,8 +122,8 @@ class Prerequisites(models.Model): # prerequis pour une formation
 
 class SkillGained(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='SkillsGained')
-    name = models.CharField(max_length=30)
-    description_skill = models.TextField(blank=True, null=True, default='')
+    name = models.CharField(max_length=30, verbose_name='Nom')
+    description_skill = models.TextField(blank=True, null=True, default='', verbose_name='Description')
 
     class Meta:
         verbose_name = "Compétences acquise par formation"
@@ -140,12 +140,12 @@ class SkillGained(models.Model):
 
 class MotivPoints(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='MotivPoints')
-    name = models.CharField(max_length=30)
-    description = models.TextField()
+    name = models.CharField(max_length=30, verbose_name='Nom')
+    description = models.TextField(default='', verbose_name='Description')
 
     class Meta:
         verbose_name = "Motivation"
-        verbose_name_plural = "Pourquoi suivre cette formation ?"
+        verbose_name_plural = "Motivations"
         ordering = ["name"]
 
     def __str__(self):
@@ -154,7 +154,7 @@ class MotivPoints(models.Model):
 class Advantages(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Advantages')
     name = models.CharField(max_length=30)
-    description = models.TextField()
+    description = models.TextField(default='', verbose_name='Description')
 
     class Meta:
         verbose_name = "Avantage de notre formation"
@@ -163,25 +163,6 @@ class Advantages(models.Model):
 
     def __str__(self):
         return "Avantages de la formation "+self.formation.name
-
-"""class Testimony(models.Model):
-
-    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=30,verbose_name="Statut")
-    comment = models.TextField(verbose_name="Commentaire")
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Testimonies')
-
-    class Meta:
-        verbose_name = "Témoignage"
-        #ordering = ["username"]
-
-    def __str__(self):
-        return self.username + ' - ' + self.formation
-
-    def description(self):
-        return "Témoignages des Formations"
-
-    description.short_description = "Description"""
 
 class SignedUpUser(models.Model):
 
@@ -199,8 +180,8 @@ class SignedUpUser(models.Model):
 
     user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
     availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel', verbose_name="Disponibilité")
-    session = models.CharField(choices=SESSIONS, max_length=30, default='Matin (9h-12h)')
-    message = models.TextField(blank=True)
+    session = models.CharField(choices=SESSIONS, max_length=30, default='Matin (9h-12h)', verbose_name="Session")
+    message = models.TextField(blank=True, verbose_name="Message")
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='SignedUpUsers')
 
     class Meta:
@@ -224,7 +205,7 @@ class UserBrochure(models.Model):
     ]
 
     user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
-    message = models.TextField(blank=True, null=True)
+    message = models.TextField(blank=True, null=True, verbose_name="Message")
     availability = models.CharField(max_length=22, choices=AVAILABILITY, default='En ligne', verbose_name='Méthode de formation')
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, verbose_name='Formation', related_name='UserBrochures')
 
@@ -257,3 +238,22 @@ class UserRequest(models.Model):
         return f"Utilisateur ayant prit renseignement pour la formation {self.formation}"
 
     description.short_description = "Description"
+
+"""class Testimony(models.Model):
+
+    user = models.ForeignKey(Fab_User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30,verbose_name="Statut")
+    comment = models.TextField(verbose_name="Commentaire")
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Testimonies')
+
+    class Meta:
+        verbose_name = "Témoignage"
+        #ordering = ["username"]
+
+    def __str__(self):
+        return self.username + ' - ' + self.formation
+
+    def description(self):
+        return "Témoignages des Formations"
+
+    description.short_description = "Description"""

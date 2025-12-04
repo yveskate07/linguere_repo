@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from .models import Product, Order, Invoice, Payment
+from .models import *
 from django.utils.translation import gettext_lazy as _
 
 
@@ -17,6 +17,36 @@ class ProductAdmin(admin.ModelAdmin):
 
     search_fields = ('name',)
 
+class CartItemInline(admin.TabularInline):
+    model = CartItem
+    extra = 0
+    readonly_fields = ('total_price', 'added_at')
+    fields = ('product', 'quantity', 'total_price')
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('user', 'created_at', 'updated_at', 'total_price', 'total_items')
+    search_fields = ('user__username',)
+    readonly_fields = ('created_at', 'updated_at', 'total_price', 'total_items')
+
+    fieldsets = (
+        (None, {
+            'fields': ('user',)
+        }),
+        ('Cart Details', {
+            'fields': ('created_at', 'updated_at', 'total_price', 'total_items')
+        }),
+    )
+
+    inlines = [CartItemInline]
+
+    def has_view_permission(self, request, obj = ...):
+
+        if request.user.is_staff and not request.user.is_superuser:
+            True
+        else:
+            return False
+
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     change_list_template = "admin/Shop/order/change_list.html"
@@ -27,6 +57,18 @@ class PaymentAdmin(admin.ModelAdmin):
 
     search_fields = ('order__id',)
 
+    def has_view_permission(self, request, obj = ...):
+
+        if request.user.is_staff and not request.user.is_superuser:
+            True
+        else:
+            return False
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ('total',)
+    fields = ('product', 'price', 'quantity', 'total')
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -35,6 +77,9 @@ class OrderAdmin(admin.ModelAdmin):
 
     search_fields = ("id", )
     list_filter = ("status",  "date", 'complete')
+
+    inlines = [OrderItemInline]
+
 
     def save_model(self, request, obj, form, change):
         if obj.status == 'Payée':
@@ -152,6 +197,13 @@ class InvoiceAdmin(admin.ModelAdmin):
         'last_updated_date',
         'paid',
         'invoice_type')
+    
+    def has_view_permission(self, request, obj = ...):
+
+        if request.user.is_staff and not request.user.is_superuser:
+            True
+        else:
+            return False
 
 admin.site.site_title = _('LINGUERE FABLAB')
 admin.site.site_header = _('LINGUERE FABLAB')

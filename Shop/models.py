@@ -81,17 +81,23 @@ class Product(models.Model):
 
 class Cart(models.Model):
 
-    user = models.OneToOneField(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='cart')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    user = models.OneToOneField(Fab_User, on_delete=models.SET_NULL, null=True, blank=True, related_name='cart', verbose_name='Client')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créé le ')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Mis à jour le ')
 
     @property
     def total_price(self):
         return sum(item.total_price for item in self.items.all())
     
+    total_price.fget.short_description = 'Prix Total'
+    total_price.fget.admin_order_field = 'total_price'
+    
     @property
     def total_items(self):
         return sum(item.quantity for item in self.items.all())
+    
+    total_items.fget.short_description = 'Nombre d’articles'
+    total_items.fget.admin_order_field = 'total_items'
 
     @property
     def to_dict(self):
@@ -101,22 +107,33 @@ class Cart(models.Model):
         }
 
     def __str__(self):
-        return f"Panier de {self.user.username} / id : {self.id}"
+        if self.user:
+            return f"Panier de {self.user.username} / No : {self.id}"
+        return f"Panier anonyme / No : {self.id}"
+
 
     def save(self,*args,**kwargs):
         self.updated_at = django.utils.timezone.now()
         
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "Panier"
+        verbose_name_plural = "Paniers"
+
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items', null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items', null=True)
-    quantity = models.PositiveIntegerField(default=1)
-    added_at = models.DateTimeField(auto_now_add=True)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items', null=True, blank=True, verbose_name='Panier')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items', null=True, verbose_name='Produit')
+    quantity = models.PositiveIntegerField(default=1, verbose_name='Quantité')
+    added_at = models.DateTimeField(auto_now_add=True, verbose_name='Ajouté le ')
 
     @property
     def total_price(self):
         return self.product.price * self.quantity
+    
+    total_price.fget.short_description = 'Prix Total'
+    total_price.fget.admin_order_field = 'total_price'
+
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} et id:{self.id}"
@@ -141,6 +158,10 @@ class CartItem(models.Model):
             "disponibility": self.product.disponibility,
             "stock":self.product.stock
         }
+    
+    class Meta:
+        verbose_name = "Article de panier"
+        verbose_name_plural = "Articles de panier"
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -342,17 +363,27 @@ class Invoice(models.Model):
         pdfkit.from_string(html, pdf_path, options=option, configuration=config)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='order_item')
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_items')
-    quantity = models.IntegerField(verbose_name='Quantité')
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='order_item', verbose_name='Commande')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Prix')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='order_items', verbose_name='Produit')
+    quantity = models.IntegerField(default=0, verbose_name='Quantité')
 
     def __str__(self):
         return f"{self.quantity} x {self.product}"
 
     @property
     def total(self):
-        return self.quantity * self.price
+        if self.quantity and self.price:
+            return self.quantity * self.price
+        else:
+            return 0
+    
+    total.fget.short_description = 'Prix Total'
+    total.fget.admin_order_field = 'total_price'
+    
+    class Meta:
+        verbose_name = "Article de commande"
+        verbose_name_plural = "Articles de commande"
 
 class Payment(models.Model):
 

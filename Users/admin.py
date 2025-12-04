@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.models import Permission
 from django.http import HttpResponseRedirect
 from .models import Fab_User
 
@@ -25,22 +26,80 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         ("Informations personnelles", {"fields": ("first_name", "last_name", "email", "tel_num", "adress")}),
-        ("Permissions", {"fields": ("is_active", "is_staff")}),
-    )
-    """fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        ("Informations personnelles", {"fields": ("first_name", "last_name", "email", "tel_num", "adress")}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
-    )"""
-    add_fieldsets = (
-        (None, {
-            "classes": ("wide",),
-            "fields": ("username", "email", "first_name", "last_name", "tel_num", "adress", "password1", "password2"),
-        }),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "is_admin",
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
     )
 
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "tel_num",
+                    "adress",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+    )
+
+    FORBIDDEN_FIELDS = {"is_superuser", "is_admin", "groups", "user_permissions"}
+    
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+
+        if request.user.is_superuser:
+            return fieldsets
+
+        filtered = []
+        for name, data in fieldsets:
+            fields = data.get("fields", ())
+            new_fields = [f for f in fields if f not in self.FORBIDDEN_FIELDS]
+            filtered.append((name, {**data, "fields": new_fields}))
+
+        return filtered
+
+    """def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+
+        if not request.user.is_superuser:
+            # rendre certains champs non modifiables
+            disabled_fields = {"is_superuser", "groups", "user_permissions"}
+
+            for field in disabled_fields:
+                if field in form.base_fields:
+                    form.base_fields[field].disabled = True
+
+        return form"""
+
     def response_add(self, request, obj, post_url_continue=None):
-        """
-        Après ajout, on revient toujours à la liste des utilisateurs.
-        """
-        return HttpResponseRedirect("../")
+        return HttpResponseRedirect(f"{obj.id}/change/")
+    
+    def save_model(self, request, obj, form, change):
+        # Si l'utilisateur qu'on sauvegarde n'est pas superuser
+        if not obj.is_superuser:
+            try:
+                perm = Permission.objects.get(codename="view_group", content_type__app_label="auth", content_type__model="group")
+                obj.user_permissions.remove(perm)
+
+            except (ValueError, Permission.DoesNotExist):
+                pass
+
+        super().save_model(request, obj, form, change)
