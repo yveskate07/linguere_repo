@@ -174,7 +174,9 @@ def register_user(request):
 
 
             messages.success(request, "Votre compte a été créé avec succès! Veuillez vérifier votre e-mail pour activer votre compte.")
-            return redirect('login')
+            #return redirect('login')
+            login(request, user)
+            return redirect('home')
         else:
             return render(request, "Users/auths/signup.html", {'form': form})
     else:
