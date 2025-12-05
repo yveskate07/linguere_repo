@@ -93,9 +93,9 @@ def login_user(request):
 
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         # Vérification custom
-        response = check_user_activated(user, request)
+        """response = #check_user_activated(user, request)
         if response:
-            return response
+            return response"""
 
         if user is not None:
 
@@ -182,11 +182,9 @@ def register_user(request):
     else:
         return render(request, 'Users/auths/signup.html', context={'form': UserSignUpForm()})
 
-
-
 @login_required
 def user_home(request):
-    check_user_activated(request.user, request)
+    #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     # si l'utilisateur est un superuser, rediriger vers la page d'administration
     if user.is_superuser:
@@ -195,7 +193,7 @@ def user_home(request):
 
 @login_required
 def user_edit(request):
-    check_user_activated(request.user, request)
+    #check_user_activated(request.user, request)
     if request.method == "POST":
         user = get_object_or_404(Fab_User, uuid=request.user.uuid)
         user.tel_num = request.POST.get("tel_num")
@@ -212,18 +210,18 @@ def user_edit(request):
 
 @login_required
 def user_orders(request):
-    check_user_activated(request.user, request)
+    #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     return render(request, "Users/orders/index.html", {'user':user})
 
 @login_required
 def user_favourites(request):
-    check_user_activated(request.user, request)
+    #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     return render(request, "Users/favourites/index.html", {'user':user})
 
 @login_required
 def user_tracked_deliveries(request):
-    check_user_activated(request.user, request)
+    #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     return render(request, "Users/tracked_deliveries/index.html", {'user':user})
