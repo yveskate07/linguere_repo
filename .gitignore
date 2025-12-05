@@ -1,5 +1,6 @@
 # Default ignored files
 __pycache__/
+.vscode/
 deploy.sh
 launching_server.bat
 Notes.md

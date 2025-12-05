@@ -12,10 +12,10 @@ from Services.models import Service
 from Users.auth_form import UserLoginForm, UserSignUpForm
 
 
-def test_celery(request):
+"""def test_celery(request):
     from Formations.tasks import double_nombre
     task = double_nombre.delay(10)
-    return JsonResponse({'task_id': task.id})
+    return JsonResponse({'task_id': task.id})"""
 
 def status_celery(request, task_id):
     from celery.result import AsyncResult

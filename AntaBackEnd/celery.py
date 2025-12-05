@@ -13,12 +13,12 @@ app.conf.result_backend = settings.CELERY_RESULT_BACKEND
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-app.conf.broker_use_ssl = {
+"""app.conf.broker_use_ssl = {
     'ssl_cert_reqs': ssl.CERT_NONE
 }
 
 app.conf.redis_backend_use_ssl = {
     'ssl_cert_reqs': ssl.CERT_NONE
-}
+}"""
 
-app.autodiscover_tasks()
+#app.autodiscover_tasks()

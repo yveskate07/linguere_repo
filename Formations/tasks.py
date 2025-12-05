@@ -5,14 +5,14 @@ from django.template.loader import render_to_string
 from celery import shared_task
 import time
 
-@shared_task
+#@shared_task
 def double_nombre(x):
     time.sleep(5)     # On simule une petite tâche
     return x * 2
 
 
 # une fonction qui envoie un mail a Linguere Fablab
-@shared_task
+#@shared_task
 def mail_to_fablab(user:dict, is_formation=True , admin_edit_view='' ,formation_name=None, reason='new inscription'):
     """
     fonction qui envoie un mail a Linguere Fablab soit pour :
@@ -64,7 +64,7 @@ def mail_to_fablab(user:dict, is_formation=True , admin_edit_view='' ,formation_
 
 
 # une fonction qui envoie un mail a l'utilisateur qui a demandé la brochure
-@shared_task
+#@shared_task
 def brochure_to_client_through_mail(receiver_email, admin_edit_view, formation_name, user:dict, reason='new pdf downloaded', msg_=None):
     
     """
@@ -92,7 +92,7 @@ def brochure_to_client_through_mail(receiver_email, admin_edit_view, formation_n
 
 
 # une fonction qui envoie un mail a Linguere fablab indiquant qu'un utilisateur s'est inscrit à tel formation.
-@shared_task
+#@shared_task
 def mail_to_the_client(user:dict, is_formation=True, formation_name=None, context = None):
 
     """

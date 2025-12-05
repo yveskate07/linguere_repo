@@ -6,7 +6,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from celery import shared_task
 
-@shared_task
+#@shared_task
 def send_verification_email(protocol, domain, user, mail_subject, email_template, user_name=None):
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -34,7 +34,7 @@ def send_verification_email(protocol, domain, user, mail_subject, email_template
         print("MAIL ENVOYÉ AVEC SUCCES !")
 
 
-@shared_task
+#@shared_task
 def send_notification(mail_subject, mail_template, context):
     from_email = settings.EMAIL_HOST_USER
     message = render_to_string(mail_template, context)
