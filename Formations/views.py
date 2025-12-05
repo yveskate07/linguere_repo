@@ -64,17 +64,17 @@ def SigningUp(request, formation_name):
                                      'e-mail':data.email, 
                                      'message':request.POST.get('message')})"""
                 
-                mail_to_the_client(formation_name=formation_name, 
+                """mail_to_the_client(formation_name=formation_name, 
                                    user={'name':data.name, 
                                          'e-mail':data.email, 
-                                         'message':request.POST.get('message')})
+                                         'message':request.POST.get('message')})"""
                 
-                mail_to_fablab(formation_name=formation_name, 
+                """mail_to_fablab(formation_name=formation_name, 
                                reason='new inscription', 
                                admin_edit_view = f"/admin/Formations/signedupuser/{data.pk}/change/",
                                user={'name':data.name, 
                                      'e-mail':data.email, 
-                                     'message':request.POST.get('message')})
+                                     'message':request.POST.get('message')})"""
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
@@ -103,12 +103,12 @@ def returnBrochure(request, formation_name):
                                                 "message":request.POST.get('message')
                                             })"""
                 
-                brochure_to_client_through_mail(receiver_email=data.user.email, formation_name=data.formation.name, 
+                """brochure_to_client_through_mail(receiver_email=data.user.email, formation_name=data.formation.name, 
                                                 admin_edit_view = f"/admin/Formations/userbrochure/{data.pk}/change/",
                                                 user={'name':data.user.name, 
                                                 'e-mail':data.user.email, 
                                                 "message":request.POST.get('message')
-                                            })
+                                            })"""
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Remplissez correctement le formulaire !"})
@@ -136,11 +136,11 @@ def userGetInTouch(request, formation_name):
                                user={'name':data.user.name, 
                                      'e-mail':data.user.email})"""
                 
-                mail_to_fablab(formation_name=formation_name, 
+                """mail_to_fablab(formation_name=formation_name, 
                                reason='information request',
                                admin_edit_view = f"/admin/Formations/userrequest/{data.pk}/change/",
                                user={'name':data.user.name, 
-                                     'e-mail':data.user.email})
+                                     'e-mail':data.user.email})"""
 
 
         else:

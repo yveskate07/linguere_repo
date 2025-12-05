@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from Services.forms import CustomizedServiceForm
 from Services.models import Service
-from mail_sender import mail_to_the_client, mail_to_fablab
+from .tasks import mail_to_the_client, mail_to_fablab
 
 
 def get_context_for_user_mail(Service_name, obj, width, height, quantite, comment, msg_deliver, img_path=None, colors=None, request=None):
@@ -140,14 +140,14 @@ def custom_view(request):
                                                     img_path=design_path,
                                                     msg_deliver=msg_deliver)
                 
-                mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}
-                                   , context=ctx, is_formation=False, formation_name=service.name)
+                """mail_to_the_client(user={'e-mail': request.user.email, 'name':request.user.name}
+                                   , context=ctx, is_formation=False, formation_name=service.name)"""
 
-                mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name},
+                """mail_to_fablab(user={'e-mail': request.user.email, 'name':request.user.name},
                                admin_edit_view = f"/admin/Services/customizedservice/{subs_user.pk}/change/", 
                                is_formation=False, 
                                formation_name=service.name, 
-                               reason="new service order")
+                               reason="new service order")"""
 
                 return serviceView(request, slug=request.POST.get('slug'), errors=0, success=1, success_txt="Felicitations votre commande a été enregistrée ")
             

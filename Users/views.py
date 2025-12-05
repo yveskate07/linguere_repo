@@ -7,8 +7,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
 from Users.forms import UserResetPasswordForm
 from .auth_form import UserLoginForm, UserSignUpForm
-from .tasks import send_verification_email
-from django.contrib.auth.models import AnonymousUser
 from .models import Fab_User
 from django.contrib.auth import login, authenticate
 
@@ -46,6 +44,7 @@ def reset_password(request):
 
 
 def forgot_password(request):
+    return redirect('login')
     if request.method == 'POST':
         email = request.POST['email']
 
@@ -57,10 +56,8 @@ def forgot_password(request):
             email_template = 'Users/emails/reset_password_email.html'
             protocol = 'https' if request.is_secure() else 'http'
             domain = get_current_site(request).domain
-            print("actually in forgot_password view about to send email...")
             #send_verification_email.delay(protocol, domain, user.pk, mail_subject, email_template, user_name=user.first_name)
-            send_verification_email(protocol, domain, user.pk, mail_subject, email_template, user_name=user.first_name)
-            print("actually in forgot_password view after sending email...")
+            #send_verification_email(protocol, domain, user.pk, mail_subject, email_template, user_name=user.first_name)
             messages.success(request, 'Le lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail.')
             return redirect('login')
         else:
@@ -165,8 +162,6 @@ def register_user(request):
             )
 
             user.save()
-            print(f'Actually in register_user view, pwd before encryption {password}, after encryption {user.password}')
-            print('Actually in register_user view, RECEPTION DES DONNEES OK ! ENVOI DE MAIL...')
 
             # Send verification email
             mail_subject = 'Veuillez activer votre compte.'
@@ -175,8 +170,7 @@ def register_user(request):
             domain = get_current_site(request).domain
 
             #send_verification_email.delay(protocol, domain, user.pk, mail_subject, email_template)
-            send_verification_email(protocol, domain, user.pk, mail_subject, email_template)
-            print("Actually in register_user view, APRES ENVOI DU MAIL !")
+            #send_verification_email(protocol, domain, user.pk, mail_subject, email_template)
 
 
             messages.success(request, "Votre compte a été créé avec succès! Veuillez vérifier votre e-mail pour activer votre compte.")

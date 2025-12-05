@@ -88,7 +88,7 @@ def brochure_to_client_through_mail(receiver_email, admin_edit_view, formation_n
 
     mail.send()
 
-    mail_to_fablab(formation_name=formation_name, admin_edit_view=admin_edit_view, user=user, reason=reason)
+    #mail_to_fablab(formation_name=formation_name, admin_edit_view=admin_edit_view, user=user, reason=reason)
 
 
 # une fonction qui envoie un mail a Linguere fablab indiquant qu'un utilisateur s'est inscrit à tel formation.
