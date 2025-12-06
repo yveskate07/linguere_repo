@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
             tel_num = tel_num,
             adress = adress,
         )
-        user.is_active = False
+        user.is_active = True # a changer plus tard en False en passant au plan payant, ou mieux ajouter une variable is_email_verified
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -71,7 +71,7 @@ class Fab_User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return "Name: " + self.first_name + " Second name: " + self.last_name + " Username: " + self.username + " Password: " + self.password  
 
     def save(self, *args, **kwargs):
         from Shop.models import Cart

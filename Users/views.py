@@ -88,10 +88,15 @@ def login_user(request):
     if request.user.is_authenticated:
         return redirect('home')
 
+    # displaying all existing users 
+    print(f"################ All users are {Fab_User.objects.all()} ################")
+    print(f"################ ids of the current user trying to connect: \n username: {request.POST['username']}; password: {request.POST['password']}")
+
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
-
+        print("################ Authenticating user... ################")
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        print(f"################ user is {user}... ################")
         # Vérification custom
         """response = #check_user_activated(user, request)
         if response:
@@ -163,6 +168,8 @@ def register_user(request):
 
             user.save()
 
+            print(f"Newly created user's id: username: {user.username}, password: {user.password}")
+
             # Send verification email
             mail_subject = 'Veuillez activer votre compte.'
             email_template = 'Users/emails/account_verification.html'
@@ -175,8 +182,8 @@ def register_user(request):
 
             messages.success(request, "Votre compte a été créé avec succès! Veuillez vérifier votre e-mail pour activer votre compte.")
             #return redirect('login')
-            login(request, user)
-            return redirect('home')
+            #login(request, user)
+            return redirect('login')
         else:
             return render(request, "Users/auths/signup.html", {'form': form})
     else:

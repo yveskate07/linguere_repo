@@ -30,7 +30,7 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-LOCAL = False
+LOCAL = True
 
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
