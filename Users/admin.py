@@ -8,7 +8,7 @@ from .models import Fab_User
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Fab_User
-        fields = ("username", "email", "first_name", "last_name", "tel_num", "adress")
+        fields = ("username", "email", "first_name", "last_name", "tel_num", "adress", "is_active", "is_staff", )
 
 
 class CustomUserChangeForm(UserChangeForm):

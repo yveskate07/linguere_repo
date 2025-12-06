@@ -71,7 +71,7 @@ class Fab_User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return "Name: " + self.first_name + " Second name: " + self.last_name + " Username: " + self.username + " Password: " + self.password  
+        return self.first_name + " " + self.last_name 
 
     def save(self, *args, **kwargs):
         from Shop.models import Cart
