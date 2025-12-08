@@ -6,4 +6,4 @@ from .models import Feature
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ("name",)
-    fields = ("description", "image", )
+    fields = ("title", "description", "image", )

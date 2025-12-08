@@ -45,27 +45,19 @@
     <!-- Promotions Carousel -->
     <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{% static 'AntaBackEnd/images/aaaa.png' %}" class="d-block w-100" alt="Promotion 1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Promotions exceptionnelles</h5>
-                    <p>Jusqu'à 30% de réduction sur les kits Arduino</p>
+            {% if features %}
+                {% for feature in features %}
+                <div class="carousel-item {% if forloop.counter == 1%} active {% endif %}">
+                    <img src="{{feature.getImage}}" class="d-block w-100" alt="Promotion {{forloop.counter}}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{feature.title}}</h5>
+                        <p>{{feature.description}}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'AntaBackEnd/images/aa.png' %}" class="d-block w-100" alt="Promotion 2">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Nouveautés</h5>
-                    <p>Découvrez nos dernières machines numériques</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'AntaBackEnd/images/aaa.png' %}" class="d-block w-100" alt="Promotion 3">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Formations spécialisées</h5>
-                    <p>Inscrivez-vous à nos ateliers de fabrication numérique</p>
-                </div>
-            </div>
+                {% endfor %}
+            {% else %}
+                <h1 class="text-muted text-center">Aucune nouveauté pour le moment.</h1>
+            {% endif %}
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -387,6 +379,31 @@
             <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun projet disponible pour le moment.</p>
         {% endif %}
     </div>
+
+    <!-- Section Nos partenaire -->
+    <section class="nos-partenaires py-5">
+        <div class="container d-flex flex-column align-items-center">
+            <div class="section-title text-center aos-init aos-animate" data-aos="fade-up">
+                <h1>NOS PARTENAIRES</h1>
+                <p>Découvrez les entreprises et organisations qui nous soutiennent dans notre mission d'innovation et de fabrication numérique.</p>
+            </div>
+            <div class="row justify-content-center text-center">
+                <!-- POUR ALPHONSE il faut ici que chaque partenaire soit representé par une image et un nom-->
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up">
+                    <img src="kits arduino petit.png" alt="Partenaire 1" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="Kits d'assortissement de diodes.png" alt="Partenaire 2" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <img src="Imprimante 3d adventure3.png" alt="Partenaire 3" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <img src="Leds avec fil.png" alt="Partenaire 4" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
 
     <style>
         /* ---pour la partie service 5--- */

@@ -10,7 +10,8 @@ from Activities.models import Activity
 from Formations.models import Formations
 from Services.models import Service
 from Users.auth_form import UserLoginForm, UserSignUpForm
-
+from Partners.models import Partner
+from New_features.models import Feature
 
 """def test_celery(request):
     from Formations.tasks import double_nombre
@@ -97,6 +98,10 @@ def home(request):
                                                         'Découpe et Gravure Laser',
                                                         "Service d'Impression 3D"])
     context['activities'] = Activity.objects.all()
+
+    context['partners'] = Partner.objects.all()
+
+    context['features'] = Feature.objects.all()
 
     return render(request,'AntaBackEnd/accueil/index.html',context=context)
 
