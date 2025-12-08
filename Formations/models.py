@@ -78,6 +78,15 @@ class Formations(models.Model):
         except:
             url = "inserer ici le path d'une image par defaut",
         return url
+    
+class AskedQuestions(models.Model):
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, null=False, blank=False)
+    question = models.TextField(verbose_name="Question", null=False, blank=False)
+    answer=models.TextField(verbose_name="Answer", null=False, blank=False)
+
+    class Meta:
+        verbose_name = "Questions Fréquemment Posées"
+        verbose_name_plural = "Questions Fréquemment Posées"
 
 class Module(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Modules')
@@ -89,7 +98,7 @@ class Module(models.Model):
     description.short_description = "Description"
 
     class Meta:
-        verbose_name = "Module de formation"
+        verbose_name = "Modules principaux"
         verbose_name_plural = "Modules principaux"
         ordering = ["name"]
 
@@ -108,7 +117,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
                               verbose_name='Image')
 
     class Meta:
-        verbose_name = "Préréquis par formation"
+        verbose_name = "Maîtrise les Technologies & Compétences Essentielles"
         verbose_name_plural = "Maîtrise les Technologies & Compétences Essentielles"
         ordering = ["name"]
 
@@ -126,7 +135,7 @@ class SkillGained(models.Model):
     description_skill = models.TextField(blank=True, null=True, default='', verbose_name='Description')
 
     class Meta:
-        verbose_name = "Compétences acquise par formation"
+        verbose_name = "Ce Que Vous Allez Acquérir"
         verbose_name_plural = "Ce Que Vous Allez Acquérir"
         ordering = ["name"]
 
@@ -144,8 +153,8 @@ class MotivPoints(models.Model):
     description = models.TextField(default='', verbose_name='Description')
 
     class Meta:
-        verbose_name = "Motivation"
-        verbose_name_plural = "Motivations"
+        verbose_name = "Pourquoi Apprendre la Broderie Numérique ?"
+        verbose_name_plural = "Pourquoi Apprendre la Broderie Numérique ?"
         ordering = ["name"]
 
     def __str__(self):

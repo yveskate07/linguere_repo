@@ -20,6 +20,9 @@ class MotivPointsInline(admin.TabularInline):
 class AdvantagesInline(admin.TabularInline):
     model = Advantages
 
+class AskedQuestionsInline(admin.TabularInline):
+    model = AskedQuestions
+
 """
 class TestimonyInline(admin.TabularInline):
     model = Testimony"""
@@ -56,7 +59,7 @@ class UserRequestAdmin(admin.ModelAdmin):
 # Register your models here.
 @admin.register(Formations)
 class FormationAdmin(admin.ModelAdmin):
-    inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline]
+    inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline, AskedQuestionsInline]
     fields = ('name','duration','image','availability','hours_per_week','image_home','why_image',)
     #readonly_fields = ('description',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability',)
