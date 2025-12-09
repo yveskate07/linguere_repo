@@ -18,5 +18,5 @@ class ImpactInline(admin.TabularInline):
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityGalerieImageInline, RealisationInline, ResultatInline, ImpactInline]
-    list_display = ('name', 'created_at')
-    readonly_fields = ('url_name') 
+    list_display = ('name', 'created_at',)
+    readonly_fields = ('url_name',) 
