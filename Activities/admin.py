@@ -19,4 +19,4 @@ class ImpactInline(admin.TabularInline):
 class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityGalerieImageInline, RealisationInline, ResultatInline, ImpactInline]
     list_display = ('name', 'created_at')
-
+    readonly_fields = ('url_name') 
