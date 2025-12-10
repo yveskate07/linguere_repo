@@ -106,19 +106,17 @@
 
     <!-- Results Section -->
 <!-- Results Section -->
-<section class="project-section results-section animate-in">
-    <div class="section-content results-content">
-        <h3 class="realisations-title">Résultats Concrets</h3>
-    </div>
-    {% if resultats %}
-        {% for resultat in resultats %}
-            <div class="section-image results-image">
-                <p class="section-text results-text">{{resultat.description}}</p>
-                <img src="{{resultat.get_image_url}}">
-            </div>
-        {% endfor %}
-    {% endif %}
-</section>
+{% if resultats %}
+    <section class="project-section results-section animate-in">
+        <div class="section-content results-content">
+            <h3 class="realisations-title">Résultats Concrets</h3>
+            <p class="section-text results-text">{{resultats.description}}</p>
+        </div>
+        <div class="section-image results-image">
+            <img src="{{resultats.get_image_url}}">
+        </div>
+    </section>
+{% endif %}
 
 <!-- Stats Section -->
 <section class="stats-section animate-in">
