@@ -109,32 +109,40 @@
 <section class="project-section results-section animate-in">
     <div class="section-content results-content">
         <h3 class="realisations-title">Résultats Concrets</h3>
-        <p class="section-text results-text">{{resultats.description}}</p>
     </div>
-    <div class="section-image results-image">
-        <img src="{{resultats.get_image_url}}">
-    </div>
+    {% if resultats %}
+        {% for resultat in resultats %}
+            <div class="section-image results-image">
+                <p class="section-text results-text">{{resultat.description}}</p>
+                <img src="{{resultat.get_image_url}}">
+            </div>
+        {% endfor %}
+    {% endif %}
 </section>
 
 <!-- Stats Section -->
 <section class="stats-section animate-in">
     <div class="stats-container">
-        <div class="stats-box">
-            <div class="stat-number">{{resultats.stat1}}+</div>
-            <div class="stat-label">Jeunes formés</div>
-        </div>
-        <div class="stats-box">
-            <div class="stat-number">{{resultats.stat2}}</div>
-            <div class="stat-label">Ateliers mensuels</div>
-        </div>
-        <div class="stats-box">
-            <div class="stat-number">{{resultats.stat3}}</div>
-            <div class="stat-label">Projets aboutis</div>
-        </div>
-        <div class="stats-box">
-            <div class="stat-number">{{resultats.stat4}}%</div>
-            <div class="stat-label">Satisfaction</div>
-        </div>
+        {% if resultats %}
+            {% for resultat in resultats %}
+                <div class="stats-box">
+                    <div class="stat-number">{{resultat.stat1}}+</div>
+                    <div class="stat-label">Jeunes formés</div>
+                </div>
+                <div class="stats-box">
+                    <div class="stat-number">{{resultat.stat2}}</div>
+                    <div class="stat-label">Ateliers mensuels</div>
+                </div>
+                <div class="stats-box">
+                    <div class="stat-number">{{resultat.stat3}}</div>
+                    <div class="stat-label">Projets aboutis</div>
+                </div>
+                <div class="stats-box">
+                    <div class="stat-number">{{resultat.stat4}}%</div>
+                    <div class="stat-label">Satisfaction</div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </section>
     <!-- Impact Section -->

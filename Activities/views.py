@@ -55,7 +55,5 @@ def fab_tour(request):
     """
 
     context = get_context_for_activities(request, "Fab'Tour")
-
-    print('context is ', context)
     
     return render(request, "Activities/index.html", context=context)
