@@ -3,15 +3,35 @@ from .models import *
 
 class ActivityGalerieImageInline(admin.TabularInline):
     model = ActivityGalerieImage
+    extra = 0
+
+    def get_max_num(self, request, obj = ..., **kwargs):
+        
+        return 3
 
 class RealisationInline(admin.TabularInline):
     model = Realisation
+    extra = 0
+
+    def get_max_num(self, request, obj = ..., **kwargs):
+        
+        return 3
 
 class ResultatInline(admin.TabularInline):
     model = Resultat
+    extra = 0
+
+    def get_max_num(self, request, obj = ..., **kwargs):
+        
+        return 1
 
 class ImpactInline(admin.TabularInline):
     model = Impact
+    extra = 0
+
+    def get_max_num(self, request, obj = ..., **kwargs):
+        
+        return 3
 
 
 # Register your models here.
