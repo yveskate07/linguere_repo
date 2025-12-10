@@ -122,24 +122,22 @@
 <section class="stats-section animate-in">
     <div class="stats-container">
         {% if resultats %}
-            {% for resultat in resultats %}
-                <div class="stats-box">
-                    <div class="stat-number">{{resultat.stat1}}+</div>
-                    <div class="stat-label">Jeunes formés</div>
-                </div>
-                <div class="stats-box">
-                    <div class="stat-number">{{resultat.stat2}}</div>
-                    <div class="stat-label">Ateliers mensuels</div>
-                </div>
-                <div class="stats-box">
-                    <div class="stat-number">{{resultat.stat3}}</div>
-                    <div class="stat-label">Projets aboutis</div>
-                </div>
-                <div class="stats-box">
-                    <div class="stat-number">{{resultat.stat4}}%</div>
-                    <div class="stat-label">Satisfaction</div>
-                </div>
-            {% endfor %}
+            <div class="stats-box">
+                <div class="stat-number">{{resultats.stat1}}+</div>
+                <div class="stat-label">Jeunes formés</div>
+            </div>
+            <div class="stats-box">
+                <div class="stat-number">{{resultats.stat2}}</div>
+                <div class="stat-label">Ateliers mensuels</div>
+            </div>
+            <div class="stats-box">
+                <div class="stat-number">{{resultats.stat3}}</div>
+                <div class="stat-label">Projets aboutis</div>
+            </div>
+            <div class="stats-box">
+                <div class="stat-number">{{resultats.stat4}}%</div>
+                <div class="stat-label">Satisfaction</div>
+            </div>
         {% endif %}
     </div>
 </section>
