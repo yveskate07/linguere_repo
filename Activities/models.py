@@ -46,6 +46,10 @@ class Realisation(models.Model):
     def __str__(self):
         return self.activity.name + ' / ' +self.category
 
+    class Meta:
+        verbose_name = "Nos Réalisations"
+        verbose_name_plural = "Nos Réalisations"
+
 class Resultat(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name="Description du résultat")
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='resultats', verbose_name="Activité")
@@ -63,6 +67,10 @@ class Resultat(models.Model):
     
     def __str__(self):
         return self.activity.name + ' : Resultats'
+    
+    class Meta:
+        verbose_name = "Résultats Concrets"
+        verbose_name_plural = "Résultats Concrets"
 
 class Impact(models.Model):
     categories = [
@@ -76,6 +84,10 @@ class Impact(models.Model):
 
     def __str__(self):
         return self.activity.name + ' / ' +self.categorie
+    
+    class Meta:
+        verbose_name = "Notre Impact"
+        verbose_name_plural = "Notre Impact"
 
 class ActivityGalerieImage(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='galerie_images', verbose_name="Activité")
