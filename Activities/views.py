@@ -19,7 +19,7 @@ def get_context_for_activities(request, activity_name):
         return {
             'activity': activity,
             'realisations': activity.realisations.all(),
-            'resultats': activity.resultats.all(),
+            'resultats': activity.resultats.all()[0],
             'impacts': activity.impacts.all(),
             'galerie_images': activity.galerie_images.all(),
             'user_id': user_id,
