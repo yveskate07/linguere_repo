@@ -54,10 +54,10 @@ class Resultat(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name="Description du résultat")
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='resultats', verbose_name="Activité")
     image = models.ImageField(upload_to='resultat_images/', null=True, blank=True, verbose_name="Image du résultat")
-    stat1 = models.IntegerField(null=True, blank=True, verbose_name="Statistique 1")
-    stat2 = models.IntegerField(null=True, blank=True, verbose_name="Statistique 2")
-    stat3 = models.IntegerField(null=True, blank=True, verbose_name="Statistique 3")
-    stat4 = models.IntegerField(null=True, blank=True, verbose_name="Statistique 4")
+    stat1 = models.IntegerField(null=True, blank=True, verbose_name="Jeunes formés")
+    stat2 = models.IntegerField(null=True, blank=True, verbose_name="Ateliers mensuels")
+    stat3 = models.IntegerField(null=True, blank=True, verbose_name="Projets aboutis")
+    stat4 = models.IntegerField(null=True, blank=True, verbose_name="Satisfaction")
 
     @property
     def get_image_url(self):
