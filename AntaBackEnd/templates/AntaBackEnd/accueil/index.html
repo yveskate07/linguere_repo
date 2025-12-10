@@ -369,11 +369,7 @@
                             <div class="card-title">{{activity.name}}</div>
                             <div class="card-description">
                                 {{activity.description|safe}}<br><br>
-                                    {% if activity.get_absolute_url %}
-                                        <a href="{{activity.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                                    {% else %}
-                                        <a href="{% static 'AntaBackEnd/images/logos.jpeg' %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                                    {% endif %}
+                                <a href="{{activity.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                             </div>
                         </div>
                         <h2 class="card-image-title">{{activity.name}}</h2>
