@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 import shortuuid
+from django.contrib.auth.models import Group
 
 # Create your models here.
 
@@ -79,6 +80,10 @@ class Fab_User(AbstractUser):
         is_new = self.pk is None  # si l'objet n'a pas encore d'ID
 
         self.uuid = shortuuid.uuid()
+
+        if self.is_staff or self.is_superuser:
+            admin_group, created = Group.objects.get_or_create(name="Admins")
+            self.groups.add(admin_group)
 
         super().save(*args, **kwargs)  # d'abord on sauvegarde l'utilisateur
 

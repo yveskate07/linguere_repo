@@ -194,7 +194,7 @@ def user_home(request):
     #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     # si l'utilisateur est un superuser, rediriger vers la page d'administration
-    if user.is_superuser:
+    if user.is_superuser or user.is_staff:
         return redirect('/admin')
     return render(request ,'Users/home/index.html', {'user':user})
 

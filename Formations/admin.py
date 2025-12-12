@@ -61,13 +61,23 @@ class UserRequestAdmin(admin.ModelAdmin):
 class FormationAdmin(admin.ModelAdmin):
     inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline, AskedQuestionsInline]
     fields = ('name','duration','image','availability','hours_per_week','image_home','why_image',)
-    #readonly_fields = ('description',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability',)
     search_fields = ('name',)
     list_filter = ('availability',)
 
     def get_duration_display_fr(self, obj):
         return obj.get_duration_display_fr()
+    
+    def get_readonly_fields(self, request, obj = ...):
+        readonly = list(super().get_readonly_fields(request, obj))
+
+        if not request.user.has_perm('Formations.edit_Formations_formation_name'):
+            readonly.append('name')
+
+        if not request.user.has_perm('Formations.edit_Formations_formation_slug'):
+            readonly.append('slug')
+
+        return readonly
 
     get_duration_display_fr.short_description = 'Durée'
 

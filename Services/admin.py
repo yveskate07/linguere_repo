@@ -81,6 +81,16 @@ class FieldForServiceInline(admin.TabularInline):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     fields = ('description', 'description_accueil','slug',)
-    readonly_fields = ('slug',)
     inlines = [GalerieImageForServiceInline, FieldForServiceInline]
     list_display = ('name','description',)
+
+    def get_readonly_fields(self, request, obj = ...):
+        readonly = list(super().get_readonly_fields(request, obj))
+
+        if not request.user.has_perm('Services.edit_Services_service_name'):
+            readonly.remove('name')
+
+        if not request.user.has_perm('Services.edit_Services_services_slug'):
+            readonly.append('slug')
+
+        return readonly

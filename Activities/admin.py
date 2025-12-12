@@ -39,4 +39,16 @@ class ImpactInline(admin.TabularInline):
 class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityGalerieImageInline, RealisationInline, ResultatInline, ImpactInline]
     list_display = ('name', 'created_at',)
-    readonly_fields = ('url_name',) 
+    
+    def get_readonly_fields(self, request, obj=None):
+        readonly = list(super().get_readonly_fields(request, obj))
+
+        if not request.user.has_perm('Activities.edit_Activities_activity_name'):
+            readonly.append('name')
+
+        if not request.user.has_perm('Activities.edit_Activities_activity_url_name'):
+            readonly.append('url_name')
+
+        
+
+        return readonly
