@@ -13,7 +13,7 @@ echo "applying database migrations..."
 
 python manage.py makemigrations
 
-python manage.py migrate --run-syncdb
+python manage.py migrate
 
 python create_superuser.py
 
