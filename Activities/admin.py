@@ -45,7 +45,9 @@ class ActivityAdmin(admin.ModelAdmin):
 
         print("readonly fields: ", readonly)
 
-        print("user permissions: ", request.user.get_all_permissions())
+        print("all user permissions: ", request.user.get_all_permissions())
+
+        print("Users permissions :", request.user.get_user_permissions())
 
         if not request.user.has_perm('Activities.edit_Activities_activity_name'):
             print("User does not have permission to edit activity name")
