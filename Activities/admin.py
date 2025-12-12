@@ -50,7 +50,7 @@ class ActivityAdmin(admin.ModelAdmin):
         print(f"user has permission to edit activity URL name: {request.user.has_perm('Activities.edit_Activities_activity_url_name')}")
 
         if not request.user.has_perm('Activities.edit_Activities_activity_name'):
-            print("User does not have permission to edit activity name")
+            print("User does not have permission to edit activity's name")
             readonly.append('name')
 
         if not request.user.has_perm('Activities.edit_Activities_activity_url_name'):
