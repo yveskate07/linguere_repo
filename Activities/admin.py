@@ -43,20 +43,14 @@ class ActivityAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly = list(super().get_readonly_fields(request, obj))
 
-        print("readonly fields: ", readonly)
-
-        print(f"User is {request.user}")
-        print(f"user has permission to edit activity name: {request.user.has_perm('Activities.edit_Activities_activity_name')}")
-        print(f"user has permission to edit activity URL name: {request.user.has_perm('Activities.edit_Activities_activity_url_name')}")
-
         if not request.user.has_perm('Activities.edit_Activities_activity_name'):
-            print("User does not have permission to edit activity's name")
+            
             readonly.append('name')
 
         if not request.user.has_perm('Activities.edit_Activities_activity_url_name'):
-            print("User does not have permission to edit activity URL name")
+            
             readonly.append('url_name')
 
-        print("Final readonly fields: ", readonly)
+        
 
         return readonly
