@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Cart
+from Shop.models import Cart
 from .models import Fab_User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
