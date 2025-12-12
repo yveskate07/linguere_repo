@@ -13,6 +13,7 @@ def create_cart_for_user(sender, instance, created, **kwargs):
 
 @receiver(post_migrate)
 def create_groups_and_permissions(sender, **kwargs):
+    print("Création des groupes et permissions...")
     if sender.name != "Users":  # évite de s'exécuter pour chaque app
         return
 
