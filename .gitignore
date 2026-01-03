@@ -3,6 +3,8 @@ __pycache__/
 .vscode/
 Json_files/
 .env
+admin_code.html
+client_code.html
 cmds_bash.md
 commit_and_push.sh
 db.sqlite3
@@ -14,8 +16,10 @@ launching_server.bat
 migrations.sh
 note.txt
 Notes.md
+push_to_both_repos.sh
 README.md
 render_psql.md
+script.sql
 tasks.md
 tests.py
 useless.txt
