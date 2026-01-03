@@ -115,19 +115,30 @@ class ServiceAdmin(admin.ModelAdmin):
         readonly = list(super().get_readonly_fields(request, obj))
 
         if request.user.has_perm('Services.edit_Services_service_name'):
-            readonly.remove('name')
+            try:
+                readonly.remove('name')
+            except ValueError:
+                pass
         else:
             readonly.append('name')
 
         if not request.user.has_perm('Services.edit_Services_services_slug'):
             readonly.append('slug')
         else:
-            readonly.remove('slug')
+            try:
+                readonly.remove('slug')
+            except ValueError:
+                pass
+
 
         if not request.user.has_perm('Services.change_service_imp_bool'):
             readonly.append('impressionNumerique')
         else:
-            readonly.remove('impressionNumerique')
+            try:
+                readonly.remove('impressionNumerique')
+            except ValueError:
+                pass
+
 
         return readonly
     
