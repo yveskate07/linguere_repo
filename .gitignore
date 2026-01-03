@@ -13,6 +13,7 @@ dj_superuser_render.md
 django_server.sh
 import_and_copy.sh
 launching_server.bat
+mail_sender.py
 migrations.sh
 note.txt
 Notes.md
