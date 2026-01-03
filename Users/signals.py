@@ -28,8 +28,8 @@ def create_groups_and_permissions(sender, **kwargs):
                   'delete_activitygalerieimage','view_activitygalerieimage','add_impact','change_impact',
                   'delete_impact','view_impact','add_realisation','change_realisation','delete_realisation',
                   'view_realisation','add_resultat','change_resultat','delete_resultat','view_resultat',
-                  'change_formations','view_formations','delete_galerieimageforservice','view_galerieimageforservice',
-                  'change_service','view_service','change_invoice','view_invoice','view_order','add_product','change_product',
+                  'change_formations','view_formations','view_galerieimageforservice',
+                  'change_invoice','view_invoice','view_order','add_product','change_product',
                   'view_product','add_fab_user','delete_fab_user','view_fab_user','add_feature','change_feature','delete_feature',
                   'view_feature','add_partner','change_partner','delete_partner','view_partner','add_askedquestions','change_askedquestions',
                   'delete_askedquestions','view_askedquestions']
@@ -40,16 +40,19 @@ def create_groups_and_permissions(sender, **kwargs):
     existing_codenames = set(perms.values_list("codename", flat=True))
     missing = set(code_names) - existing_codenames
 
-    """special_field_perms = [{'codename':'edit_Activities_activity_name', 'name':'Can edit Activity name', 'app_label':'Activities', 'model': 'activity'}, 
+    special_field_perms = [{'codename':'edit_Activities_activity_name', 'name':'Can edit Activity name', 'app_label':'Activities', 'model': 'activity'}, 
                            {'codename':'edit_Activities_activity_url_name', 'name':'Can edit Activity url name', 'app_label':'Activities', 'model': 'activity'}, 
                            {'codename':'edit_Formations_formation_name', 'name':'Can edit Formation name', 'app_label':'Formations', 'model': 'formations'},
                            {'codename':'edit_Formations_formation_slug', 'name':'Can edit Formation slug', 'app_label':'Formations', 'model': 'formations'},
                            {'codename':'edit_Services_service_name', 'name':'Can edit Service name', 'app_label':'Services', 'model': 'service'},
-                           {'codename':'edit_Services_services_slug', 'name':'Can edit Services slug', 'app_label':'Services', 'model': 'service'}]"""
+                           {'codename':'edit_Services_services_slug', 'name':'Can edit Services slug', 'app_label':'Services', 'model': 'service'},
+                           {'codename': 'delete_Service', 'name': 'Can delete Service', 'app_label': 'Services', 'model': 'service'},
+                           {'codename': 'change_service_imp_bool', 'name': 'Can edit Service impression bool', 'app_label': 'Services', 'model': 'service'},
+                           {'codename': 'add_service', 'name': 'Can add Service', 'app_label': 'Services', 'model': 'service'},]
     
     extra_perms = []
 
-    """for obj in special_field_perms:
+    for obj in special_field_perms:
         try:
             perm = Permission.objects.get(codename=obj['codename'], name=obj['name'])
         except Permission.DoesNotExist:
@@ -57,7 +60,7 @@ def create_groups_and_permissions(sender, **kwargs):
             perm = Permission.objects.create(codename=obj['codename'], name=obj['name'], content_type=ctt)
         
         
-        extra_perms.append(perm)"""
+        extra_perms.append(perm)
 
     all_permissions = list(perms) + extra_perms
 

@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'Shop.apps.ShopConfig',
     'Users.apps.UsersConfig',
     'django_extensions',
+    'colorfield',
     'admin_extra_buttons',
 ]
 
@@ -146,8 +147,12 @@ else:
 if LOCAL:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('LOCAL_DB_NAME'),
+            'USER': config('LOCAL_DB_USER'),
+            'PASSWORD': config('LOCAL_DB_PASSWORD'),
+            'HOST': config('LOCAL_DB_HOST'),
+            'PORT': config('LOCAL_DB_PORT'),
         }
     }
 else:
@@ -158,7 +163,6 @@ else:
         conn_max_age=600
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

@@ -68,8 +68,6 @@
 
     <p>Bonjour,</p>
 
-    {% if is_order %}
-
         <p>Nous vous remercions pour votre commande <span class="highlight">{{Service_name}}</span> : {{obj}}.</p>
 
         <div class="order-details">
@@ -89,15 +87,9 @@
             <p><span class="highlight">Image du design choisi: </span>: <img src="{{img_path}}" alt="design picture"/></p>
         </div>
 
-        <p>Votre commande est actuellement en cours de traitement.<br>{{msg_deliver}}
+        <p>Votre commande est actuellement en cours de traitement.<br>{{deliver}}
 
         <p>N'hésitez pas à nous contacter si vous avez des questions ou des précisions à apporter.</p>
-
-    {% else %}
-
-        {{success_msg_for_signup}}
-
-    {% endif %}
 
     <div class="footer">
         <p>Cordialement,</p>

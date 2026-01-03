@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
-from Services.models import Service
+from Services.models import ServiceInfo
 from Users.auth_form import UserLoginForm, UserSignUpForm
 from Partners.models import Partner
 from New_features.models import Feature
@@ -89,14 +89,9 @@ def home(request):
     context['formation_available'] = context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser']
 
     context['user_id'] = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    context['serv_imp_num_prop'] = Service.objects.filter(name__in = ['Impression sur Papier et Supports Rigides',
-                                                    'Impression sur Textiles et Vêtements',
-                                                    'Impression sur Objets Personnalisés'])
+    context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
 
-    context['other_services'] = Service.objects.filter(name__in = ['Broderie Numérique',
-                                                        'Service de Fraiseuse Numérique (CNC)',
-                                                        'Découpe et Gravure Laser',
-                                                        "Service d'Impression 3D"])
+    context['other_services'] = ServiceInfo.objects.filter(impressionNumerique = False)
     context['activities'] = Activity.objects.all()
 
     context['partners'] = Partner.objects.all()

@@ -3,8 +3,9 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from Services.forms import CustomizedServiceForm
-from Services.models import Service
+from .forms import *
+from .models import ServiceInfo
+from django.contrib import messages
 from .tasks import mail_to_the_client, mail_to_fablab
 
 
@@ -42,8 +43,8 @@ def get_msg_for_admin_mail(request , **kwargs):
                                          'absolute_admin_url':absolute_admin_url
                                          }
                                 )
-    with open("code2.html",'w') as f:
-        f.write(msg_body)
+    """with open("code2.html",'w') as f:
+        f.write(msg_body)"""
 
     return msg_body
 
@@ -59,13 +60,11 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
         return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
     else:
         customized_service_form = CustomizedServiceForm()
-        fields_names = [{'is_grouped':field.grouped, 'field_name': field.get_input_name, 'header_class':field.header_icon_class, 'header_txt':field.header_icon_txt} for field in service.html_fields.all()]
 
         is_colored_customization = any([field.is_color_field() for field in service.html_fields.all()])
 
         context = {'html_fields':service.html_fields.all(),
                 'customization_form': customized_service_form,
-                'fields_names_js': fields_names,
                 'slug': slug,
                 'is_colored_customization': is_colored_customization,
                 'serviceId': service.pk,
@@ -80,21 +79,26 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
 
 @login_required
 def custom_view(request):
-    # redirecting to facebook.com
+    print("Form datas : ", request.POST)
     if request.method == 'POST':
-        form = CustomizedServiceForm(adress_delivery=request.POST.get('adress_delivery'), delivery_mode=request.POST.get('delivery_mode'), cgu_accept=request.POST.get('cgu_accept'))
+        form = CustomizedServiceForm(data=request.POST, files=request.FILES)
         try:
+            print("Fetching service...")
             service = Service.objects.get(slug=request.POST.get("slug"))
         except Service.DoesNotExist:
+            print("Service does not exist")
             return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
         else:
             if form.is_valid():
+                print("Form is valid")
                 subs_user = form.save(commit=False)
                 if request.POST.get('imported_picture', False):
+                    print("picture is imported")
                     subs_user.imported_picture = request.FILES.get('imported_picture')
                     subs_user.save()
                     design_path = request.build_absolute_uri(subs_user.imported_picture.url)
                 else:
+                    print("picture is chosen")
                     subs_user.chosen_picture = request.POST.get('chosen_picture','')
                     subs_user.save()
                     design_path = subs_user.chosen_picture
@@ -152,6 +156,400 @@ def custom_view(request):
                 return serviceView(request, slug=request.POST.get('slug'), errors=0, success=1, success_txt="Felicitations votre commande a été enregistrée ")
             
             else:
+                print("Form is invalid")
                 errors = list(form.errors.values())
                 errors = [error[0] for error in errors]
                 return serviceView(request, slug=request.POST.get('slug'), errors=1, errors_txt=errors)
+
+def sending_mail(request, instance_order, service):
+    try:
+        colors_list = [item.color for item in instance_order.selected_colors.all()]
+    except AttributeError:
+        colors_list = None
+
+    context = {"subject": "Nouvelle commande de service enregistrée", "Service_name":service, "obj": instance_order.get_obj(), "width":instance_order.width, 
+               "height":instance_order.height, "quantite":instance_order.quantity, 
+               "colors_list": colors_list, "comment":instance_order.comment, 
+               "img_path":instance_order.get_img_path(), "deliver":instance_order.delivery_mode, "name":instance_order.client_name, 
+               "email":instance_order.client_email, "tel_number":instance_order.client_phone , "town":instance_order.client_address,
+               "admin_edit_view":f"/admin/Services/{instance_order._meta.model_name}/{instance_order.pk}/change/"}
+    
+    msg_admin = render_to_string(request=request, template_name='Services/mail_for_fablab/index.html', context=context)
+    msg_client = render_to_string(request=request, template_name='Services/mail_for_users/index.html', context=context)
+
+    with open("admin_code.html",'w') as f:
+        f.write(msg_admin)
+
+    with open("client_code.html",'w') as f:
+        f.write(msg_client)
+
+    #mail_to_fablab(msg=msg)
+
+    #mail_to_the_client(user_email=instance_order.client_email, msg=msg)
+
+def checking_slug(request, slug):
+    if slug == "broderie-numerique":
+        return brod_num_view(request)
+    elif slug == "decoupe-et-gravure-laser":
+        return dec_grav_laser_view(request)
+    elif slug == "service-de-fraiseuse-numerique-cnc":
+        return fraiseuse_cnc_view(request)
+    elif slug == "service-dimpression-3d":  
+        return impression_3d_view(request)
+    elif slug == "impression-sur-objets-personnalises":
+        return impression_objets_personnalises_view(request)
+    elif slug == "impression-sur-papier-et-supports-rigides":
+        return impression_papier_supports_rigides_view(request)
+    elif slug == "impression-sur-textiles-et-vetements":
+        return impression_textiles_vetements_view(request)
+    else:
+        return redirect('home')
+
+
+def brod_num_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Broderie Numérique")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = BroderieNumeriqueModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousBroderieNumeriqueModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            # retrieving service form
+            return render(request, 'Services/brod_num/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousBroderieNumeriqueModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = BroderieNumeriqueModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            colors = request.POST.get('selected-colors').split(',')
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+            for hexacode in colors:
+                color = Colors.objects.create(service=order, color=hexacode)
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Broderie Numérique")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="broderie-numerique")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+                
+
+def dec_grav_laser_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Découpe et Gravure Laser")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = DecoupeLaserModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousDecoupeLaserModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            # retrieving service form
+            return render(request, 'Services/laser/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousDecoupeLaserModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = DecoupeLaserModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Découpe et Gravure Laser")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="decoupe-et-gravure-laser")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+
+
+def fraiseuse_cnc_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Service de Fraiseuse Numérique CNC")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = FraiseCNCModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousFraiseCNCModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            # retrieving service form
+            return render(request, 'Services/frais_num/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousFraiseCNCModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = FraiseCNCModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Service de Fraiseuse Numérique CNC")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="service-de-fraiseuse-numerique-cnc")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+
+
+def impression_3d_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Service d’Impression 3D")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = Impression3DModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousImpression3DModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            # retrieving service form
+            return render(request, 'Services/serv_imp_3d/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousImpression3DModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = Impression3DModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            colors = request.POST.get('selected-colors').split(',')
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+            for hexacode in colors:
+                color = Colors.objects.create(service=order, color=hexacode)
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Service d’Impression 3D")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="service-d-impression-3d")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+
+
+def impression_objets_personnalises_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Impression sur Objets Personnalisés")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = ImpressionObjPersonnaliseModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousImpressionObjPersonnaliseModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            # retrieving service form
+            return render(request, 'Services/imp_obj_pers/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousImpressionObjPersonnaliseModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = ImpressionObjPersonnaliseModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            colors = request.POST.get('selected-colors').split(',')
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+            for hexacode in colors:
+                color = Colors.objects.create(service=order, color=hexacode)
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Impression sur Objets Personnalisés")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="impression-sur-objets-personnalises")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+
+
+def impression_papier_supports_rigides_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Impression sur Papier et Supports Rigides")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = ImpressionPaperSupportRigideModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousImpressionPaperSupportRigideModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            return render(request, 'Services/imp_pap_sup_rig/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousImpressionPaperSupportRigideModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = ImpressionPaperSupportRigideModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            colors = request.POST.get('selected-colors').split(',')
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+            for hexacode in colors:
+                color = Colors.objects.create(service=order, color=hexacode)
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Impression sur Papier et Supports Rigides")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="impression-sur-papier-et-supports-rigides")
+
+        else:
+            print(form.errors)
+            return redirect('home')
+
+
+def impression_textiles_vetements_view(request):
+    if not request.method == "POST":
+        try:
+            service = ServiceInfo.objects.get(name="Impression sur Textiles et Vêtements")
+            img_urls = [image.image.url for image in service.galerie_images.all()]
+            if request.user.is_authenticated:
+                user_id = request.user.id
+                serviceCustomisation = ImpressionTextileEtVetementModelForm()
+            else:
+                user_id = 'anonymous_id'
+                serviceCustomisation = AnonymousImpressionTextileEtVetementModelForm()
+        except ServiceInfo.DoesNotExist:
+            return redirect('home')
+        else:
+            return render(request, 'Services/imp_text_vet/index.html', context={'service':service, 'user_id': user_id, 
+                                                                            'serviceCustomisation':serviceCustomisation,
+                                                                            'img_urls': img_urls})
+    else:
+        if not request.user.is_authenticated:
+            form = AnonymousImpressionTextileEtVetementModelForm(data=request.POST, files=request.FILES)
+        else:
+            form = ImpressionTextileEtVetementModelForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.img_path = request.POST.get('img_path')
+
+            colors = request.POST.get('selected-colors').split(',')
+            if request.user.is_authenticated:
+                order.client_name = request.user.first_name + " " + request.user.last_name
+                order.client_email = request.user.email
+                order.client_phone = request.user.tel_num
+            else:
+                order.client_name = request.POST.get('client_name')
+                order.client_email = request.POST.get('client_email')
+                order.client_phone = request.POST.get('client_phone')
+
+            order.save()
+            for hexacode in colors:
+                color = Colors.objects.create(service=order, color=hexacode)
+
+            # notifying by mail both client and admins for this order
+            sending_mail(request, instance_order=order, service="Impression sur Textiles et Vêtements")
+            messages.success(request,"Votre commande a bien été enregistrée. Veuillez consulter votre boîte mail.")
+            return redirect('service', slug="impression-sur-textiles-et-vetements")
+
+        else:
+            print(form.errors)
+            return redirect('home')

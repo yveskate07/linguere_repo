@@ -1,96 +1,140 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe
 
 from .models import *
 
 
 class GalerieImageForServiceInline(admin.TabularInline):
     model = GalerieImageForService
+    extra = 0
 
-@admin.register(CustomizedService)
-class CustomizedServiceAdmin(admin.ModelAdmin):
-    list_display = ('get_id','user','service','adress_delivery','delivery_mode')
+class ColorInline(admin.TabularInline):
+    model = Colors
+    extra = 0
 
-    search_fields = ("id",)
+@admin.register(BroderieNumeriqueModel)
+class BroderieNumeriqueModelAdmin(admin.ModelAdmin):
+    inlines = [ColorInline]
+    list_display = ('support_type', 'other_support', 'created_at', 'quantity', 'width','height', 'client_name', 'client_email','client_phone','client_address','delivery_mode',)
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('support_type', 'other_support', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        extra_context = extra_context or {}
+@admin.register(FraiseCNCModel)
+class FraiseCNCModelAdmin(admin.ModelAdmin):
+    list_display = ('service_type', 'used_material', 'created_at', 'quantity', 'width', 'height', 'client_name', 'client_email','client_phone','client_address','delivery_mode',)
+    
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('service_type', 'used_material', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-        # Build an HTML table describing the orders 
-        html = """
-        <div style="background:#f7f9fb; padding:15px; border-radius:8px; border:1px solid #ddd; margin-bottom:20px;">
-            <h2 style="margin-top:0; color:#2c3e50;">📦 Aperçu de la commande</h2>
-            <p>Ci-dessous est un aperçu de la commande.</p>
-        """
+@admin.register(DecoupeLaserModel)
+class DecoupeLaserModelAdmin(admin.ModelAdmin):
+    list_display = ('service_type', 'used_material', 'created_at', 'quantity', 'width', 'height', 'client_name', 'client_email','client_phone','client_address','delivery_mode',)
+    
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('service_type', 'used_material', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-        try:
-            order = CustomizedService.objects.get(pk=object_id)
-        except CustomizedService.DoesNotExist:
-            order = None
+@admin.register(Impression3DModel)
+class Impression3DModelAdmin(admin.ModelAdmin):
+    list_display = ('impression_type', 'used_material', 'created_at', 'quantity', 'width', 'height', 'client_name', 'client_email','client_phone','client_address','delivery_mode',)
+    inlines = [ColorInline]
 
-        if not order:
-            html += "<p><em>Cette commande n'existe pas.</em></p>"
-        else:
-            html += f"""
-                <div style="margin-top:10px; padding:10px; background:#fff; border:1px solid #eee; border-radius:5px;">
-                    <h3 style="color:#007bff;">Commande #{order.id}</h3>
-                    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-                        <thead>
-                            <tr style="background:#f0f4f8;">
-                                <th style="text-align:left; padding:5px; border-bottom:1px solid #ccc;">CLient</th>
-                                <th style="text-align:right; padding:5px; border-bottom:1px solid #ccc;">Personnalisation</th>
-                                <th style="text-align:right; padding:5px; border-bottom:1px solid #ccc;">Image</th>
-                                <th style="text-align:right; padding:5px; border-bottom:1px solid #ccc;">Lieu de livraison</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                """
-            
-            client = order.user.first_name + "<br>" + order.user.last_name + "<br>" + order.user.email + "<br>" + order.user.tel_num if order.user else "Utilisateur supprimé"
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('impression_type', 'used_material', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-            personnalisation = "<br>".join([f"{key} : {value}" for key, value in order.fields_value.items()]) if order.fields_value else "Aucune personnalisation"
+@admin.register(ImpressionPaperSupportRigideModel)
+class ImpressionPaperSupportRigideModelAdmin(admin.ModelAdmin):
+    list_display = ('format', 'other_format', 'paper_type', 'other_paper', 'design_file', 'other_file', 'created_at', 'quantity', 'width', 'height', 'client_name', 'client_email','client_phone','client_address','delivery_mode',)
+    inlines = [ColorInline]
 
-            image = f'<img src="{order.chosen_picture}" alt="Image choisie" style="max-width:100px; max-height:100px;">' if order.chosen_picture else f'<img src="{order.imported_picture.url}" alt="Image importée" style="max-width:100px; max-height:100px;">' if order.imported_picture else "Aucune image"
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('format', 'other_format', 'paper_type', 'other_paper', 'design_file', 'other_file', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-            lieu_livraison = order.adress_delivery if order.adress_delivery else "Non spécifié"
+@admin.register(ImpressionTextileEtVetementModel)
+class ImpressionTextileEtVetementModelAdmin(admin.ModelAdmin):
+    list_display = ('textile_type', 'other_textile', 'impression_type', 'design_file', 'other_design_file', 'created_at', 'quantity', 'width', 'height', 'client_email','client_phone','client_address','delivery_mode',)
+    inlines = [ColorInline]
 
-            html += f"""
-                        <tr>
-                            <td style="padding:5px;">{client}</td>
-                            <td style="padding:5px; text-align:right;">{personnalisation}</td>
-                            <td style="padding:5px; text-align:right;">{image} FCFA</td>
-                            <td style="padding:5px; text-align:right;">{lieu_livraison} FCFA</td>
-                        </tr>
-                    """
-            
-            html += f"""
-                        </tbody>
-                    </table>
-                </div>
-                """
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('textile_type', 'other_textile', 'impression_type', 'design_file', 'other_design_file', 'comment', 'quantity', 'width','height', 'image')
+            }),
+        ('Client Infos', {
+            'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')
+        }),
+    )
 
-        html += "</div>"
+@admin.register(ImpressionObjPersonnaliseModel)
+class ImpressionObjPersonnaliseModelAdmin(admin.ModelAdmin):
+    inlines = [ColorInline]
+    list_display = ('obj_type', 'other_object', 'design_file', 'other_file' , 'created_at', 'quantity', 'width', 'height', 'client_email','client_phone','client_address','delivery_mode')
 
-        extra_context["description"] = mark_safe(html)
-        return super().change_view(request, extra_context=extra_context, object_id=object_id, form_url=form_url)
-
-class FieldForServiceInline(admin.TabularInline):
-    model = FieldForService
+    fieldsets = (
+        ("Cuztomization Infos", {
+            'fields': ('obj_type', 'other_object', 'design_file', 'other_file', 'comment', 'quantity', 'width','height', 'image')
+        }),
+        ("Client Infos", {'fields': ('client_name', 'client_email','client_phone','client_address','delivery_mode')})
+    ) 
 
 # Register your models here.
-@admin.register(Service)
+@admin.register(ServiceInfo)
 class ServiceAdmin(admin.ModelAdmin):
-    fields = ('description', 'description_accueil','slug',)
-    inlines = [GalerieImageForServiceInline, FieldForServiceInline]
-    list_display = ('name','description',)
+    fields = ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+    inlines = [GalerieImageForServiceInline]
+    list_display = ('name',)
 
     def get_readonly_fields(self, request, obj = ...):
         readonly = list(super().get_readonly_fields(request, obj))
 
-        if not request.user.has_perm('Services.edit_Services_service_name'):
+        if request.user.has_perm('Services.edit_Services_service_name'):
             readonly.remove('name')
+        else:
+            readonly.append('name')
 
         if not request.user.has_perm('Services.edit_Services_services_slug'):
             readonly.append('slug')
+        else:
+            readonly.remove('slug')
+
+        if not request.user.has_perm('Services.change_service_imp_bool'):
+            readonly.append('impressionNumerique')
+        else:
+            readonly.remove('impressionNumerique')
 
         return readonly
+    
+    def has_delete_permission(self, request, obj = ...):
+        return super().has_delete_permission(request, obj) and request.user.has_perm('Services.delete_Service')
+    
+    def has_add_permission(self, request):
+        return super().has_add_permission(request) and request.user.has_perm('Services.add_service')
+    
+    

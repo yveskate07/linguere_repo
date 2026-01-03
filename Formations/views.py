@@ -7,7 +7,6 @@ from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_
 
 
 # Create your views here.
-
 @login_required
 def formationView(request, formation_name):
     try:

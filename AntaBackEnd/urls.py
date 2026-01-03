@@ -29,7 +29,7 @@ urlpatterns = [
     path('sign-up/', views.signUpView, name="sign-up"), 
     path('login/', views.FabLabLoginView, name='login'),
     path('shop/', include("Shop.urls")),
-    path('services/', include("Services.urls")),
+    path('services/', include("Services.urls"), name='services'),
     path('activities/', include("Activities.urls")),
     path('formations/',include('Formations.urls')),
     path('user/', include('Users.urls')),
