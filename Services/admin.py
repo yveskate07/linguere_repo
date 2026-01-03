@@ -120,10 +120,12 @@ class ServiceAdmin(admin.ModelAdmin):
             except ValueError:
                 pass
         else:
-            readonly.append('name')
+            if not 'name' in readonly:
+                readonly.append('name')
 
         if not request.user.has_perm('Services.edit_Services_services_slug'):
-            readonly.append('slug')
+            if not 'slug' in readonly:
+                readonly.append('slug')
         else:
             try:
                 readonly.remove('slug')
@@ -132,7 +134,8 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
         if not request.user.has_perm('Services.change_service_imp_bool'):
-            readonly.append('impressionNumerique')
+            if not 'impressionNumerique' in readonly:
+                readonly.append('impressionNumerique')
         else:
             try:
                 readonly.remove('impressionNumerique')
