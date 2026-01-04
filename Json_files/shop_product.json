@@ -1,0 +1,80 @@
+[
+  {
+    "reference": "ARD-001",
+    "image": "arduino-uno.jpg",
+    "name": "Arduino Uno R3",
+    "description": "Carte microcontrôleur basée sur ATmega328P, idéale pour les débutants.",
+    "badge": null,
+    "price": 15000,
+    "stock": 25,
+    "main_category": "Electronique",
+    "category": "Arduino",
+    "disponibility": "En stock",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  },
+  {
+    "reference": "ARD-002",
+    "image": "arduino-mega.jpg",
+    "name": "Arduino Mega 2560",
+    "description": "Carte Arduino avec plus d’entrées/sorties pour projets complexes.",
+    "badge": "Nouveau",
+    "price": 25000,
+    "stock": 10,
+    "main_category": "Electronique",
+    "category": "Arduino",
+    "disponibility": "En stock",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  },
+  {
+    "reference": "ARD-003",
+    "image": "arduino-nano.jpg",
+    "name": "Arduino Nano",
+    "description": "Carte Arduino compacte pour projets embarqués et prototypes.",
+    "badge": null,
+    "price": 9000,
+    "stock": 40,
+    "main_category": "Electronique",
+    "category": "Arduino",
+    "disponibility": "En stock",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  },
+  {
+    "reference": "ESP-001",
+    "image": "esp32.jpg",
+    "name": "ESP32",
+    "description": "Microcontrôleur avec Wi-Fi et Bluetooth intégré pour projets IoT.",
+    "badge": null,
+    "price": 12000,
+    "stock": 15,
+    "main_category": "Electronique",
+    "category": "IoT",
+    "disponibility": "Stock limité",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  },
+  {
+    "reference": "SEN-001",
+    "image": "dht11.jpg",
+    "name": "Capteur DHT11",
+    "description": "Capteur numérique de température et d’humidité.",
+    "badge": null,
+    "price": 5000,
+    "stock": 25,
+    "main_category": "Electronique",
+    "category": "Capteurs",
+    "disponibility": "En stock",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  },
+  {
+    "reference": "SEN-002",
+    "image": "ultrasonic.jpg",
+    "name": "Capteur Ultrason",
+    "description": "Capteur de distance utilisé pour la détection d’obstacles.",
+    "badge": null,
+    "price": 7500,
+    "stock": 10,
+    "main_category": "Electronique",
+    "category": "Capteurs",
+    "disponibility": "Stock limité",
+    "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
+  }
+]

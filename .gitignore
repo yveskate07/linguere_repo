@@ -1,7 +1,6 @@
 # Default ignored files
 __pycache__/
 .vscode/
-Json_files/
 .env
 admin_code.html
 client_code.html

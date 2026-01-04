@@ -42,7 +42,7 @@ class Product(models.Model):
                        ("Machines Numériques","Machines Numériques"),
                        ("Installations Fablab","Installations Fablab")]
 
-    reference = models.CharField(verbose_name='Reference', max_length=100, blank=False, null=False)
+    reference = models.CharField(verbose_name='Reference', max_length=100, unique=True, blank=False, null=False)
     image = models.ImageField(verbose_name="Image", blank=False, null=False, upload_to="Shop/Products_images")
     name = models.CharField(blank=False, null=False, verbose_name="Nom du produit", max_length=60, unique=True)
     description = models.CharField(blank=False, null=False, verbose_name="Description", max_length=240)

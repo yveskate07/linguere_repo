@@ -34,6 +34,6 @@ if not User.objects.filter(username="linguerefablab221", is_superuser=False).exi
         cursor.execute('TRUNCATE TABLE "Users_fab_user" RESTART IDENTITY CASCADE;')
     print("Superuser n'existe pas.")"""
     User.objects.create_superuser(first_name="Anta", last_name="Ngom",username="linguerefablab221" ,tel_num="+221773146662" ,adress="Senegal" , email="linguerefablab@gmail.com", password="azerty12345")
-    print("Superuser créé !")
+    print("Linguere user créé !")
 else:
-    print("Superuser existe déjà.")
+    print("Linguere user existe déjà.")
