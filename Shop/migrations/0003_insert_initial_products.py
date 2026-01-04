@@ -6,7 +6,7 @@ import json
 
 def insert_products(apps, schema_editor):
     Product = apps.get_model("Shop", "Product")
-    path = Path(__file__).resolve().parent.parent.parent / "Json_files" / "shop_products.json"
+    path = Path(__file__).resolve().parent.parent.parent / "Json_files" / "shop_product.json"
     with open(path, encoding="utf-8") as f:
         products = json.load(f)
 
