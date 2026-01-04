@@ -23,7 +23,7 @@ def insert_products(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("Shop", "002_initial"),
+        ("Shop", "0002_initial"),
     ]
 
     operations = [
