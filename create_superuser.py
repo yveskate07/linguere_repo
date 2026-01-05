@@ -28,7 +28,7 @@ else:
     print("Superuser existe déjà.")
 
 try:
-    User.objects.get(username="linguerefablab221", is_superuser=False)
+    User.objects.get(username="linguerefablab221")
     """print("Truncating the table Users_fab_user...")
     # because we have sometimes this error : django.db.utils.IntegrityError: duplicate key value violates unique constraint "Users_fab_user_pkey"
     # we need to truncate the table of the users
