@@ -30,7 +30,7 @@ class Product(models.Model):
               ("Top ventes","Top ventes"),
               ("Promo","Promo")]
     CATEGORIES = [("Kits Arduino","Kits Arduino"),
-                  ("Composants IOT","Composants IOT"),
+                  ("Composants IoT","Composants IoT"),
                   ("Robotique","Robotique"),
                   ("Capteurs","Capteurs")]
 
@@ -60,7 +60,7 @@ class Product(models.Model):
         ordering = ["-added_date"]
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - Categorie: {self.category} - Stock: {self.disponibility} - Prix: {self.price}'
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -73,11 +73,12 @@ class Product(models.Model):
 
     @property
     def imageURL(self):
-        try:
+        return self.image_url
+        """try:
             url = self.image.url
         except:
-            url = "inserer ici le path d'une image par defaut"
-        return url
+        return url"""
+
 
 class Cart(models.Model):
 
@@ -87,6 +88,7 @@ class Cart(models.Model):
 
     @property
     def total_price(self):
+        
         return sum(item.total_price for item in self.items.all())
     
     total_price.fget.short_description = 'Prix Total'

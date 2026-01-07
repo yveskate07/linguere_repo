@@ -1,86 +1,112 @@
 {% extends 'Shop/base.html' %}
 
-{% block head_body_begin %}
-{{block.super}}
-{% endblock %}
+    {% block head_body_begin %}
+        {{block.super}}
+    {% endblock %}
 
 {% block main_content %}
 
-{% block main_content_begin %}
-{{block.super}}
-{% endblock %}
+    {% block main_content_begin %}
+        {{block.super}}
+    {% endblock %}
 
-{% block filter_block %}
+    {% block filter_block %}
 
-    <!-- filters for installation section -->
-    
-    <div class="filter-group" style="display: none;">
-        <div class="filter-title" onclick="toggleFilter('category-filter')">
-            <span>Catégories</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="filter-options" id="category-filter">
-            <div class="filter-option">
-                <input type="checkbox" class="category_checks" value="Kits Arduino">
-                <label for="arduino">Kits Arduino</label>
+        <!-- filters for installation section -->
+        
+        <div class="filter-group" style="display: none;">
+            <div class="filter-title" onclick="toggleFilter('category-filter')">
+                <span>Catégories</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
-            <div class="filter-option">
-                <input type="checkbox" class="category_checks" value="Composants IOT">
-                <label for="iot">Composants IoT</label>
-            </div>
-            <div class="filter-option">
-                <input type="checkbox" class="category_checks" value="Robotique">
-                <label for="robotics">Robotique</label>
-            </div>
-            <div class="filter-option">
-                <input type="checkbox" class="category_checks" value="Capteurs">
-                <label for="sensors">Capteurs</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="filter-group">
-        <div class="filter-title" onclick="toggleFilter('price-filter')">
-            <span>Prix</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="filter-options" id="price-filter">
-            <input type='number' class='form-control' placeholder='minimum' value='0' min=0 id='minPrice' style="width:140px">
-            <input type='number' class='form-control' placeholder='maximum' value='0' min=0 id='maxPrice' style="width:140px">
-        </div>
-    </div>
-
-    <div class="filter-group">
-        <div class="filter-title" onclick="toggleFilter('stock-filter')">
-            <span>Disponibilité</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="filter-options" id="stock-filter">
-            <div class="filter-option">
-                <input type="checkbox" class="disponib_checks" value="En stock" checked>
-                <label for="in-stock">En stock</label>
-            </div>
-            <div class="filter-option">
-                <input type="checkbox" class="disponib_checks" value="Stock limité" checked>
-                <label for="low-stock">Stock limité</label>
-            </div>
-            <div class="filter-option">
-                <input type="checkbox" class="disponib_checks" value="Rupture de stock" checked>
-                <label for="out-of-stock">Rupture de stock</label>
+            <div class="filter-options" id="category-filter">
+                <div class="filter-option">
+                    <input type="checkbox" class="category_checks" value="Kits Arduino">
+                    <label for="arduino">Kits Arduino</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="category_checks" value="Composants IoT">
+                    <label for="iot">Composants IoT</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="category_checks" value="Robotique">
+                    <label for="robotics">Robotique</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="category_checks" value="Capteurs">
+                    <label for="sensors">Capteurs</label>
+                </div>
             </div>
         </div>
-    </div>
 
-{% endblock %}
+        <div class="filter-group">
+            <div class="filter-title" onclick="toggleFilter('price-filter')">
+                <span>Prix</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="filter-options" id="price-filter">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Min</span>
+                </div>
+                <input type="number" class='form-control' aria-label='Min' min=0 id='minPrice' name='minPrice' style="width:140px" value='{% if price_min %}{{price_min}}{% else %}0{% endif %}'>
+            </div>
 
-{% block main_content_end %}
-{{block.super}}
-{% endblock %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Max</span>
+                </div>
+                <input type='number' class='form-control' aria-label='Max' min=0 id='maxPrice' name='maxPrice' style="width:140px" value='{% if price_max %}{{price_max}}{% else %}0{% endif %}'>
+            </div>
+        </div>
+        </div>
+
+        <div class="filter-group">
+            <div class="filter-title" onclick="toggleFilter('stock-filter')">
+                <span>Disponibilité</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="filter-options" id="stock-filter">
+                <div class="filter-option">
+                    <input type="checkbox" class="disponib_checks" value="En stock" {% if stock_1 %} checked {% endif %}>
+                    <label for="in-stock">En stock</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="disponib_checks" value="Stock limité" {% if stock_2 %} checked {% endif %}>
+                    <label for="low-stock">Stock limité</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" class="disponib_checks" value="Rupture de stock" {% if stock_3 %} checked {% endif %}>
+                    <label for="out-of-stock">Rupture de stock</label>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block main_content_end %}
+
+        {% block main_content_end_begin %}
+            {{block.super}}
+        {% endblock %}
+
+        {% block app_section_name %}
+            <h1>
+                <i class="fas fa-tools"></i> 
+                Installations Fablab
+            </h1>
+        {% endblock %}
+
+        {% block main_content_end_end %}
+            {{block.super}}
+        {% endblock %}
+
+    {% endblock %}
 
 {% endblock %}
 
 {% block head_body_middle %}
-{{block.super}}
+    {{block.super}}
 {% endblock %}
 
 {% block head_body_end %}

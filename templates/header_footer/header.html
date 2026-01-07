@@ -28,7 +28,7 @@
             <span class="me-3"><i class="far fa-heart"></i></span>
             <span class="me-3" onclick="window.location.href='{% url 'user_home' %}'"><i class="far fa-user"></i></span>
             <a href="{% url 'cart' %}" class="cart-icon position-relative">
-                <span class="cart-count" id="cart-count" data-count="{{products_cart|length}}">
+                <span class="cart-count" id="cart-count" data-count="{{total_products_cart}}">
                     <i class="fas fa-shopping-cart"></i> 
                     <span class="d-none d-md-inline">
                             {{total_price_cart}} CFA

@@ -163,15 +163,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-function filter_sort_form_datas(pageN, pageLabel) {
+function filter_sort_form_datas(action) {
         let form = document.createElement("form");
         form.method = "POST";
-        form.action = document.body.dataset.url;
-
-        // page
-        let page = document.createElement('input');
-        page.name = 'page';
-        page.value = pageN;
+        form.action = action;
 
         // tri croissant/decroissant
         let sort_choice = document.createElement('input');
@@ -216,7 +211,6 @@ function filter_sort_form_datas(pageN, pageLabel) {
         const disponib_checks = document.querySelectorAll('.disponib_checks');
 
         let categoryChecks_list_selected = [];
-        console.log('category_checks is ', category_checks)
         category_checks.forEach(function (checkbox) {
             if (checkbox.checked) {
                 // joindres toutes les valeurs en les separant par ', '
@@ -262,10 +256,6 @@ function filter_sort_form_datas(pageN, pageLabel) {
             categoryChecks.appendChild(option);
         })
 
-        let page_label = document.createElement('input');
-        page_label.name = 'page-label';
-        page_label.value = pageLabel;
-
         const csrftoken = getCookie('csrftoken');
 
         // Créer le champ hidden pour le CSRF
@@ -275,13 +265,11 @@ function filter_sort_form_datas(pageN, pageLabel) {
         csrfInput.value = csrftoken;
 
         // Ajouter les champs au formulaire
-        form.appendChild(page);
         form.appendChild(sort_choice);
         form.appendChild(minPrice);
         form.appendChild(maxPrice);
         form.appendChild(categoryChecks);
         form.appendChild(disponibChecks);
-        form.appendChild(page_label);
         form.appendChild(csrfInput);
 
         document.body.appendChild(form);

@@ -23,7 +23,7 @@
         var user = '{{request.user}}';
     </script>
 </head>
-<body data-user-id={{user_id}} data-url="{% url 'fetch-articles' %}" data-page-label="{{page_label}}" data-page-number="{{products.number}}">
+<body data-user-id={{user_id}} data-page-label="{{page_label}}" data-page-number="{{products.number}}">
     
 {% include 'header_footer/header.html' %}
 
@@ -58,7 +58,7 @@
             <label for="arduino">Kits Arduino</label>
         </div>
         <div class="filter-option">
-            <input type="checkbox" class="category_checks" value="Composants IOT" checked>
+            <input type="checkbox" class="category_checks" value="Composants IoT" checked>
             <label for="iot">Composants IoT</label>
         </div>
         <div class="filter-option">
@@ -78,8 +78,19 @@
         <i class="fas fa-chevron-down"></i>
     </div>
     <div class="filter-options" id="price-filter">
-        <input type='number' class='form-control' placeholder='minimum' min=0 id='minPrice' name='minPrice' style="width:140px" value="0">
-        <input type='number' class='form-control' placeholder='maximum' min=0 id='maxPrice' name='maxPrice' style="width:140px" value="0">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Min</span>
+            </div>
+            <input type="number" class='form-control' aria-label='Min' min=0 id='minPrice' name='minPrice' style="width:140px" value="0">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Max</span>
+            </div>
+            <input type='number' class='form-control' aria-label='Max' min=0 id='maxPrice' name='maxPrice' style="width:140px" value="0">
+        </div>
     </div>
 </div>
 
@@ -107,20 +118,34 @@
 {% endblock %}
 
 {% block main_content_end %}
+    {% block main_content_end_begin %}
         <button type='button' class="btn btn-danger" onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')" id='showBtn' style="display:none;" onclick= >Afficher</button>
     </aside>
 
     <!-- Product Section -->
     <section class="product-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</h1>
+    {% endblock %}
+    {% block app_section_name %}<h1><i class="fas fa-microchip me-2"></i> Kits Arduino et IOT</h1>{% endblock %}
+    {% block main_content_end_end %}
             <form id='sort-form' method='POST'>
                 {% csrf_token %}
                 <div class="sort-options">
                     <select class="form-select" id="sort-select">
-                        <option value='none' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Aucun tri</option>
-                        <option value='asc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix croissant</option>
-                        <option value='desc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix décroissant</option>
+                        {% if sort == 'asc' %}
+                            <option value='none' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Aucun tri</option>
+                            <option value='asc' selected onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix croissant</option>
+                            <option value='desc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix décroissant</option>
+                        {% elif sort == 'desc' %}
+                            <option value='none' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Aucun tri</option>
+                            <option value='asc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix croissant</option>
+                            <option value='desc' selected onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix décroissant</option>
+                        {% else %}
+                            <option value='none' selected onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Aucun tri</option>
+                            <option value='asc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix croissant</option>
+                            <option value='desc' onclick="filter_sort_form_datas({{products.number}}, '{{page_label}}')">Prix décroissant</option>
+                        {% endif %}
+                        
                     </select>
                 </div>
         </div>
@@ -179,7 +204,7 @@
         {% include 'Shop/pagination/index.html' %}
     </section>
 </main>
-
+{% endblock %}
 {% endblock %}
 
 {% endblock %}
@@ -269,6 +294,15 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.page-link').forEach(el => {
+            el.addEventListener('click', () => {
+                filter_sort_form_datas(el.dataset.url);
+            });
+        });
+    })
+</script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>
 <script type='text/javascript' src="{% static 'Shop/js/cart_variables.js' %}"></script>

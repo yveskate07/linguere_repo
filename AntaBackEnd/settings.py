@@ -29,7 +29,7 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False") == "True"
 LOCAL = os.getenv("LOCAL", "False") == "True"
 
 if DEBUG:
@@ -41,7 +41,8 @@ ALLOWED_HOSTS = [
     "linguere-web.onrender.com",
     "localhost",
     "172.31.124.218",
-    "127.0.0.1",]
+    "127.0.0.1",
+    ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('SMTP_SERVER')
@@ -102,6 +103,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Shop.context_processors.get_cart_data',
             ],
         },
     },
@@ -215,6 +217,10 @@ if not DEBUG and not LOCAL:
     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+if DEBUG:
+    MIDDLEWARE.remove('whitenoise.middleware.WhiteNoiseMiddleware')
+
 
 LOGIN_REDIRECT_URL = "home"
 

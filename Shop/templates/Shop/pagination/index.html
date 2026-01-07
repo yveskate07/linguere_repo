@@ -5,11 +5,11 @@
         {% if products.has_previous %}
             <li class="page-item">
                 {% if page_label == 'Kits Arduino et IOT' %}
-                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-arduino' page=products.previous_page_number %}" >&laquo;</button>
+                    <span data-url="{% url 'shop-arduino' page=products.previous_page_number %}" class="page-link">&laquo;</span>
                 {% elif page_label == 'Installations Fablab' %}
-                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-installations' page=products.previous_page_number %}" >&laquo;</button>
+                    <span data-url="{% url 'shop-installations' page=products.previous_page_number %}" class="page-link">&laquo;</span>
                 {% else %}
-                    <button onclick="filter_sort_form_datas({{products.previous_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-machine' page=products.previous_page_number %}" >&laquo;</button>
+                    <span data-url="{% url 'shop-machine' page=products.previous_page_number %}" class="page-link">&laquo;</span>
                 {% endif %}
             </li>
         {% else %}
@@ -18,21 +18,26 @@
 
         {% for num in page_range %}
             <li class="page-item {% if num == products.number %}active{% endif %}">
-                <button onclick="filter_sort_form_datas({{num}}, '{{page_label}}')" class="page-link">{{ num }}</button>
+                {% if page_label == 'Kits Arduino et IOT' %}
+                    <span data-url="{% url 'shop-arduino' page=num %}" class="page-link">{{num}}</span>
+                {% elif page_label == 'Installations Fablab' %}
+                    <span data-url="{% url 'shop-installations' page=num %}" class="page-link">{{num}}</span>
+                {% else %}
+                    <span data-url="{% url 'shop-machine' page=num %}" class="page-link">{{num}}</span>
+                {% endif %}
             </li>
         {% endfor %}
 
         {% if products.has_next %}
-            {% if page_label == 'arduino' %}
-                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-arduino' page=products.next_page_number %}" >&raquo;</button>
-            {% elif page_label == 'installations' %}
-                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-installations' page=products.next_page_number %}" >&raquo;</button>
+            {% if page_label == 'Kits Arduino et IOT' %}
+                <span data-url="{% url 'shop-arduino' page=products.next_page_number %}" class="page-link">&raquo;</span>
+            {% elif page_label == 'Installations Fablab' %}
+                <span data-url="{% url 'shop-installations' page=products.next_page_number %}" class="page-link">&raquo;</span>
             {% else %}
-                <button onclick="filter_sort_form_datas({{products.next_page_number}}, '{{page_label}}')" class="page-link" href="{% url 'shop-machine' page=products.next_page_number %}" >&raquo;</button>
+                <span data-url="{% url 'shop-machine' page=products.next_page_number %}" class="page-link">&raquo;</span>
             {% endif %}
         {% else %}
             <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
         {% endif %}
-
     </ul>
 </nav>
