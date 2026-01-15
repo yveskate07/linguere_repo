@@ -26,11 +26,7 @@
 <body data-user-id={{user_id}} data-page-label="{{page_label}}" data-page-number="{{products.number}}">
     
 {% include 'header_footer/header.html' %}
-
-<!-- Confirmation Message -->
-<div id="confirmation-message" class="confirmation-message">
-    <i class="fas fa-check-circle me-2"></i> Produit ajouté au panier!
-</div>
+{% include 'confirms.html' %}
 
 {% endblock %}
 
@@ -180,7 +176,7 @@
                             {% else %}
                                 <p class="product-stock out-of-stock"><i class="fas fa-times-circle me-1"></i> Rupture de stock</p>
                             {% endif %}
-                            <button class="add-to-cart-button" onclick="addToCart(1, {{product.id}})">
+                            <button class="add-to-cart-button btn" type='button' data-name='{{product.name}}' data-img='{{product.imageURL}}' data-desc='{{product.description}}' data-disp='{{product.disponibility}}' data-stock={{product.stock}} data-quantity=1 data-prd_id={{product.id}} data-price={{product.price}}>
                                 <i class="fas fa-cart-plus"></i> Ajouter au panier
                             </button>
                             <div class="product-meta">
@@ -302,6 +298,45 @@
             });
         });
     })
+
+    document.querySelectorAll('.add-to-cart-button').forEach(el => {
+        el.addEventListener('click', () => {
+
+            const csrftoken = getCookie("csrftoken");
+
+            fetch("/shop/add_item/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({
+                    item: {
+                        name: el.getAttribute('data-name'),
+                        image: el.getAttribute('data-img'),
+                        description: el.getAttribute('data-desc'),
+                        disponibility: el.getAttribute('data-disp'),
+                        stock: el.getAttribute('data-stock'),
+                        quantity: el.getAttribute('data-quantity'),
+                        product_id: el.getAttribute('data-prd_id'),
+                        price: el.getAttribute('data-price'),
+                    },
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.response==="success"){
+                    addToCart(el.getAttribute('data-name'), el.getAttribute('data-img'), el.getAttribute('data-desc'), el.getAttribute('data-disp'), el.getAttribute('data-stock'), el.getAttribute('data-quantity'), el.getAttribute('data-prd_id'), el.getAttribute('data-price'));
+                } else {
+                    console.log("Échec de l'ajout du produit au panier.");
+                }
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+            });
+
+        })})
+
 </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script type='text/javascript' src="{% static 'Shop/js/sweet_alert.js' %}"></script>

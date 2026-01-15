@@ -88,7 +88,6 @@ def home(request):
 
     context['formation_available'] = context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser']
 
-    context['user_id'] = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
     context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
 
     context['other_services'] = ServiceInfo.objects.filter(impressionNumerique = False)
@@ -102,12 +101,8 @@ def home(request):
 
 
 def location(request):
-    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    return render(request, 'AntaBackEnd/location/index.html', context={
-        'user_id': user_id,})
+    return render(request, 'AntaBackEnd/location/index.html')
 
 
 def about(request):
-    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
-    return render(request, "AntaBackEnd/about/index.html", context={
-        'user_id': user_id,})
+    return render(request, "AntaBackEnd/about/index.html")

@@ -70,7 +70,6 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
                 'serviceId': service.pk,
                 'serviceName': service.name,
                 'serviceDesc': service.description,
-                'user_id': request.user.id,
                 'img_urls': [image.image.url for image in
                                 service.galerie_images.all()] if service.galerie_images.all() else None,
                 'errors': errors, 'errors_txt': errors_txt, 'success': success, 'success_txt': success_txt}
@@ -212,16 +211,14 @@ def brod_num_view(request):
             service = ServiceInfo.objects.get(name="Broderie Numérique")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = BroderieNumeriqueModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousBroderieNumeriqueModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
             # retrieving service form
-            return render(request, 'Services/brod_num/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/brod_num/index.html', context={'service':service, 
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                 'img_urls': img_urls})
     else:
@@ -263,16 +260,14 @@ def dec_grav_laser_view(request):
             service = ServiceInfo.objects.get(name="Découpe et Gravure Laser")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = DecoupeLaserModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousDecoupeLaserModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
             # retrieving service form
-            return render(request, 'Services/laser/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/laser/index.html', context={'service':service,  
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:
@@ -311,16 +306,14 @@ def fraiseuse_cnc_view(request):
             service = ServiceInfo.objects.get(name="Service de Fraiseuse Numérique CNC")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = FraiseCNCModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousFraiseCNCModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
             # retrieving service form
-            return render(request, 'Services/frais_num/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/frais_num/index.html', context={'service':service,  
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:
@@ -359,16 +352,14 @@ def impression_3d_view(request):
             service = ServiceInfo.objects.get(name="Service d’Impression 3D")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = Impression3DModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousImpression3DModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
             # retrieving service form
-            return render(request, 'Services/serv_imp_3d/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/serv_imp_3d/index.html', context={'service':service, 
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:
@@ -410,16 +401,14 @@ def impression_objets_personnalises_view(request):
             service = ServiceInfo.objects.get(name="Impression sur Objets Personnalisés")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = ImpressionObjPersonnaliseModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousImpressionObjPersonnaliseModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
             # retrieving service form
-            return render(request, 'Services/imp_obj_pers/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/imp_obj_pers/index.html', context={'service':service, 
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:
@@ -461,15 +450,13 @@ def impression_papier_supports_rigides_view(request):
             service = ServiceInfo.objects.get(name="Impression sur Papier et Supports Rigides")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = ImpressionPaperSupportRigideModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousImpressionPaperSupportRigideModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
-            return render(request, 'Services/imp_pap_sup_rig/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/imp_pap_sup_rig/index.html', context={'service':service, 
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:
@@ -511,15 +498,13 @@ def impression_textiles_vetements_view(request):
             service = ServiceInfo.objects.get(name="Impression sur Textiles et Vêtements")
             img_urls = [image.image.url for image in service.galerie_images.all()]
             if request.user.is_authenticated:
-                user_id = request.user.id
                 serviceCustomisation = ImpressionTextileEtVetementModelForm()
             else:
-                user_id = 'anonymous_id'
                 serviceCustomisation = AnonymousImpressionTextileEtVetementModelForm()
         except ServiceInfo.DoesNotExist:
             return redirect('home')
         else:
-            return render(request, 'Services/imp_text_vet/index.html', context={'service':service, 'user_id': user_id, 
+            return render(request, 'Services/imp_text_vet/index.html', context={'service':service, 
                                                                             'serviceCustomisation':serviceCustomisation,
                                                                             'img_urls': img_urls})
     else:

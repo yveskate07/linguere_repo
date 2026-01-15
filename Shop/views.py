@@ -43,10 +43,8 @@ def render_category_page(request, page_number, category, template, fetch_article
 
     if request.user.is_authenticated:
         user = get_object_or_404(Fab_User, uuid=request.user.uuid)
-        user_id = user.uuid
     else:
         user = None
-        user_id = 'anonymous_id'
 
     # Calcul des pages à afficher
     if paginator.num_pages <= 3:
@@ -63,10 +61,15 @@ def render_category_page(request, page_number, category, template, fetch_article
         end_page = start_page + 2
         page_range = range(start_page, min(end_page, paginator.num_pages) + 1)
 
-    products_cart = CartService.get_cart_data_from_request(request)
+    if request.user.is_authenticated:
+        products_cart = CartService.return_cart_data(request)
+    else:
+        products_cart = {
+            "products": None,
+            "total_price": 0,
+        }
     context = {
         'user_authenticated': user_authenticated,
-        'user_id': user_id,
         'user': user,
         'products': page,
         'page_label': category,
@@ -88,7 +91,7 @@ def render_category_page(request, page_number, category, template, fetch_article
 
     return render(request, template, context)
 
-@login_required
+
 def arduino(request, page, filters=None):
     if request.method == 'POST':
         filters = {'sort':request.POST.get('sort-choice'),
@@ -99,7 +102,7 @@ def arduino(request, page, filters=None):
         return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=page, fetch_articles=filters)
     return render_category_page(request, category="Kits Arduino et IOT", template='Shop/arduino/index.html', page_number=page, fetch_articles=filters)
 
-@login_required
+
 def installations(request, page, filters=None):
     if request.method == 'POST':
         filters = {'sort':request.POST.get('sort-choice'),
@@ -110,7 +113,7 @@ def installations(request, page, filters=None):
         return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=page, fetch_articles=filters)
     return render_category_page(request, category="Installations Fablab", template="Shop/installations/index.html", page_number=page, fetch_articles=filters)
 
-@login_required
+
 def machine(request, page, filters=None):
     if request.method == 'POST':
         filters = {'sort':request.POST.get('sort-choice'),
@@ -266,15 +269,66 @@ def return_url(request):
     else:
         return JsonResponse({"status": "error", "message": "Paiement échoué"}, status=400)
 
-@login_required
+def add_item(request): # just so that the cart is saved in session for unauthenticated users
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            body = json.loads(request.body)
+            # Sauvegarder le contenu du panier dans la base de données
+            item = body.get('item')
+            session, _ = CartService.add_to_cart_from_session(request.session, name=item.get('name'), 
+                                                              image_url=item.get('image'),
+                                                              description=item.get('description'), 
+                                                              disponibility=item.get('disponibility'),
+                                                              stock=int(item.get('stock')) , product_id=item.get('product_id'), 
+                                                              quantity=int(item.get('quantity')), unit_price=int(item.get('price')))
+            
+           
+            request.session = session
+            return JsonResponse({"response": "success"}, status=200)
+    
+    return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+
+def del_item(request): # just so that the cart is saved in session for unauthenticated users
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            body = json.loads(request.body)
+            # Sauvegarder le contenu du panier dans la base de données
+            item = body.get('item')
+            cart, _ = CartService.remove_item(request.session['cart'], item_id=int(item.get('id')), user_authenticated=False)
+            
+           
+            request.session['cart'] = cart
+            return JsonResponse({"response": "success"}, status=200)
+    
+    return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+
+def change_item(request): # just so that the cart is saved in session for unauthenticated users
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            body = json.loads(request.body)
+            # Sauvegarder le contenu du panier dans la base de données
+            item = body.get('item')
+            response = CartService.update_quantity(request.session['cart'], item_id=int(item.get('id')), quantity=int(item.get('quantity')), user_authenticated=False)
+           
+            request.session['cart'] = response['cart']
+            return JsonResponse({"response": "success", "total_price": response['total_price']}, status=200)
+    
+    return JsonResponse({"error": "Méthode non autorisée"}, status=405)
+
 def cart_view(request):
-    products_cart = CartService.get_cart_data_from_request(request)
-    user_id = request.user.uuid if request.user.is_authenticated else 'anonymous_id'
+    products = CartService.return_cart_data(request)
+    
+    if isinstance(products['products'], list):
+        products_cart = products['products']
+        products_cart_js = json.dumps(products['products'])
+    else:
+        products_cart = products['products'].values()
+        products_cart_js = json.dumps(products['products'].values())
+
     return render(request,'cart/index.html', context={
-        'products_cart': products_cart['products'],
-        'user_id': user_id,
-        'products_cart_js': json.dumps(products_cart['products']),
-        'total_price_cart': products_cart['total_price']})
+        'products_cart': products_cart,
+        'products_cart_js': products_cart_js,
+        'total_price_cart': products['total_price']})
 
 def payment_done(request):
     if request.method == "POST":

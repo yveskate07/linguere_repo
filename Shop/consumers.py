@@ -12,40 +12,38 @@ from .services.cart_service import CartService
 
 class ProductConsumerAuth(AsyncWebsocketConsumer):
     async def connect(self):
-        print("WebSocket connected")
+        self.session = self.scope["session"]
+        self.user = self.scope["user"]
         await self.accept()
         await self.send(text_data=json.dumps({'msg': 'success'}))
 
     async def disconnect(self, close_code):
         await super().disconnect(close_code)
 
-
     @sync_to_async
     def add_to_cart(self, prd_data):
+        session = self.scope["session"]
+        user = self.scope["user"]
 
         prd_id = prd_data.get('id')
         quantity = prd_data.get('quantity', 0)
-        uuid = self.scope['url_route']['kwargs']['uuid']
+        unit_price = prd_data.get('unit_price')
 
-        if uuid != 'anonymous_id':
+        if user.is_authenticated:
             # si l'utilisateur est authentifié, on ajoute l'item au panier de l'utilisateur
-            user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user)
+            total_price = CartService.add_item(cart, product=prd_id, quantity=quantity)
         else:
-            return 'user not authenticated'
+            cart = CartService.get_session_cart(session) # returns a dict
+            self.scope['session'], total_price = CartService.add_to_cart_from_session(session, name=prd_data.get('name'), 
+                                                                                      image_url=prd_data.get('image'), 
+                                                                                      description=prd_data.get('description'), 
+                                                                                      disponibility=prd_data.get('disponibility'),
+                                                                                      stock=int(prd_data.get('stock')) , product_id=int(prd_id), 
+                                                                                      quantity=int(quantity), unit_price=int(unit_price))
+            
 
-        total_price = CartService.add_item(cart, product=prd_id, quantity=quantity)
-
-        # user = Fab_User.objects.get(uuid=uuid)
-        # cart = user.cart
-        # item.quantity = quantity
-        # if not item.cart:  # si l'item n'est pas encore dans le panier, on l'ajoute
-        #     item.cart = cart
-        #     msg = 'item added'
-        # else:  # si l'item est deja dans le panier, on met a jour la quantite
-        #     msg = 'already in cart'
-        # item.save()
-        #
+        
         return total_price
 
     @sync_to_async
@@ -53,32 +51,32 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
 
         item_id = item_data.get('id', None)
         qtty = item_data.get('quantity', None)
-        uuid = self.scope['url_route']['kwargs']['uuid']
+        session = self.scope["session"]
+        user = self.scope["user"]
 
-        if uuid != 'anonymous_id':
+        if user.is_authenticated:
             # si l'utilisateur est authentifié, on change la quantite du item dans le panier de l'utilisateur
-            user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user)
+            response = CartService.update_quantity(cart, item_id=item_id, quantity=qtty, user_authenticated=True)
         else:
-            return 'user not authenticated'
-
-        response = CartService.update_quantity(cart, item_id=item_id, quantity=qtty)
+            cart = CartService.get_session_cart(session) # returns a dict
+            response = CartService.update_quantity(cart, item_id=item_id, quantity=qtty, user_authenticated=False)
 
         return response
 
     @sync_to_async
     def remove_item_from_cart(self, item_data):
 
-        uuid = self.scope['url_route']['kwargs']['uuid']
+        user = self.scope['user']
+        session = self.scope['session']
 
-        if uuid != 'anonymous_id':
+        if user.is_authenticated:
             # si l'utilisateur est authentifié, on ajoute l'item au panier de l'utilisateur
-            user = Fab_User.objects.get(uuid=uuid)
             cart = CartService.get_cart(user = user)
+            response = CartService.remove_item(cart, item_id=item_data.get('item'))
         else:
-            return 'user not authenticated'
-
-        response = CartService.remove_item(cart, item_id=item_data.get('item'))
+            cart = CartService.get_session_cart(session) # returns a dict
+            _, response = CartService.remove_item(cart, item_id=item_data.get('item'), user_authenticated=False)
 
         return response
 
@@ -94,7 +92,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
 
     def save_page_to_json(self, paginator): # given a paginator, saves each page of products to a json file
         if isinstance(paginator, Paginator):
-            print(f'Nombre de pages: {paginator.num_pages}')
             for page_number in range(1, paginator.num_pages + 1):
                 page = paginator.page(page_number)
                 products_list = [self.product_to_dict(p, page_number) for p in page.object_list]
@@ -103,7 +100,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
                 with open(filename, "w", encoding="utf-8") as f:
                     json.dump(products_list, f, ensure_ascii=False, indent=4)
 
-                print(f"Page {page_number} enregistrée dans {filename}")
         else:# if paginator is a single page of a paginator object
             products_list = [self.product_to_dict(p, 1) for p in paginator.object_list]
             filename = f"page{paginator.number}.json"
@@ -111,7 +107,6 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(products_list, f, ensure_ascii=False, indent=4)
 
-            print(f"Page {paginator.number} enregistrée dans {filename}")
 
     def products_queryset(self, queryset, page_number=1, main_category=None):
 
@@ -275,30 +270,27 @@ class ProductConsumerAuth(AsyncWebsocketConsumer):
 
         if message_type == "add-to-cart": # add item to cart
             response = await self.add_to_cart(data.get('item', {}))
-            if response == 'user not authenticated':
-                await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
-                return
-            await self.send(text_data=json.dumps({'type': 'add_to_cart_result', "total_price": response}))
+            
+            await self.send(text_data=json.dumps({'type': 'add_to_cart_result', "total_price": response, "cart_session": CartService.get_session_cart(self.scope["session"])}))
             return
         elif message_type == "change-item-quantity": # change item quantity in cart
             response = await self.change_item_qtty(data.get('item', {}))
-            if response == 'does not exist':
-                return
-            elif response[0] == 'deleted':
-                await self.send(text_data=json.dumps({'type': 'remove_item_result', "html_id": data.get('item').get('html_id'), "total_price": response[1]}))
-                return
-            await self.send(text_data=json.dumps({'type': 'quantity_changed', 
-                                                  "new_qtty": response[0], 
-                                                  "new_total": response[1], 
-                                                  'item_qtty' : response[2], 
-                                                  'item_name': response[3], 
-                                                  'item_total': response[4]}))
+            
+            if not response.get('deleted'):
+                await self.send(text_data=json.dumps({'type': 'quantity_changed', 
+                                                    "item_name": data.get('item').get('name'),
+                                                    "html_id": data.get('item').get('html_id'),
+                                                    'item_qtty': response.get('item_quantity', 0),
+                                                    'item_total': response.get('item_total_price', 0),
+                                                    "msg": response.get('msg', ''),
+                                                    "new_total": response.get('total_price', 0)}))
+            else:
+                await self.send(text_data=json.dumps({'type': 'remove_item_result', "status": "success", 
+                                                    'total_price': response.get('total_price', 0), 'html_id': data.get('html_id')}))
             return
         elif message_type == "remove-item": # remove item from cart
             msg = await self.remove_item_from_cart(data)
-            if msg == 'user not authenticated':
-                await self.send(text_data=json.dumps({'type': 'user_not_authenticated'}))
-                return
+            
             await self.send(text_data=json.dumps(
                 {'type': 'remove_item_result', "status": "success", 'total_price': msg, 'html_id': data.get('html_id')}))
             return

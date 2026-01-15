@@ -5,39 +5,39 @@
         {% if products.has_previous %}
             <li class="page-item">
                 {% if page_label == 'Kits Arduino et IOT' %}
-                    <span data-url="{% url 'shop-arduino' page=products.previous_page_number %}" class="page-link">&laquo;</span>
+                    <button data-url="{% url 'shop-arduino' page=products.previous_page_number %}" class="page-link btn" type="button">&laquo;</button>
                 {% elif page_label == 'Installations Fablab' %}
-                    <span data-url="{% url 'shop-installations' page=products.previous_page_number %}" class="page-link">&laquo;</span>
+                    <button data-url="{% url 'shop-installations' page=products.previous_page_number %}" class="page-link btn" type="button">&laquo;</button>
                 {% else %}
-                    <span data-url="{% url 'shop-machine' page=products.previous_page_number %}" class="page-link">&laquo;</span>
+                    <button data-url="{% url 'shop-machine' page=products.previous_page_number %}" class="page-link btn" type="button">&laquo;</button>
                 {% endif %}
             </li>
         {% else %}
-            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            <li class="page-item disabled"><button class="page-link btn" type="button">&laquo;</button></li>
         {% endif %}
 
         {% for num in page_range %}
             <li class="page-item {% if num == products.number %}active{% endif %}">
                 {% if page_label == 'Kits Arduino et IOT' %}
-                    <span data-url="{% url 'shop-arduino' page=num %}" class="page-link">{{num}}</span>
+                    <button data-url="{% url 'shop-arduino' page=num %}" class="page-link btn" type="button">{{num}}</button>
                 {% elif page_label == 'Installations Fablab' %}
-                    <span data-url="{% url 'shop-installations' page=num %}" class="page-link">{{num}}</span>
+                    <button data-url="{% url 'shop-installations' page=num %}" class="page-link btn" type="button">{{num}}</button>
                 {% else %}
-                    <span data-url="{% url 'shop-machine' page=num %}" class="page-link">{{num}}</span>
+                    <button data-url="{% url 'shop-machine' page=num %}" class="page-link btn" type="button">{{num}}</button>
                 {% endif %}
             </li>
         {% endfor %}
 
         {% if products.has_next %}
             {% if page_label == 'Kits Arduino et IOT' %}
-                <span data-url="{% url 'shop-arduino' page=products.next_page_number %}" class="page-link">&raquo;</span>
+                <button data-url="{% url 'shop-arduino' page=products.next_page_number %}" class="page-link btn" type="button">&raquo;</button>
             {% elif page_label == 'Installations Fablab' %}
-                <span data-url="{% url 'shop-installations' page=products.next_page_number %}" class="page-link">&raquo;</span>
+                <button data-url="{% url 'shop-installations' page=products.next_page_number %}" class="page-link btn" type="button">&raquo;</button>
             {% else %}
-                <span data-url="{% url 'shop-machine' page=products.next_page_number %}" class="page-link">&raquo;</span>
+                <button data-url="{% url 'shop-machine' page=products.next_page_number %}" class="page-link btn" type="button">&raquo;</button>
             {% endif %}
         {% else %}
-            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+            <li class="page-item disabled"><button class="page-link btn" type="button">&raquo;</button></li>
         {% endif %}
     </ul>
 </nav>

@@ -10,7 +10,6 @@ from .models import Activity
 # Create your views here.
 
 def get_context_for_activities(request, activity_name):
-    user_id = request.user.id if request.user.is_authenticated else 'anonymous_id'
     try:
         activity = Activity.objects.get(name=activity_name)
     except Exception as e:
@@ -22,7 +21,6 @@ def get_context_for_activities(request, activity_name):
             'resultats': activity.resultats.all()[0],
             'impacts': activity.impacts.all(),
             'galerie_images': activity.galerie_images.all(),
-            'user_id': user_id,
         }
 
 

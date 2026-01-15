@@ -46,10 +46,20 @@ function showConfirmation() {
     }, 3000);
 }
 
-function addToCart(quantity, prd_id) {
+function addToCart(name, image, description, disponibility, stock, quantity, prd_id, unit_price) {
 
     socket.send(JSON.stringify({'type':'add-to-cart',
-        'item':{'id':prd_id,'quantity':quantity}
+        'item':{
+                'name':name, 
+                'image':image, 
+                'description':description, 
+                'disponibility':disponibility,
+                'stock':stock, 
+                'id':prd_id,
+                'quantity':quantity, 
+                'unit_price':unit_price
+            },
+        'user_id': document.body.getAttribute('data-user-id')
         }));
 }
 

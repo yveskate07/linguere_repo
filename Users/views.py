@@ -9,6 +9,7 @@ from Users.forms import UserResetPasswordForm
 from .auth_form import UserLoginForm, UserSignUpForm
 from .models import Fab_User
 from django.contrib.auth import login, authenticate
+from Shop.models import Cart, Product, CartItem
 
 
 def reset_password_validate(request, uidb64, token):
@@ -100,6 +101,16 @@ def login_user(request):
 
             # Connexion
             login(request, user)
+            # fusion des paniers si nécessaire ici
+            user_cart = Cart.objects.get_or_create(user=user)
+            session_cart = request.session.get('cart', None)
+            if session_cart and session_cart.get('products', None):
+                for item_id, item_data in session_cart.get('products', {}).items():
+                    product = Product.objects.get(id=item_id)
+                    if not user_cart[0].has_item(product.id):
+                        CartItem.objects.create(cart=user_cart[0], product=product, quantity=item_data['quantity'])
+                request.session['cart'] = {'products': {}, 'total_price': 0}
+
             messages.success(request, "Vous êtes maintenant connecté.")
             return redirect('home')
 

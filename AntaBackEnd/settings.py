@@ -104,6 +104,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'Shop.context_processors.get_cart_data',
+                'Users.context_processors.get_user_id',
             ],
         },
     },

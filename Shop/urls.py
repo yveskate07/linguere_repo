@@ -16,16 +16,18 @@ Including another URLconf
 """
 from django.urls import path
 from .views import arduino, machine, installations, verify_hmac, return_url, init_payment, cart_view, payment_done, \
-    fetch_articles
+    add_item, del_item, change_item
 
 urlpatterns = [
     path('arduino/<int:page>', arduino, name='shop-arduino'),
     path('machine/<int:page>', machine, name='shop-machine'),
     path('installations/<int:page>', installations, name='shop-installations'),
-    path('fetch-articles/', fetch_articles, name='fetch-articles'),
     path('create-payment/', init_payment, name='create_payment'),
     path('notify/', verify_hmac, name='verify_hmac'),
     path('return/', return_url, name='return_url'),
     path('cart/', cart_view, name='cart'),
+    path('add_item/', add_item, name='add_item'),
+    path('del_item/', del_item, name='del_item'),
+    path('change_item/', change_item, name='del_item'),
     path('payment-done/', payment_done, name='payment-done')
 ]

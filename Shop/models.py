@@ -107,6 +107,9 @@ class Cart(models.Model):
             "products": [item.to_dict for item in self.items.all()],
             "total_price": self.total_price,
         }
+    
+    def has_item(self, product_id):
+        return self.items.filter(product__id=product_id).exists()
 
     def __str__(self):
         if self.user:

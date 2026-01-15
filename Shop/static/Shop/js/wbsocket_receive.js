@@ -10,6 +10,9 @@ socket.onmessage = function (e) {
                     <span class="d-none d-md-inline">
                             ${data.total_price} CFA
                     </span>`
+            document.getElementById('p_text').textContent = 'Votre article a été ajouté au panier';
+            showConfirmation();
+            document.body.setAttribute('data-session-cart', data.cart_session);
         }else{
             if (type === "remove_item_result"){ // result after item removed
 
@@ -17,6 +20,8 @@ socket.onmessage = function (e) {
                     cart_item.remove();
 
                     document.getElementById('total-order-price').textContent = data.total_price
+                    document.getElementById('p_text').textContent = 'Cet article a été retiré au panier';
+                    showConfirmation();
             }else{
                 if (type==="quantity_changed"){ // result after item quantity changed
                     const idPrd = "quantity-value-"+ data.item_name
@@ -51,8 +56,9 @@ socket.onmessage = function (e) {
                                     emptyPaymentForm();
                                     closePaymentModal();
                                 }else{
-                                    if(type === "user_not_authenticated" ){
-                                        window.location.href = "/login/";
+                                    if(type === "item_added_in_session_cart" ){
+                                        document.getElementById('p_text').textContent = 'Votre article a été ajouté au panier';
+                                        showConfirmation();
                                     }else{
                                         if(type === "nothing" ){
                                             // ne rien faire
