@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from Users.forms import UserResetPasswordForm
 from .auth_form import UserLoginForm, UserSignUpForm
@@ -200,7 +201,7 @@ def user_home(request):
     # si l'utilisateur est un superuser, rediriger vers la page d'administration
     if user.is_superuser or user.is_staff:
         print("redirecting to admin")
-        return redirect('/admin')
+        return redirect(reverse('admin:index'))
     print("rendering user home")
     return render(request ,'Users/home/index.html', {'user':user})
 
