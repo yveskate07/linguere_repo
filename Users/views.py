@@ -194,11 +194,14 @@ def register_user(request):
 
 @login_required
 def user_home(request):
+    print("you're in view user_home")
     #check_user_activated(request.user, request)
     user = get_object_or_404(Fab_User,uuid=request.user.uuid)
     # si l'utilisateur est un superuser, rediriger vers la page d'administration
     if user.is_superuser or user.is_staff:
+        print("redirecting to admin")
         return redirect('/admin')
+    print("rendering user home")
     return render(request ,'Users/home/index.html', {'user':user})
 
 @login_required
