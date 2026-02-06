@@ -35,7 +35,7 @@ LOCAL = os.getenv("LOCAL", "False") == "True"
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
 else:
-    DOMAIN_NAME = 'linguere-web.onrender.com'
+    DOMAIN_NAME = 'https://linguere-web.onrender.com'
 
 ALLOWED_HOSTS = [
     "linguere-web.onrender.com",
