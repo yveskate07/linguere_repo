@@ -30,10 +30,9 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 LOCAL = os.getenv("LOCAL", "False") == "True"
-if not LOCAL:
-    DEBUG = True
-else:
-    DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+print(f"DEBUG: {DEBUG}, LOCAL: {LOCAL}")
 
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
