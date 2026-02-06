@@ -67,7 +67,7 @@ class Product(models.Model):
         if self.image:
             self.image_url = self.image.url
         else: 
-            self.image_url = 'mettre ici un lien par defaut'
+            self.image_url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDASdBqpi7pcoU1jl6HG2n88Z2ZG562K49Ew&s'
             
         super().save(*args, **kwargs)  # On sauvegarde d'abord le produit (important pour avoir self.pk)
 
@@ -77,7 +77,7 @@ class Product(models.Model):
         try:
             url = f"{settings.DOMAIN_NAME}{self.image.url}"
         except:
-            self.image_url = 'mettre ici un lien par defaut'
+            url = self.image_url
         return url
 
 
