@@ -57,7 +57,7 @@ def home(request):
     context = dict()
 
     try:
-        broderie_num = Formations.objects.get(name="Broderie Numérique")
+        broderie_num = Formations.objects.get(name="Compétences en Broderie Numérique")
         context['formation_broderie_num'] = broderie_num
     except Exception:
         context['formation_broderie_num'] = None
