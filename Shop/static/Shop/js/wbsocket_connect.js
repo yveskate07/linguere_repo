@@ -1,9 +1,12 @@
 const userId = document.body.getAttribute('data-user-id');
 
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+
+
 let socket = null;
 
 if (userId !== 'anonymous_id') {
-    socket = new WebSocket('ws://' + window.location.host + '/ws/shop/user/' + userId + '/');
+    socket = new WebSocket(protocol+'://' + window.location.host + '/ws/shop/user/' + userId + '/');
 }else{
-    socket = new WebSocket('ws://' + window.location.host + '/ws/shop/user/anonymous/');
+    socket = new WebSocket(protocol+'://' + window.location.host + '/ws/shop/user/anonymous/');
 }
