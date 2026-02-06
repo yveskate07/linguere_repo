@@ -73,11 +73,11 @@ class Product(models.Model):
 
     @property
     def imageURL(self):
-        return self.image_url
-        """try:
+        try:
             url = self.image.url
         except:
-        return url"""
+            self.image_url = 'mettre ici un lien par defaut'
+        return url
 
 
 class Cart(models.Model):
