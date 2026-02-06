@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from decimal import Decimal
-from django.conf import settings
+from AntaBackEnd import settings
 from Shop.managers import OrderManager
 from Users.models import Fab_User
 import pdfkit
