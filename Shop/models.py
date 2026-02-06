@@ -73,8 +73,9 @@ class Product(models.Model):
 
     @property
     def imageURL(self):
+        # rebuilding the absolute URL for the image to be used in the invoice template
         try:
-            url = self.image.url
+            url = f"{settings.DOMAIN_NAME}{self.image.url}"
         except:
             self.image_url = 'mettre ici un lien par defaut'
         return url
