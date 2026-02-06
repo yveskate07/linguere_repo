@@ -32,10 +32,11 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 LOCAL = os.getenv("LOCAL", "False") == "True"
 
-if DEBUG:
-    DOMAIN_NAME = 'http://127.0.0.1:8001'
-else:
-    DOMAIN_NAME = 'https://linguere-web.onrender.com'
+DOMAIN_NAME = os.environ.get(
+    "DOMAIN_NAME",
+    "http://127.0.0.1:8001"
+)
+
 
 ALLOWED_HOSTS = [
     "linguere-web.onrender.com",

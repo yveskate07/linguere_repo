@@ -7,7 +7,6 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from django.contrib.sites.models import Site
 from decimal import Decimal
 from django.conf import settings
 from Shop.managers import OrderManager
@@ -76,8 +75,7 @@ class Product(models.Model):
     def imageURL(self):
         # rebuilding the absolute URL for the image to be used in the invoice template
         try:
-            domain = Site.objects.get_current().domain
-            url = f"https://{domain}{self.image.url}"
+            url = f"{settings.DOMAIN_NAME}{self.image.url}"
         except:
             url = self.image_url
         return url
