@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'daphne',
     'channels',
     'django.contrib.admin',
-    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -77,8 +76,6 @@ INSTALLED_APPS = [
     'colorfield',
     'admin_extra_buttons',
 ]
-
-SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
