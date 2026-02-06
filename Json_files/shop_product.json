@@ -1,5 +1,6 @@
 [
   {
+    "id": "7",
     "reference": "ARD-001",
     "image": "arduino-uno.jpg",
     "name": "Arduino Uno R3",
@@ -7,12 +8,14 @@
     "badge": null,
     "price": 15000,
     "stock": 25,
-    "main_category": "Electronique",
+    "main_category": "Kits Arduino et IOT",
     "category": "Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.015742+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "8",
     "reference": "ARD-002",
     "image": "arduino-mega.jpg",
     "name": "Arduino Mega 2560",
@@ -20,12 +23,14 @@
     "badge": "Nouveau",
     "price": 25000,
     "stock": 10,
-    "main_category": "Electronique",
+    "main_category": "Kits Arduino et IOT",
     "category": "Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.03549+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "9",
     "reference": "ARD-003",
     "image": "arduino-nano.jpg",
     "name": "Arduino Nano",
@@ -33,12 +38,14 @@
     "badge": null,
     "price": 9000,
     "stock": 40,
-    "main_category": "Electronique",
+    "main_category": "Kits Arduino et IOT",
     "category": "Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.042961+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "10",
     "reference": "ESP-001",
     "image": "esp32.jpg",
     "name": "ESP32",
@@ -46,12 +53,14 @@
     "badge": null,
     "price": 12000,
     "stock": 15,
-    "main_category": "Electronique",
-    "category": "IoT",
+    "main_category": "Kits Arduino et IOT",
+    "category": "Composants IoT",
     "disponibility": "Stock limité",
+    "added_date": "2026-01-06 15:50:55.049467+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "11",
     "reference": "SEN-001",
     "image": "dht11.jpg",
     "name": "Capteur DHT11",
@@ -59,12 +68,14 @@
     "badge": null,
     "price": 5000,
     "stock": 25,
-    "main_category": "Electronique",
+    "main_category": "Kits Arduino et IOT",
     "category": "Capteurs",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.056964+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "12",
     "reference": "SEN-002",
     "image": "ultrasonic.jpg",
     "name": "Capteur Ultrason",
@@ -72,12 +83,14 @@
     "badge": null,
     "price": 7500,
     "stock": 10,
-    "main_category": "Electronique",
+    "main_category": "Kits Arduino et IOT",
     "category": "Capteurs",
     "disponibility": "Stock limité",
+    "added_date": "2026-01-06 15:50:55.06379+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "13",
     "reference": "KIT-ARD-019",
     "image": "kit-arduino-advanced.jpg",
     "name": "Kit Arduino Avancé",
@@ -88,9 +101,11 @@
     "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.070254+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "14",
     "reference": "IOT-COMP-020",
     "image": "sensor-gas.jpg",
     "name": "Capteur de Gaz MQ-2",
@@ -99,11 +114,13 @@
     "price": 5500,
     "stock": 40,
     "main_category": "Kits Arduino et IOT",
-    "category": "Composants IOT",
+    "category": "Composants IoT",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.076725+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "15",
     "reference": "ROB-021",
     "image": "robot-arm.jpg",
     "name": "Bras Robotique Arduino",
@@ -114,9 +131,11 @@
     "main_category": "Kits Arduino et IOT",
     "category": "Robotique",
     "disponibility": "Stock limité",
+    "added_date": "2026-01-06 15:50:55.083249+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "16",
     "reference": "IOT-COMP-022",
     "image": "relay-module.jpg",
     "name": "Module Relais 5V",
@@ -125,11 +144,13 @@
     "price": 4000,
     "stock": 60,
     "main_category": "Kits Arduino et IOT",
-    "category": "Composants IOT",
+    "category": "Composants IoT",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.089331+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "17",
     "reference": "KIT-ARD-023",
     "image": "starter-pack.jpg",
     "name": "Pack Arduino Formation",
@@ -140,9 +161,11 @@
     "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.095714+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "18",
     "reference": "FAB-024",
     "image": "fablab-basic.jpg",
     "name": "Installation Fablab Basique",
@@ -150,12 +173,14 @@
     "badge": null,
     "price": 300000,
     "stock": 3,
-    "main_category": "Installations Fablab",
+    "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
-    "disponibility": "Sur commande",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.102108+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "19",
     "reference": "FAB-025",
     "image": "robot-lab.jpg",
     "name": "Installation Laboratoire Robotique",
@@ -163,12 +188,14 @@
     "badge": "Nouveau",
     "price": 520000,
     "stock": 2,
-    "main_category": "Installations Fablab",
+    "main_category": "Kits Arduino et IOT",
     "category": "Robotique",
-    "disponibility": "Sur commande",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.10819+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "20",
     "reference": "FAB-026",
     "image": "iot-workspace.jpg",
     "name": "Installation Espace IoT",
@@ -176,12 +203,14 @@
     "badge": null,
     "price": 410000,
     "stock": 2,
-    "main_category": "Installations Fablab",
-    "category": "Composants IOT",
-    "disponibility": "Sur commande",
+    "main_category": "Kits Arduino et IOT",
+    "category": "Composants IoT",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.114799+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "21",
     "reference": "MACH-027",
     "image": "vinyl-cutter.jpg",
     "name": "Machine Découpe Vinyle",
@@ -189,12 +218,14 @@
     "badge": null,
     "price": 280000,
     "stock": 4,
-    "main_category": "Machines Numériques",
+    "main_category": "Kits Arduino et IOT",
     "category": "Robotique",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.12097+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "22",
     "reference": "MACH-028",
     "image": "pcb-milling.jpg",
     "name": "Machine Fraiseuse PCB",
@@ -202,12 +233,14 @@
     "badge": null,
     "price": 870000,
     "stock": 1,
-    "main_category": "Machines Numériques",
-    "category": "Composants IOT",
-    "disponibility": "Sur commande",
+    "main_category": "Kits Arduino et IOT",
+    "category": "Composants IoT",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.12714+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "23",
     "reference": "MACH-029",
     "image": "3d-resin.jpg",
     "name": "Imprimante 3D Résine",
@@ -215,12 +248,14 @@
     "badge": "Populaire",
     "price": 780000,
     "stock": 3,
-    "main_category": "Machines Numériques",
+    "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.133433+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "24",
     "reference": "KIT-ARD-030",
     "image": "automation-kit.jpg",
     "name": "Kit Automatisation Arduino",
@@ -231,9 +266,11 @@
     "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.139798+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "25",
     "reference": "IOT-COMP-031",
     "image": "motion-sensor.jpg",
     "name": "Capteur de Mouvement PIR",
@@ -242,11 +279,13 @@
     "price": 3500,
     "stock": 55,
     "main_category": "Kits Arduino et IOT",
-    "category": "Composants IOT",
+    "category": "Composants IoT",
     "disponibility": "En stock",
+    "added_date": "2026-01-06 15:50:55.146248+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "26",
     "reference": "ROB-032",
     "image": "robot-car.jpg",
     "name": "Robot Voiture Programmable",
@@ -257,9 +296,11 @@
     "main_category": "Kits Arduino et IOT",
     "category": "Robotique",
     "disponibility": "Stock limité",
+    "added_date": "2026-01-06 15:50:55.152545+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "27",
     "reference": "FAB-033",
     "image": "digital-fablab.jpg",
     "name": "Installation Fablab Numérique",
@@ -267,12 +308,14 @@
     "badge": null,
     "price": 640000,
     "stock": 2,
-    "main_category": "Installations Fablab",
+    "main_category": "Kits Arduino et IOT",
     "category": "Kits Arduino",
-    "disponibility": "Sur commande",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.159009+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "28",
     "reference": "FAB-034",
     "image": "iot-training.jpg",
     "name": "Installation Formation IoT",
@@ -280,12 +323,14 @@
     "badge": "Nouveau",
     "price": 470000,
     "stock": 3,
-    "main_category": "Installations Fablab",
-    "category": "Composants IOT",
-    "disponibility": "Sur commande",
+    "main_category": "Kits Arduino et IOT",
+    "category": "Composants IoT",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.165532+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   },
   {
+    "id": "29",
     "reference": "MACH-035",
     "image": "embroidery-machine.jpg",
     "name": "Machine de Broderie Numérique",
@@ -293,9 +338,10 @@
     "badge": null,
     "price": 900000,
     "stock": 1,
-    "main_category": "Machines Numériques",
+    "main_category": "Kits Arduino et IOT",
     "category": "Robotique",
-    "disponibility": "Sur commande",
+    "disponibility": "Rupture de stock",
+    "added_date": "2026-01-06 15:50:55.171793+00",
     "image_url": "https://yuupee.com/wp-content/uploads/2025/06/81a-MDAmb8L._AC_SL1500_-768x769.jpg"
   }
 ]

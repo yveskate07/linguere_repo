@@ -1,0 +1,44 @@
+[
+  {
+    "column_name": "id",
+    "data_type": "bigint",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "name",
+    "data_type": "character varying",
+    "character_maximum_length": 100,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "description_accueil",
+    "data_type": "text",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "description",
+    "data_type": "text",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "slug",
+    "data_type": "character varying",
+    "character_maximum_length": 128,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "impressionNumerique",
+    "data_type": "boolean",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  }
+]

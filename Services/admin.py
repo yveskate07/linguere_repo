@@ -111,6 +111,14 @@ class ServiceAdmin(admin.ModelAdmin):
     inlines = [GalerieImageForServiceInline]
     list_display = ('name',)
 
+    def get_fields(self, request, obj=None):
+        if obj:  # édition
+            if request.user.is_superuser:
+                return ('name', 'description', 'description_accueil','slug', 'impressionNumerique','class_icon_name',)
+            return ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+        else:    # création
+            return ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+
     def get_readonly_fields(self, request, obj = ...):
         readonly = list(super().get_readonly_fields(request, obj))
 

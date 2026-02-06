@@ -12,6 +12,7 @@ class ServiceInfo(models.Model):
     description = models.TextField(verbose_name='Description', default='Pas de description')
     slug = models.SlugField(default='', blank=True, null=False, max_length=128, verbose_name='Slug')
     impressionNumerique = models.BooleanField(default=False, verbose_name='Service d\'impression numérique ?')
+    class_icon_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='class de l\'icône', default='', help_text="Classe de l'icône du service (ex: fa-solid fa-tshirt)")
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -214,7 +215,7 @@ class DecoupeLaserModel(CustomService):
 class Impression3DModel(ServicesWithColors):
 
     IMPRESSIONS = [
-        ("FDM(Plastique)","FDM(Plastique)"),
+        ("PLA(Plastique)","PLA(Plastique)"),
         ("SLA(Résine)","SLA(Résine)"),
         ("SLS(Poudre)","SLS(Poudre)"),
         ]

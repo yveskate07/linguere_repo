@@ -12,7 +12,7 @@ class Formations(models.Model):
         ("En ligne / Présentiel", "En ligne / Présentiel")
     ]
 
-    name = models.CharField(max_length=30, verbose_name='Nom')
+    name = models.CharField(max_length=60, verbose_name='Nom')
     duration = models.DurationField(verbose_name='Durée') # duree
     description_accueil = models.TextField(blank=False, null=False, verbose_name="Description sur page accueil")
     price = models.IntegerField(default=0, null=True, verbose_name='Prix')

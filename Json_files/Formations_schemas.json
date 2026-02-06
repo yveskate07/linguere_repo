@@ -1,0 +1,86 @@
+[
+  {
+    "column_name": "id",
+    "data_type": "bigint",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "name",
+    "data_type": "character varying",
+    "character_maximum_length": 30,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "duration",
+    "data_type": "interval",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "description_accueil",
+    "data_type": "text",
+    "character_maximum_length": null,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "price",
+    "data_type": "integer",
+    "character_maximum_length": null,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "hours_per_week",
+    "data_type": "integer",
+    "character_maximum_length": null,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "availability",
+    "data_type": "character varying",
+    "character_maximum_length": 30,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "slug",
+    "data_type": "character varying",
+    "character_maximum_length": 50,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "image",
+    "data_type": "character varying",
+    "character_maximum_length": 100,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "url_name",
+    "data_type": "character varying",
+    "character_maximum_length": 120,
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "column_name": "image_home",
+    "data_type": "character varying",
+    "character_maximum_length": 100,
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "column_name": "why_image",
+    "data_type": "character varying",
+    "character_maximum_length": 100,
+    "is_nullable": "YES",
+    "column_default": null
+  }
+]
