@@ -68,6 +68,12 @@ class FormationAdmin(admin.ModelAdmin):
     def get_duration_display_fr(self, obj):
         return obj.get_duration_display_fr()
     
+    def get_fields(self, request, obj = ...):
+        fields = list(super().get_fields(request, obj))
+        if obj:
+            if request.user.is_superuser:
+                return ('name','duration','image','availability','hours_per_week','image_home','why_image','slug',)
+    
     def get_readonly_fields(self, request, obj = ...):
         readonly = list(super().get_readonly_fields(request, obj))
 
