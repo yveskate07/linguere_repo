@@ -111,7 +111,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
     ]
 
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Prerequisites')
-    name = models.CharField(max_length=30, verbose_name='Nom')
+    name = models.CharField(max_length=80, verbose_name='Nom')
     level = models.CharField(choices=LEVELS, max_length=15, verbose_name='Niveau')
     image = models.ImageField(blank=True, null=True, upload_to='Formations/prerequis_image',
                               verbose_name='Image')
@@ -131,7 +131,7 @@ class Prerequisites(models.Model): # prerequis pour une formation
 
 class SkillGained(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='SkillsGained')
-    name = models.CharField(max_length=30, verbose_name='Nom')
+    name = models.CharField(max_length=80, verbose_name='Nom')
     description_skill = models.TextField(blank=True, null=True, default='', verbose_name='Description')
 
     class Meta:
@@ -149,7 +149,7 @@ class SkillGained(models.Model):
 
 class MotivPoints(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='MotivPoints')
-    name = models.CharField(max_length=30, verbose_name='Nom')
+    name = models.CharField(max_length=80, verbose_name='Nom')
     description = models.TextField(default='', verbose_name='Description')
 
     class Meta:
@@ -162,7 +162,7 @@ class MotivPoints(models.Model):
 
 class Advantages(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Advantages')
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=80)
     description = models.TextField(default='', verbose_name='Description')
 
     class Meta:
