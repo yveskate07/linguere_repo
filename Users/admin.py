@@ -76,6 +76,31 @@ class UserAdmin(BaseUserAdmin):
 
         return filtered
 
+    def get_readonly_fields(self, request, obj=None):
+        readonly = list(super().get_readonly_fields(request, obj))
+
+        if not request.user.has_perm('Activities.edit_Activities_activity_name'):
+            
+            readonly.append('name')
+
+        if not request.user.has_perm('Activities.edit_Activities_activity_url_name'):
+            
+            readonly.append('url_name')
+
+        return readonly
+    
+    def has_add_permission(self, request):
+        if request.user.is_superuser or request.user.is_admin:
+            return True
+        
+        return super().has_add_permission(request)
+    
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser or request.user.is_admin:
+            return True
+        
+        return super().has_change_permission(request, obj)
+
     """def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
 
