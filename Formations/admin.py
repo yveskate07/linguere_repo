@@ -60,19 +60,21 @@ class UserRequestAdmin(admin.ModelAdmin):
 @admin.register(Formations)
 class FormationAdmin(admin.ModelAdmin):
     inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline, AskedQuestionsInline]
-    fields = ('name','duration','image','availability','hours_per_week','image_home','why_image',)
-    list_display = ('name','get_duration_display_fr','hours_per_week','availability',)
+    fields = ('name','duration', 'price', 'image','availability','hours_per_week','image_home','why_image',)
+    list_display = ('name','get_duration_display_fr','hours_per_week','availability', 'price')
     search_fields = ('name',)
     list_filter = ('availability',)
 
     def get_duration_display_fr(self, obj):
         return obj.get_duration_display_fr()
     
-    def get_fields(self, request, obj = ...):
-        fields = list(super().get_fields(request, obj))
-        if obj:
-            if request.user.is_superuser:
-                return ('name','duration','image','availability','hours_per_week','image_home','why_image','slug',)
+    def get_fields(self, request, obj=None): # Utilisez None par défaut, pas ...
+        # Si c'est un superutilisateur et qu'on modifie un objet existant
+        if obj and request.user.is_superuser:
+            return ('name','duration', 'price','image','availability','hours_per_week','image_home','why_image','slug')
+        
+        # Retourne les champs par défaut définis plus haut ou par le parent
+        return super().get_fields(request, obj)
     
     def get_readonly_fields(self, request, obj = ...):
         readonly = list(super().get_readonly_fields(request, obj))

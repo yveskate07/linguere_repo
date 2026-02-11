@@ -13,7 +13,7 @@ class Formations(models.Model):
     ]
 
     name = models.CharField(max_length=60, verbose_name='Nom')
-    duration = models.DurationField(verbose_name='Durée') # duree
+    duration = models.DurationField(verbose_name='Durée', help_text="Doit être au format Nb_Jours hh:mm:ss") # duree
     description_accueil = models.TextField(blank=False, null=False, verbose_name="Description sur page accueil")
     price = models.IntegerField(default=0, null=True, verbose_name='Prix')
     hours_per_week = models.IntegerField(default=0,blank=True, null=True, verbose_name="Nombre d'heures par semaines")
