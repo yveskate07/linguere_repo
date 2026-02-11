@@ -1,9 +1,6 @@
 from re import S
 from django.contrib import admin
-from django.contrib.auth.models import Group
-
 from Formations.models import *
-
 
 class ModuleInline(admin.TabularInline):
     model = Module
