@@ -30,7 +30,7 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 LOCAL = os.getenv("LOCAL", "False") == "True"
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "False"
 
 print(f"DEBUG: {DEBUG}, LOCAL: {LOCAL}")
 
@@ -115,35 +115,35 @@ TEMPLATES = [
 ASGI_APPLICATION = 'AntaBackEnd.asgi.application'
 WSGI_APPLICATION = 'AntaBackEnd.wsgi.application'
 
-# if not DEBUG and not LOCAL:
-#     # Mode production
-#     CHANNEL_LAYERS = {
-#         "default": {
-#             "BACKEND": "channels_redis.core.RedisChannelLayer",
-#             "CONFIG": {
-#                 "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
-#             },
-#         },
-#     }
+if not DEBUG and not LOCAL:
+    # Mode production
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
+            },
+        },
+    }
 
-# elif LOCAL:
-#     # Mode local (sans redis)
-#     CHANNEL_LAYERS = {
-#         "default": {
-#             "BACKEND": "channels.layers.InMemoryChannelLayer",
-#         }
-#     }
+elif LOCAL:
+    # Mode local (sans redis)
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        }
+    }
 
-# else:
-#     # Mode debug, mais avec Redis
-#     CHANNEL_LAYERS = {
-#         "default": {
-#             "BACKEND": "channels_redis.core.RedisChannelLayer",
-#             "CONFIG": {
-#                 "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
-#             },
-#         },
-#     }
+else:
+    # Mode debug, mais avec Redis
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [config('CELERY_BROKER_URL', default='redis://localhost:6379/0')],
+            },
+        },
+    }
 
 
 # Database
