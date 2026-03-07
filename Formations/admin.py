@@ -67,9 +67,8 @@ class FormationAdmin(admin.ModelAdmin):
     
     def get_fields(self, request, obj=None): # Utilisez None par défaut, pas ...
         # Si c'est un superutilisateur et qu'on modifie un objet existant
-        if obj and request.user.is_superuser:
-            print("Superuser editing an existing object, showing all fields.")
-            return ('name','duration', 'price','image','availability','hours_per_week','image_home','why_image','slug')
+        if obj and request.user.is_developper:
+            return ('name','duration', 'price','image','availability','hours_per_week','image_home','why_image','slug','css_cls_parent_in_home','css_ps_cls_in_home', 'data_aos', 'data_aos_duration')
         
         # Retourne les champs par défaut définis plus haut ou par le parent
         return super().get_fields(request, obj)
