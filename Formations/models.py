@@ -23,6 +23,10 @@ class Formations(models.Model):
     url_name = models.CharField(blank=False, null=False, verbose_name="Nom de l'url", max_length=120)
     image_home = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image de la formation sur page accueil')
     why_image = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image Pourquoi cette formation ?')
+    css_cls_parent_in_home = models.CharField(blank=True, null=True, verbose_name="Classe CSS parente de la formation sur la page d'accueil", max_length=120, default='')
+    css_ps_cls_in_home = models.CharField(blank=True, null=True, verbose_name="Classe CSS de position de la formation sur la page d'accueil", max_length=120, default='')
+    data_aos = models.CharField(blank=True, null=True, verbose_name="Data AOS de la formation sur la page d'accueil", max_length=120, default='')
+    data_aos_duration = models.IntegerField(blank=True, null=True, verbose_name="Data AOS duration de la formation sur la page d'accueil", default=100)
 
     class Meta:
         verbose_name = 'Formation'

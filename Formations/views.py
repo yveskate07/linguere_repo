@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import SignedUpUserForm, BrochureForm, RequestForm
 from .models import Formations
-from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
+#from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
 
 
 

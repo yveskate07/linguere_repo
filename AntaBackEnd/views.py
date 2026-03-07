@@ -4,7 +4,6 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetConfirmView
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
@@ -56,37 +55,17 @@ def home(request):
 
     context = dict()
 
-    try:
-        broderie_num = Formations.objects.get(name="Compétences en Broderie Numérique")
-        context['formation_broderie_num'] = broderie_num
-    except Exception:
-        context['formation_broderie_num'] = None
+    right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
 
-    try:
-        fraiseuse_num = Formations.objects.get(name="Fraiseuse Numérique (CNC)")
-        context['formation_fraiseuse_num'] = fraiseuse_num
-    except Exception:
-        context['formation_fraiseuse_num'] = None
+    left_first_row = Formations.objects.filter(css_cls_parent_in_home="gauche")
 
-    try:
-        impression_3d = Formations.objects.get(name="Impression 3D")
-        context['formation_impression_3d'] = impression_3d
-    except Exception:
-        context['formation_impression_3d'] = None
+    second_row = Formations.objects.filter(css_cls_parent_in_home="pleine-largeur")
 
-    try:
-        impression_num = Formations.objects.get(name="Impression Numérique")
-        context['formation_impression_num'] = impression_num
-    except Exception:
-        context['formation_impression_num'] = None
+    context['right_first_row'] = right_first_row
+    context['left_first_row'] = left_first_row
+    context['second_row'] = second_row
 
-    try:
-        laser = Formations.objects.get(name="Découpe Laser")
-        context['formation_laser'] = laser
-    except Exception:
-        context['formation_laser'] = None
-
-    context['formation_available'] = context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser'] and context['formation_laser']
+    context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
 
     context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
 

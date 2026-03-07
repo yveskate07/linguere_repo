@@ -17,12 +17,12 @@ def create_groups_and_permissions(sender, **kwargs):
         return
 
     # Exemple : Création du groupe
-    group, created = Group.objects.get_or_create(name="Admins")
+    group, created = Group.objects.get_or_create(name="Developpers")
 
     if created:
-        print("Groupe 'Admins' créé.")
+        print("Groupe 'Developpers' créé.")
     else:
-        print("Groupe 'Admins' existant récupéré.")
+        print("Groupe 'Developpers' existant récupéré.")
 
     code_names = ['change_activity', 'view_activity', 'add_activitygalerieimage','change_activitygalerieimage',
                   'delete_activitygalerieimage','view_activitygalerieimage','add_impact','change_impact',
@@ -72,4 +72,4 @@ def create_groups_and_permissions(sender, **kwargs):
     for codename in missing:
         print(f"Permission '{codename}' introuvable.")
 
-    print(f"Permissions mises à jour pour le groupe Admins.")
+    print(f"Permissions mises à jour pour le groupe Developpers.")

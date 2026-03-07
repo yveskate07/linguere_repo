@@ -224,82 +224,59 @@
             <h1>NOS FORMATIONS</h1>
         </div>
         {% if formation_available %}
-        <div class="formations-container">
-            <div class="premiere-ligne">
-                <!-- Partie gauche -->
-                <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
-                    {% if formation_broderie_num %}
-                        <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
-                            <div class="content-wrapper">
-                                <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
-                                <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
-                                    <div class="cta-button">
-                                        <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+            <div class="formations-container">
+                <div class="premiere-ligne">
+                    <!-- Partie gauche -->
+                    <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
+                        {% for formations_g in left_first_row %}
+                            <div class="{{formations_g.css_ps_cls_in_home}}" style="width: 100%; height: 200px; background-image: url('{{formations_g.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="{{formations_g.data_aos}}" data-aos-delay="{{formations_g.data_aos_duration}}">
+                                <div class="content-wrapper">
+                                    <h1 class="titre slide-in-title">{{formations_g.name}}</h1>
+                                    <div class="description fade-in-description">{{formations_g.description_accueil}}
+                                        <div class="cta-button">
+                                            <a href="{% url 'formationView' formation_name=formations_g.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if formation_fraiseuse_num %}
-                        <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
-                        <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">{{formation_fraiseuse_num.name}}</h1>
-                            <div class="description fade-in-description">{{formation_fraiseuse_num.description_accueil}}
-                                <div class="cta-button">
-                                    <a href="{% url 'formationView' formation_name=formation_fraiseuse_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endif %}
-                </div>
 
-                <!-- Partie droite -->
-                <div class="droite">
-                    {% if formation_impression_num %}
-                        <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                            <div class="content-wrapper">
-                                <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
-                                <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
-                                    <div class="cta-button">
-                                        <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                    <!-- Partie droite -->
+                    <div class="droite">
+                        {% for formations_d in right_first_row %}
+                            <div class="{{formations_d.css_ps_cls_in_home}}" style="background-image: url('{{formations_d.imageHomeUrl}}'); background-size: cover; background-position: center;" data-aos="{{formations_d.data_aos}}" data-aos-delay="{{formations_d.data_aos_duration}}">
+                                <div class="content-wrapper">
+                                    <h1 class="titre slide-in-title">{{formations_d.name}}</h1>
+                                    <div class="description fade-in-description">{{formations_d.description_accueil}}
+                                        <div class="cta-button">
+                                            <a href="{% url 'formationView' formation_name=formations_d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if formation_laser %}
-                        <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Formation en pleine largeur -->
+                {% for formation in second_row %}
+                    <div class="{{formation.css_ps_cls_in_home}}" style="background-image: url('{{formation.imageHomeUrl}}'); background-size: cover; background-position: center;" data-aos="{{formation.data_aos}}" data-aos-delay="{{formation.data_aos_duration}}">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">{{formation_laser.name}}</h1>
-                            <div class="description fade-in-description">
-                                {{formation_laser.description_accueil}}
+                            <h1 class="titre slide-in-title">{{formation.name}}</h1>
+                            <div class="description fade-in-description">{{formation.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formationView' formation_name=formation_laser.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endif %}
-                </div>
+                {% endfor %}
             </div>
-
-            <!-- Formation en pleine largeur -->
-            {% if formation_impression_3d %}
-            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300" style="background-image: url('{{formation_impression_3d.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                <div class="content-wrapper">
-                    <h1 class="titre slide-in-title">{{formation_impression_3d.name}}</h1>
-                    <div class="description fade-in-description">{{formation_impression_3d.description_accueil}}
-                        <div class="cta-button">
-                            <a href="{% url 'formationView' formation_name=formation_impression_3d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-        </div>
         {% else %}
-            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucune formation disponible pour le moment.</p>
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">
+                Aucune formation disponible pour le moment.
+            </p>
         {% endif %}
     </div>
 

@@ -1,0 +1,632 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINGUERE FABLAB - Innovation et Fabrication Numérique au Sénégal</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+    <link rel="stylesheet" href="{% static 'AntaBackEnd/accueil/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
+</head>
+<body data-user-id={{user_id}}>
+    {% include 'header_footer/header.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <video class="hero-video" autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInDown">INNOVATION & FABRICATION NUMÉRIQUE</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">Découvrez notre gamme complète de produits et services pour vos projets créatifs et industriels</p>
+            <button class="btn btn-hero animate__animated animate__fadeInUp animate__delay-2s">Explorer maintenant</button>
+        </div>
+    </section>
+
+    <!-- Promotions Carousel -->
+    <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% if features %}
+                {% for feature in features %}
+                <div class="carousel-item {% if forloop.counter == 1%} active {% endif %}">
+                    <img src="{{feature.getImage}}" class="d-block w-100" alt="Promotion {{forloop.counter}}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{feature.title}}</h5>
+                        <p>{{feature.description}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <h1 class="text-muted text-center">Aucune nouveauté pour le moment.</h1>
+            {% endif %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4 mb-md-0" data-aos="fade-up">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <h3>Livraison Rapide</h3>
+                        <p>Expédition dans tout le Sénégal sous 48h</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Paiement Sécurisé</h3>
+                        <p>Transactions 100% sécurisées</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Support 24/7</h3>
+                        <p>Assistance technique disponible</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fas fa-undo"></i></div>
+                        <h3>Retour Facile</h3>
+                        <p>15 jours pour changer d'avis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boutique Section -->
+    <div class="container py-5" id="shop-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>BOUTIQUE</h1>
+        </div>
+
+        <div class="grid">
+            <div class="card" data-aos="fade-up">
+                <a href="{% url 'shop-arduino' page=1 %}"><img src="{% static 'Shop/images/kits Arduino mega.png' %}" alt="Arduino"></a>
+                <div class="overlay">
+                    <div class="card-title">Kits Arduino et IOT</div>
+                    <div class="card-description">Découvrez nos kits Arduino complets pour vos projets IoT innovants. Capteurs, modules et composants de qualité.<br><br><a href="{% url 'shop-arduino' page=1 %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Kits Arduino et IOT</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <a href="{% url 'shop-machine' page=1 %}"><img src="{% static 'Shop/images/Brother.png' %}" alt="Machine"></a>
+                <div class="overlay">
+                    <div class="card-title">Machines Numériques</div>
+                    <div class="card-description">Explorez nos machines numériques haute performance pour la fabrication additive, soustractive et bien plus.<br><br><a href="{% url 'shop-machine' page=1 %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Machines Numériques</h2>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                <a href="{% url 'shop-installations' page=1 %}"><img src="{% static 'Shop/images/mini kits.png' %}" alt="Impressions"></a>
+                <div class="overlay">
+                    <div class="card-title">Installations Fablab</div>
+                    <div class="card-description">Nous concevons, installons et configurons votre Fablab clé en main avec formation du personnel.<br><br><a href="{% url 'shop-installations' page=1 %}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                </div>
+                <h2 class="card-image-title">Installations Fablab</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Section 1 -->
+    <section class="video-section">
+        <video autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h2 data-aos="fade-up">CRÉATIVITÉ SANS LIMITES</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Découvrez comment nos solutions peuvent transformer vos idées en réalité</p>
+            <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Voir nos réalisations</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <div class="container py-5 services-section" id="services-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>NOS SERVICES</h1>
+        </div>
+        
+        {% if other_services %}
+            <div class="grid">
+                {% for service in other_services %}
+                    <div class="card" data-aos="fade-up">
+                        <a href="{{service.get_absolute_url}}"></a>
+                        <div class="overlay">
+                            <div class="card-title">{{service.name}}</div>
+                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                        </div>
+                        <h2 class="card-image-title">{{service.name}}</h2>
+                    </div>
+                {% endfor %}
+
+                <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <a href="#"></a>
+                    <div class="overlay">
+                        <div class="card-title">Impressions Numériques</div>
+                        <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
+                    </div>
+                    <h2 class="card-image-title">Impressions Numériques Proposées</h2>
+                </div>
+            </div>
+        {% else %}
+
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun service disponible pour le moment.</p>
+        
+        {% endif %}
+    </div>
+
+    {% if serv_imp_num_prop %}
+    <div id="modal-service5" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <div class="grid">
+                {% for service in serv_imp_num_prop %}
+                    <div class="card">
+                        <div class="overlay">
+                            <div class="card-title">{{service.name}}</div>
+                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus </a></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Video Section 2 -->
+    <section class="video-section">
+        <video autoplay muted loop>
+            <source src="{% static 'AntaBackEnd/videos/vi2.mp4' %}" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h2 data-aos="fade-up">EXPERTISE TECHNIQUE</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Notre équipe d'experts est à votre disposition pour concrétiser vos projets les plus ambitieux</p>
+            <button class="btn btn-hero" data-aos="fade-up" data-aos-delay="200">Demander un devis</button>
+        </div>
+    </section>
+
+    <!-- Formations Section -->
+    <div class="proj" id="formations-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>NOS FORMATIONS</h1>
+        </div>
+        {% if formation_available %}
+        <div class="formations-container">
+            <div class="premiere-ligne">
+                <!-- Partie gauche -->
+                <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
+                    {% if formation_broderie_num %}
+                        <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
+                            <div class="content-wrapper">
+                                <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
+                                <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
+                                    <div class="cta-button">
+                                        <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if formation_fraiseuse_num %}
+                        <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
+                        <div class="content-wrapper">
+                            <h1 class="titre slide-in-title">{{formation_fraiseuse_num.name}}</h1>
+                            <div class="description fade-in-description">{{formation_fraiseuse_num.description_accueil}}
+                                <div class="cta-button">
+                                    <a href="{% url 'formationView' formation_name=formation_fraiseuse_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Partie droite -->
+                <div class="droite">
+                    {% if formation_impression_num %}
+                        <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                            <div class="content-wrapper">
+                                <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
+                                <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
+                                    <div class="cta-button">
+                                        <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if formation_laser %}
+                        <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                            <div class="content-wrapper">
+                                <h1 class="titre slide-in-title">{{formation_laser.name}}</h1>
+                                <div class="description fade-in-description">
+                                    {{formation_laser.description_accueil}}
+                                    <div class="cta-button">
+                                        <a href="{% url 'formationView' formation_name=formation_laser.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Formation en pleine largeur -->
+            {% if formation_impression_3d %}
+            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300" style="background-image: url('{{formation_impression_3d.imageHomeUrl}}'); background-size: cover; background-position: center;">
+                <div class="content-wrapper">
+                    <h1 class="titre slide-in-title">{{formation_impression_3d.name}}</h1>
+                    <div class="description fade-in-description">{{formation_impression_3d.description_accueil}}
+                        <div class="cta-button">
+                            <a href="{% url 'formationView' formation_name=formation_impression_3d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucune formation disponible pour le moment.</p>
+        {% endif %}
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials-Section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h1>TÉMOIGNAGES</h1> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Le Fablab nous a fourni des machines de qualité et un excellent support technique pour notre école d'ingénieurs. Service professionnel et réactif.</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Dr. Amadou Diallo</h4>
+                                <p>Université de Dakar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">Grâce à leur formation Arduino, nous avons pu développer un système d'irrigation intelligent pour notre coopérative agricole. Résultats impressionnants!</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Fatou Ndiaye</h4>
+                                <p>Coopérative Agricole</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">La découpe laser nous a permis de créer des produits uniques pour notre boutique d'artisanat. Qualité et précision au rendez-vous.</p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="author-img">
+                            <div class="author-info">
+                                <h4>Mamadou Sow</h4>
+                                <p>Artisan Créateur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <div class="container py-5" id="projects-section">
+        <div class="section-title" data-aos="fade-up">
+            <h1>PROJETS & INITIATIVES</h1>
+        </div>
+
+        {% if activities %}
+
+            <div class="grid">
+                {% for activity in activities %}
+                    <div class="card" data-aos="fade-up">
+                        <img src="{{activity.get_image_url|safe}}" alt="{{activity.name}}">
+                        <div class="overlay">
+                            <div class="card-title">{{activity.name}}</div>
+                            <div class="card-description">
+                                {{activity.description|safe}}<br><br>
+                                <a href="{{activity.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                        <h2 class="card-image-title">{{activity.name}}</h2>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun projet disponible pour le moment.</p>
+        {% endif %}
+    </div>
+
+    <!-- Section Nos partenaire -->
+    <section class="nos-partenaires py-5">
+        <div class="container d-flex flex-column align-items-center">
+            <div class="section-title text-center aos-init aos-animate" data-aos="fade-up">
+                <h1>NOS PARTENAIRES</h1>
+                <p>Découvrez les entreprises et organisations qui nous soutiennent dans notre mission d'innovation et de fabrication numérique.</p>
+            </div>
+            <div class="row justify-content-center text-center">
+                <!-- POUR ALPHONSE il faut ici que chaque partenaire soit representé par une image et un nom-->
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up">
+                    <img src="kits arduino petit.png" alt="Partenaire 1" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <img src="Kits d'assortissement de diodes.png" alt="Partenaire 2" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <img src="Imprimante 3d adventure3.png" alt="Partenaire 3" class="img-fluid">
+                </div>
+                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <img src="Leds avec fil.png" alt="Partenaire 4" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* ---pour la partie service 5--- */
+        .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .close {
+            color: #0a0000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .card {
+            position: relative;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* background: linear-gradient(135deg, rgba(102, 175, 248, 0.9) 0%, rgba(79, 226, 245, 0.8) 100%); */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover .overlay {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            text-align: center;
+            padding: 10px;
+        }
+
+
+
+
+        /* ------pour la corrrection du modale pour les conditions generales-------- */
+        .modal {
+            z-index: 1050;
+        }
+
+        .modal-backdrop {
+            z-index: 1040;
+        }
+
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+    </style>
+
+    <!-- Newsletter Section 
+    <section class="newsletter">
+        <div class="container">
+            <h2 data-aos="fade-up">ABONNEZ-VOUS À NOTRE NEWSLETTER</h2>
+            <p data-aos="fade-up" data-aos-delay="100">Recevez les dernières actualités, promotions et conseils techniques directement dans votre boîte mail.</p>
+
+            <form class="newsletter-form" data-aos="fade-up" data-aos-delay="200">
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Votre adresse email" required>
+                    <button class="btn btn-newsletter" type="submit">S'abonner</button>
+                </div>
+            </form>
+        </div>
+    </section>-->
+
+    <!-- Footer -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!-- load messages -->
+            {% include 'alerts.html' %}
+        </div>
+    </div>
+    {% include 'header_footer/footer.html' %}
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Back to Top Button
+        const backToTopButton = document.querySelector('.back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+
+
+        // Dropdown menu animation
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'block';
+                menu.classList.add('animate__animated', 'animate__fadeIn');
+            });
+
+            dropdown.addEventListener('mouseleave', () => {
+                const menu = dropdown.querySelector('.dropdown-menu');
+                menu.style.display = 'none';
+                menu.classList.remove('animate__animated', 'animate__fadeIn');
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('.search-bar input');
+
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('animate__animated', 'animate__pulse');
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('animate__animated', 'animate__pulse');
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById("modal-service5");
+            var btn = document.querySelector(".modal-trigger");
+            var span = document.getElementsByClassName("close")[0];
+
+            if(btn){btn.onclick = function (event) {
+                event.preventDefault();
+                modal.style.display = "block";
+            }}
+
+            if(span){span.onclick = function () {
+                modal.style.display = "none";
+            }}
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+
+    </script>
+
+    <!-- Scripts -->
+
+    {% include 'Shop/min_js_scripts_for_temp/index.html' %}
+
+</body>
+</html>
