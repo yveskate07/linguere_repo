@@ -30,7 +30,7 @@ CINETPAY_SECRET_KEY = config("CINETPAY_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 LOCAL = os.getenv("LOCAL", "False") == "True"
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "False"
 
 print(f"DEBUG: {DEBUG}, LOCAL: {LOCAL}")
 
