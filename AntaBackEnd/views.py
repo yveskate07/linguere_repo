@@ -2,7 +2,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import LogoutView, PasswordResetView, PasswordResetConfirmView
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from Activities.models import Activity
@@ -51,36 +51,32 @@ def redirect_404(request, exception):
     return redirect('home')
 
 
-# def home(request):
-
-#     context = dict()
-
-#     right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
-
-#     left_first_row = Formations.objects.filter(css_cls_parent_in_home="gauche")
-
-#     second_row = Formations.objects.filter(css_cls_parent_in_home="pleine-largeur")
-
-#     context['right_first_row'] = right_first_row
-#     context['left_first_row'] = left_first_row
-#     context['second_row'] = second_row
-
-#     context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
-
-#     context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
-
-#     context['other_services'] = ServiceInfo.objects.filter(impressionNumerique = False)
-#     context['activities'] = Activity.objects.all()
-
-#     context['partners'] = Partner.objects.all()
-
-#     context['features'] = Feature.objects.all()
-
-#     return render(request,'AntaBackEnd/accueil/index.html',context=context)
-
-
 def home(request):
-    return HttpResponse("Server is working")
+
+    context = dict()
+
+    right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
+
+    left_first_row = Formations.objects.filter(css_cls_parent_in_home="gauche")
+
+    second_row = Formations.objects.filter(css_cls_parent_in_home="pleine-largeur")
+
+    context['right_first_row'] = right_first_row
+    context['left_first_row'] = left_first_row
+    context['second_row'] = second_row
+
+    context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
+
+    context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
+
+    context['other_services'] = ServiceInfo.objects.filter(impressionNumerique = False)
+    context['activities'] = Activity.objects.all()
+
+    context['partners'] = Partner.objects.all()
+
+    context['features'] = Feature.objects.all()
+
+    return render(request,'AntaBackEnd/accueil/index.html',context=context)
 
 
 def location(request):
