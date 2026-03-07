@@ -37,7 +37,6 @@ class UserManager(BaseUserManager):
             adress = adress,
         )
         user.is_admin = True
-        user.is_developper = False
         user.is_active = True
         user.is_staff = True
         user.is_superuser = True
