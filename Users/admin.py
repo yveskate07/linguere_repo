@@ -60,7 +60,7 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-    FORBIDDEN_FIELDS = {"is_superuser", "is_admin", "groups", "user_permissions"}
+    FORBIDDEN_FIELDS = {"is_admin", "groups", "user_permissions"}
     
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
