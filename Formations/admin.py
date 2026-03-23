@@ -67,7 +67,7 @@ class FormationAdmin(admin.ModelAdmin):
     
     def get_fields(self, request, obj=None): # Utilisez None par défaut, pas ...
         # Si c'est un superutilisateur et qu'on modifie un objet existant
-        if obj and request.user.groups.filter(name='Admins').exists():
+        if obj and request.user.groups.filter(name='Developpers').exists():
             return ('name','duration', 'price','image','availability','hours_per_week','image_home','why_image','slug','css_cls_parent_in_home','css_ps_cls_in_home', 'data_aos', 'data_aos_duration')
         
         # Retourne les champs par défaut définis plus haut ou par le parent
