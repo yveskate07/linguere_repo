@@ -99,6 +99,7 @@ class UserAdmin(BaseUserAdmin):
         if request.user.is_superuser or request.user.is_admin:
             return True
         
+        
         return super().has_change_permission(request, obj)
 
     """def get_form(self, request, obj=None, **kwargs):
