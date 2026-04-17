@@ -3,6 +3,7 @@ __pycache__/
 .vscode/
 .env
 .env2
+.venv/
 admin_code.html
 client_code.html
 cmds_bash.md
