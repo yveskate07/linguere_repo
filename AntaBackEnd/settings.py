@@ -40,7 +40,7 @@ else:
     DOMAIN_NAME = 'https://linguere-web.onrender.com'
 
 ALLOWED_HOSTS = [
-    "linguere-web.onrender.com",
+    "projet-site-linguere.onrender.com",
     "localhost",
     "172.31.124.218",
     "127.0.0.1",
