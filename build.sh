@@ -15,7 +15,9 @@ python manage.py makemigrations
 
 python manage.py migrate
 
-python create_superuser.py
+echo "Kindly create a superuser for the Django admin interface if you haven't already."
+
+# python create_superuser.py
 
 # Make sure the script is executable before adding it to version control:
 # chmod a+x build.sh

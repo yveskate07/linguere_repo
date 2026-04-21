@@ -65,7 +65,7 @@ class UserAdmin(BaseUserAdmin):
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
 
-        if request.user.groups.filter(name="Admin").exists():
+        if request.user.groups.filter(name="Developpers").exists():
             return fieldsets
 
         filtered = []
