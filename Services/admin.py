@@ -107,17 +107,17 @@ class ImpressionObjPersonnaliseModelAdmin(admin.ModelAdmin):
 # Register your models here.
 @admin.register(ServiceInfo)
 class ServiceAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+    fields = ('name', 'description', 'description_accueil','slug',)
     inlines = [GalerieImageForServiceInline]
     list_display = ('name',)
 
     def get_fields(self, request, obj=None):
         if obj:  # édition
-            if request.user.is_superuser:
+            if request.user.groups.filter(name="Developpers").exists():
                 return ('name', 'description', 'description_accueil','slug', 'impressionNumerique','class_icon_name',)
-            return ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+            return ('name', 'description', 'description_accueil','slug',)
         else:    # création
-            return ('name', 'description', 'description_accueil','slug', 'impressionNumerique',)
+            return ('name', 'description', 'description_accueil','slug',)
 
     def get_readonly_fields(self, request, obj = ...):
         readonly = list(super().get_readonly_fields(request, obj))
