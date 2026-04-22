@@ -39,7 +39,7 @@ class ImpactInline(admin.TabularInline):
 class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityGalerieImageInline, RealisationInline, ResultatInline, ImpactInline]
     list_display = ('name', 'created_at',)
-    fields = ('name', 'description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2',)
+    fields = ('name', 'description', 'description_accueil', 'presentation_img',)
     
     def get_fields(self, request, obj=None):
         if obj and request.user.groups.filter(name='Developpers').exists():

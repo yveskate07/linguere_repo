@@ -11,8 +11,8 @@ class PrerequisitesInline(admin.TabularInline):
 class SkillGainedInline(admin.TabularInline):
     model = SkillGained
 
-class MotivPointsInline(admin.TabularInline):
-    model = MotivPoints
+'''class MotivPointsInline(admin.TabularInline):
+    model = MotivPoints'''
 
 class AdvantagesInline(admin.TabularInline):
     model = Advantages
@@ -56,7 +56,7 @@ class UserRequestAdmin(admin.ModelAdmin):
 # Register your models here.
 @admin.register(Formations)
 class FormationAdmin(admin.ModelAdmin):
-    inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, MotivPointsInline, AdvantagesInline, AskedQuestionsInline]
+    inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, AdvantagesInline, AskedQuestionsInline]
     fields = ('name','duration', 'price', 'image','availability','hours_per_week','image_home','why_image',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability', 'price')
     search_fields = ('name',)

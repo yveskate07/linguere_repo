@@ -19,7 +19,7 @@ def formationView(request, formation_name):
         modules = [mod.name for mod in formation.Modules.all()]
         prerequisites = [(p.image.url,p.name, p.level) for p in formation.Prerequisites.all()]
         skillgained = [(s.name, s.description_skill) for s in formation.SkillsGained.all()]
-        m_points = [(mp.name,mp.description) for mp in formation.MotivPoints.all()]
+        #m_points = [(mp.name,mp.description) for mp in formation.MotivPoints.all()]
         advantages = [(a.name, a.description) for a in formation.Advantages.all()]
 
         form1 = SignedUpUserForm()
@@ -34,7 +34,7 @@ def formationView(request, formation_name):
                         'modules_':modules if len(modules)>0 else None,
                         'prerequisites_':prerequisites if len(prerequisites)>0 else None,
                         'skillgained_':skillgained if len(skillgained)>0 else None,
-                        'm_points':m_points if len(m_points)>0 else None,
+                        #'m_points':m_points if len(m_points)>0 else None,
                         'advantages_':advantages if len(advantages)>0 else None})
 
 @login_required

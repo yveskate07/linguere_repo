@@ -7,8 +7,8 @@ class Activity(models.Model):
     description_accueil = models.TextField(null=True, blank=True, verbose_name="Description courte pour l'accueil")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
     presentation_img = models.ImageField(upload_to='activity_images/', null=True, blank=True, verbose_name="Image accueil")
-    motiv1 = models.TextField(null=True, blank=True, verbose_name="Motivation 1")
-    motiv2 = models.TextField(null=True, blank=True, verbose_name="Motivation 2")
+    #motiv1 = models.TextField(null=True, blank=True, verbose_name="Motivation 1")
+    #motiv2 = models.TextField(null=True, blank=True, verbose_name="Motivation 2")
     url_name = models.CharField(max_length=50, unique=True, null=False, blank=False, verbose_name="Nom de l'URL")
 
 

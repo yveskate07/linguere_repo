@@ -151,7 +151,7 @@ class SkillGained(models.Model):
 
     description.short_description = "Description"
 
-class MotivPoints(models.Model):
+'''class MotivPoints(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='MotivPoints')
     name = models.CharField(max_length=80, verbose_name='Nom')
     description = models.TextField(default='', verbose_name='Description')
@@ -163,6 +163,7 @@ class MotivPoints(models.Model):
 
     def __str__(self):
         return 'Pourquoi se former en ' +self.formation.name
+        '''
 
 class Advantages(models.Model):
     formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='Advantages')
