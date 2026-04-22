@@ -47,6 +47,11 @@ class CartAdmin(admin.ModelAdmin):
         else:
             return False
 
+    def has_module_permission(self, request):
+        if request.user.groups.filter(name="Developpers").exists():
+            return True
+        return False
+
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     change_list_template = "admin/Shop/order/change_list.html"
@@ -59,10 +64,15 @@ class PaymentAdmin(admin.ModelAdmin):
 
     def has_view_permission(self, request, obj = ...):
 
-        if request.user.is_staff and not request.user.is_superuser:
+        if request.user.groups.filter(name="Developpers").exists():
             True
         else:
             return False
+
+    def has_module_permission(self, request):
+        if request.user.groups.filter(name="Developpers").exists():
+            return True
+        return False
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -200,10 +210,15 @@ class InvoiceAdmin(admin.ModelAdmin):
     
     def has_view_permission(self, request, obj = ...):
 
-        if request.user.is_staff and not request.user.is_superuser:
+        if request.user.groups.filter(name="Developpers").exists():
             True
         else:
             return False
+
+    def has_module_permission(self, request):
+        if request.user.groups.filter(name="Developpers").exists():
+            return True
+        return False
 
 admin.site.site_title = _('LINGUERE FABLAB')
 admin.site.site_header = _('LINGUERE FABLAB')
