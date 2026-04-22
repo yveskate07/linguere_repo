@@ -17,6 +17,9 @@ class ProductAdmin(admin.ModelAdmin):
 
     search_fields = ('name',)
 
+    class Media:
+        js = ('Shop/js/admin/person_admin.js',)
+
 class CartItemInline(admin.TabularInline):
     model = CartItem
     extra = 0

@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 import django.utils.timezone
 import shortuuid
 from django.contrib import admin
@@ -61,6 +62,11 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.name} - Categorie: {self.category} - Stock: {self.disponibility} - Prix: {self.price}'
+
+    def clean(self):
+        if self.main_category != 'Kits Arduino et IOT':
+            if self.category in ['Kits Arduino', 'Composants IoT', 'Robotique', 'Capteurs']:
+                raise ValidationError("Cette catégorie n'est pas disponible pour cette catégorie principale.")
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
