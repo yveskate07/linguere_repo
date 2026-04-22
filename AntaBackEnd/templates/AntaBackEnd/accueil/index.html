@@ -367,18 +367,11 @@
             </div>
             <div class="row justify-content-center text-center">
                 <!-- POUR ALPHONSE il faut ici que chaque partenaire soit representé par une image et un nom-->
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up">
-                    <img src="kits arduino petit.png" alt="Partenaire 1" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                    <img src="Kits d'assortissement de diodes.png" alt="Partenaire 2" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                    <img src="Imprimante 3d adventure3.png" alt="Partenaire 3" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <img src="Leds avec fil.png" alt="Partenaire 4" class="img-fluid">
-                </div>
+                {%% for partner in partners %%}
+                    <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="{{forloop.counter0|add:'100'}}">
+                        <img src="{{partenaire.image.url}}" alt="{{partenaire.name}}" class="img-fluid">
+                    </div>
+                {%% endfor %%}
             </div>
         </div>
     </section>
