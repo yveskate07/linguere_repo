@@ -8,13 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (main_cat_field_value !== 'Kits Arduino et IOT') {
             cat_field.value = '';
-            cat_field.setAttribute('disabled', 'disabled');
+            cat_field.disabled = true;
             /*if(cat_field_value === 'Kits Arduino' || cat_field_value === 'Composants IoT' || cat_field_value === 'Robotique' || cat_field_value === 'Capteurs') {
                 
             }*/
         } else {
-            ibanField.setAttribute('disabled', 'disabled');
-            cat_field.removeAttribute('disabled');
+            cat_field.disabled = false;
         }
     }
 
