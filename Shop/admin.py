@@ -42,7 +42,7 @@ class CartAdmin(admin.ModelAdmin):
 
     def has_view_permission(self, request, obj = ...):
 
-        if request.user.is_staff and not request.user.is_superuser:
+        if request.user.groups.filter(name="Developpers").exists():
             True
         else:
             return False
