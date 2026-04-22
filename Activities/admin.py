@@ -39,13 +39,13 @@ class ImpactInline(admin.TabularInline):
 class ActivityAdmin(admin.ModelAdmin):
     inlines = [ActivityGalerieImageInline, RealisationInline, ResultatInline, ImpactInline]
     list_display = ('name', 'created_at',)
-    fields = ('name', 'description', 'description_accueil', 'presentation_img', 'created_at', 'motiv1', 'motiv2',)
+    fields = ('name', 'description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2',)
     
     def get_fields(self, request, obj=None):
         if obj and request.user.groups.filter(name='Developpers').exists():
-            return ('name', 'description', 'description_accueil', 'presentation_img', 'created_at', 'motiv1', 'motiv2','url_name',)
+            return ('name', 'description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2','url_name',)
         
         if not request.user.has_perm('Activities.edit_Activities_activity_name'):
-            return ('description', 'description_accueil', 'presentation_img', 'created_at', 'motiv1', 'motiv2','url_name',)
+            return ('description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2','url_name',)
         
         return super().get_fields(request, obj)
