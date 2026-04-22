@@ -37,7 +37,7 @@ print(f"DEBUG: {DEBUG}, LOCAL: {LOCAL}")
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
 else:
-    DOMAIN_NAME = 'https://linguere-web.onrender.com'
+    DOMAIN_NAME = 'https://projet-site-linguere.onrender.com/'
 
 ALLOWED_HOSTS = [
     "projet-site-linguere.onrender.com",

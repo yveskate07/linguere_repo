@@ -1,5 +1,7 @@
 from django.db import DJANGO_VERSION_PICKLE_KEY, models
 
+from AntaBackEnd import settings
+
 # Create your models here.
 class Activity(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False, blank=False, verbose_name="Activité")
@@ -22,7 +24,9 @@ class Activity(models.Model):
     @property
     def get_image_url(self):
         if self.presentation_img:
-            return self.presentation_img.url
+            # returning the whole URL instead of just the path to ensure it works correctly in different contexts (e.g., admin, API, etc.)
+            domain_name = settings.DOMAIN_NAME if hasattr(settings, 'DOMAIN_NAME') else ''
+            return f"{domain_name}{self.presentation_img.url}"
         return None
     
     class Meta:
