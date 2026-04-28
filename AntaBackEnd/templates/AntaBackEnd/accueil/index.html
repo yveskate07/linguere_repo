@@ -288,44 +288,24 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">Le Fablab nous a fourni des machines de qualité et un excellent support technique pour notre école d'ingénieurs. Service professionnel et réactif.</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Dr. Amadou Diallo</h4>
-                                <p>Université de Dakar</p>
+                {% if testimonies %}
+                    {% for testimony in testimonies %}
+                        <div class="col-md-4 mb-4" data-aos="fade-up">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">{{testimony.testimony}}</p>
+                                <div class="testimonial-author">
+                                    <img src="{{testimony.picture.url}}" alt="Client" class="author-img">
+                                    <div class="author-info">
+                                        <h4>{{testimony.name}}</h4>
+                                        <p>{{testimony.user_short_description}}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">Grâce à leur formation Arduino, nous avons pu développer un système d'irrigation intelligent pour notre coopérative agricole. Résultats impressionnants!</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Fatou Ndiaye</h4>
-                                <p>Coopérative Agricole</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">La découpe laser nous a permis de créer des produits uniques pour notre boutique d'artisanat. Qualité et précision au rendez-vous.</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Mamadou Sow</h4>
-                                <p>Artisan Créateur</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun témoignage disponible pour le moment.</p>
+                {% endif %}
             </div>
         </div>
     </section>

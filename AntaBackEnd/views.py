@@ -8,6 +8,7 @@ from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
 from Services.models import ServiceInfo
+from Testimonies.models import Testimony
 from Users.auth_form import UserLoginForm, UserSignUpForm
 from Partners.models import Partner
 from New_features.models import Feature
@@ -75,6 +76,8 @@ def home(request):
     context['partners'] = Partner.objects.all()
 
     context['features'] = Feature.objects.all()
+
+    context['testimonies'] = Testimony.objects.all()
 
     return render(request,'AntaBackEnd/accueil/index.html',context=context)
 
