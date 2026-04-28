@@ -3,11 +3,16 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Testimony(models.Model):
-    name = models.CharField(max_length=60, null=False, blank=False, verbose_name='Nom')
-    testimony = models.TextField(null=False, blank=False, verbose_name='Témoignage')
-    picture = models.ImageField(upload_to='testimonies_pictures/', null=False, blank=False, verbose_name='Image')
+    name = models.CharField(max_length=60, null=False, blank=False, verbose_name='Nom du client')
+    testimony = models.TextField(null=False, blank=False, verbose_name='Son témoignage')
+    picture = models.ImageField(upload_to='testimonies_pictures/', null=False, blank=False, verbose_name='Sa photo')
     user_short_description = models.CharField(max_length=30, null=False, blank=False, verbose_name='Courte Description')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Témoignage"
+        verbose_name_plural = "Témoignages"
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"{self.name} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
