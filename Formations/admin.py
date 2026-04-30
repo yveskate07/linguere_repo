@@ -57,7 +57,7 @@ class UserRequestAdmin(admin.ModelAdmin):
 @admin.register(Formations)
 class FormationAdmin(admin.ModelAdmin):
     inlines = [ModuleInline, PrerequisitesInline, SkillGainedInline, AdvantagesInline, AskedQuestionsInline]
-    fields = ('name','duration', 'price', 'image','availability','hours_per_week','image_home','why_image',)
+    fields = ('name','duration', 'price', 'brochure', 'image','availability','hours_per_week','image_home','why_image',)
     list_display = ('name','get_duration_display_fr','hours_per_week','availability', 'price')
     search_fields = ('name',)
     list_filter = ('availability',)
@@ -68,7 +68,7 @@ class FormationAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None): # Utilisez None par défaut, pas ...
         # Si c'est un superutilisateur et qu'on modifie un objet existant
         if obj and request.user.groups.filter(name='Developpers').exists():
-            return ('name','duration', 'price','image','availability','hours_per_week','image_home','why_image','slug','css_cls_parent_in_home','css_ps_cls_in_home', 'data_aos', 'data_aos_duration')
+            return ('name','duration', 'price', 'brochure', 'image','availability','hours_per_week','image_home','why_image','slug','css_cls_parent_in_home','css_ps_cls_in_home', 'data_aos', 'data_aos_duration')
         
         # Retourne les champs par défaut définis plus haut ou par le parent
         return super().get_fields(request, obj)

@@ -18,6 +18,7 @@ class Formations(models.Model):
     price = models.IntegerField(default=0, null=True, verbose_name='Prix')
     hours_per_week = models.IntegerField(default=0,blank=True, null=True, verbose_name="Nombre d'heures par semaines")
     availability = models.CharField(choices=AVAILABILITY, max_length=30, default='En ligne / Présentiel',blank=True, null=True, verbose_name='Disponibilité')
+    brochure = models.FileField(blank=True, null=True, upload_to='Formations/brochures', verbose_name='Brochure de la formation')
     slug = models.SlugField(unique=True, blank=True, null=True)
     image = models.ImageField(blank=True,null=True,upload_to='Formations/formation_image', verbose_name='Image descriptive de la formation')
     url_name = models.CharField(blank=False, null=False, verbose_name="Nom de l'url", max_length=120)
