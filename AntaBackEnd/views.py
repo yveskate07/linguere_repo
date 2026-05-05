@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
+from Personalizations.models import ImagesOnHomepage
 from Services.models import ServiceInfo
 from Testimonies.models import Testimony
 from Users.auth_form import UserLoginForm, UserSignUpForm
@@ -78,6 +79,8 @@ def home(request):
     context['features'] = Feature.objects.all()
 
     context['testimonies'] = Testimony.objects.all()
+
+    context['images_on_homepage'] = ImagesOnHomepage.objects.first()
 
     return render(request,'AntaBackEnd/accueil/index.html',context=context)
 

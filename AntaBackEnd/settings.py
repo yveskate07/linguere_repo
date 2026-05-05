@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     'Services.apps.ServicesConfig',
     'Shop.apps.ShopConfig',
     'Testimonies.apps.TestimoniesConfig',
+    'Personalizations.apps.PersonalizationsConfig',
     'Users.apps.UsersConfig',
     'django_extensions',
     'colorfield',

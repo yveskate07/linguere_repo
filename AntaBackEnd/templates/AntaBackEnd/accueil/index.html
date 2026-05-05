@@ -32,9 +32,13 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <video class="hero-video" autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
-        </video>
+        <div class="hero-image">
+            {% if images_on_homepage.image1 %}
+                <img src="{{ images_on_homepage.image1.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://static0.xdaimages.com/wordpress/wp-content/uploads/wm/2024/05/arduino-9.jpg?q=49&fit=crop&w=1500&h=844&dpr=2" alt="Hero Image">
+            {% endif %}
+        </div>
         <div class="hero-content">
             <h1 class="animate__animated animate__fadeInDown">INNOVATION & FABRICATION NUMÉRIQUE</h1>
             <p class="animate__animated animate__fadeInUp animate__delay-1s">Découvrez notre gamme complète de produits et services pour vos projets créatifs et industriels</p>
@@ -143,9 +147,13 @@
 
     <!-- Video Section 1 -->
     <section class="video-section">
-        <video autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
-        </video>
+        <div class="hero-image">
+            {% if images_on_homepage.image2 %}
+                <img src="{{ images_on_homepage.image2.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://knowhow.distrelec.com/wp-content/uploads/2021/06/iStock-1169550547-1.jpg?w=1920&h=800&crop=1" alt="Hero Image">
+            {% endif %}
+        </div>
         <div class="video-overlay">
             <h2 data-aos="fade-up">CRÉATIVITÉ SANS LIMITES</h2>
             <p data-aos="fade-up" data-aos-delay="100">Découvrez comment nos solutions peuvent transformer vos idées en réalité</p>
@@ -208,9 +216,13 @@
 
     <!-- Video Section 2 -->
     <section class="video-section">
-        <video autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/vi2.mp4' %}" type="video/mp4">
-        </video>
+        <div class="hero-image">
+            {% if images_on_homepage.image3 %}
+                <img src="{{ images_on_homepage.image3.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://cdn.xingosoftware.com/elektor/images/fetch/dpr_1,w_800,h_460,c_fit/https%3A%2F%2Fwww.elektormagazine.fr%2Fassets%2Fupload%2Fimages%2F24%2F20250415105149_drawing-robot-avatar.jpg" alt="Hero Image">
+            {% endif %}
+        </div>
         <div class="video-overlay">
             <h2 data-aos="fade-up">EXPERTISE TECHNIQUE</h2>
             <p data-aos="fade-up" data-aos-delay="100">Notre équipe d'experts est à votre disposition pour concrétiser vos projets les plus ambitieux</p>
