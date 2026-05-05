@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class ImagesOnHomepage(models.Model):
@@ -13,6 +14,12 @@ class ImagesOnHomepage(models.Model):
     @property
     def name(self):
         return f"Images sur la page d'accueil"
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:  # seulement à la création
+            if ImagesOnHomepage.objects.count() >= 1:
+                raise ValidationError("Maximum de 1 instance atteint.")
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name = "Personalization"
