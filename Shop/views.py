@@ -93,6 +93,7 @@ def render_category_page(request, page_number, category, template, fetch_article
 
 
 def arduino(request, page, filters=None):
+    print(f"prices : {request.POST.get('min-price')} - {request.POST.get('max-price')}")
     if request.method == 'POST':
         filters = {'sort':request.POST.get('sort-choice'),
                    'prices':[int(request.POST.get('min-price')), int(request.POST.get('max-price'))],
