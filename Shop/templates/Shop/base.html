@@ -161,7 +161,7 @@
                         {% endif %}
                         <img src='{{product.imageURL}}' alt='{{product.name}}'>
                         <div class="quick-view">
-                            <button class="quick-view-btn" onclick="showQuickView('{{product.name}}', '{{product.imageURL}}', '{{product.description|escapejs}}', {{product.price}}, {{product.stock}}, '{{product.category}}', {{product.id}})">
+                            <button class="quick-view-btn" type="button" onclick="showQuickView('{{product.name}}', '{{product.imageURL}}', '{{product.description|escapejs}}', {{product.price}}, {{product.stock}}, '{{product.category}}', {{product.id}})">
                                 <i class="fas fa-eye me-1"></i> Aperçu rapide
                             </button>
                         </div>
