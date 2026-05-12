@@ -83,51 +83,10 @@ class FormationAdmin(admin.ModelAdmin):
             readonly.append('slug')
 
         return readonly
+    
+    def has_add_permission(self, request):
+        if Formations.objects.count() >= 5:
+            return False
+        return super().has_add_permission(request)
 
     get_duration_display_fr.short_description = 'Durée'
-
-
-'''
-@admin.register(Testimony)
-class TestimonyAdmin(admin.ModelAdmin):
-    fields = ('formation','username','status','comment', 'description',)
-    list_display = ('formation','status','comment',)
-    readonly_fields = ('description',)
-
-    """def has_add_permission(self, request):
-        return False"""
-
-@admin.register(SignedUpUser)
-class SignedUpUserAdmin(admin.ModelAdmin):
-    fields = ('availability','session','formation', 'description',)
-    list_filter = ('formation','session','availability',)
-    #search_fields = ('name',)
-    readonly_fields = ('description',)
-
-    #list_display = ('name','email','tel_number','availability','session','formation')
-    list_display = ('availability', 'session', 'formation')
-
-    """def has_add_permission(self, request):
-        return False"""
-
-@admin.register(UserBrochure)
-class UserBrochureAdmin(admin.ModelAdmin):
-    fields = ('availability','formation', 'description',)
-    list_display = ('availability','formation',)
-    #search_fields = ('name',)
-    list_filter = ('availability','formation',)
-    readonly_fields = ('description',)
-
-    """def has_add_permission(self, request):
-        return False"""
-
-@admin.register(UserRequest)
-class UserRequestAdmin(admin.ModelAdmin):
-    fields = ('formation', 'description',)
-    list_display = ('formation',)
-    #search_fields = ('name',)
-    list_filter = ('formation',)
-    readonly_fields = ('description',)
-
-    """def has_add_permission(self, request):
-        return False"""'''

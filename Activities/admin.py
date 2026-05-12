@@ -1,5 +1,29 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin
 from .models import *
+
+if admin.site.is_registered(Group):
+    admin.site.unregister(Group)
+
+@admin.register(Group)
+class CustomGroupAdmin(GroupAdmin):
+    def has_module_permission(self, request):
+        # On vérifie UNIQUEMENT le groupe, peu importe le statut superuser
+        return request.user.groups.filter(name="Developpers").exists()
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.groups.filter(name="Developpers").exists()
+
+    def has_add_permission(self, request):
+        return request.user.groups.filter(name="Developpers").exists()
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.groups.filter(name="Developpers").exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.groups.filter(name="Developpers").exists()
+
 
 class ActivityGalerieImageInline(admin.TabularInline):
     model = ActivityGalerieImage

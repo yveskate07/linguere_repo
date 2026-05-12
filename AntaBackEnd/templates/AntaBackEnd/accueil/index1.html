@@ -31,11 +31,15 @@
     {% include 'header_footer/header.html' %}
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <video class="hero-video" autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
-        </video>
-        <div class="hero-content">
+    <section class="video-section">
+        <div class="hero-image">
+            {% if images_on_homepage.image1 %}
+                <img src="{{ images_on_homepage.image1.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://static0.xdaimages.com/wordpress/wp-content/uploads/wm/2024/05/arduino-9.jpg?q=49&fit=crop&w=1500&h=844&dpr=2" alt="Hero Image">
+            {% endif %}
+        </div>
+        <div class="video-overlay">
             <h1 class="animate__animated animate__fadeInDown">INNOVATION & FABRICATION NUMÉRIQUE</h1>
             <p class="animate__animated animate__fadeInUp animate__delay-1s">Découvrez notre gamme complète de produits et services pour vos projets créatifs et industriels</p>
             <button class="btn btn-hero animate__animated animate__fadeInUp animate__delay-2s">Explorer maintenant</button>
@@ -143,9 +147,13 @@
 
     <!-- Video Section 1 -->
     <section class="video-section">
-        <video autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/Vi1.mp4' %}" type="video/mp4">
-        </video>
+        <div class="hero-image">
+            {% if images_on_homepage.image2 %}
+                <img src="{{ images_on_homepage.image2.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://knowhow.distrelec.com/wp-content/uploads/2021/06/iStock-1169550547-1.jpg?w=1920&h=800&crop=1" alt="Hero Image">
+            {% endif %}
+        </div>
         <div class="video-overlay">
             <h2 data-aos="fade-up">CRÉATIVITÉ SANS LIMITES</h2>
             <p data-aos="fade-up" data-aos-delay="100">Découvrez comment nos solutions peuvent transformer vos idées en réalité</p>
@@ -208,9 +216,13 @@
 
     <!-- Video Section 2 -->
     <section class="video-section">
-        <video autoplay muted loop>
-            <source src="{% static 'AntaBackEnd/videos/vi2.mp4' %}" type="video/mp4">
-        </video>
+        <div class="hero-image">
+            {% if images_on_homepage.image3 %}
+                <img src="{{ images_on_homepage.image3.url }}" alt="Hero Image">
+            {% else %}
+                <img src="https://cdn.xingosoftware.com/elektor/images/fetch/dpr_1,w_800,h_460,c_fit/https%3A%2F%2Fwww.elektormagazine.fr%2Fassets%2Fupload%2Fimages%2F24%2F20250415105149_drawing-robot-avatar.jpg" alt="Hero Image">
+            {% endif %}
+        </div>
         <div class="video-overlay">
             <h2 data-aos="fade-up">EXPERTISE TECHNIQUE</h2>
             <p data-aos="fade-up" data-aos-delay="100">Notre équipe d'experts est à votre disposition pour concrétiser vos projets les plus ambitieux</p>
@@ -223,83 +235,60 @@
         <div class="section-title" data-aos="fade-up">
             <h1>NOS FORMATIONS</h1>
         </div>
-        {% if formation_available %}
-        <div class="formations-container">
-            <div class="premiere-ligne">
-                <!-- Partie gauche -->
-                <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
-                    {% if formation_broderie_num %}
-                        <div class="gaucheh" style="width: 100%; height: 200px; background-image: url('{{formation_broderie_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="fade-right" data-aos-delay="100">
-                            <div class="content-wrapper">
-                                <h1 class="titre slide-in-title">{{formation_broderie_num.name}}</h1>
-                                <div class="description fade-in-description">{{formation_broderie_num.description_accueil}}
-                                    <div class="cta-button">
-                                        <a href="{% url 'formationView' formation_name=formation_broderie_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+        {% if formations %}
+            <div class="formations-container">
+                <div class="premiere-ligne">
+                    <!-- Partie gauche -->
+                    <div class="gauche" style="display: flex; flex-direction: column; justify-content: space-between; width: 48%;">
+                        {% for formations_g in left_first_row %}
+                            <div class="{{formations_g.css_ps_cls_in_home}}" style="width: 100%; height: 200px; background-image: url('{{formations_g.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; margin-bottom: 20px;" data-aos="{{formations_g.data_aos}}" data-aos-delay="{{formations_g.data_aos_duration}}">
+                                <div class="content-wrapper">
+                                    <h1 class="titre slide-in-title">{{formations_g.name}}</h1>
+                                    <div class="description fade-in-description">{{formations_g.description_accueil}}
+                                        <div class="cta-button">
+                                            <a href="{% url 'formationView' formation_name=formations_g.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
-                    {% if formation_fraiseuse_num %}
-                        <div class="gaucheb" style="width: 100%; height: 200px; background-image: url('{{formation_fraiseuse_num.imageHomeUrl}}'); background-size: cover; background-position: center; border-radius: 10px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease;" data-aos="fade-right" data-aos-delay="150">
+                        {% endfor %}
+                    </div>
+
+                    <!-- Partie droite -->
+                    <div class="droite">
+                        {% for formations_d in right_first_row %}
+                            <div class="{{formations_d.css_ps_cls_in_home}}" style="background-image: url('{{formations_d.imageHomeUrl}}'); background-size: cover; background-position: center;" data-aos="{{formations_d.data_aos}}" data-aos-delay="{{formations_d.data_aos_duration}}">
+                                <div class="content-wrapper">
+                                    <h1 class="titre slide-in-title">{{formations_d.name}}</h1>
+                                    <div class="description fade-in-description">{{formations_d.description_accueil}}
+                                        <div class="cta-button">
+                                            <a href="{% url 'formationView' formation_name=formations_d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Formation en pleine largeur -->
+                {% for formation in second_row %}
+                    <div class="{{formation.css_ps_cls_in_home}}" style="background-image: url('{{formation.imageHomeUrl}}'); background-size: cover; background-position: center;" data-aos="{{formation.data_aos}}" data-aos-delay="{{formation.data_aos_duration}}">
                         <div class="content-wrapper">
-                            <h1 class="titre slide-in-title">{{formation_fraiseuse_num.name}}</h1>
-                            <div class="description fade-in-description">{{formation_fraiseuse_num.description_accueil}}
+                            <h1 class="titre slide-in-title">{{formation.name}}</h1>
+                            <div class="description fade-in-description">{{formation.description_accueil}}
                                 <div class="cta-button">
-                                    <a href="{% url 'formationView' formation_name=formation_fraiseuse_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'formationView' formation_name=formation.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endif %}
-                </div>
-
-                <!-- Partie droite -->
-                <div class="droite">
-                    {% if formation_impression_num %}
-                        <div class="droiteh" data-aos="fade-left" data-aos-delay="200" style="background-image: url('{{formation_impression_num.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                            <div class="content-wrapper">
-                                <h1 class="titre slide-in-title">{{formation_impression_num.name}}</h1>
-                                <div class="description fade-in-description">{{formation_impression_num.description_accueil}}
-                                    <div class="cta-button">
-                                        <a href="{% url 'formationView' formation_name=formation_impression_num.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if formation_laser %}
-                        <div class="droiteb" data-aos="fade-left" data-aos-delay="250" style="background-image: url('{{formation_laser.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                            <div class="content-wrapper">
-                                <h1 class="titre slide-in-title">{{formation_laser.name}}</h1>
-                                <div class="description fade-in-description">
-                                    {{formation_laser.description_accueil}}
-                                    <div class="cta-button">
-                                        <a href="{% url 'formationView' formation_name=formation_laser.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
+                {% endfor %}
             </div>
-
-            <!-- Formation en pleine largeur -->
-            {% if formation_impression_3d %}
-            <div class="pleine-largeur" data-aos="fade-up" data-aos-delay="300" style="background-image: url('{{formation_impression_3d.imageHomeUrl}}'); background-size: cover; background-position: center;">
-                <div class="content-wrapper">
-                    <h1 class="titre slide-in-title">{{formation_impression_3d.name}}</h1>
-                    <div class="description fade-in-description">{{formation_impression_3d.description_accueil}}
-                        <div class="cta-button">
-                            <a href="{% url 'formationView' formation_name=formation_impression_3d.slug %}" class="btn-pulse">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-        </div>
         {% else %}
-            <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucune formation disponible pour le moment.</p>
+            <p class="text-center" data-aos="fade-up" data-aos-delay="300">
+                Aucune formation disponible pour le moment.
+            </p>
         {% endif %}
     </div>
 
@@ -311,44 +300,24 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">Le Fablab nous a fourni des machines de qualité et un excellent support technique pour notre école d'ingénieurs. Service professionnel et réactif.</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Dr. Amadou Diallo</h4>
-                                <p>Université de Dakar</p>
+                {% if testimonies %}
+                    {% for testimony in testimonies %}
+                        <div class="col-md-4 mb-4" data-aos="fade-up">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">{{testimony.testimony}}</p>
+                                <div class="testimonial-author">
+                                    <img src="{{testimony.picture.url}}" alt="Client" class="author-img">
+                                    <div class="author-info">
+                                        <h4>{{testimony.name}}</h4>
+                                        <p>{{testimony.user_short_description}}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">Grâce à leur formation Arduino, nous avons pu développer un système d'irrigation intelligent pour notre coopérative agricole. Résultats impressionnants!</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Fatou Ndiaye</h4>
-                                <p>Coopérative Agricole</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">La découpe laser nous a permis de créer des produits uniques pour notre boutique d'artisanat. Qualité et précision au rendez-vous.</p>
-                        <div class="testimonial-author">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="author-img">
-                            <div class="author-info">
-                                <h4>Mamadou Sow</h4>
-                                <p>Artisan Créateur</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun témoignage disponible pour le moment.</p>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -366,7 +335,7 @@
                     <div class="card" data-aos="fade-up">
                         <img src="{{activity.get_image_url|safe}}" alt="{{activity.name}}">
                         <div class="overlay">
-                            <div class="card-title">{{activity.name}}</div>
+                            <!-- <div class="card-title">{{activity.name}}</div> -->
                             <div class="card-description">
                                 {{activity.description|safe}}<br><br>
                                 <a href="{{activity.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a>
@@ -390,18 +359,11 @@
             </div>
             <div class="row justify-content-center text-center">
                 <!-- POUR ALPHONSE il faut ici que chaque partenaire soit representé par une image et un nom-->
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up">
-                    <img src="kits arduino petit.png" alt="Partenaire 1" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                    <img src="Kits d'assortissement de diodes.png" alt="Partenaire 2" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                    <img src="Imprimante 3d adventure3.png" alt="Partenaire 3" class="img-fluid">
-                </div>
-                <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <img src="Leds avec fil.png" alt="Partenaire 4" class="img-fluid">
-                </div>
+                {% for partner in partners %}
+                    <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="{{forloop.counter0|add:'100'}}">
+                        <img src="{{partner.image.url}}" alt="{{partner.name}}" class="img-fluid">
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </section>

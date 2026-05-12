@@ -57,7 +57,9 @@ def home(request):
 
     context = dict()
 
-    right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
+    formations = Formations.objects.all()
+
+    '''right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
 
     left_first_row = Formations.objects.filter(css_cls_parent_in_home="gauche")
 
@@ -65,9 +67,11 @@ def home(request):
 
     context['right_first_row'] = right_first_row
     context['left_first_row'] = left_first_row
-    context['second_row'] = second_row
+    context['second_row'] = second_row'''
 
-    context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
+    context['formations'] = formations
+
+    #context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
 
     context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
 

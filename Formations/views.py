@@ -9,6 +9,8 @@ from .models import Formations
 # Create your views here.
 @login_required
 def formationView(request, formation_name):
+
+    print("formation name : ", formation_name)
     try:
         formation = Formations.objects.get(slug=formation_name)
     except Formations.DoesNotExist:
@@ -17,7 +19,7 @@ def formationView(request, formation_name):
         duration = int(formation.duration.total_seconds() // 3600)
 
         modules = [mod.name for mod in formation.Modules.all()]
-        prerequisites = [(p.image.url,p.name, p.level) for p in formation.Prerequisites.all()]
+        prerequisites = [(p.getImageUrl(),p.name, p.level) for p in formation.Prerequisites.all()]
         skillgained = [(s.name, s.description_skill) for s in formation.SkillsGained.all()]
         #m_points = [(mp.name,mp.description) for mp in formation.MotivPoints.all()]
         advantages = [(a.name, a.description) for a in formation.Advantages.all()]

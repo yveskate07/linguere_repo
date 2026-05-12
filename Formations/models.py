@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 from Users.models import Fab_User
 
 # Create your models here.
@@ -43,9 +44,16 @@ class Formations(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if not self.slug:
+        if not self.slug or self.slug != slugify(self.name):
+            if not self.pk:  # seulement à la création
+                if Formations.objects.count() >= 5:
+                    raise ValidationError("Maximum de 5 instances atteint.")
             self.slug = slugify(self.name)
         super().save(*args,**kwargs)
+
+    def clean(self):
+        if not self.pk and Formations.objects.count() >= 5:
+            raise ValidationError("Maximum de 5 instances atteint.")
 
     def get_duration_display_fr(self):
         total_seconds = self.duration.total_seconds()
@@ -65,7 +73,7 @@ class Formations(models.Model):
         try:
             url = self.image.url
         except:
-            url = "inserer ici le path d'une image par defaut"
+            url = "Pas d'image definie"
         return url
 
     @property
@@ -73,7 +81,7 @@ class Formations(models.Model):
         try:
             url = self.image_home.url
         except:
-            url = "inserer ici le path d'une image par defaut",
+            url = "Pas d'image definie",
         return url
 
     @property
@@ -81,7 +89,7 @@ class Formations(models.Model):
         try:
             url = self.why_image.url
         except:
-            url = "inserer ici le path d'une image par defaut",
+            url = "Pas d'image definie",
         return url
     
 class AskedQuestions(models.Model):
@@ -131,6 +139,13 @@ class Prerequisites(models.Model): # prerequis pour une formation
 
     def description(self):
         return "Préréquis des Formations"
+
+    def getImageUrl(self):
+        try:
+            url = self.image.url
+        except:
+            url = "Pas d'image definie"
+        return url
 
     description.short_description = "Description"
 

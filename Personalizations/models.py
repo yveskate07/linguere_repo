@@ -20,6 +20,10 @@ class ImagesOnHomepage(models.Model):
             if ImagesOnHomepage.objects.count() >= 1:
                 raise ValidationError("Maximum de 1 instance atteint.")
         super().save(*args, **kwargs)
+
+    def clean(self):
+        if not self.pk and ImagesOnHomepage.objects.count() >= 1:
+            raise ValidationError("Maximum de 1 instances atteint.")
     
     class Meta:
         verbose_name = "Personalization"
