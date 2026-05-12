@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import SignedUpUserForm, BrochureForm, RequestForm
 from .models import Formations
-#from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
+from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_client
 
 
 
@@ -53,7 +53,7 @@ def SigningUp(request, formation_name):
                 return render(request, 'Formations/error/index.html', {'msg': "La formation que vous recherchez n'existe pas!!!"})
             else:
                 # envoi d'un mail au client puis notification a linguere
-                """mail_to_the_client.delay(formation_name=formation_name, 
+                mail_to_the_client.delay(formation_name=formation_name, 
                                    user={'name':data.name, 
                                          'e-mail':data.email, 
                                          'message':request.POST.get('message')})
@@ -63,19 +63,7 @@ def SigningUp(request, formation_name):
                                admin_edit_view = f"/admin/Formations/signedupuser/{data.pk}/change/",
                                user={'name':data.name, 
                                      'e-mail':data.email, 
-                                     'message':request.POST.get('message')})"""
-                
-                """mail_to_the_client(formation_name=formation_name, 
-                                   user={'name':data.name, 
-                                         'e-mail':data.email, 
-                                         'message':request.POST.get('message')})"""
-                
-                """mail_to_fablab(formation_name=formation_name, 
-                               reason='new inscription', 
-                               admin_edit_view = f"/admin/Formations/signedupuser/{data.pk}/change/",
-                               user={'name':data.name, 
-                                     'e-mail':data.email, 
-                                     'message':request.POST.get('message')})"""
+                                     'message':request.POST.get('message')})
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})
@@ -97,19 +85,15 @@ def returnBrochure(request, formation_name):
 
             else:
                 # envoi de la brochure par mail puis notification a linguere
-                """brochure_to_client_through_mail.delay(receiver_email=data.user.email, formation_name=data.formation.name, 
+                brochure_to_client_through_mail.delay(receiver_email=data.user.email, 
+                                                      formation_name=data.formation.name, 
+                                                      pdf_path=data.formation.brochure.path,
                                                 admin_edit_view = f"/admin/Formations/userbrochure/{data.pk}/change/",
+                                                formation_view_link = f"/admin/Formations/formation/{data.formation.pk}/change/",
                                                 user={'name':data.user.name, 
                                                 'e-mail':data.user.email, 
                                                 "message":request.POST.get('message')
-                                            })"""
-                
-                """brochure_to_client_through_mail(receiver_email=data.user.email, formation_name=data.formation.name, 
-                                                admin_edit_view = f"/admin/Formations/userbrochure/{data.pk}/change/",
-                                                user={'name':data.user.name, 
-                                                'e-mail':data.user.email, 
-                                                "message":request.POST.get('message')
-                                            })"""
+                                            })
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Remplissez correctement le formulaire !"})
@@ -131,18 +115,17 @@ def userGetInTouch(request, formation_name):
                 return render(request, 'Formations/error/index.html', {'msg': "La formation que vous recherchez n'existe pas!!!"})
             else:
                 # envoi d'alerte a linguere
-                """mail_to_fablab.delay(formation_name=formation_name, 
+                mail_to_fablab.delay(formation_name=formation_name, 
                                reason='information request',
                                admin_edit_view = f"/admin/Formations/userrequest/{data.pk}/change/",
                                user={'name':data.user.name, 
-                                     'e-mail':data.user.email})"""
+                                     'e-mail':data.user.email,
+                                     'message':request.POST.get('message')})
                 
-                """mail_to_fablab(formation_name=formation_name, 
-                               reason='information request',
-                               admin_edit_view = f"/admin/Formations/userrequest/{data.pk}/change/",
-                               user={'name':data.user.name, 
-                                     'e-mail':data.user.email})"""
-
+                mail_to_the_client.delay(formation_name=formation_name, 
+                                   user={'name':data.user.name, 
+                                         'e-mail':data.user.email, 
+                                         'message':request.POST.get('message')})
 
         else:
             return render(request, 'Formations/error/index.html', {'msg': "Une erreur s'est produite!!!"})

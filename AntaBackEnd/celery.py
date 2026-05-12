@@ -21,4 +21,4 @@ app.conf.redis_backend_use_ssl = {
     'ssl_cert_reqs': ssl.CERT_NONE
 }"""
 
-#app.autodiscover_tasks()
+app.autodiscover_tasks()
