@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 from colorfield.fields import ColorField
 from Users.models import Fab_User
 
@@ -15,10 +16,16 @@ class ServiceInfo(models.Model):
     class_icon_name = models.CharField(max_length=30, null=False, blank=False, verbose_name='class de l\'icône', default='', help_text="Classe de l'icône du service (ex: fa-solid fa-tshirt)")
 
     def save(self, *args, **kwargs):
+        if not self.pk:  # seulement à la création
+            if ServiceInfo.objects.count() >= 7:
+                raise ValidationError("Maximum de 7 instances atteint.")
         if not self.slug:
             self.slug = slugify(self.name)
-
         super().save(*args, **kwargs)
+
+    def clean(self):
+        if not self.pk and ServiceInfo.objects.count() >= 7:
+            raise ValidationError("Maximum de 7 instances atteint.")
 
     def __str__(self):
         return self.name

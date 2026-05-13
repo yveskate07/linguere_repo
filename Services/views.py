@@ -55,8 +55,8 @@ def serviceView(request, slug=None, errors_txt=None, errors=0, success=0, succes
     if not slug:
         return redirect('home')
     try:
-        service = Service.objects.get(slug=slug)
-    except Service.DoesNotExist:
+        service = ServiceInfo.objects.get(slug=slug)
+    except ServiceInfo.DoesNotExist:
         return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
     else:
         customized_service_form = CustomizedServiceForm()
@@ -83,8 +83,8 @@ def custom_view(request):
         form = CustomizedServiceForm(data=request.POST, files=request.FILES)
         try:
             print("Fetching service...")
-            service = Service.objects.get(slug=request.POST.get("slug"))
-        except Service.DoesNotExist:
+            service = ServiceInfo.objects.get(slug=request.POST.get("slug"))
+        except ServiceInfo.DoesNotExist:
             print("Service does not exist")
             return render(request, 'error/index.html', context={'error_msg':"Le service que vous essayez de personnaliser n'existe pas"})
         else:

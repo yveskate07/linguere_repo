@@ -159,4 +159,7 @@ class ServiceAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return super().has_add_permission(request) and request.user.has_perm('Services.add_service')
     
-    
+    def has_add_permission(self, request):
+        if ServiceInfo.objects.count() >= 7:
+            return False
+        return super().has_add_permission(request)

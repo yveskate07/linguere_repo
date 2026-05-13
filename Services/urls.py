@@ -17,7 +17,11 @@ Including another URLconf
 from django.urls import path
 from .views import *
 
-urlpatterns = [
+'''urlpatterns = [
     path('create_custom_order/', custom_view, name='create_custom_order'),
+    path('<str:slug>/',checking_slug , name='service'),
+]'''
+
+urlpatterns = [
     path('<str:slug>/',checking_slug , name='service'),
 ]

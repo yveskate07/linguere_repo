@@ -10,7 +10,6 @@ from .tasks import brochure_to_client_through_mail, mail_to_fablab, mail_to_the_
 @login_required
 def formationView(request, formation_name):
 
-    print("formation name : ", formation_name)
     try:
         formation = Formations.objects.get(slug=formation_name)
     except Formations.DoesNotExist:
@@ -21,7 +20,7 @@ def formationView(request, formation_name):
         modules = [mod.name for mod in formation.Modules.all()]
         prerequisites = [(p.getImageUrl(),p.name, p.level) for p in formation.Prerequisites.all()]
         skillgained = [(s.name, s.description_skill) for s in formation.SkillsGained.all()]
-        #m_points = [(mp.name,mp.description) for mp in formation.MotivPoints.all()]
+        Q_and_A = [(q.question, q.answer) for q in formation.AskedQuestions.all()] 
         advantages = [(a.name, a.description) for a in formation.Advantages.all()]
 
         form1 = SignedUpUserForm()
@@ -36,7 +35,7 @@ def formationView(request, formation_name):
                         'modules_':modules if len(modules)>0 else None,
                         'prerequisites_':prerequisites if len(prerequisites)>0 else None,
                         'skillgained_':skillgained if len(skillgained)>0 else None,
-                        #'m_points':m_points if len(m_points)>0 else None,
+                        'Q_and_A_':Q_and_A if len(Q_and_A)>0 else None,
                         'advantages_':advantages if len(advantages)>0 else None})
 
 @login_required

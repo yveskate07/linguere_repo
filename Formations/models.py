@@ -14,6 +14,7 @@ class Formations(models.Model):
     ]
 
     name = models.CharField(max_length=60, verbose_name='Nom')
+    name_in_formation_page = models.CharField(max_length=60, verbose_name='Nom de la formation sur la page de formation', blank=True, null=True)
     duration = models.DurationField(verbose_name='Durée', help_text="Doit être au format Nb_Jours hh:mm:ss") # duree
     description_accueil = models.TextField(blank=False, null=False, verbose_name="Description sur page accueil")
     price = models.IntegerField(default=0, null=True, verbose_name='Prix')
@@ -93,7 +94,7 @@ class Formations(models.Model):
         return url
     
 class AskedQuestions(models.Model):
-    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, null=False, blank=False)
+    formation = models.ForeignKey(Formations, on_delete=models.CASCADE, related_name='AskedQuestions', null=False, blank=False)
     question = models.TextField(verbose_name="Question", null=False, blank=False)
     answer=models.TextField(verbose_name="Answer", null=False, blank=False)
 

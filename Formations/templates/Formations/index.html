@@ -452,28 +452,19 @@
         </div>
 
         <div class="space-y-6">
-            <!-- Question 1 -->
-            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-md">
-                <h3 class="title-font text-lg font-bold text-gray-900 mb-2">Combien de temps dure la formation ?</h3>
-                <p class="text-gray-600">
-                    La formation dure 30 heures, réparties sur plusieurs semaines pour un apprentissage progressif.
-                </p>
-            </div>
-
-            <!-- Question 2 -->
-            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-md">
-                <h3 class="title-font text-lg font-bold text-gray-900 mb-2">Est-ce que la formation est en ligne ?</h3>
-                <p class="text-gray-600">
-                    Oui, la formation est disponible en ligne et en présentiel selon vos préférences.
-                </p>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-md">
-                <h3 class="title-font text-lg font-bold text-gray-900 mb-2">Quels outils sont nécessaires ?</h3>
-                <p class="text-gray-600">
-                    Vous aurez besoin d'un ordinateur et des logiciels de broderie numérique comme Wilcom ou Inkscape.
-                </p>
+            <!-- Questions -->
+            {% if Q_and_A_%}
+                {% for question, answer in Q_and_A_ %}
+                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-md">
+                        <h3 class="title-font text-lg font-bold text-gray-900 mb-2">{{ question }}</h3>
+                        <p class="text-gray-600">
+                            {{ answer }}
+                        </p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500 col-span-4">Aucune question fréquemment posée pour cette formation.</p>
+            {% endif %}
             </div>
         </div>
     </div>
