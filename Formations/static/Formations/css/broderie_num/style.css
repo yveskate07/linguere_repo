@@ -352,6 +352,10 @@ body {
 /* ==================== */
 /* BENEFITS SECTION */
 /* ==================== */
+#Benefits{
+    margin: auto !important;
+}
+
 .gradient-bg {
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
 }

@@ -45,6 +45,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "172.31.124.218",
     "127.0.0.1",
+    '0.0.0.0',
     ]
 
 LOGGING = {
@@ -175,26 +176,31 @@ else:
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if LOCAL:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('LOCAL_DB_NAME'),
-            'USER': config('LOCAL_DB_USER'),
-            'PASSWORD': config('LOCAL_DB_PASSWORD'),
-            'HOST': config('LOCAL_DB_HOST'),
-            'PORT': config('LOCAL_DB_PORT'),
-        }
-    }
-else:
-    DATABASES = {
+# if LOCAL:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': config('LOCAL_DB_NAME'),
+#             'USER': config('LOCAL_DB_USER'),
+#             'PASSWORD': config('LOCAL_DB_PASSWORD'),
+#             'HOST': config('LOCAL_DB_HOST'),
+#             'PORT': config('LOCAL_DB_PORT'),
+#         }
+#     }
+# else:
+#     DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default=config('DATABASE_URL'),
+#         conn_max_age=600
+#     )
+# }
+DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
         default=config('DATABASE_URL'),
         conn_max_age=600
-    )
-}
-
+    )}
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

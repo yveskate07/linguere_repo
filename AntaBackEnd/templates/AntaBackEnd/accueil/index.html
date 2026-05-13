@@ -333,10 +333,12 @@
                 <p>Découvrez les entreprises et organisations qui nous soutiennent dans notre mission d'innovation et de fabrication numérique.</p>
             </div>
             <div class="row justify-content-center text-center">
-                <!-- POUR ALPHONSE il faut ici que chaque partenaire soit representé par une image et un nom-->
                 {% for partner in partners %}
-                    <div class="col-md-2 col-6 mb-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="{{forloop.counter0|add:'100'}}">
-                        <img src="{{partner.image.url}}" alt="{{partner.name}}" class="img-fluid">
+                    <div class="col-md-2 col-6 mb-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="{{forloop.counter0|add:'100'}}">
+                        <div class="partner-frame mb-2">
+                            <img src="{{partner.image.url}}" alt="{{partner.name}}" class="img-fluid">
+                        </div>
+                        <p class="partner-name small fw-bold text-uppercase">{{ partner.name }}</p>
                     </div>
                 {% endfor %}
             </div>

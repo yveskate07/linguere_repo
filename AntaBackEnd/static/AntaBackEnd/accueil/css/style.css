@@ -61,7 +61,7 @@ nav {
     font-weight: 700;
     color: var(--primary-color);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.0625rem;
     background: linear-gradient(to right, var(--primary-color), var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -241,12 +241,16 @@ nav {
     text-align: center;
     background: rgba(0,0,0,0.5);
     padding: 0 20px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 
@@ -254,6 +258,8 @@ nav {
     font-size: 1.2rem;
     max-width: 700px;
     margin-bottom: 30px;
+    max-width: 43.75rem;
+    margin-bottom: 1.875rem;
 }
 
 .btn-hero {
@@ -261,9 +267,12 @@ nav {
     color: white;
     padding: 12px 30px;
     border-radius: 30px;
+    padding: 0.75rem 1.875rem;
+    border-radius: 1.875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
+    letter-spacing: 0.0625rem;
     transition: all 0.3s;
     border: none;
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
@@ -441,9 +450,10 @@ box-sizing: border-box;
 
 /* Video Sections */
 .video-section {
-    margin: 50px 0;
+    margin: 0px;
     position: relative;
     height: 500px;
+    min-height: 31.25rem;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -469,18 +479,25 @@ box-sizing: border-box;
     color: white;
     text-align: center;
     padding: 0 20px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 
+.video-overlay h1,
 .video-overlay h2 {
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0; /* Supprime les marges par défaut qui peuvent décentrer */
+    margin: 0 0 1.25rem 0; /* Supprime les marges par défaut qui peuvent décentrer */
 }
 
 .video-overlay p {
     font-size: 1.2rem;
     max-width: 700px;
     margin-bottom: 30px;
+    max-width: 43.75rem;
+    margin-bottom: 1.875rem;
 }
 
 /* Features Section */
@@ -749,6 +766,11 @@ footer {
         margin: 5px 0;
     }
     
+    .hero-section {
+        height: 60vh; /* Hauteur réduite pour éviter trop d'espace vide */
+        min-height: 25rem;
+    }
+
     .hero-content h1 {
         font-size: 2rem;
     }
@@ -765,16 +787,37 @@ footer {
         grid-template-columns: 1fr;
     }
     
+    .video-overlay h1,
     .video-overlay h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem; 
     }
     
     .video-overlay p {
         font-size: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .video-section {
+        min-height: 20rem;
+        height: auto;
+    }
+
+    .hero-content, .video-overlay {
+        padding: 1.5rem 1rem; /* Padding plus équilibré */
     }
 }
 
 @media (max-width: 576px) {
+    .hero-section {
+        height: auto;
+        min-height: 20rem;
+        padding: 3rem 0; /* Padding vertical au lieu de hauteur fixe */
+    }
+
+    .video-section {
+        min-height: 18rem;
+    }
+
     .nav-brand {
         font-size: 1.2rem;
     }
@@ -788,10 +831,20 @@ footer {
         margin: 0 5px;
     }
     
-    .hero-content h1 {
-        font-size: 1.8rem;
+    .hero-content h1,
+    .video-overlay h1 {
+        font-size: 1.35rem; /* Réduction pour éviter le débordement horizontal */
     }
     
+    .video-overlay h1,
+    .video-overlay h2 {
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-content, .video-overlay {
+        padding: 1rem 0.75rem;
+    }
+
     .carousel-caption h5 {
         font-size: 1.2rem;
     }
@@ -903,7 +956,7 @@ footer {
     border-radius: 30px;
     text-transform: uppercase;
     font-size: 0.9rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.0625rem;
 }
 
 .services-section .card-description a:hover {
@@ -936,11 +989,12 @@ footer {
 /* Styles spécifiques pour la section Formations */
         /*----------------- Styles généraux ------------ */
 
-        .formations-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 100%;
+    .formations-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        width: 95%;
+        margin: 0 auto;
 }
 
 .formation-card {
@@ -1237,3 +1291,27 @@ footer {
             }
         }
 
+/* Styles pour la section Partenaires */
+.partner-frame {
+    width: 140px !important;
+    height: 140px !important;
+    min-width: 140px !important;
+    min-height: 140px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #ffffff !important;
+    border: 1px solid #f1f1f1 !important;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    overflow: hidden !important;
+}
+
+.partner-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
