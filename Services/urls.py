@@ -1,27 +1,7 @@
-"""
-URL configuration for AntaBackEnd project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.urls import path
-from .views import *
-
-'''urlpatterns = [
-    path('create_custom_order/', custom_view, name='create_custom_order'),
-    path('<str:slug>/',checking_slug , name='service'),
-]'''
+from . import views
 
 urlpatterns = [
-    path('<str:slug>/',checking_slug , name='service'),
+    # Une seule URL pour tous les services — le slug identifie le service
+    path('<slug:slug>/', views.service_view, name='service'),
 ]

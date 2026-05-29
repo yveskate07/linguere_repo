@@ -67,9 +67,12 @@ class ActivityAdmin(admin.ModelAdmin):
     
     def get_fields(self, request, obj=None):
         if obj and request.user.groups.filter(name='Developpers').exists():
-            return ('name', 'description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2','url_name',)
+            return ('name', 'description', 'description_accueil', 'presentation_img', 'slug',)
         
         if not request.user.has_perm('Activities.edit_Activities_activity_name'):
-            return ('description', 'description_accueil', 'presentation_img', 'motiv1', 'motiv2','url_name',)
+            return ('description', 'description_accueil', 'presentation_img',)
         
         return super().get_fields(request, obj)
+    
+    def has_delete_permission(self, request, obj = ...):
+        return super().has_delete_permission(request, obj) and request.user.groups.filter(name='Developpers').exists()

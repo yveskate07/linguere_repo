@@ -324,7 +324,7 @@ def cart_view(request):
         products_cart_js = json.dumps(products['products'])
     else:
         products_cart = products['products'].values()
-        products_cart_js = json.dumps(products['products'].values())
+        products_cart_js = json.dumps(list(products['products'].values()))
 
     return render(request,'cart/index.html', context={
         'products_cart': products_cart,

@@ -50,7 +50,7 @@ lightboxClose.addEventListener('click', () => {
 // Sélectionner l'image et fermer la lightbox
 selectImageBtn.addEventListener('click', () => {
     previewImage.src = images[currentImageIndex];
-    document.getElementById("selected-image-path").value = images[currentImageIndex];
+    document.getElementById("id_img_path").value = images[currentImageIndex];
     galleryItems.forEach(item => item.classList.remove('selected'));
     galleryItems[currentImageIndex].classList.add('selected');
     lightbox.classList.remove('active');

@@ -765,8 +765,13 @@ footer {
         margin: 5px 0;
     }
     
+    .hero-section {
+        height: 60vh;
+        min-height: 25rem;
+    }
+
     .hero-content h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     
     .hero-content p {
@@ -781,8 +786,13 @@ footer {
         grid-template-columns: 1fr;
     }
     
+    .video-section {
+        min-height: 22rem;
+        height: auto;
+    }
+
     .video-overlay h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
     
     .video-overlay p {
@@ -800,6 +810,11 @@ footer {
         margin: 10px 0;
     }
     
+    .hero-section {
+        height: auto;
+        padding: 2.5rem 0;
+    }
+
     .icons span {
         margin: 0 5px;
     }

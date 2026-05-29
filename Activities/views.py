@@ -9,13 +9,13 @@ from .models import Activity
 
 # Create your views here.
 
-def get_context_for_activities(request, activity_name):
+def activityView(request, slug):
     try:
-        activity = Activity.objects.get(name=activity_name)
+        activity = Activity.objects.get(slug=slug)
     except Exception as e:
         return HttpResponse("Cette activité n'existe pas !")
     else:
-        return {
+        context = {
             'activity': activity,
             'realisations': activity.realisations.all(),
             'resultats': activity.resultats.all()[0],
@@ -23,35 +23,4 @@ def get_context_for_activities(request, activity_name):
             'galerie_images': activity.galerie_images.all(),
         }
 
-
-def smart_coders(request):
-    """
-    :param request: contains all the infos of the request, ex user's data, browser's data etc
-    :return: the template for smart_coders requested
-    """
-
-    context = get_context_for_activities(request, "Smart Coders")
-
-    return render(request, "Activities/index.html", context=context)
-
-
-def fab_elle(request):
-    """
-    :param request: contains all the infos of the request, ex user's data, browser's data etc
-    :return: the template for fab_elle requested
-    """
-
-    context = get_context_for_activities(request, "Fab'Elles")
-    
-    return render(request, "Activities/index.html", context=context)
-
-
-def fab_tour(request):
-    """
-    :param request: contains all the infos of the request, ex user's data, browser's data etc
-    :return: the template for fab_tour requested
-    """
-
-    context = get_context_for_activities(request, "Fab'Tour")
-    
-    return render(request, "Activities/index.html", context=context)
+        return render(request, "Activities/index.html", context=context)

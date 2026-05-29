@@ -38,9 +38,12 @@ print(f"DEBUG: {DEBUG}, LOCAL: {LOCAL}")
 if DEBUG:
     DOMAIN_NAME = 'http://127.0.0.1:8001'
 else:
-    DOMAIN_NAME = 'https://projet-site-linguere.onrender.com/'
+    DOMAIN_NAME = 'https://projet-site-linguere.onrender.com'
 
 ALLOWED_HOSTS = [
+    '.onrender.com',  
+    'linguerefablab.com',               
+    'www.linguerefablab.com',
     "projet-site-linguere.onrender.com",
     "localhost",
     "172.31.124.218",
@@ -225,13 +228,13 @@ USE_I18N = True
 USE_TZ = True
 
 # Media files
-MEDIA_URL = 'media/'
+MEDIA_URL = 'media/' if LOCAL else '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/' if LOCAL else '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
@@ -295,3 +298,39 @@ else:
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# Réduire la concurrence sous WSL2
+CELERY_WORKER_CONCURRENCY = 2  # au lieu de 8
+
+# Recycler les workers pour éviter les fuites mémoire
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+
+# Reconnexion automatique au démarrage
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# Tentatives de reconnexion (None = infini)
+CELERY_BROKER_CONNECTION_MAX_RETRIES = None
+
+# Timeout de transport
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600,
+    'socket_timeout': 30,
+    'socket_connect_timeout': 30,
+    'retry_on_timeout': True,
+}
+
+# Activer si vous êtes bien en production (DEBUG = False)
+if not DEBUG:
+    # Indique à Django de faire passer les cookies de session uniquement via HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Indique à Django que Render agit comme un proxy HTTPS inversé
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # ÉVITE LE BLOCAGE DES FORMULAIRES (Ajout de vos domaines sécurisés)
+    CSRF_TRUSTED_ORIGINS = [
+        'https://linguerefablab.com',        
+        'https://www.linguerefablab.com',    
+        'https://projet-site-linguere.onrender.com', 
+    ]

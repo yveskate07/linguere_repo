@@ -19,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     class Media:
         js = ('Shop/js/admin/person_admin.js',)
+        
 
 class CartItemInline(admin.TabularInline):
     model = CartItem

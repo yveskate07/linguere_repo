@@ -14,7 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, re_path
+from django.conf.urls.static import static
+from django.views.static import serve
+from django.conf import settings
 from .views import arduino, machine, installations, verify_hmac, return_url, init_payment, cart_view, payment_done, \
     add_item, del_item, change_item
 
@@ -31,3 +34,12 @@ urlpatterns = [
     path('change_item/', change_item, name='del_item'),
     path('payment-done/', payment_done, name='payment-done')
 ]
+
+
+if not settings.DEBUG:
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
+else:
+    # Configuration classique pour le développement local
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

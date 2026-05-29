@@ -1,5 +1,6 @@
 from django.db import DJANGO_VERSION_PICKLE_KEY, models
 
+
 # Create your models here.
 class Activity(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False, blank=False, verbose_name="Activité")
@@ -9,7 +10,7 @@ class Activity(models.Model):
     presentation_img = models.ImageField(upload_to='activity_images/', null=True, blank=True, verbose_name="Image accueil")
     #motiv1 = models.TextField(null=True, blank=True, verbose_name="Motivation 1")
     #motiv2 = models.TextField(null=True, blank=True, verbose_name="Motivation 2")
-    url_name = models.CharField(max_length=50, unique=True, null=False, blank=False, verbose_name="Nom de l'URL")
+    slug = models.SlugField(max_length=50, unique=True, null=True, blank=False, verbose_name="Slug")
 
 
     def __str__(self):
@@ -17,13 +18,19 @@ class Activity(models.Model):
     
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse(f'{self.url_name}')
+        return reverse(f'activity', kwargs={'slug': self.slug})
     
     @property
     def get_image_url(self):
         if self.presentation_img:
             return self.presentation_img.url
         return None
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name = "Activité"

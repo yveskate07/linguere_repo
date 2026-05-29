@@ -1,329 +1,192 @@
+import json
 from django import forms
 
-from Services.models import *
+
+# ==============================================================================
+# CHAMPS COMMUNS : présents dans tous les formulaires de service
+# ==============================================================================
+
+DELIVERIES = [
+    ('', '-- Choisir un mode de livraison --'),
+    ('Retrait sur place (Dakar)',            'Retrait sur place (Dakar)'),
+    ('Livraison à domicile (Dakar)',          'Livraison à domicile (Dakar)'),
+    ('Livraison à domicile (Autres régions)', 'Livraison à domicile (Autres régions)'),
+]
+
+COMMON_FIELDS = {
+    'quantity': forms.IntegerField(
+        label='Quantité',
+        min_value=1,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '1'})
+    ),
+    'width': forms.IntegerField(
+        label='Largeur (en cm)',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '1'})
+    ),
+    'height': forms.IntegerField(
+        label='Hauteur (en cm)',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '1'})
+    ),
+    'delivery_mode': forms.ChoiceField(
+        label='Mode de livraison',
+        choices=DELIVERIES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    ),
+    'comment': forms.CharField(
+        label='Instructions spéciales',
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+    ),
+    'client_address': forms.CharField(
+        label='Votre adresse',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    ),
+    'img_path': forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+    ),
+    'img': forms.ImageField(
+        label='Ajouter une image de référence',
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'style': 'display:none;', 'accept': 'image/*'})  # caché, le JS gère l'affichage et la prévisualisation
+    )
+}
+
+ANONYMOUS_FIELDS = {
+    'client_name': forms.CharField(
+        label='Votre nom complet',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    ),
+    'client_email': forms.EmailField(
+        label='Votre adresse email',
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    ),
+    'client_phone': forms.CharField(
+        label='Votre numéro de téléphone',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    ),
+}
 
 
-class AnonymousBroderieNumeriqueModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service de broderie numérique, pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
+# ==============================================================================
+# CORRESPONDANCE field_type → champ Django
+# ==============================================================================
 
-    class Meta:
-        model = BroderieNumeriqueModel
-        fields = ['image', 'support_type', 'other_support', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'support_type': forms.Select(attrs={'class':'option-select','id':'support-type'}),
-                   'other_support': forms.TextInput(attrs={'class':'option-input','id':'other-support','placeholder':'Précisez le type de support', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '50'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '50'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class BroderieNumeriqueModelForm(forms.ModelForm):
+def build_field_from_service_field(service_field):
     """
-    formulaire utilisé pour le service de broderie numérique, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
+    Convertit un objet ServiceField en champ Django correspondant.
+    Retourne un dict {field_name: form_field} car un ServiceField de type
+    'select' avec has_other=True génère deux champs Django.
     """
+    ft = service_field.field_type
+    name = service_field.name
+    label = service_field.label
+    required = service_field.required
+    result = {}
 
-    class Meta:
-        model = BroderieNumeriqueModel
-        fields = ['image', 'support_type', 'other_support', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'support_type': forms.Select(attrs={'class':'option-select','id':'support-type'}),
-                   'other_support': forms.TextInput(attrs={'class':'option-input','id':'other-support','placeholder':'Précisez le type de support', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '50'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '50'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    if ft == 'text':
+        result[name] = forms.CharField(
+            label=label,
+            required=required,
+            widget=forms.TextInput(attrs={'class': 'form-control'})
+        )
 
-class DecoupeLaserModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service de découpe et gravure laser, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
+    elif ft == 'integer':
+        result[name] = forms.IntegerField(
+            label=label,
+            required=required,
+            min_value=1,
+            widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '1'})
+        )
 
-    class Meta:
-        model = DecoupeLaserModel
-        fields = ['image', 'service_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'service_type': forms.Select(attrs={'class':'option-select','id':'service-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class AnonymousDecoupeLaserModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service de découpe et gravure laser, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
+    elif ft == 'boolean':
+        result[name] = forms.BooleanField(
+            label=label,
+            required=False,  # un BooleanField Django est toujours non-requis
+            widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+        )
 
-    class Meta:
-        model = DecoupeLaserModel
-        fields = ['image', 'service_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'service_type': forms.Select(attrs={'class':'option-select','id':'service-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class FraiseCNCModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service de fraiseuse numérique CNC, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
+    elif ft == 'file':
+        result[name] = forms.ImageField(
+            label=label,
+            required=required,
+            widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
+        )
 
-    class Meta:
-        model = FraiseCNCModel
-        fields = ['image', 'service_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'service_type': forms.Select(attrs={'class':'option-select','id':'service-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    elif ft == 'select':
+        raw_choices = service_field.choices or []
+        choices = [('', f'-- {label} --')] + [(c, c) for c in raw_choices]
+        result[name] = forms.ChoiceField(
+            label=label,
+            choices=choices,
+            required=required,
+            widget=forms.Select(attrs={'class': 'form-control'})
+        )
+        # Si "Autre (Préciser)" est une option, on ajoute un champ texte libre
+        if service_field.has_other:
+            result[f'{name}_other'] = forms.CharField(
+                label=f'Précisez (si autre)',
+                required=False,
+                widget=forms.TextInput(attrs={
+                    'class': 'form-control',
+                    # data-attribute pour que le JS puisse afficher/masquer ce champ
+                    'data-other-for': name,
+                    'placeholder': 'Précisez votre choix',
+                    'style': 'display:none;'
+                })
+            )
 
-class AnonymousFraiseCNCModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service de fraiseuse numérique CNC, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
+    elif ft == 'multicolor':
+        # Champ caché : la valeur est injectée par le JS du color picker
+        # sous forme de JSON sérialisé : '["#FF0000", "#0000FF"]'
+        result[name] = forms.CharField(
+            label=label,
+            required=required,
+            widget=forms.HiddenInput(attrs={'id': f'id_{name}', 'data-type': 'multicolor'})
+        )
 
-    class Meta:
-        model = FraiseCNCModel
-        fields = ['image', 'service_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'service_type': forms.Select(attrs={'class':'option-select','id':'service-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    return result
 
-class Impression3DModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression 3D, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
 
-    class Meta:
-        model = Impression3DModel
-        fields = ['image', 'impression_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'impression_type': forms.Select(attrs={'class':'option-select','id':'impression-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class AnonymousImpression3DModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression 3D, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
+# ==============================================================================
+# GÉNÉRATEUR DE FORMULAIRE DYNAMIQUE
+# ==============================================================================
 
-    class Meta:
-        model = Impression3DModel
-        fields = ['image', 'impression_type', 'used_material', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'impression_type': forms.Select(attrs={'class':'option-select','id':'impression-type'}),
-                   'used_material': forms.Select(attrs={'class':'option-select','id':'used-material'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+def build_dynamic_form(service_fields, anonymous=False):
+    """
+    Construit et retourne une classe de formulaire Django dynamiquement,
+    à partir des ServiceField d'un service donné.
 
-class ImpressionObjPersonnaliseModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur objets personnalisés, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
+    - Les champs communs (quantité, dimensions, livraison, commentaire)
+      sont toujours inclus.
+    - Les champs anonymes (nom, email, téléphone, adresse) sont inclus
+      seulement si anonymous=True.
+    - Les champs spécifiques au service sont ajoutés dans l'ordre défini
+      par ServiceField.order.
 
-    class Meta:
-        model = ImpressionObjPersonnaliseModel
-        fields = ['image', 'obj_type', 'other_object', 'design_file', 'other_file', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'obj_type': forms.Select(attrs={'class':'option-select','id':'object-type'}),
-                   'other_object': forms.TextInput(attrs={'class':'option-input','id':'other-object','placeholder':"Précisez l'objet", 'style':'display: none; margin-top: 0.8rem;'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    Utilisation :
+        DynamicForm = build_dynamic_form(service.fields.all(), anonymous=True)
+        form = DynamicForm(request.POST, request.FILES)
+    """
+    # 1. Champs communs
+    declared_fields = dict(COMMON_FIELDS)
 
-class AnonymousImpressionObjPersonnaliseModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur objets personnalisés, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
+    # 2. Champs anonymes si l'utilisateur n'est pas connecté
+    if anonymous:
+        declared_fields.update(ANONYMOUS_FIELDS)
 
-    class Meta:
-        model = ImpressionObjPersonnaliseModel
-        fields = ['image', 'obj_type', 'other_object', 'design_file', 'other_file', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'obj_type': forms.Select(attrs={'class':'option-select','id':'object-type'}),
-                   'other_object': forms.TextInput(attrs={'class':'option-input','id':'other-object','placeholder':"Précisez l'objet", 'style':'display: none; margin-top: 0.8rem;'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class ImpressionPaperSupportRigideModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur papier et supports rigides, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
+    # 3. Champs dynamiques spécifiques au service
+    for sf in service_fields:
+        declared_fields.update(build_field_from_service_field(sf))
 
-    class Meta:
-        model = ImpressionPaperSupportRigideModel
-        fields = ['image', 'format', 'other_format', 'paper_type', 'other_paper', 'design_file', 'other_file', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'format': forms.Select(attrs={'class':'option-select','id':'format'}),
-                   'other_format': forms.TextInput(attrs={'class':'option-input','id':'other-format','placeholder':'Précisez le format', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'paper_type': forms.Select(attrs={'class':'option-select','id':'paper-type'}),
-                   'other_paper': forms.TextInput(attrs={'class':'option-input','id':'other-paper','placeholder':'Précisez le type de papier', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    # 4. Construction dynamique de la classe Form
+    DynamicServiceForm = type(
+        'DynamicServiceForm',
+        (forms.BaseForm,),
+        {'base_fields': declared_fields}
+    )
 
-class AnonymousImpressionPaperSupportRigideModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur papier et supports rigides, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
-
-    class Meta:
-        model = ImpressionPaperSupportRigideModel
-        fields = ['image', 'format', 'other_format', 'paper_type', 'other_paper', 'design_file', 'other_file', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'format': forms.Select(attrs={'class':'option-select','id':'format'}),
-                   'other_format': forms.TextInput(attrs={'class':'option-input','id':'other-format','placeholder':'Précisez le format'}),
-                   'paper_type': forms.Select(attrs={'class':'option-select','id':'paper-type'}),
-                   'other_paper': forms.TextInput(attrs={'class':'option-input','id':'other-paper','placeholder':'Précisez le type de papier'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class ImpressionTextileEtVetementModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur textiles et vêtements, 
-    pour les utilisateurs authentifiés, 
-    donc les champs client ne sont pas demandés car ils sont pris depuis le compte utilisateur
-    """
-
-    class Meta:
-        model = ImpressionTextileEtVetementModel
-        fields = ['image', 'textile_type', 'other_textile', 'impression_type', 'design_file', 'other_design_file', 'comment', 'quantity', 'width', 'height', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'textile_type': forms.Select(attrs={'class':'option-select','id':'textile-type'}),
-                   'other_textile': forms.TextInput(attrs={'class':'option-input','id':'other-textile','placeholder':'Précisez un autre textile si nécessaire', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'impression_type': forms.Select(attrs={'class':'option-select','id':'impression-type'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_design_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire', 'style':'display: none; margin-top: 0.8rem;'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
-        
-class AnonymousImpressionTextileEtVetementModelForm(forms.ModelForm):
-    """
-    formulaire utilisé pour le service d'impression sur textiles et vêtements, 
-    pour les utilisateurs non authentifiés, donc les champs client sont demandés
-    """
-
-    class Meta:
-        model = ImpressionTextileEtVetementModel
-        fields = ['image', 'textile_type', 'other_textile', 'impression_type', 'design_file', 'other_design_file', 'comment', 'quantity', 'width', 'height', 'client_name', 'client_email', 'client_phone', 'client_address', 'delivery_mode']
-        widgets = {'image':forms.ClearableFileInput(attrs={'id': 'file-input','style': 'display: none;'}), 
-                   'textile_type': forms.Select(attrs={'class':'option-select','id':'textile-type'}),
-                   'other_textile': forms.TextInput(attrs={'class':'option-input','id':'other-textile','placeholder':'Précisez un autre textile si nécessaire'}),
-                   'impression_type': forms.Select(attrs={'class':'option-select','id':'impression-type'}),
-                   'design_file': forms.Select(attrs={'class':'option-select','id':'design-file'}),
-                   'other_design_file': forms.TextInput(attrs={'class':'option-input','id':'other-file','placeholder':'Précisez un autre fichier si nécessaire'}),
-                   'comment': forms.Textarea(attrs={'class':'option-textarea','id':'special-notes','rows':'3','placeholder':'Ajoutez des instructions particulières (position, détails, etc.)...'}),
-                   'quantity': forms.NumberInput(attrs={'class':'option-input','id':'quantity','min':'1', 'value':'1', 'style':'max-width: 80px;'}),
-                   'width': forms.NumberInput(attrs={'class':'option-input','id':'width','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'height': forms.NumberInput(attrs={'class':'option-input','id':'height','min':'1','value':'1','min':'1', 'max': '100'}),
-                   'client_name': forms.TextInput(attrs={'class':'form-control','id':'client-name'}),
-                   'client_email': forms.EmailInput(attrs={'class':'form-control','id':'client-email'}),
-                   'client_phone': forms.TextInput(attrs={'class':'form-control','id':'client-phone'}),
-                   'client_address': forms.TextInput(attrs={'class':'form-control','id':'client-address'}),
-                   'delivery_mode': forms.Select(attrs={'class':'form-control','id':'delivery-mode'})
-                   }
+    return DynamicServiceForm

@@ -51,7 +51,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="Prix", blank=False, null=False)
     stock = models.IntegerField(verbose_name="En stock", blank=False, null=False)
     main_category = models.CharField(verbose_name="Categorie principale", blank=False, null=False, max_length=60, choices=MAIN_CATEGORIES)
-    category = models.CharField(verbose_name="Catégorie", blank=False, null=False, max_length=60, choices=CATEGORIES)
+    category = models.CharField(verbose_name="Catégorie", blank=True, null=True, max_length=60, choices=CATEGORIES)
     disponibility = models.CharField(verbose_name="Disponibilité", blank=False, null=False, max_length=60, choices=DISPONIBILITY)
     added_date = models.DateTimeField(verbose_name="Date d'ajout", default=timezone.now)
     image_url = models.CharField(max_length=255, blank=True, null=True, verbose_name="URL de l'image", default='')
@@ -74,14 +74,27 @@ class Product(models.Model):
             self.image_url = self.image.url
         else: 
             self.image_url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDASdBqpi7pcoU1jl6HG2n88Z2ZG562K49Ew&s'
-            
+
+
+        if self.main_category == 'Kits Arduino et IOT' and self.category not in ['Kits Arduino', 'Composants IoT', 'Robotique', 'Capteurs']:
+            raise ValidationError("Pour la catégorie principale 'Kits Arduino et IOT', la catégorie doit être l'une des suivantes : 'Kits Arduino', 'Composants IoT', 'Robotique', ou 'Capteurs'.")
+        elif self.main_category != 'Kits Arduino et IOT' and self.category in ['Kits Arduino', 'Composants IoT', 'Robotique', 'Capteurs']:
+            raise ValidationError("Pour les catégories principales autres que 'Kits Arduino et IOT', la catégorie ne peut pas être 'Kits Arduino', 'Composants IoT', 'Robotique', ou 'Capteurs'.")
+        elif self.main_category != 'Kits Arduino et IOT' and self.category is not None:
+            raise ValidationError("Pour les catégories principales autres que 'Kits Arduino et IOT', la catégorie doit être vide.")
+        else:
+            pass
+        
+        # constructing a unique reference for the product using shortuuid and the product name
+        self.reference = f"{shortuuid.uuid()}-{self.name.replace(' ', '_')}" if is_new else self.reference
         super().save(*args, **kwargs)  # On sauvegarde d'abord le produit (important pour avoir self.pk)
 
     @property
     def imageURL(self):
         # rebuilding the absolute URL for the image to be used in the invoice template
         try:
-            url = f"{settings.DOMAIN_NAME}{self.image.url}"
+            #url = f"{settings.DOMAIN_NAME}{self.image.url}"
+            url = self.image.url
         except:
             url = self.image_url
         return url

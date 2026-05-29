@@ -14,7 +14,7 @@ function handleFile(file) {
 }
 
 // Mettre à jour l'aperçu lors de la sélection d'une image
-document.getElementById('file-input').addEventListener('change', function (event) {
+document.getElementById('id_img').addEventListener('change', function (event) {
     handleFile(this.files[0]);
 
     const preview = document.getElementById('preview-image');
@@ -28,6 +28,7 @@ document.getElementById('file-input').addEventListener('change', function (event
             preview.style.display = 'block';
         };
         reader.readAsDataURL(file);
+        sweetMSG('Image sélectionnée', 'Votre image a été chargée avec succès.', 'success');
     } else {
         preview.style.display = 'none';
         preview.src = '#';

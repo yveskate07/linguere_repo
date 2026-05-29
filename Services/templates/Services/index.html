@@ -1,0 +1,721 @@
+{% load static %}
+
+{% block head %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnalisation {{ service.name }} - Linguère Fablab</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'Services/Service/style.css' %}">
+    <link rel="stylesheet" href="{% static 'header_footer/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}">
+</head>
+{% endblock %}
+
+{% block maincontent %}
+<body data-user-id="{{ request.user.id|default:'0' }}" data-slug="{{ service.slug }}">
+
+    {% include 'header_footer/header.html' %}
+
+    <!-- En-tête du service -->
+    <div class="service-header animate__animated animate__fadeInUp">
+        <h2 class="service-title">
+            <i class="{{ service.class_icon_name }}"></i>
+            {{ service.name }}
+        </h2>
+        <p class="service-subtitle">{{ service.description }}</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-container" data-active-tab="gallery">
+        <div class="tab active" data-tab="gallery">
+            <i class="fas fa-images"></i> Notre Galerie
+        </div>
+        <div class="tab" data-tab="upload">
+            <i class="fas fa-upload"></i> Importer mon design
+        </div>
+    </div>
+
+    <!-- Galerie -->
+    <div class="tab-content active" id="gallery-tab">
+        <section class="gallery-section">
+            <h3 class="section-title">
+                <i class="fas fa-photo-video"></i> Notre Galerie Exclusive
+            </h3>
+            <p class="section-description">
+                Découvrez nos créations uniques et personnalisez-les selon vos goûts.
+                Chaque motif est conçu avec soin par nos artistes pour un rendu exceptionnel.
+            </p>
+            <div class="gallery-grid">
+                {% if img_urls %}
+                    {% for img_url in img_urls %}
+                        <div class="gallery-item" data-img="{{ img_url }}">
+                            <img src="{{ img_url }}" alt="Motif {{ service.name }}">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="justify-content-center">Aucune image disponible dans la galerie pour le moment.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <!-- Formulaire principal -->
+    <form method="post" enctype="multipart/form-data" id="form_customisation">
+        {% csrf_token %}
+
+        <!-- Upload -->
+        <div class="tab-content" id="upload-tab">
+            <section class="upload-section">
+                <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Importer votre propre design</h3>
+                <p class="section-description">Téléchargez votre image, logo ou fichier pour créer une pièce véritablement unique.</p>
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h4>Glissez-déposez votre fichier ici</h4>
+                    <p>ou</p>
+                    <button class="cta-button" type="button"><i class="fas fa-folder-open"></i> Parcourir vos fichiers</button>
+                    {{form.img}}  {# Champ caché, le JS gère l'interaction #}
+                    <p class="small">Formats acceptés : PNG, JPG, SVG, DST (max. 10MB)</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================================================================
+             SECTION PERSONNALISATION DYNAMIQUE
+             Les champs sont générés depuis service_fields (ServiceField en BD)
+             ================================================================ -->
+        <section class="customization-section">
+            <div class="customization-intro animate__animated animate__fadeIn">
+                <h3><i class="fas fa-magic"></i> Personnalisation Avancée</h3>
+                <p>Créez un design unique avec nos outils de personnalisation</p>
+            </div>
+
+            {% for field in form %}
+                {% if field.name and "_other" not in field.name %} {# Si le nom du champ ne contient pas "_other" #}
+                    {% if field.name not in 'img' %} {# Le champ "img" est géré séparément dans l'onglet upload #}
+                        {# On saute les champs communs gérés plus bas (infos client, livraison) #}
+                        {% if field.name not in 'client_name,client_email,client_phone,client_address,delivery_mode,comment,quantity,width,height' %}
+
+                            {% if field.name in multicolor_fields %}
+                                {# Champ multicolor : color picker visuel + input hidden #}
+                                <div class="option-group animate__animated animate__fadeInLeft">
+                                    <label class="option-label">
+                                        <i class="fas fa-palette"></i> {{ field.label }}
+                                    </label>
+                                    <div class="color-options" id="color-picker-{{ field.name }}">
+                                        {# Les couleurs disponibles sont définies dans le ServiceField.choices #}
+                                        {% for sf in service_fields %}
+                                            {% if sf.name == field.name %}
+                                                {% for color in sf.choices %}
+                                                    <div class="color-option"
+                                                        style="background: {{ color }}; {% if color == '#FFFFFF' %}border: 1px solid #ddd;{% endif %}"
+                                                        data-color="{{ color }}"
+                                                        data-field="{{ field.name }}"
+                                                        title="{{ color }}"
+                                                        >
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    {{ field }}  {# input hidden alimenté par le JS #}
+                                    <div class="selected-colors-display" id="{{ field.name }}-display"></div>
+                                </div>
+
+                            {% elif field.field.widget.input_type == 'select' %}
+                                {# Champ select : liste déroulante #}
+                                <div class="option-group animate__animated animate__fadeInLeft">
+                                    <label class="option-label">
+                                        <i class="fas fa-list"></i> {{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                    {# Champ "Autre (Préciser)" associé s'il existe #}
+                                    {% for other_field in form %}
+                                        {% if other_field.name == field.name|add:'_other' %}
+                                            {{ other_field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                            {% elif field.name == 'img_path' %}
+                                {# Champ caché pour l'URL de l'image #}
+                                {{ field }}
+
+                            {% elif field.field.widget.input_type == 'checkbox' %}
+                                {# Champ booléen #}
+                                <div class="option-group animate__animated animate__fadeInLeft">
+                                    <div class="form-check">
+                                        {{ field }}
+                                        <label class="form-check-label" for="{{ field.id_for_label }}">
+                                            {{ field.label }}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            {% elif field.name|slice:'-6' != '_other' %}
+                                {# Champ texte générique (on exclut les champs _other déjà gérés) #}
+                                <div class="option-group animate__animated animate__fadeInLeft">
+                                    <label class="option-label">
+                                        <i class="fas fa-pen"></i> {{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                </div>
+
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {# Champs communs toujours présents : dimensions et quantité #}
+            <div class="option-group animate__animated animate__fadeInRight">
+                <label class="option-label">
+                    <i class="fas fa-ruler-combined"></i> Dimensions (cm)
+                </label>
+                <div style="display: flex; gap: 0.8rem; align-items: center;">
+                    {{ form.width }}
+                    <span style="font-weight: 600; color: var(--primary);">×</span>
+                    {{ form.height }}
+                </div>
+            </div>
+
+            <div class="option-group animate__animated animate__fadeInLeft">
+                <label class="option-label">
+                    <i class="fas fa-boxes-stacked"></i> Quantité
+                </label>
+                {{ form.quantity }}
+            </div>
+
+            <div class="option-group animate__animated animate__fadeInRight">
+                <label class="option-label">
+                    <i class="fas fa-clipboard-list"></i> Instructions spéciales
+                </label>
+                {{ form.comment }}
+            </div>
+
+            <!-- input_ids généré dynamiquement pour le JS de résumé -->
+            <input id="input_ids" type="hidden" value="{{ input_ids_json }}">
+
+        </section>
+
+        <!-- Lightbox -->
+        <div class="lightbox" id="lightbox">
+            <span class="lightbox-close">&times;</span>
+            <div class="lightbox-content">
+                <img src="" alt="" class="lightbox-img" id="lightbox-img">
+                <div class="lightbox-counter" id="lightbox-counter"></div>
+                <button class="select-btn" id="select-image-btn" type="button">
+                    <i class="fas fa-check"></i> Sélectionner ce motif
+                </button>
+                <button class="close-btn" id="close-lightbox-btn" type="button">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+            <span class="lightbox-nav lightbox-prev">&#10094;</span>
+            <span class="lightbox-nav lightbox-next">&#10095;</span>
+        </div>
+
+        <!-- Aperçu général -->
+        <section class="summary-section">
+            <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Aperçu général</h3>
+            <div class="summary-container" id="summary-container"></div>
+            <div class="preview-container" style="max-width: 200px; margin: 1rem auto;">
+                <div class="preview-box">
+                    <div class="preview-loading"></div>
+                    <img src="" alt="Aperçu de l'image choisie" class="preview-image" id="preview-image" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Bouton afficher formulaire -->
+        <div class="show-form-container animate__animated animate__fadeInUp">
+            <button id="show-form-btn" class="btn btn-primary btn-lg" type="button">
+                <i class="fas fa-edit"></i> Remplir le formulaire de commande
+            </button>
+        </div>
+
+        <!-- Formulaire infos client (caché initialement) -->
+        <section class="contact-form-section" id="contact-form" style="display: none;">
+            <div class="container">
+                <div class="form-container animate__animated animate__fadeInUp">
+                    <h3 class="form-title">
+                        <i class="fas fa-user-edit"></i> Informations additionnelles
+                    </h3>
+                    <p class="form-subtitle">Remplissez ce formulaire pour finaliser votre demande</p>
+
+                    <div class="form-group">
+                        {% if request.user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                                    {{ form.client_address }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                                    {{ form.delivery_mode }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-user"></i> Nom Complet *</label>
+                                        {{ form.client_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-envelope"></i> Email *</label>
+                                        {{ form.client_email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-phone"></i> Téléphone *</label>
+                                        {{ form.client_phone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><i class="fas fa-map-marker-alt"></i> Adresse (Ville) *</label>
+                                        {{ form.client_address }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-truck"></i> Mode de Livraison *</label>
+                                {{ form.delivery_mode }}
+                            </div>
+                        {% endif %}
+
+                        <!-- CGU -->
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="cgu_accept" name="cgu_accept" class="form-check-input">
+                                <label for="cgu_accept" class="form-check-label">
+                                    J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">conditions générales</a> *
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Erreurs de formulaire -->
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <div>{{ field }} : {{ error }}</div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-actions">
+                            <button id="submit-btn" type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane"></i> Envoyer ma demande
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </form>
+
+    <!-- Modal CGU -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Conditions Générales</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Processus de commande</h6>
+                    <p>Après soumission de votre demande, notre équipe vous contactera dans les 24 heures pour confirmer les détails et vous fournir un devis final.</p>
+                    <h6>2. Paiement</h6>
+                    <p>Un acompte de 50% sera requis avant le début de la production. Le solde devra être réglé avant la livraison.</p>
+                    <h6>3. Délais de production</h6>
+                    <p>Les délais standard sont de 3 à 5 jours ouvrés selon la complexité du design.</p>
+                    <h6>4. Livraison</h6>
+                    <p>Les frais de livraison varient selon la destination. Les retraits se font à notre atelier à Dakar.</p>
+                    <h6>5. Retours et échanges</h6>
+                    <p>En raison de la nature personnalisée de nos produits, les retours ne sont pas acceptés sauf en cas d'erreur de notre part.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">J'ai compris</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Erreur -->
+    <div class="modal fade" id="errorModal" aria-hidden="true" aria-labelledby="errorModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Erreur(s)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Veuillez renseigner correctement les champs du formulaire et/ou choisir une image.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Succès -->
+    <div class="modal fade" id="successModal" aria-hidden="true" aria-labelledby="successModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Succès</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">{% if messages %}{% for msg in messages %}{{ msg }}{% endfor %}{% endif %}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {% include 'alerts.html' %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block Footer %}
+    {% include 'header_footer/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'Services/js/aos_init.js' %}"></script>
+    <script src="{% static 'Services/js/tab_system.js' %}"></script>
+    <script src="{% static 'Services/js/lightbox.js' %}"></script>
+    <script src="{% static 'Services/js/keybrowse.js' %}"></script>
+    <script src="{% static 'Shop/js/sweet_alert.js' %}"></script>
+    <script src="{% static 'Services/js/double_fields.js' %}"></script>
+    <script src="{% static 'Services/js/unveilling_forms.js' %}"></script>
+    <script src="{% static 'Services/js/select_image.js' %}"></script>
+    <script src="{% static 'Services/js/upload_gestion.js' %}"></script>
+    <script src="{% static 'Services/js/form_validation.js' %}"></script>
+    <script>
+    // ================================================================
+    // VALIDATION CLIENT AVANT SOUMISSION
+    // Générique : vérifie les champs requis dynamiquement
+    // ================================================================
+    function checkUserFields() {
+        {% if not request.user.is_authenticated %}
+        const fields = [
+            { id: 'id_client_name',    msg: 'Veuillez renseigner votre nom !' },
+            { id: 'id_client_email',   msg: 'Veuillez renseigner votre email !' },
+            { id: 'id_client_phone',   msg: 'Veuillez renseigner votre numéro de téléphone !' },
+            { id: 'id_client_address', msg: 'Veuillez renseigner votre adresse !' },
+        ];
+        for (const f of fields) {
+            const el = document.getElementById(f.id);
+            if (el && el.value.trim() === '') { alert(f.msg); return false; }
+        }
+        {% endif %}
+        const delivery = document.getElementById('id_delivery_mode');
+        if (delivery && delivery.value === '') { alert('Veuillez choisir un mode de livraison !'); return false; }
+        if (!document.getElementById('cgu_accept').checked) { alert('Veuillez accepter les CGU !'); return false; }
+        return true;
+    }
+
+    // ================================================================
+    // RÉSUMÉ DYNAMIQUE — construit depuis input_ids_json
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const inputIdsEl = document.getElementById('input_ids');
+        const summaryContainer = document.getElementById('summary-container');
+
+        if (inputIdsEl && summaryContainer) {
+            const items = JSON.parse(inputIdsEl.value);
+            let html = '';
+
+            items.forEach(item => {
+                const isWidthHeight = item.input_ids[0] === 'id_width';
+                const isMulticolor = item.type === 'multicolor';
+
+                if (isMulticolor) {
+                    html += `<div class="summary-item">
+                        <h4><i class="${item.sum_cls}"></i> ${item.sum_tit_cls}</h4>
+                        <p id="${item.input_ids[0]}_preview">Aucune couleur sélectionnée</p>
+                    </div>`;
+                } else if (isWidthHeight) {
+                    const w = document.getElementById(item.input_ids[0])?.value || '1';
+                    const h = document.getElementById(item.input_ids[1])?.value || '1';
+                    html += `<div class="summary-item">
+                        <h4><i class="${item.sum_cls}"></i> ${item.sum_tit_cls}</h4>
+                        <p id="${item.input_ids[0]}_preview">${w} cm × ${h} cm</p>
+                    </div>`;
+                } else {
+                    const el = document.getElementById(item.input_ids[0]);
+                    const val = el ? el.value : '';
+                    html += `<div class="summary-item">
+                        <h4><i class="${item.sum_cls}"></i> ${item.sum_tit_cls}</h4>
+                        <p id="${item.input_ids[0]}_preview">${val}</p>
+                    </div>`;
+                }
+            });
+
+            summaryContainer.innerHTML = html;
+
+            // Listeners de mise à jour en temps réel
+            items.forEach(item => {
+                if (item.type === 'multicolor') return; // géré par le color picker
+
+                const el0 = document.getElementById(item.input_ids[0]);
+                if (!el0) return;
+
+                if (item.input_ids[0] === 'id_width' && item.input_ids[1]) {
+                    const el1 = document.getElementById(item.input_ids[1]);
+                    const update = () => {
+                        document.getElementById(item.input_ids[0] + '_preview').textContent =
+                            `${el0.value} cm × ${el1 ? el1.value : ''} cm`;
+                    };
+                    el0.addEventListener('change', update);
+                    if (el1) el1.addEventListener('change', update);
+                } else {
+                    el0.addEventListener('change', function () {
+                        // Si select avec "Autre (Préciser)", afficher le champ _other
+                        if (this.value === 'Autre (Préciser)' && item.input_ids[1]) {
+                            const other = document.getElementById(item.input_ids[1]);
+                            document.getElementById(item.input_ids[0] + '_preview').textContent = other ? other.value : this.value;
+                        } else {
+                            document.getElementById(item.input_ids[0] + '_preview').textContent = this.value;
+                        }
+                    });
+                }
+            });
+        }
+
+        // ============================================================
+        // COLOR PICKER DYNAMIQUE
+        // Gère tous les champs de type multicolor présents dans la page
+        // ============================================================
+        document.querySelectorAll('.color-options[id^="color-picker-"]').forEach(picker => {
+            const fieldName = picker.id.replace('color-picker-', '');
+            const hiddenInput = document.getElementById('id_' + fieldName);
+            const displayEl = document.getElementById(fieldName + '-display');
+            const previewEl = document.getElementById('id_' + fieldName + '_preview');
+            let selectedColors = [];
+
+            picker.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    const color = this.getAttribute('data-color');
+                    const idx = selectedColors.indexOf(color);
+                    if (idx === -1) {
+                        selectedColors.push(color);
+                        this.classList.add('selected');
+                    } else {
+                        selectedColors.splice(idx, 1);
+                        this.classList.remove('selected');
+                    }
+
+                    // Mettre à jour le champ caché (JSON)
+                    if (hiddenInput) hiddenInput.value = JSON.stringify(selectedColors);
+
+                    // Mettre à jour l'affichage des couleurs sélectionnées
+                    updateColorDisplay(selectedColors, displayEl, previewEl, hiddenInput, picker);
+                });
+            });
+        });
+
+        // Modals succès/erreur
+        {% if messages %}
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        {% endif %}
+        {% if form.errors %}
+            new bootstrap.Modal(document.getElementById('errorModal')).show();
+        {% endif %}
+    });
+
+    function updateColorDisplay(selectedColors, displayEl, previewEl, hiddenInput, picker) {
+        
+        if (displayEl) {
+            // Éviter de recréer le display si on est déjà en train de le faire
+            if (displayEl.dataset.updating === 'true') return;
+            displayEl.dataset.updating = 'true';
+            
+            displayEl.innerHTML = '';
+            
+            selectedColors.forEach(color => {
+                const el = document.createElement('div');
+                el.className = 'selected-color';
+                el.style.cssText = `
+                    background: ${color};
+                    position: relative;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    display: inline-block;
+                    cursor: pointer;
+                    border: 2px solid #aaa;
+                    margin: 4px;
+                `;
+                
+                const removeBtn = document.createElement('span');
+                removeBtn.textContent = '✕';
+                removeBtn.style.cssText = `
+                    position: absolute;
+                    top: -5px; right: -5px;
+                    background: #e74c3c;
+                    color: white;
+                    border-radius: 50%;
+                    width: 16px; height: 16px;
+                    font-size: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    line-height: 1;
+                    z-index: 10;
+                `;
+                
+                // CRUCIAL: Stocker la couleur sur le bouton lui-même
+                removeBtn.setAttribute('data-remove-color', color);
+                
+                removeBtn.onclick = (function(c) {
+                    return function(ev) {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        
+                        // Accéder au selectedColors de la closure parente
+                        // On le passe via un attribut sur l'élément parent
+                        const currentColors = JSON.parse(hiddenInput.value || '[]');
+                        
+                        const idx = currentColors.indexOf(c);
+                        if (idx !== -1) {
+                            currentColors.splice(idx, 1);
+                            hiddenInput.value = JSON.stringify(currentColors);
+                            
+                            // Désélectionner dans le picker
+                            const srcOption = picker.querySelector(`.color-option[data-color="${c}"]`);
+                            if (srcOption) srcOption.classList.remove('selected');
+                            
+                            // Mettre à jour l'affichage
+                            updateColorDisplay(currentColors, displayEl, previewEl, hiddenInput, picker);
+                        }
+                    };
+                })(color);
+                
+                el.appendChild(removeBtn);
+                displayEl.appendChild(el);
+            });
+            
+            delete displayEl.dataset.updating;
+        }
+        
+        if (previewEl) {
+            previewEl.innerHTML = selectedColors.length
+                ? selectedColors.map(c => `<span class="color-swatch" style="background:${c}; display:inline-block; width:16px; height:16px; border-radius:50%; margin:2px;"></span>`).join('')
+                : 'Aucune couleur sélectionnée';
+        }
+        
+        if (hiddenInput) {
+            // Ne pas écraser si c'est déjà fait
+            if (hiddenInput.value !== JSON.stringify(selectedColors)) {
+                hiddenInput.value = JSON.stringify(selectedColors);
+            }
+        }
+    }
+
+    // ================================================================
+    // VALIDATION SOUMISSION FORMULAIRE
+    // ================================================================
+    document.getElementById('form_customisation').addEventListener('submit', function (e) {
+        // Vérifier qu'une image est sélectionnée (galerie ou upload)
+        const imgPath = document.getElementById('id_img_path').value;
+        const fileInput = document.getElementById('id_img');
+        if (!imgPath && (!fileInput || fileInput.files.length === 0)) {
+            e.preventDefault();
+            alert('Veuillez sélectionner ou importer une image !');
+            return;
+        }
+
+        // Vérifier les champs multicolor obligatoires
+        /*{% for sf in service_fields %}
+            {% if sf.field_type == 'multicolor' and sf.required %}
+                const colorVal_{{ sf.name }} = document.getElementById('id_{{ sf.name }}').value;
+                if (!colorVal_{{ sf.name }} || colorVal_{{ sf.name }} === '[]') {
+                    e.preventDefault();
+                    alert('Veuillez sélectionner au moins une couleur pour "{{ sf.label }}" !');
+                    return;
+                }
+            {% endif %}
+        {% endfor %}*/
+
+        // Vérifier les champs select obligatoires
+        /*{% for sf in service_fields %}
+            {% if sf.field_type == 'select' and sf.required %}
+                const selectVal_{{ sf.name }} = document.getElementById('id_{{ sf.name }}').value;
+                if (!selectVal_{{ sf.name }}) {
+                    e.preventDefault();
+                    alert('Veuillez choisir une valeur pour "{{ sf.label }}" !');
+                    return;
+                }
+                {% if sf.has_other %}
+                    if (selectVal_{{ sf.name }} === 'Autre (Préciser)') {
+                        const otherVal = document.getElementById('id_{{ sf.name }}_other').value.trim();
+                        if (!otherVal) {
+                            e.preventDefault();
+                            alert('Veuillez préciser la valeur pour "{{ sf.label }}" !');
+                            return;
+                        }
+                    }
+                {% endif %}
+            {% endif %}
+        {% endfor %}*/
+
+        // Infos client
+        if (!checkUserFields()) e.preventDefault();
+    });
+
+    // ================================================================
+    // AFFICHER/MASQUER le champ "Autre (Préciser)"
+    // Géré par double_fields.js normalement, mais voici le fallback
+    // ================================================================
+    document.querySelectorAll('select[id^="id_"]').forEach(select => {
+        const otherId = select.id + '_other';
+        const otherEl = document.getElementById(otherId);
+        if (otherEl) {
+            otherEl.style.display = 'none';
+            select.addEventListener('change', function () {
+                otherEl.style.display = this.value === 'Autre (Préciser)' ? 'block' : 'none';
+            });
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                }
+            });
+        }
+        return cookieValue;
+    }
+    </script>
+
+</body>
+</html>
+{% endblock %}

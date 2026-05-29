@@ -6,14 +6,14 @@ from django.template.loader import render_to_string
 from celery import shared_task
 import time
 
-#@shared_task
+@shared_task
 def double_nombre(x):
-    time.sleep(5)     # On simule une petite tâche
+    print(f"Calcul en cours pour {x}")    # On simule une petite tâche
     return x * 2
 
 
 # une fonction qui envoie un mail a Linguere Fablab
-#@shared_task
+@shared_task
 def mail_to_fablab(user:dict, is_formation=True , admin_edit_view='' ,formation_name=None, reason='new inscription'):
     """
     fonction qui envoie un mail a Linguere Fablab soit pour :

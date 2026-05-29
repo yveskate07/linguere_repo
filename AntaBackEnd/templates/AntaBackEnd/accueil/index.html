@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINGUERE FABLAB - Innovation et Fabrication Numérique au Sénégal</title>
-
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.png' %}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -166,29 +166,47 @@
         <div class="section-title" data-aos="fade-up">
             <h1>NOS SERVICES</h1>
         </div>
-        
-        {% if other_services %}
-            <div class="grid">
-                {% for service in other_services %}
-                    <div class="card" data-aos="fade-up">
-                        <a href="{{service.get_absolute_url}}"></a>
-                        <div class="overlay">
-                            <div class="card-title">{{service.name}}</div>
-                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
-                        </div>
-                        <h2 class="card-image-title">{{service.name}}</h2>
-                    </div>
-                {% endfor %}
 
-                <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <a href="#"></a>
-                    <div class="overlay">
-                        <div class="card-title">Impressions Numériques</div>
-                        <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
+        <!-- Implementer une logique si le nombre de service est superieur a 4 pour afficher les 4 premiers et le cinquieme dans une card a part avec un lien vers une page qui affiche tous les services -->
+        
+        {% if services %}
+            {% if services|length > 4 %}
+                <div class="grid">
+                    {% for service in services|slice:":4" %}
+                        <div class="card" data-aos="fade-up">
+                            <a href="{{service.get_absolute_url}}"></a>
+                            <div class="overlay">
+                                <div class="card-title">{{service.name}}</div>
+                                <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                            </div>
+                            <h2 class="card-image-title">{{service.name}}</h2>
+                        </div>
+                    {% endfor %}
+
+                    <div class="card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                        <a href="#"></a>
+                        <div class="overlay">
+                            <div class="card-title">Impressions Numériques</div>
+                            <div class="card-description">Nous réalisons des impressions sur divers supports papier et rigides pour vos supports de communication et de branding.<br><br><a class="modal-trigger" href="#">en savoir plus <svg class="svg-inline--fa fa-arrow-right ms-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg><!-- <i class="fas fa-arrow-right ms-2"></i> Font Awesome fontawesome.com --></a></div>
+                        </div>
+                        <h2 class="card-image-title">Impressions Numériques Proposées</h2>
                     </div>
-                    <h2 class="card-image-title">Impressions Numériques Proposées</h2>
+                    
                 </div>
-            </div>
+            {% else %}
+                <div class="grid">
+                    {% for service in services %}
+                        <div class="card" data-aos="fade-up">
+                            <a href="{{service.get_absolute_url}}"></a>
+                            <div class="overlay">
+                                <div class="card-title">{{service.name}}</div>
+                                <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus <i class="fas fa-arrow-right ms-2"></i></a></div>
+                            </div>
+                            <h2 class="card-image-title">{{service.name}}</h2>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% else %}
 
             <p class="text-center" data-aos="fade-up" data-aos-delay="300">Aucun service disponible pour le moment.</p>
@@ -196,22 +214,25 @@
         {% endif %}
     </div>
 
-    {% if serv_imp_num_prop %}
-    <div id="modal-service5" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">×</span>
-            <div class="grid">
-                {% for service in serv_imp_num_prop %}
-                    <div class="card">
-                        <div class="overlay">
-                            <div class="card-title">{{service.name}}</div>
-                            <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus </a></div>
-                        </div>
+    
+    {% if services %}
+        {% if services|length > 4 %}
+            <div id="modal-service5" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close">×</span>
+                    <div class="grid">
+                        {% for service in services|slice:"4:" %}
+                            <div class="card">
+                                <div class="overlay">
+                                    <div class="card-title">{{service.name}}</div>
+                                    <div class="card-description">{{service.description_accueil}}<br><br><a href="{{service.get_absolute_url}}">en savoir plus </a></div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        </div>
-    </div>
+        {% endif %}
     {% endif %}
 
     <!-- Video Section 2 -->

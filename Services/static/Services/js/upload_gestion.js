@@ -1,6 +1,6 @@
 // Gestion de l'upload
 const dropArea = document.getElementById('drop-area');
-const fileInput = document.getElementById('file-input');
+const fileInput = document.getElementById('id_img');
 const ctaButton = dropArea.querySelector('.cta-button');
 
 dropArea.addEventListener('dragover', function (e) {

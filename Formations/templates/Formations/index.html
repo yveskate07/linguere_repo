@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formation en {{formation.name}} | Expertise Professionnelle</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>y
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'Formations/css/broderie_num/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
@@ -39,7 +40,11 @@
                 <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                            Maîtrisez l'Art de notre <br>formation en <span class="text-red">{{formation.name}}</span>
+                        {% if formation.name_in_formation_page %}
+                           {{formation.name_in_formation_page}}
+                        {% else %}
+                           {{formation.name}}
+                        {% endif %}
                         </h1>
                         <p class="text-lg md:text-xl text-blue-100 mt-3">
                             {{formation.motiv}}

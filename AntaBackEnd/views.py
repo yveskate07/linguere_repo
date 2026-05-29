@@ -8,7 +8,7 @@ from django.contrib import messages
 from Activities.models import Activity
 from Formations.models import Formations
 from Personalizations.models import ImagesOnHomepage
-from Services.models import ServiceInfo
+from Services.models import Service
 from Testimonies.models import Testimony
 from Users.auth_form import UserLoginForm, UserSignUpForm
 from Partners.models import Partner
@@ -59,23 +59,13 @@ def home(request):
 
     formations = Formations.objects.all()
 
-    '''right_first_row = Formations.objects.filter(css_cls_parent_in_home="droite")
-
-    left_first_row = Formations.objects.filter(css_cls_parent_in_home="gauche")
-
-    second_row = Formations.objects.filter(css_cls_parent_in_home="pleine-largeur")
-
-    context['right_first_row'] = right_first_row
-    context['left_first_row'] = left_first_row
-    context['second_row'] = second_row'''
-
     context['formations'] = formations
 
-    #context['formation_available'] = right_first_row.exists() or left_first_row.exists() or second_row.exists()
+    #context['serv_imp_num_prop'] = Service.objects.filter(impressionNumerique = True)
 
-    context['serv_imp_num_prop'] = ServiceInfo.objects.filter(impressionNumerique = True)
+    #context['other_services'] = Service.objects.filter(impressionNumerique = False)
 
-    context['other_services'] = ServiceInfo.objects.filter(impressionNumerique = False)
+    context['services'] = Service.objects.all()
     context['activities'] = Activity.objects.all()
 
     context['partners'] = Partner.objects.all()
@@ -87,9 +77,6 @@ def home(request):
     context['images_on_homepage'] = ImagesOnHomepage.objects.first()
 
     return render(request,'AntaBackEnd/accueil/index.html',context=context)
-
-# def home(request):
-#     return HttpResponse("Server is working")
 
 
 def location(request):
