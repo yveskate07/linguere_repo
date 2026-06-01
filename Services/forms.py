@@ -109,7 +109,7 @@ def build_field_from_service_field(service_field):
             widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
         )
 
-    elif ft == 'file':
+    elif ft == 'img':
         result[name] = forms.ImageField(
             label=label,
             required=required,

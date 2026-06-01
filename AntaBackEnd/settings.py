@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -106,6 +107,8 @@ INSTALLED_APPS = [
     'colorfield',
     'admin_extra_buttons',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -237,17 +240,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = 'static/' if LOCAL else '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_DIRS = [
-    BASE_DIR / "AntaBackEnd" / "static", BASE_DIR / "Activities" / "static", BASE_DIR / "Shop" / "static",
-    BASE_DIR / "Users" / "static", BASE_DIR / "Services" / "static", BASE_DIR / "Formations" / "static", BASE_DIR / "static",
-]
+STATICFILES_DIRS = [BASE_DIR / "AntaBackEnd" / "static", BASE_DIR / "static"]
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG and not LOCAL:
 
     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
     # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 if DEBUG:
     MIDDLEWARE.remove('whitenoise.middleware.WhiteNoiseMiddleware')

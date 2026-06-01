@@ -1,177 +1,324 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{subject}}</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 25px;
-            background-color: #f5f5f5;
-        }
-        .email-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eaeaea;
-            margin-bottom: 25px;
-        }
-        .header h2 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .order-details {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-            border-left: 4px solid #3498db;
-        }
-        .detail-item {
-            margin-bottom: 12px;
-            display: flex;
-        }
-        .detail-label {
-            font-weight: 600;
-            color: #2c3e50;
-            min-width: 180px;
-        }
-        .divider {
-            height: 1px;
-            background-color: #eaeaea;
-            margin: 25px 0;
-        }
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eaeaea;
-            font-size: 0.9em;
-            color: #7f8c8d;
-            text-align: center;
-        }
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-weight: 500;
-        }
-        .highlight {
-            color: #e74c3c;
-            font-weight: 600;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ subject }}</title>
+  <style>
+    :root {
+      --white : #ffffff;
+      --dark  : #343a40;
+      --red   : #dc3545;
+      --blue  : #0d6efd;
+    }
 
-        {% if colors_list %}
-            {% for color in colors_list %}
-                .circle-{{color}}{
-                    width: 15px;
-                    height: 15px;
-                    background-color:#{{color}};
-                    border-radius: 50%;
-                    margin-bottom: 12px;}
-            {% endfor %}
-        {% endif %}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    </style>
+    body {
+      background-color: #f2f4f7;
+      font-family: Arial, sans-serif;
+      color: #343a40;
+      padding: 32px 16px;
+    }
+
+    .wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.10);
+    }
+
+    /* ── En-tête ─────────────────────────────────────────────── */
+    .header {
+      background-color: #343a40;
+      padding: 26px 32px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .header img.logo {
+      height: 48px;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      letter-spacing: .03em;
+    }
+
+    .header-text .badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 12px;
+      background-color: #dc3545;
+      color: #ffffff;
+      border-radius: 20px;
+      font-size: 12px;
+      letter-spacing: .06em;
+    }
+
+    /* ── Corps ───────────────────────────────────────────────── */
+    .body {
+      padding: 30px 32px;
+    }
+
+    .body p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #dc3545;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #dc3545;
+    }
+
+    /* ── Tableaux ─────────────────────────────────────────────── */
+    table.recap {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 26px;
+    }
+
+    table.recap tr:nth-child(even) td { background-color: #f8f9fa; }
+
+    table.recap td {
+      padding: 9px 12px;
+      vertical-align: top;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    table.recap td.lbl {
+      width: 40%;
+      font-weight: bold;
+      color: #343a40;
+    }
+
+    table.recap td.val { color: #555; }
+
+    /* ── Cercles multicolor ───────────────────────────────────── */
+    .color-circles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .color-circle {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      flex-shrink: 0;
+    }
+
+    /* ── Message client ───────────────────────────────────────── */
+    .user-message {
+      background-color: #f0f4ff;
+      border-left: 4px solid #0d6efd;
+      padding: 14px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      color: #343a40;
+      margin-bottom: 26px;
+      white-space: pre-line;
+    }
+
+    /* ── Bouton CTA ───────────────────────────────────────────── */
+    .cta {
+      text-align: center;
+      margin: 10px 0 28px;
+    }
+
+    .cta a {
+      display: inline-block;
+      padding: 11px 28px;
+      background-color: #0d6efd;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: .03em;
+    }
+
+    /* ── Pied de page ─────────────────────────────────────────── */
+    .footer {
+      background-color: #343a40;
+      padding: 20px 32px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: #adb5bd;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-    <div class="email-container">
-        <div class="header">
-            <h2>Nouvelle commande enregistrée</h2>
-            <p style="color: #7f8c8d;">Linguere FabLab</p>
-        </div>
 
-        <p>Bonjour Linguere FabLab, une nouvelle commande a été passée sur le site.</p>
+  <div class="wrapper">
 
-        <div class="order-details">
-            <h3 style="margin-top: 0; color: #3498db;">Détails de la commande :</h3>
-
-            <div class="detail-item">
-                <span class="detail-label">Service :</span>
-                <span>{{Service_name}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Objet :</span>
-                <span>{{obj}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Dimensions du design :</span>
-                <span>{{width}} (largeur) x {{height}} (longueur)</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Quantité :</span>
-                <span>{{quantite}} exemplaires</span>
-            </div>
-
-            {% if colors_list %}
-                <p><span class='highlight'>Couleurs souhaitées </span>:
-                {% for color in colors_list %}
-                    <div class="circle-{{color}}"></div>
-                {% endfor %}
-            {% endif %}
-                </p>
-            <div class="detail-item">
-                <span class="detail-label">Commentaire :</span>
-                <span>{{comment}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Image du design choisi: </span>
-                <img src="{{img_path}}" alt="design picture"/>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Mode de livraison :</span>
-                <span>{{deliver}}</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="detail-item">
-                <span class="detail-label">Nom du client :</span>
-                <span>{{name}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">E-mail du client :</span>
-                <span>{{email}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Téléphone :</span>
-                <span>{{tel_number}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Ville :</span>
-                <span>{{town}}</span>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin: 30px 0;">
-            <a href="{{admin_edit_view}}" class="button">Voir la commande</a>
-        </div>
-
-        <div class="footer">
-            <p>Ceci est une notification automatique - merci de ne pas répondre à cet email</p>
-            <p>© 2023 Linguere FabLab. Tous droits réservés.</p>
-        </div>
+    <!-- ══ EN-TÊTE ══════════════════════════════════════════════ -->
+    <div class="header">
+      <img class="logo" src="{{ logo_url }}" alt="Linguere FabLab" />
+      <div class="header-text">
+        <h1>{{ subject }}</h1>
+        {% if order_id %}
+          <span class="badge">Commande #{{ order_id }}</span>
+        {% endif %}
+      </div>
     </div>
+
+    <!-- ══ CORPS ════════════════════════════════════════════════ -->
+    <div class="body">
+
+      <p>{{ message_to_admin }}</p>
+
+      {% if user_message %}
+        <p class="section-title">Message du client</p>
+        <div class="user-message">{{ user_message }}</div>
+      {% endif %}
+
+      <!-- ── Détails commande ─────────────────────────────────── -->
+      {% if order_id %}
+        <p class="section-title">Détails de la commande</p>
+        <table class="recap">
+
+          {% if service_name %}
+          <tr>
+            <td class="lbl">Service</td>
+            <td class="val">{{ service_name }}</td>
+          </tr>
+          {% endif %}
+
+          {% if client_name %}
+          <tr>
+            <td class="lbl">Client</td>
+            <td class="val">{{ client_name }}</td>
+          </tr>
+          {% endif %}
+
+          {% if client_email %}
+          <tr>
+            <td class="lbl">Email</td>
+            <td class="val">{{ client_email }}</td>
+          </tr>
+          {% endif %}
+
+          {% if client_phone %}
+          <tr>
+            <td class="lbl">Téléphone</td>
+            <td class="val">{{ client_phone }}</td>
+          </tr>
+          {% endif %}
+
+          {% if client_address %}
+          <tr>
+            <td class="lbl">Adresse</td>
+            <td class="val">{{ client_address }}</td>
+          </tr>
+          {% endif %}
+
+          <tr>
+            <td class="lbl">Quantité</td>
+            <td class="val">{{ quantity }} exemplaire{{ quantity|pluralize }}</td>
+          </tr>
+
+          {% if width or height %}
+          <tr>
+            <td class="lbl">Dimensions</td>
+            <td class="val">
+              {% if width %}{{ width }} cm (larg.){% endif %}
+              {% if width and height %} × {% endif %}
+              {% if height %}{{ height }} cm (haut.){% endif %}
+            </td>
+          </tr>
+          {% endif %}
+
+          {% if delivery_mode %}
+          <tr>
+            <td class="lbl">Mode de livraison</td>
+            <td class="val">{{ delivery_mode }}</td>
+          </tr>
+          {% endif %}
+
+          {% if comment %}
+          <tr>
+            <td class="lbl">Instructions spéciales</td>
+            <td class="val">{{ comment }}</td>
+          </tr>
+          {% endif %}
+
+          <!-- ── Champs dynamiques ──────────────────────────────── -->
+          {% for field in dynamic_fields %}
+          <tr>
+            <td class="lbl">{{ field.label }}</td>
+            <td class="val">
+              {% if field.field_type == 'multicolor' %}
+                <div class="color-circles">
+                  {% for hex in field.value %}
+                    <span
+                      class="color-circle"
+                      style="background-color: {{ hex }};"
+                      title="{{ hex }}"
+                    ></span>
+                  {% endfor %}
+                </div>
+              {% elif field.field_type == 'boolean' %}
+                {% if field.value %}Oui{% else %}Non{% endif %}
+              {% else %}
+                {{ field.value }}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+
+          <tr>
+            <td class="lbl">Image fournie</td>
+            <td class="val">
+              {% if img_link %}
+                <img src="{{ img_link }}" alt="Image fournie" />
+              {% else %}
+                Aucune image
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+
+        <!-- ── Bouton vers l'admin ──────────────────────────────── -->
+        {% if link %}
+          <div class="cta">
+            <a href="{{ link }}">Voir la commande dans l'admin →</a>
+          </div>
+        {% endif %}
+
+      {% endif %}
+
+    </div><!-- /body -->
+
+    <!-- ══ PIED DE PAGE ═════════════════════════════════════════ -->
+    <div class="footer">
+      <p>Notification automatique — merci de ne pas répondre à cet email.</p>
+      <p>© Linguere FabLab. Tous droits réservés.</p>
+    </div>
+
+  </div><!-- /wrapper -->
+
 </body>
 </html>

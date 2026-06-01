@@ -61,7 +61,7 @@ def mail_to_fablab(user:dict, is_formation=True , admin_edit_view='' ,formation_
 
     sender_email = settings.EMAIL_HOST_USER
 
-    message = render_to_string('Services/alert_mails/index.html', context)
+    message = render_to_string('Formations/alert_mails/index.html', context)
 
     mail = EmailMessage(data[reason]['subject'], message, sender_email, to=[user['e-mail']])
     mail.content_subtype = "html"
@@ -79,7 +79,7 @@ def brochure_to_client_through_mail(receiver_email, admin_edit_view, formation_n
     """
 
     sender_email = settings.EMAIL_HOST_USER
-    message = render_to_string('Services/mail_with_pdfs/index.html', {
+    message = render_to_string('Formations/mail_with_pdfs/index.html', {
         'formation_name': formation_name,
     })
 

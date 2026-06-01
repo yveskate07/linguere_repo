@@ -59,8 +59,6 @@ class ServiceField(models.Model):
         ('integer',    'Nombre entier'),
         ('select',     'Liste déroulante (choix unique)'),
         ('multicolor', 'Sélecteur de couleurs (choix multiple)'),
-        ('file',       'Fichier / Image'),
-        ('file_path',  'Image de la galerie (stocke le chemin)'),
         ('boolean',    'Case à cocher (Oui/Non)'),
     ]
 
@@ -111,11 +109,12 @@ class ServiceField(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Champ de service'
-        verbose_name_plural = 'Champs de service'
+        verbose_name = 'Champ de personnalisation'
+        verbose_name_plural = 'Champs de personnalisation'
         ordering = ['service', 'order']
         # Un nom technique doit être unique par service
         unique_together = [('service', 'name')]
+        
 
     def __str__(self):
         return f'{self.label} - {self.service.name}'
@@ -154,11 +153,13 @@ class ServiceOrder(models.Model):
     )
 
     # --- Champs communs à tous les services ---
+    # Si l'utilisateur upload une image, on la stocke dans le champ "image".
     image = models.ImageField(
         upload_to='Services/orders/',
         verbose_name='Image uploadée',
         null=True, blank=True
         )
+    # si l'utilisateur a choisi une des images deja dans la galerie, on stocke le chemin dans img_path (ex: "Services/galerie_image/image1.png")
     img_path = models.CharField(
         max_length=255, blank=True, default='', null=True,
         verbose_name='Chemin de l\'image sélectionnée dans la galerie'
@@ -174,20 +175,6 @@ class ServiceOrder(models.Model):
         choices=DELIVERIES,
         verbose_name='Mode de livraison',
         blank=True
-    )
-
-    # --- Image principale (optionnelle selon le service) ---
-    # Si l'utilisateur upload une image, on la stocke dans le champ "image".
-    image    = models.ImageField(
-        upload_to='Services/orders/',
-        verbose_name='Fichier / Image',
-        null=True, blank=True
-    )
-    # si l'utilisateur a choisi une des images deja dans la galerie, on stocke le chemin dans img_path (ex: "Services/galerie_image/image1.png")
-    img_path = models.CharField(
-        max_length=255,
-        verbose_name="Chemin de l'image",
-        null=True, blank=True, default=''
     )
 
     # --- Informations client ---

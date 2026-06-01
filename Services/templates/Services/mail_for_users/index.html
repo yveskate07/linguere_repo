@@ -1,103 +1,300 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{subject}}</title>
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eeeeee;
-            margin-bottom: 20px;
-        }
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eeeeee;
-            font-size: 0.9em;
-            color: #777777;
-        }
-        .order-details {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .order-details p {
-            margin: 5px 0;
-        }
-        .highlight {
-            font-weight: bold;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 15px;
-        }
-        {% if colors_list %}
-            {% for color in colors_list %}
-                .circle-{{color}}{
-                    width: 15px;
-                    height: 15px;
-                    background-color:#{{color}};
-                    border-radius: 50%;
-                    margin-bottom: 12px;}
-            {% endfor %}
-        {% endif %}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ subject }}</title>
+  <style>
+    /* ── Palette imposée ─────────────────────────────────────────── */
+    :root {
+      --white   : #ffffff;
+      --dark    : #343a40;
+      --red     : #dc3545;
+      --blue    : #0d6efd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #f2f4f7;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #343a40;
+      padding: 32px 16px;
+    }
+
+    /* ── Enveloppe principale ────────────────────────────────────── */
+    .wrapper {
+      max-width: 620px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.10);
+    }
+
+    /* ── En-tête avec logo ───────────────────────────────────────── */
+    .header {
+      background-color: #343a40;
+      padding: 28px 32px;
+      text-align: center;
+    }
+
+    .header img.logo {
+      height: 56px;
+      width: auto;
+      display: block;
+      margin: 0 auto 14px;
+    }
+
+    .header h1 {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      font-weight: normal;
+      color: #ffffff;
+      letter-spacing: .04em;
+    }
+
+    .header .order-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 14px;
+      background-color: #dc3545;
+      color: #ffffff;
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      letter-spacing: .06em;
+    }
+
+    /* ── Corps ───────────────────────────────────────────────────── */
+    .body {
+      padding: 32px;
+    }
+
+    .body p {
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .body .client-name {
+      color: #0d6efd;
+      font-weight: bold;
+    }
+
+    /* ── Tableau récapitulatif ───────────────────────────────────── */
+    .recap-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #dc3545;
+      font-family: Arial, sans-serif;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #dc3545;
+    }
+
+    table.recap {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 28px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    table.recap tr:nth-child(even) td {
+      background-color: #f8f9fa;
+    }
+
+    table.recap td {
+      padding: 10px 12px;
+      vertical-align: top;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    table.recap td.field-label {
+      width: 42%;
+      font-weight: bold;
+      color: #343a40;
+    }
+
+    table.recap td.field-value {
+      color: #555;
+    }
+
+    /* ── Cercles multicolor ──────────────────────────────────────── */
+    .color-circles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .color-circle {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      flex-shrink: 0;
+    }
+
+    /* ── Message de fin ──────────────────────────────────────────── */
+    .note {
+      background-color: #f0f4ff;
+      border-left: 4px solid #0d6efd;
+      padding: 14px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      color: #343a40;
+      margin-bottom: 28px;
+    }
+
+    /* ── Pied de page ────────────────────────────────────────────── */
+    .footer {
+      background-color: #343a40;
+      padding: 22px 32px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: #adb5bd;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="wrapper">
+
+    <!-- ══ EN-TÊTE ══════════════════════════════════════════════ -->
     <div class="header">
-        <h2>{{subject}}</h2>
+      <img
+        class="logo"
+        src="{{ logo_url }}"
+        alt="Linguere FabLab"
+      />
+      <h1>{{ subject }}</h1>
+      <span class="order-badge">Commande #{{ order_id }}</span>
     </div>
 
-    <p>Bonjour,</p>
+    <!-- ══ CORPS ════════════════════════════════════════════════ -->
+    <div class="body">
 
-        <p>Nous vous remercions pour votre commande <span class="highlight">{{Service_name}}</span> : {{obj}}.</p>
+      <p>
+        Bonjour
+        {% if client_name %}
+          <span class="client-name">{{ client_name }}</span>,
+        {% else %}
+          ,
+        {% endif %}
+      </p>
 
-        <div class="order-details">
-            <p>Nous vous confirmons que nous avons bien reçu votre demande de personnalisation avec les indications suivantes :</p>
+      <p>
+        Nous vous remercions pour votre commande du service
+        <strong>{{ service_name }}</strong>. Voici le récapitulatif de votre demande :
+      </p>
 
-            <p><span class="highlight">Objet :</span> {{obj}}</p>
-            <p><span class="highlight">Dimensions du design </span>: {{width}} (largeur) x {{height}} (longueur)</p>
-            <p><span class="highlight">Quantité </span>: {{quantite}} exemplaires</p>
-            {% if colors_list %}
-                <p><span class='highlight'>Couleurs souhaitées </span>:
-                {% for color in colors_list %}
-                    <div class="circle-{{color}}"></div>
+      <!-- ── Champs communs ──────────────────────────────────── -->
+      <p class="recap-title">Détails de la commande</p>
+
+      <table class="recap">
+        <tr>
+          <td class="field-label">Quantité</td>
+          <td class="field-value">{{ quantity }} exemplaire{{ quantity|pluralize }}</td>
+        </tr>
+        {% if width or height %}
+        <tr>
+          <td class="field-label">Dimensions du design</td>
+          <td class="field-value">
+            {% if width %}{{ width }} cm (largeur){% endif %}
+            {% if width and height %} × {% endif %}
+            {% if height %}{{ height }} cm (hauteur){% endif %}
+          </td>
+        </tr>
+        {% endif %}
+        {% if delivery_mode %}
+        <tr>
+          <td class="field-label">Mode de livraison</td>
+          <td class="field-value">{{ delivery_mode }}</td>
+        </tr>
+        {% endif %}
+        {% if comment %}
+        <tr>
+          <td class="field-label">Instructions spéciales</td>
+          <td class="field-value">{{ comment }}</td>
+        </tr>
+        {% endif %}
+
+        <!-- ── Champs dynamiques ──────────────────────────────── -->
+        {% for field in dynamic_fields %}
+        <tr>
+          <td class="field-label">{{ field.label }}</td>
+          <td class="field-value">
+            {% if field.field_type == 'multicolor' %}
+              <div class="color-circles">
+                {% for hex in field.value %}
+                  <span
+                    class="color-circle"
+                    style="background-color: {{ hex }};"
+                    title="{{ hex }}"
+                  ></span>
                 {% endfor %}
-                </p>
+              </div>
+            {% elif field.field_type == 'boolean' %}
+              {% if field.value %}Oui{% else %}Non{% endif %}
+            {% elif field.field_type == 'img_path' %}
+                <img src="{{ field.value }}" style="max-width:200px;" />
+            {% else %}
+              {{ field.value }}
             {% endif %}
-            <p><span class="highlight">Commentaire </span>: {{comment}}</p>
-            <p><span class="highlight">Image du design choisi: </span>: <img src="{{img_path}}" alt="design picture"/></p>
-        </div>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td class="lbl">Image fournie</td>
+          <td class="val">
+            {% if img_link %}
+              <img src="{{ img_link }}" alt="Image fournie" />
+            {% else %}
+              Aucune image
+            {% endif %}
+          </td>
+        </tr>
+      </table>
 
-        <p>Votre commande est actuellement en cours de traitement.<br>{{deliver}}
+      <!-- ── Note de suivi ──────────────────────────────────────── -->
+      <div class="note">
+        Votre commande est actuellement <strong>en cours de traitement</strong>.
+        Nous vous contacterons prochainement avec plus de détails.
+      </div>
 
-        <p>N'hésitez pas à nous contacter si vous avez des questions ou des précisions à apporter.</p>
+      <p>
+        N'hésitez pas à nous contacter si vous avez des questions ou des précisions
+        à apporter à votre commande.
+      </p>
 
+    </div><!-- /body -->
+
+    <!-- ══ PIED DE PAGE ═════════════════════════════════════════ -->
     <div class="footer">
-        <p>Cordialement,</p>
-        <p><strong>Linguere FabLab</strong><br>
-        Service Client</p>
-        <p>linguerefablab@gmail.com | +221 77 314 66 62</p>
+      <p>
+        <strong style="color: #ffffff;">Linguere FabLab</strong> — Service Client<br />
+        <a href="mailto:linguerefablab@gmail.com">linguerefablab@gmail.com</a>
+        &nbsp;|&nbsp; +221 77 314 66 62
+      </p>
     </div>
+
+  </div><!-- /wrapper -->
 
 </body>
 </html>
